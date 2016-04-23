@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    This file is part of HelloIot.
+
+    HelloIot is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    HelloIot is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with HelloIot.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.layout.*?>
+<?import com.adr.fonticon.*?>
+<?import com.adr.helloiot.*?>
+<?import com.adr.helloiot.unit.*?>
+<?import com.adr.helloiot.unitsensor.*?>
+<?import com.adr.helloiot.device.*?>
+<?import com.adr.helloiot.graphic.*?>
+
+<DevicesUnits xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1">
+
+    <devices>
+        <Light fx:id="hall_light1" topic="home/hall/light1">
+            <properties name="hall_light1" label="%label.halllight1" tags="hall lamp"/>
+        </Light>
+        <Light fx:id="hall_light2" topic="home/hall/light2">
+            <properties name="hall_light2" label="%label.halllight2" tags="hall lamp"/>
+        </Light>
+        <Light fx:id="hall_light3" topic="home/hall/light3">
+            <properties name="hall_light3" label="%label.halllight3" tags="hall lamp"/>
+        </Light>
+        <Light fx:id="hall_light4" topic="home/hall/light4">
+            <properties name="hall_light4" label="%label.halllight4" tags="hall lamp"/>
+        </Light>              
+        <Light fx:id="hall_light5" topic="home/hall/light5">
+            <properties name="hall_light5" label="%label.halllight5" tags="hall lamp"/>
+        </Light>
+        
+        <Thermostat fx:id="home_thermostat1" topic="home/thermostat1">
+            <properties label="%label.thermostat1"/>
+        </Thermostat>        
+        <Thermostat fx:id="home_thermostat2" topic="home/thermostat2">
+            <properties label="%label.thermostat2"/>
+        </Thermostat>        
+        <Thermostat fx:id="home_thermostat3" topic="home/thermostat3">
+            <properties label="%label.thermostat3"/>
+        </Thermostat>        
+        <Thermostat fx:id="home_thermostat4" topic="home/thermostat4">
+            <properties label="%label.thermostat4"/>
+        </Thermostat>        
+        <Thermostat fx:id="home_thermostat5" topic="home/thermostat5">
+            <properties label="%label.thermostat5"/>
+        </Thermostat>                    
+    </devices>
+    
+    <units>
+        <LabelSection UnitPage.page="main" GridPane.columnSpan="5" text="%title.livingroomlights"/>    
+        <ViewSimple UnitPage.page="main" device="$hall_light1" iconStatus="BULBTEXT/1"/>        
+        <ViewSimple UnitPage.page="main" device="$hall_light2" iconStatus="BULBTEXT/2"/>
+        <ViewSimple UnitPage.page="main" device="$hall_light3" iconStatus="BULBTEXT/3"/>
+        <ViewSimple UnitPage.page="main" device="$hall_light4" iconStatus="BULBTEXT/4"/>
+        <ViewSimple UnitPage.page="main" device="$hall_light5" iconStatus="BULBTEXT/5"/>            
+        <LabelSection UnitPage.page="main" GridPane.columnSpan="5" text="Light status"/>    
+        <EditStatus device="$hall_light1"/>
+        <EditStatus device="$hall_light2"/>
+        <EditStatus device="$hall_light3"/>
+        <EditStatus device="$hall_light4"/>
+        <EditStatus device="$hall_light5"/>
+        <LabelSection UnitPage.page="main" GridPane.columnSpan="5" text="%title.lightswitchs"/>    
+        <ButtonSimple UnitPage.page="main" device="$hall_light1" iconStatus="TOGGLE"/>
+        <ButtonSimple UnitPage.page="main" device="$hall_light2" iconStatus="TOGGLE"/>
+        <ButtonSimple UnitPage.page="main" device="$hall_light3" iconStatus="TOGGLE"/>
+        <ButtonSimple UnitPage.page="main" device="$hall_light4" iconStatus="TOGGLE"/>
+        <ButtonSimple UnitPage.page="main" device="$hall_light5" iconStatus="TOGGLE"/>
+        <LabelSection UnitPage.page="main" GridPane.columnSpan="5" text="%title.moreactions"/>    
+        <ButtonSimple UnitPage.page="main" device="$hall_light1"/>
+        <ButtonScript UnitPage.page="main" text="%label.timerlight1">
+            <graphic><Icon iconAwesome="FA_CLOCK_O" size="48" color="WHITE" shine="WHITE"/></graphic>
+            <scriptCode><![CDATA[
+                _allDevices().getByName('hall_light1').sendON(2000);
+            ]]></scriptCode>
+        </ButtonScript>     
+        <ButtonsSwitch UnitPage.page="main">
+            <parameters light1="$hall_light1"/>
+            <scriptCode><![CDATA[
+                light1.sendStatus(_status);
+            ]]></scriptCode>
+        </ButtonsSwitch>                      
+        <ButtonScript UnitPage.page="main" text="%label.switchalloff" confirm="true">
+            <graphic><Icon iconAwesome="FA_POWER_OFF" size="48" color="RED" shine="WHITE"/></graphic>
+            <scriptCode><![CDATA[
+                _allDevices().tagged('lamp').forEach(function (d) {
+                    d.sendOFF();
+                });
+            ]]></scriptCode>
+        </ButtonScript>                                   
+        <ButtonScript UnitPage.page="main" text="%label.dance">
+            <graphic><Icon iconAwesome="FA_STAR_O" size="48" color="GREEN" shine="WHITE"/></graphic>
+            <parameters light1="$hall_light1" light2="$hall_light2" light3="$hall_light3" light4="$hall_light4" light5="$hall_light5"/>
+            <scriptCode><![CDATA[
+                
+                light1.sendOFF();
+                light2.sendOFF();
+                light3.sendOFF();
+                light4.sendOFF();
+                light5.sendOFF();
+                
+                for (var i = 1; i < 5; i++) {
+                    light1.sendON();
+                    java.lang.Thread.sleep(100);
+                    light1.sendOFF();
+                    light2.sendON();                
+                    java.lang.Thread.sleep(100);
+                    light2.sendOFF();
+                    light3.sendON(); 
+                    java.lang.Thread.sleep(100);
+                    light3.sendOFF();
+                    light4.sendON();                 
+                    java.lang.Thread.sleep(100);
+                    light4.sendOFF();
+                    light5.sendON();             
+                    java.lang.Thread.sleep(100);
+                    light5.sendOFF();                                                                                      
+                }
+            ]]></scriptCode>
+        </ButtonScript>         
+           
+        <LabelSection UnitPage.page="Programs" GridPane.columnSpan="5" text="%title.thermostats"/>    
+        <ViewGauge UnitPage.page="Programs" device="$home_thermostat1"/>        
+        <ViewGauge UnitPage.page="Programs" device="$home_thermostat2"/>        
+        <ViewGauge UnitPage.page="Programs" device="$home_thermostat3"/>        
+        <ViewGauge UnitPage.page="Programs" device="$home_thermostat4"/>        
+        <ViewGauge UnitPage.page="Programs" device="$home_thermostat5"/>        
+        <LabelSection UnitPage.page="Programs" GridPane.columnSpan="5" text="%title.thermostatsstatus"/>    
+        <EditStatus UnitPage.page="Programs" device="$home_thermostat1"/>
+        <EditStatus UnitPage.page="Programs" device="$home_thermostat2"/>
+        <EditStatus UnitPage.page="Programs" device="$home_thermostat3"/>
+        <EditStatus UnitPage.page="Programs" device="$home_thermostat4"/>
+        <EditStatus UnitPage.page="Programs" device="$home_thermostat5"/>        
+        <LabelSection UnitPage.page="Programs" GridPane.columnSpan="5" text="%title.temperaturecontrol"/>    
+        <ButtonsSpinner UnitPage.page="Programs" device="$home_thermostat1"/>
+        <ButtonsSpinner UnitPage.page="Programs" device="$home_thermostat2"/>
+        <ButtonsSpinner UnitPage.page="Programs" device="$home_thermostat3"/>
+        <ButtonsSpinner UnitPage.page="Programs" device="$home_thermostat4"/>
+        <ButtonsSpinner UnitPage.page="Programs" device="$home_thermostat5"/>
+        <SliderSimple UnitPage.page="Programs" device="$home_thermostat1"/> 
+        <SliderSimple UnitPage.page="Programs" device="$home_thermostat2"/> 
+        <SliderSimple UnitPage.page="Programs" device="$home_thermostat3"/> 
+        <SliderSimple UnitPage.page="Programs" device="$home_thermostat4"/> 
+        <SliderSimple UnitPage.page="Programs" device="$home_thermostat5"/> 
+                    
+    </units>
+</DevicesUnits>

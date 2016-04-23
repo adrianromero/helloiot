@@ -1,0 +1,37 @@
+apply plugin: 'java'
+apply plugin: 'maven'
+apply plugin: 'application'
+
+group = 'com.adr'
+version = '1.0.0'
+
+mainClassName = 'com.adr.helloiot.MainApp'
+ext.mainClass = 'com.adr.helloiot.MainApp'
+
+description = """"""
+
+sourceCompatibility = '1.8'
+targetCompatibility = '1.8'
+[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+compileJava {
+    options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
+}
+
+
+repositories {
+    mavenCentral()
+    jcenter()
+    maven { url 'https://repo.eclipse.org/content/repositories/paho-releases/' }
+    maven { url 'https://jitpack.io' }
+}
+
+dependencies {
+    compile group: 'com.github.adrianromero', name: 'fonticon', version:'1.2.0'
+    compile group: 'com.github.adrianromero', name: 'hellocommon', version:'1.2.0'
+    compile group: 'org.eclipse.paho', name: 'org.eclipse.paho.client.mqttv3', version:'1.0.2'
+    compile group: 'com.google.inject', name: 'guice', version:'4.0'
+    compile group: 'com.jidesoft', name: 'jidefx-common', version:'0.9.1'
+    compile group: 'com.google.code.gson', name: 'gson', version:'2.4'
+    compile group: 'eu.hansolo', name: 'Medusa', version:'4.8'
+    compile group: 'commons-io', name: 'commons-io', version:'2.4'
+}

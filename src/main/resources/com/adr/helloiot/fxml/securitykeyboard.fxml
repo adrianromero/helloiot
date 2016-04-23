@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    This file is part of HelloIot.
+
+    HelloIot is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    HelloIot is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with HelloIot.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<fx:root maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" stylesheets="@../styles/main.css" type="VBox" xmlns="http://javafx.com/javafx/8.0.66" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <GridPane hgap="5.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" vgap="5.0" VBox.vgrow="SOMETIMES">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Button contentDisplay="GRAPHIC_ONLY" focusTraversable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onOne" styleClass="keypadbuttonleft">
+               <graphic>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="keypadtext" text="1" />
+               </graphic>
+            </Button>
+            <Button contentDisplay="GRAPHIC_ONLY" focusTraversable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onTwo" styleClass="keypadbuttoncenter" GridPane.columnIndex="1">
+               <graphic>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="keypadtext" text="2" />
+               </graphic>
+            </Button>
+            <Button contentDisplay="GRAPHIC_ONLY" focusTraversable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onThree" styleClass="keypadbuttonright" GridPane.columnIndex="2">
+               <graphic>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="keypadtext" text="3" />
+               </graphic>
+            </Button>
+            <Button contentDisplay="GRAPHIC_ONLY" focusTraversable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onFour" styleClass="keypadbuttonleft" GridPane.rowIndex="1">
+               <graphic>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="keypadtext" text="4" />
+               </graphic>
+            </Button>
+            <Button contentDisplay="GRAPHIC_ONLY" focusTraversable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onFive" styleClass="keypadbuttoncenter" GridPane.columnIndex="1" GridPane.rowIndex="1">
+               <graphic>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="keypadtext" text="5" />
+               </graphic>
+            </Button>
+            <Button contentDisplay="GRAPHIC_ONLY" focusTraversable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onSix" styleClass="keypadbuttonright" GridPane.columnIndex="2" GridPane.rowIndex="1">
+               <graphic>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="keypadtext" text="6" />
+               </graphic>
+            </Button>
+            <Button contentDisplay="GRAPHIC_ONLY" focusTraversable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onSeven" styleClass="keypadbuttonleft" GridPane.rowIndex="2">
+               <graphic>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="keypadtext" text="7" />
+               </graphic>
+            </Button>
+            <Button contentDisplay="GRAPHIC_ONLY" focusTraversable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onEight" styleClass="keypadbuttoncenter" GridPane.columnIndex="1" GridPane.rowIndex="2">
+               <graphic>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="keypadtext" text="8" />
+               </graphic>
+            </Button>
+            <Button contentDisplay="GRAPHIC_ONLY" focusTraversable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onNine" styleClass="keypadbuttonright" GridPane.columnIndex="2" GridPane.rowIndex="2">
+               <graphic>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="keypadtext" text="9" />
+               </graphic>
+            </Button>
+            <Button contentDisplay="GRAPHIC_ONLY" focusTraversable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onZero" styleClass="keypadbuttonall" GridPane.columnSpan="3" GridPane.rowIndex="3">
+               <graphic>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="keypadtext" text="0" />
+               </graphic>
+            </Button>
+         </children>
+      </GridPane>
+      <BorderPane>
+         <right>
+            <Button fx:id="btndelete" focusTraversable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onDelete" prefWidth="80.0" styleClass="keypadbuttonright" BorderPane.alignment="CENTER">
+               <BorderPane.margin>
+                  <Insets left="5.0" />
+               </BorderPane.margin></Button>
+         </right>
+         <padding>
+            <Insets top="10.0" />
+         </padding>
+         <center>
+            <PasswordField fx:id="password" alignment="CENTER" editable="false" focusTraversable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mouseTransparent="true" styleClass="keypadbuttonleft" BorderPane.alignment="CENTER">
+               <BorderPane.margin>
+                  <Insets />
+               </BorderPane.margin>
+            </PasswordField>
+         </center>
+      </BorderPane>
+   </children>
+</fx:root>

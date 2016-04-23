@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    This file is part of HelloIot.
+
+    HelloIot is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    HelloIot is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with HelloIot.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<fx:root maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" type="VBox" GridPane.hgrow="SOMETIMES" GridPane.vgrow="SOMETIMES" xmlns="http://javafx.com/javafx/8.0.72" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Label fx:id="field" styleClass="fieldlabel" />
+      <StackPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" VBox.vgrow="SOMETIMES">
+         <children>
+            <BorderPane fx:id="boxview">
+               <right>
+                  <Button fx:id="editaction" focusTraversable="false" mnemonicParsing="false" onAction="#onEditEvent">
+                     <BorderPane.margin>
+                        <Insets left="5.0" />
+                     </BorderPane.margin>
+                  </Button>
+               </right>
+               <center>
+                  <TextArea fx:id="statusview" editable="false" focusTraversable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="100.0" styleClass="noneditable" BorderPane.alignment="CENTER" />
+               </center>
+            </BorderPane>
+            <BorderPane fx:id="boxedit" visible="false">
+               <right>
+                  <HBox spacing="5.0" BorderPane.alignment="CENTER">
+                     <children>
+                        <Button fx:id="okaction" focusTraversable="false" mnemonicParsing="false" onAction="#onOkEvent" />
+                        <Button fx:id="cancelaction" focusTraversable="false" mnemonicParsing="false" onAction="#onCancelEvent" />
+                     </children>
+                     <BorderPane.margin>
+                        <Insets left="5.0" />
+                     </BorderPane.margin>
+                  </HBox>
+               </right>
+               <center>
+                  <TextArea fx:id="statusedit" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="100.0" styleClass="fieldtextbox" BorderPane.alignment="CENTER" />
+               </center>
+               <StackPane.margin>
+                  <Insets left="5.0" />
+               </StackPane.margin>
+            </BorderPane>
+         </children>
+      </StackPane>
+   </children>
+</fx:root>

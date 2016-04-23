@@ -1,0 +1,7 @@
+# build application files
+target/
+/nbproject/
+/.gradle/
+/.nb-gradle/
+/build/
+/private/

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    This file is part of HelloIot.
+
+    HelloIot is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    HelloIot is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with HelloIot.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.layout.*?>
+<?import com.adr.fonticon.*?>
+<?import com.adr.helloiot.*?>
+<?import com.adr.helloiot.unit.*?>
+<?import com.adr.helloiot.unitsensor.*?>
+<?import com.adr.helloiot.device.*?>
+<?import com.adr.helloiot.graphic.*?>
+
+<DevicesUnits xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1">
+
+    <devices>       
+        <DeviceSimple fx:id="version" topic="\$SYS/broker/version"/>      
+        <DeviceSimple fx:id="changeset" topic="\$SYS/broker/changeset"/>      
+        <DeviceSimple fx:id="timestamp" topic="\$SYS/broker/timestamp"/>      
+        <DeviceSimple fx:id="uptime" topic="\$SYS/broker/uptime"/>      
+        <DeviceSimple fx:id="clients" topic="\$SYS/broker/clients/total"/>      
+        <DeviceSimple fx:id="subscriptions" topic="\$SYS/broker/subscriptions/count"/>
+        
+        <DeviceSimple fx:id="heapcurrent" topic="\$SYS/broker/heap/current"/>
+        <DeviceSimple fx:id="heapmax" topic="\$SYS/broker/heap/maximum"/>
+        <DeviceSimple fx:id="bytesreceived" topic="\$SYS/broker/bytes/received"/>
+        <DeviceSimple fx:id="loadbytesreceived" topic="\$SYS/broker/load/bytes/received/5min"/>
+        <DeviceSimple fx:id="bytessent" topic="\$SYS/broker/bytes/sent"/>
+        <DeviceSimple fx:id="loadbytessent" topic="\$SYS/broker/load/bytes/sent/5min"/>        
+            
+        <DeviceSimple fx:id="retained" topic="\$SYS/broker/retained messages/count"/>      
+        <DeviceSimple fx:id="stored" topic="\$SYS/broker/messages/stored"/>      
+        <DeviceSimple fx:id="inflight" topic="\$SYS/broker/messages/inflight"/>      
+        <DeviceSimple fx:id="dropped" topic="\$SYS/broker/messages/dropped"/>      
+        <DeviceSimple fx:id="received" topic="\$SYS/broker/messages/received"/>      
+        <DeviceSimple fx:id="sent" topic="\$SYS/broker/messages/sent"/>      
+    </devices>
+    
+    <units>
+        <LabelSection GridPane.columnSpan="6" UnitPage.page="info" text="%title.broker"/>         
+        <EditStatus GridPane.columnSpan="2" UnitPage.page="info" label="%label.version" device="$version" readOnly="true"/>
+        <EditStatus GridPane.columnSpan="2" UnitPage.page="info" label="%label.changeset" device="$changeset" readOnly="true"/>
+        <EditStatus GridPane.columnSpan="2" UnitPage.page="info" label="%label.timestamp" device="$timestamp" readOnly="true"/>
+        <EditStatus GridPane.columnSpan="2" UnitPage.page="info" label="%label.uptime" device="$uptime" readOnly="true"/>
+        <EditStatus GridPane.columnSpan="2" UnitPage.page="info" label="%label.clients" device="$clients" readOnly="true"/>
+        <EditStatus GridPane.columnSpan="2" UnitPage.page="info" label="%label.subscriptions" device="$subscriptions" readOnly="true"/>
+        
+        <LabelSection GridPane.columnSpan="6" UnitPage.page="info" text="%title.load"/>    
+        <EditStatus GridPane.columnSpan="1" UnitPage.page="info" label="%label.heapcurrent" device="$heapcurrent" readOnly="true"/>
+        <EditStatus GridPane.columnSpan="1" UnitPage.page="info" label="%label.heapmax" device="$heapmax" readOnly="true"/>
+        <EditStatus GridPane.columnSpan="1" UnitPage.page="info" label="%label.bytesreceived" device="$bytesreceived" readOnly="true"/>
+        <EditStatus GridPane.columnSpan="1" UnitPage.page="info" label="%label.loadbytesreceived" device="$loadbytesreceived" readOnly="true"/>
+        <EditStatus GridPane.columnSpan="1" UnitPage.page="info" label="%label.bytessent" device="$bytessent" readOnly="true"/>
+        <EditStatus GridPane.columnSpan="1" UnitPage.page="info" label="%label.loadbytessent" device="$loadbytessent" readOnly="true"/>
+
+        <LabelSection GridPane.columnSpan="6" UnitPage.page="info" text="%title.messages"/>    
+        <EditStatus GridPane.columnSpan="1" UnitPage.page="info" label="%label.retained" device="$retained" readOnly="true"/>
+        <EditStatus GridPane.columnSpan="1" UnitPage.page="info" label="%label.stored" device="$stored" readOnly="true"/>
+        <EditStatus GridPane.columnSpan="1" UnitPage.page="info" label="%label.inflight" device="$inflight" readOnly="true"/>
+        <EditStatus GridPane.columnSpan="1" UnitPage.page="info" label="%label.dropped" device="$dropped" readOnly="true"/>
+        <EditStatus GridPane.columnSpan="1" UnitPage.page="info" label="%label.received" device="$received" readOnly="true"/>
+        <EditStatus GridPane.columnSpan="1" UnitPage.page="info" label="%label.sent" device="$sent" readOnly="true"/>
+    </units>
+</DevicesUnits>

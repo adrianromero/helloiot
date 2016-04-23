@@ -1,0 +1,165 @@
+/*
+    This file is part of HelloIot.
+
+    HelloIot is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    HelloIot is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with HelloIot.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
+@font-face {
+    src: url('Roboto-Bold.ttf');
+}
+
+@font-face {
+    src: url('Roboto-Regular.ttf');
+}
+
+@font-face {
+    src: url('Roboto-Light.ttf');
+}
+
+.header {
+    -fx-background-insets: 0,1 0 1 0;
+    -fx-background-color: -fx-box-border, white;
+    -fx-padding: 5px;
+    -fx-spacing: 5px;
+}
+
+.headertitle {
+    -fx-font-family: 'ROBOTO BOLD';
+    -fx-font-size: 18px;
+    -fx-text-fill: #333333;
+    -fx-effect: dropshadow(one-pass-box, #cccccc, 1.0, 0.0, 1.0, 1.0);        
+}
+
+.headerbutton {
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+    -fx-background-radius: 16px;
+    -fx-alignment: center;
+    -fx-padding: 8px 12px 8px 12px; 
+}
+.headerbutton:hover {
+    -fx-background-color: #dddddd;
+}
+
+.headerbutton:armed {
+    -fx-background-color: #a4a4a4;
+}
+
+.currenttime {
+    -fx-font-family: 'ROBOTO LIGHT';
+    -fx-font-size: 16px;
+    -fx-text-fill: #666666;   
+}
+
+.list-cell {
+   -fx-font-family: 'ROBOTO REGULART';
+   -fx-font-size: 18px; 
+}
+/*
+.list-cell:filled:selected:focused, .list-cell:filled:selected {
+    -fx-background-color: -fx-focus-color;
+    -fx-text-fill: white;
+}
+*/
+
+.alertlabel {
+    -fx-font-family: 'ROBOTO BOLD';
+    -fx-font-size: 36;
+    -fx-stroke: darkgray;
+    -fx-stroke-width: 1px;
+    -fx-fill: white;
+    -fx-scale-x: 2.0;
+    -fx-effect: dropshadow(one-pass-box, #FF8888, 10.0, 0.7, 0.0, 0.0);            
+}
+
+.emptypanel {
+    -fx-font-size: 48px;
+    -fx-font-family: 'ROBOTO BOLD';
+    -fx-text-fill: #666666;
+    -fx-effect: dropshadow(one-pass-box, #cccccc, 1.0, 0.0, 1.0, 1.0);     
+}
+
+.labelsection {
+    -fx-font-family: 'ROBOTO BOLD';
+    -fx-font-size: 16px;
+    -fx-text-fill: #777777;
+    -fx-background-insets: 0, 0 5 4 5, 0 5 5 5;
+    -fx-background-color:  -fx-background, -fx-box-border, -fx-background;    
+    -fx-padding: 10px 10px 5px 10px;      
+}
+
+.keypadtext {
+    -fx-font-family: 'ROBOTO BOLD';
+    -fx-font-size: 42px;     
+    -fx-stroke: darkgray;
+    -fx-stroke-width: 1px;
+    -fx-fill: linear-gradient(to bottom, #0000dd 0%, #000088 50%, #0000dd 100%);
+
+}
+.keypadbuttonleft {
+    -fx-background-radius: 15 2 2 15;
+}
+.keypadbuttoncenter {
+    -fx-background-radius: 2;
+}
+.keypadbuttonright {
+    -fx-background-radius: 2 15 15 2;
+}
+.keypadbuttonall {
+    -fx-background-radius: 15;
+}
+
+.fieldlabel {
+    -fx-font-family: 'ROBOTO LIGHT';
+    -fx-font-size: 16px;
+    -fx-text-fill: #777777;   
+    -fx-padding: 10px 10px 5px 10px;      
+}
+
+.fieldtextbox {
+    -fx-font-family: 'ROBOTO BOLD';
+    -fx-font-size: 14px;    
+}
+
+.noneditable {
+    -fx-font-family: 'ROBOTO BOLD';
+    -fx-font-size: 14px;    
+    -fx-focus-color: transparent;
+    -fx-background-color: transparent;  
+}
+.noneditable .scroll-pane {
+    -fx-background-color: transparent;
+}
+.noneditable .scroll-pane .viewport{
+    -fx-background-color: transparent;
+}
+.noneditable .scroll-pane .content{
+    -fx-background-color: transparent;
+}
+
+.buttonbase {
+    -fx-font-family: 'ROBOTO LIGHT';
+    -fx-font-size: 16px;    
+}
+
+.labelbase {
+    -fx-font-family: 'ROBOTO LIGHT';
+    -fx-font-size: 16px;   
+    -fx-text-fill: #777777;       
+}
+
+.levelbase {
+    -fx-font-family: 'ROBOTO BOLD';
+    -fx-font-size: 18px;
+}
