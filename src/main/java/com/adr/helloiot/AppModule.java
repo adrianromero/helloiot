@@ -62,6 +62,7 @@ public class AppModule extends AbstractModule {
         properties.setProperty("app.client", "helloiot");
         properties.setProperty("app.exitbutton", "false");
         properties.setProperty("app.fullscreen", "true");
+        properties.setProperty("app.clock", "false"); // do not show clock
 
         properties.setProperty("mqtt.url", "tcp://localhost:1883");
         properties.setProperty("mqtt.username", "");
@@ -70,7 +71,6 @@ public class AppModule extends AbstractModule {
         properties.setProperty("mqtt.keepaliveinterval", "60");
         properties.setProperty("mqtt.qos", "1");
         
-        properties.setProperty("clock.pattern", ""); // do not show clock
         properties.setProperty("devicesunits", ""); // do not load any fxml
 
         try (InputStream in = configfile.openStream()) {            

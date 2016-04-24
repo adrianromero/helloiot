@@ -93,7 +93,7 @@ public final class MainController extends AnchorPane implements AbstractControll
     private final Beeper beeper;
     private final Buzzer buzzer;
     private final HelloIoTApp app;
-    private final String clockpattern;
+    private final boolean appclock;
     private final String apptitle;
     private final String appexitbutton;
     private final boolean appfullscreen;
@@ -103,13 +103,13 @@ public final class MainController extends AnchorPane implements AbstractControll
             HelloIoTApp app,
             ClipFactory factory,
             @Named("app.unitpages") UnitPage[] appunitpages,
-            @Named("clock.pattern") String clockpattern,
+            @Named("app.clock") String appclock,
             @Named("app.title") String apptitle,
             @Named("app.exitbutton") String appexitbutton,
             @Named("app.fullscreen") String appfullscreen) {
         
         this.app = app;
-        this.clockpattern = clockpattern;
+        this.appclock = "true".equals(appclock);
         this.apptitle = apptitle;
         this.appexitbutton = appexitbutton;
         this.appfullscreen = "true".equals(appfullscreen);
@@ -147,8 +147,8 @@ public final class MainController extends AnchorPane implements AbstractControll
         menubutton.setGraphic(IconBuilder.create(FontAwesome.FA_NAVICON, 18.0).build());
         menubutton.setDisable(true);
         
-        if (clockpattern != null && !clockpattern.equals("")) {
-            clock = new Clock(currenttime, clockpattern);
+        if (appclock) {
+            clock = new Clock(currenttime, resources.getString("clock.pattern"));
             clock.play();
         }
         
