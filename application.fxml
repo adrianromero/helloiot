@@ -140,13 +140,12 @@
         <ViewGauge UnitPage.page="Programs" device="$home_thermostat3"/>        
         <ViewGauge UnitPage.page="Programs" device="$home_thermostat4"/>        
         <ViewGauge UnitPage.page="Programs" device="$home_thermostat5"/>        
-        <LabelSection UnitPage.page="Programs" GridPane.columnSpan="5" text="%title.thermostatsstatus"/>    
+        <LabelSection UnitPage.page="Programs" GridPane.columnSpan="5" text="%title.temperaturecontrol"/>    
         <EditStatus UnitPage.page="Programs" device="$home_thermostat1"/>
         <EditStatus UnitPage.page="Programs" device="$home_thermostat2"/>
         <EditStatus UnitPage.page="Programs" device="$home_thermostat3"/>
         <EditStatus UnitPage.page="Programs" device="$home_thermostat4"/>
         <EditStatus UnitPage.page="Programs" device="$home_thermostat5"/>        
-        <LabelSection UnitPage.page="Programs" GridPane.columnSpan="5" text="%title.temperaturecontrol"/>    
         <ButtonsSpinner UnitPage.page="Programs" device="$home_thermostat1"/>
         <ButtonsSpinner UnitPage.page="Programs" device="$home_thermostat2"/>
         <ButtonsSpinner UnitPage.page="Programs" device="$home_thermostat3"/>
