@@ -34,9 +34,8 @@ public class MQTTManagerProvider implements Provider<MQTTManager> {
     private final int timeout;
     private final int keepalive;
     private final int qos;
-    private final boolean sendstatus;
     private final String topicprefix;            
-    private final String client;
+    private final String topicapp;
 
     
     @Inject
@@ -48,8 +47,7 @@ public class MQTTManagerProvider implements Provider<MQTTManager> {
             @Named("mqtt.keepaliveinterval") String keepalive, 
             @Named("mqtt.qos") String qos,
             @Named("mqtt.topicprefix") String topicprefix,
-            @Named("mqtt.sendstatus") String sendstatus,
-            @Named("app.client") String client) {
+            @Named("mqtt.topicapp") String topicapp) {
         this.url = url;
         this.username = username;
         this.password = password;
@@ -57,13 +55,11 @@ public class MQTTManagerProvider implements Provider<MQTTManager> {
         this.keepalive = Integer.parseInt(keepalive);
         this.qos = Integer.parseInt(qos);
         this.topicprefix = topicprefix;
-        this.sendstatus = Boolean.parseBoolean(sendstatus);
-        
-        this.client = client;
+        this.topicapp = topicapp;
     }
     
     @Override
     public MQTTManager get() {          
-        return new MQTTManager(url, username, password, timeout, keepalive, qos, null, topicprefix, sendstatus, client);
+        return new MQTTManager(url, username, password, timeout, keepalive, qos, null, topicprefix, topicapp);
     } 
 }

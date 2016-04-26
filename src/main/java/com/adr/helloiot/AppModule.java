@@ -59,7 +59,6 @@ public class AppModule extends AbstractModule {
         Properties properties = new Properties();
         // default values    
         properties.setProperty("app.title", "Hello IoT");
-        properties.setProperty("app.client", "helloiot");
         properties.setProperty("app.exitbutton", "false");
         properties.setProperty("app.fullscreen", "true");
         properties.setProperty("app.clock", "false"); // do not show clock
@@ -70,6 +69,8 @@ public class AppModule extends AbstractModule {
         properties.setProperty("mqtt.connectiontimeout", "30");
         properties.setProperty("mqtt.keepaliveinterval", "60");
         properties.setProperty("mqtt.qos", "1");
+        properties.setProperty("mqtt.topicprefix", "");
+        properties.setProperty("mqtt.topicapp", "_LOCAL_/_sys_helloIoT/mainapp");
         
         properties.setProperty("devicesunits", ""); // do not load any fxml
 

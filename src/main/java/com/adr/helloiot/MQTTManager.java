@@ -44,10 +44,12 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
  */
 public final class MQTTManager implements MqttCallback {
 
-    private final static String SYS_PREFIX = "$SYS/";
+    public final static String SYS_PREFIX = "$SYS/";
+    public final static String LOCAL_PREFIX = "_LOCAL_/";
     
-    private final static String STATUS_TOPIC_PREFIX = "_sys_helloIoT/manager/";
     private final static String STATUS_TOPIC_SUFFIX = "/status";
+    
+    private final static Logger logger = Logger.getLogger(MQTTManager.class.getName());
        
     private MqttAsyncClient mqttClient;
 
@@ -57,9 +59,8 @@ public final class MQTTManager implements MqttCallback {
     private final int timeout;
     private final int keepalive;
     private final Properties sslproperties;
-    private final String client;
     private final String topicprefix;
-    private final boolean sendstatus;
+    private final String topicapp;
     private final int qos;   
     
     private Consumer<Throwable> connectionLost = null;
@@ -67,11 +68,11 @@ public final class MQTTManager implements MqttCallback {
     private final Set<String> topicsubscriptions;
     private final Map<String, List<Subscription>> subscriptions;
     
-    public MQTTManager(String url, String client) {
-        this(url, null, null, 30, 60, 1, null, "", false, client);
+    public MQTTManager(String url, String topicapp) {
+        this(url, null, null, 30, 60, 1, null, "", topicapp);
     }
     
-    public MQTTManager(String url, String username, String password, int timeout, int keepalive, int qos, Properties sslproperties, String topicprefix, boolean sendstatus, String client) {
+    public MQTTManager(String url, String username, String password, int timeout, int keepalive, int qos, Properties sslproperties, String topicprefix, String topicapp) {
         
         this.mqttClient = null;
         
@@ -83,9 +84,7 @@ public final class MQTTManager implements MqttCallback {
         this.qos = qos;        
         this.sslproperties = sslproperties;
         this.topicprefix = topicprefix;
-        this.sendstatus = sendstatus;
-        this.client = client;        
-
+        this.topicapp = topicapp;
         
         this.subscriptions = new HashMap<>();
         this.topicsubscriptions = new HashSet<>();
@@ -103,9 +102,10 @@ public final class MQTTManager implements MqttCallback {
                     mqttClient = new MqttAsyncClient(url, MqttAsyncClient.generateClientId()); 
                     MqttConnectOptions options = new MqttConnectOptions();
                     options.setCleanSession(true);
-                    if (sendstatus) {
+                    if (!getStatusTopic().startsWith(LOCAL_PREFIX)) {
                         try {
-                            options.setWill(getStatusTopic(), StatusSwitch.OFF.getBytes("UTF-8"), 1, true);
+                            options.setWill(topicprefix + getStatusTopic(), StatusSwitch.OFF.getBytes("UTF-8"), 1, true);
+                            logger.log(Level.INFO, "Set will status OFF.");
                         } catch (UnsupportedEncodingException ex) {
                             throw new RuntimeException(ex);
                         }
@@ -121,12 +121,13 @@ public final class MQTTManager implements MqttCallback {
                     mqttClient.setCallback(this);
                     mqttClient.subscribe(listtopics, listqos).waitForCompletion(1000);
 
-                    if (sendstatus) {
+                    if (!getStatusTopic().startsWith(LOCAL_PREFIX)) {
                         publish(getStatusTopic(), StatusSwitch.ON, true); 
+                        logger.log(Level.INFO, "Publish status ON.");
                     }
                 } catch (MqttException ex) {
                     closeinternal();
-                    Logger.getLogger(MQTTManager.class.getName()).log(Level.WARNING, null, ex);
+                    logger.log(Level.WARNING, null, ex);
                     throw new CompletionException(ex);
                 }
             }
@@ -144,13 +145,14 @@ public final class MQTTManager implements MqttCallback {
         if (mqttClient != null) {
             if (mqttClient.isConnected()) {
                 try {
-                    if (sendstatus) {
-                        publish(getStatusTopic(), StatusSwitch.OFF, true).waitForCompletion(1000);
+                    if (!getStatusTopic().startsWith(LOCAL_PREFIX)) {
+                        publish(getStatusTopic(), StatusSwitch.OFF, true);
+                        logger.log(Level.INFO, "Publish status OFF.");
                     }
                     mqttClient.setCallback(null);
                     mqttClient.disconnect();
                 } catch (MqttException ex) {
-                    Logger.getLogger(MQTTManager.class.getName()).log(Level.WARNING, null, ex);
+                    logger.log(Level.WARNING, null, ex);
                 }
             }
             mqttClient = null;
@@ -163,11 +165,11 @@ public final class MQTTManager implements MqttCallback {
     }
     
     public String getClient() {
-        return client;
+        return topicapp.replaceAll("[^a-zA-Z0-9.-]", "_");
     }
-    
+
     private String getStatusTopic() {
-        return STATUS_TOPIC_PREFIX + getClient() + STATUS_TOPIC_SUFFIX;
+        return topicapp + STATUS_TOPIC_SUFFIX;
     }
 
     public Subscription subscribe(String topic) {
@@ -221,13 +223,25 @@ public final class MQTTManager implements MqttCallback {
         }
     }
     
-    private IMqttDeliveryToken publish(String topic, String message, boolean isStatus) throws MqttException {
+    private void publish(String topic, String message, boolean isStatus) throws MqttException {
         // To be executed in Executor thread
         try {
             MqttMessage mm = new MqttMessage(message.getBytes("UTF-8"));
             mm.setQos(qos);
             mm.setRetained(isStatus);
-            return mqttClient.publish(topicprefix + topic, mm);
+            if (topic.startsWith(LOCAL_PREFIX)) {
+                CompletableAsync.runAsync(() -> {
+                    try {
+                        messageArrived(topicprefix + topic, mm);
+                    } catch (Exception ex) {
+                        logger.log(Level.SEVERE, "Cannot publish locally.", ex);
+                    }
+                });
+                logger.log(Level.INFO, "Publishing message to local.");
+            } else {
+                mqttClient.publish(topicprefix + topic, mm);
+                logger.log(Level.INFO, "Publishing message to broker.");
+            }
         } catch (UnsupportedEncodingException ex) {
             throw new RuntimeException(ex);
         }
@@ -264,7 +278,7 @@ public final class MQTTManager implements MqttCallback {
         if (connectionLost != null) {
             connectionLost.accept(thrwbl);
         } else {
-            Logger.getLogger(MQTTManager.class.getName()).log(Level.WARNING, "Ignored connection lost.", thrwbl);
+            logger.log(Level.WARNING, "Ignored connection lost.", thrwbl);
         }
     }
 

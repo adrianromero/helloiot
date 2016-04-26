@@ -32,11 +32,9 @@ public class SystemDevicesUnits extends AbstractApplicationDevicesUnits {
     
     public final static String SYS_VALUE_TOPIC = SYS_HELLOIOT + "sysvalue" ;
     public final static String SYS_VALUE_ID = "SYSVALUESID" ;   
-    public final static String SYS_CONTROL_TOPIC = SYS_HELLOIOT + "control" ;
-    public final static String SYS_CONTROL_ID = "SYSCONTROLSID" ;   
     public final static String SYS_EVENT_TOPIC = SYS_HELLOIOT + "sysevent" ;   
-    public final static String SYS_EVENT_ID = "SYSEVENTSID" ;   
-    
+    public final static String SYS_EVENT_ID = "SYSEVENTSID" ;  
+      
     public final static String SYS_UNITPAGE_ID = "SYSUNITPAGEID";
     public final static String SYS_BEEPER_ID = "SYSBEEPERID";
     public final static String SYS_BUZZER_ID = "SYSBUZZERID";
@@ -51,17 +49,19 @@ public class SystemDevicesUnits extends AbstractApplicationDevicesUnits {
         TreeStatus sysstatus = new TreeStatus();
         sysstatus.setTopic(SYS_VALUE_TOPIC);
         sysstatus.setId(SYS_VALUE_ID);
+       
+        String topicapp = config.getProperty("mqtt.topicapp");
      
         DeviceSimple unitpage = new DeviceSimple();
-        unitpage.setTopic(SystemDevicesUnits.SYS_CONTROL_TOPIC + "/unitpage");
+        unitpage.setTopic(topicapp + "/unitpage");
         unitpage.setId(SYS_UNITPAGE_ID);
          
         DeviceSwitch beeper = new DeviceSwitch();
-        beeper.setTopic(SystemDevicesUnits.SYS_CONTROL_TOPIC + "/beeper");
+        beeper.setTopic(topicapp + "/beeper");
         beeper.setId(SYS_BEEPER_ID);
         
         TransmitterSimple buzzer = new TransmitterSimple();
-        buzzer.setTopic(SystemDevicesUnits.SYS_CONTROL_TOPIC + "/buzzer");
+        buzzer.setTopic(topicapp + "/buzzer");
         buzzer.setId(SYS_BUZZER_ID);
     
         createDevices(sysevents, sysstatus, unitpage, beeper, buzzer);

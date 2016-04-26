@@ -85,9 +85,12 @@ public class HelloIoTApp {
     
     public void start() {
         
-        File f = new File(System.getProperty("user.home"), ".helloiot-" + mqtthelper.getClient());
-        if (!f.exists()) {           
-            initFirstTime();
+        File f = new File(System.getProperty("user.home"), ".helloiot-" + mqtthelper.getClient());  
+        boolean fexists = f.exists();
+        
+        initFirstTime(fexists);        
+        
+        if (!fexists) {                      
             try {
                 f.createNewFile();
             } catch (IOException ex) {
@@ -194,9 +197,12 @@ public class HelloIoTApp {
         return apppublic;
     }
     
-    private void initFirstTime() {       
-        Logger.getLogger(HelloIoTApp.class.getName()).log(Level.INFO, "Executing first time initialization.");
-        getUnitPage().sendStatus("main");
-        Logger.getLogger(HelloIoTApp.class.getName()).log(Level.INFO, "Finished first time initialization.");        
+    private void initFirstTime(boolean initexists) {   
+        
+        if (!initexists || getUnitPage().getTopic().startsWith(MQTTManager.LOCAL_PREFIX)) {
+            Logger.getLogger(HelloIoTApp.class.getName()).log(Level.INFO, "Executing unit page initialization.");
+            getUnitPage().sendStatus("main");
+            Logger.getLogger(HelloIoTApp.class.getName()).log(Level.INFO, "Finished unitpage initialization.");   
+        }
     }    
 }
