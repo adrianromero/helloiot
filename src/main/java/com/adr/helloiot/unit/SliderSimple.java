@@ -54,7 +54,8 @@ public class SliderSimple extends StackPane implements Unit, AbstractController 
             }
         });
         label.setText(null);
-        level.setText(null);        
+        level.setText(null);
+        setDisable(true);
     }
     
     @Subscribe

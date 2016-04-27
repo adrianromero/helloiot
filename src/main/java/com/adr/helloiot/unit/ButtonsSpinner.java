@@ -56,6 +56,7 @@ public class ButtonsSpinner extends StackPane implements Unit, AbstractControlle
         AutoRepeatButtonUtils.install(godown);
         label.setText(null);
         level.setText(null);
+        setDisable(true);
     }
     
     @Subscribe

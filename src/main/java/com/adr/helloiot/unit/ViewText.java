@@ -44,6 +44,7 @@ public class ViewText extends StackPane implements Unit, AbstractController {
     @FXML public void initialize() {
         label.setText(null);
         level.setText(null);
+        setDisable(true);
     }
     
     @Subscribe

@@ -62,6 +62,7 @@ public class EditStatus extends VBox implements Unit, AbstractController {
         editaction.setGraphic(IconBuilder.create(FontAwesome.FA_EDIT, 16).build());
         okaction.setGraphic(IconBuilder.create(FontAwesome.FA_CHECK, 16).build());
         cancelaction.setGraphic(IconBuilder.create(FontAwesome.FA_REMOVE, 16).build());
+        setDisable(true);
     }
     
     @Subscribe

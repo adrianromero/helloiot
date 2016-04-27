@@ -52,6 +52,7 @@ public class EditEvent extends VBox implements Unit, AbstractController {
     
     @FXML public void initialize() {
         fireaction.setGraphic(IconBuilder.create(FontAwesome.FA_SEND, 16).build());
+        setDisable(true);        
     }
     
     @Override
