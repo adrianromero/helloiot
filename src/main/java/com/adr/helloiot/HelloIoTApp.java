@@ -67,7 +67,7 @@ public class HelloIoTApp {
         properties.setProperty("window.height", "600.0");
         properties.setProperty("window.width", "800.0");
         properties.setProperty("window.maximized", "false");
-        fileproperties = new File(System.getProperty("user.home") + File.separator + "helloiot-" + mqtthelper.getClient() + ".properties");
+        fileproperties = new File(System.getProperty("user.home"), ".helloiot-" + mqtthelper.getClient() + ".properties");
         try (InputStream in = new FileInputStream(fileproperties)) {            
             properties.load(in);
         } catch (IOException ex) {
@@ -199,7 +199,7 @@ public class HelloIoTApp {
     
     private void initFirstTime(boolean initexists) {   
         
-        if (!initexists || getUnitPage().getTopic().startsWith(MQTTManager.LOCAL_PREFIX)) {
+        if (!initexists) {
             Logger.getLogger(HelloIoTApp.class.getName()).log(Level.INFO, "Executing unit page initialization.");
             getUnitPage().sendStatus("main");
             Logger.getLogger(HelloIoTApp.class.getName()).log(Level.INFO, "Finished unitpage initialization.");   

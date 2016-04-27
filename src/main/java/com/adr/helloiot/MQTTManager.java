@@ -18,6 +18,7 @@ package com.adr.helloiot;
 import com.adr.helloiot.device.StatusSwitch;
 import com.adr.helloiot.util.CompletableAsync;
 import com.google.common.base.Strings;
+import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -28,6 +29,7 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 import java.util.concurrent.CompletionException;
+import java.util.concurrent.ConcurrentMap;
 import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -37,6 +39,9 @@ import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
+import org.mapdb.DB;
+import org.mapdb.DBMaker;
+import org.mapdb.Serializer;
 
 /**
  *
@@ -52,6 +57,8 @@ public final class MQTTManager implements MqttCallback {
     private final static Logger logger = Logger.getLogger(MQTTManager.class.getName());
        
     private MqttAsyncClient mqttClient;
+    private DB dbClient;
+    private ConcurrentMap<String, byte[]> mapClient;
 
     private final String url;
     private final String username;
@@ -125,6 +132,22 @@ public final class MQTTManager implements MqttCallback {
                         publish(getStatusTopic(), StatusSwitch.ON, true); 
                         logger.log(Level.INFO, "Publish status ON.");
                     }
+                    
+                    dbClient = DBMaker.fileDB(new File(System.getProperty("user.home"), ".helloiot-" + getClient() + ".mapdb")).make();
+                    mapClient = dbClient.hashMap("map", Serializer.STRING, Serializer.BYTE_ARRAY).createOrOpen();
+                    
+                    mapClient.forEach((topic, payload) -> {
+                        try {
+                            MqttMessage mm = new MqttMessage(payload);
+                            mm.setQos(qos);
+                            mm.setRetained(true);
+                            messageArrived(topicprefix + topic, mm);
+                            logger.log(Level.INFO, "Init status: {0}", topic);
+                        } catch (Exception ex) {
+                            logger.log(Level.SEVERE, "Cannot publish locally.", ex);
+                        }
+                    });       
+
                 } catch (MqttException ex) {
                     closeinternal();
                     logger.log(Level.WARNING, null, ex);
@@ -143,6 +166,13 @@ public final class MQTTManager implements MqttCallback {
     private void closeinternal() {
         // To be invoked by executor thread
         if (mqttClient != null) {
+            
+            mapClient = null;
+            if (dbClient != null) {
+                dbClient.close();
+                dbClient = null;
+            }
+            
             if (mqttClient.isConnected()) {
                 try {
                     if (!getStatusTopic().startsWith(LOCAL_PREFIX)) {
@@ -232,6 +262,10 @@ public final class MQTTManager implements MqttCallback {
             if (topic.startsWith(LOCAL_PREFIX)) {
                 CompletableAsync.runAsync(() -> {
                     try {
+                        if (isStatus) {
+                            mapClient.put(topic, mm.getPayload());
+                            dbClient.commit();
+                        }
                         messageArrived(topicprefix + topic, mm);
                     } catch (Exception ex) {
                         logger.log(Level.SEVERE, "Cannot publish locally.", ex);

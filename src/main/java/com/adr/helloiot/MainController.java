@@ -69,8 +69,8 @@ import javax.inject.Singleton;
 
 @Singleton
 public final class MainController extends AnchorPane implements AbstractController {
-
-    @FXML private URL url;
+    
+//    @FXML private URL url;
     @FXML private ResourceBundle resources;
     @FXML private StackPane stackparent;
     @FXML private BorderPane appcontainer;
@@ -353,6 +353,7 @@ public final class MainController extends AnchorPane implements AbstractControll
             box.getChildren().addAll(l, p);
 
             connectingdialog = new DialogView();
+            connectingdialog.setMaster(true);
             connectingdialog.setContent(box);
             connectingdialog.show(stackparent);
         }
@@ -361,7 +362,7 @@ public final class MainController extends AnchorPane implements AbstractControll
     public void hideConnecting() {
         if (connectingdialog != null) {
             connectingdialog.dispose();
-            connectingdialog = null;                
+            connectingdialog = null;   
         }
     }
     
