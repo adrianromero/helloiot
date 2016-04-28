@@ -3,7 +3,7 @@ HelloIot [![Release](https://jitpack.io/v/adrianromero/helloiot.svg)](https://ji
 
 HelloIot is a different MQTT client created in a JavaFX
 
-![Screenshot](http://i.imgur.com/Uv3mF63.gifv)
+![Screenshot](http://i.imgur.com/Uv3mF63.gif)
 
 Start
 =====
