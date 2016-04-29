@@ -36,11 +36,7 @@ public class IconTextSwitch implements IconSwitch {
         this.iconon = iconon;
         this.iconoff = iconoff;
     }    
-  
-    public IconTextSwitch() {
-        this("OPEN", "CLOSED");
-    }
-    
+   
     @Override
     public Node buildIconOn() {
         Text t = new Text(iconon);

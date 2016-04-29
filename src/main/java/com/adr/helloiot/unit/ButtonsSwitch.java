@@ -19,7 +19,6 @@ import com.adr.hellocommon.dialog.MessageUtils;
 import com.adr.hellocommon.utils.AbstractController;
 import com.adr.helloiot.HelloIoTAppPublic;
 import com.adr.helloiot.graphic.IconStatus;
-import com.adr.helloiot.graphic.IconTextSwitch;
 import com.adr.helloiot.device.StatusSwitch;
 import java.util.HashMap;
 import java.util.Map;
@@ -74,7 +73,7 @@ public class ButtonsSwitch extends StackPane implements Unit, AbstractController
         
         getChildren().add(new VBox(goup, godown));
         
-        setIconStatus(new IconTextSwitch("ON", "OFF"));
+        setIconStatus(IconStatus.valueOf("TEXT/ON/OFF"));
     }
     
     @Override

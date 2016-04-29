@@ -29,20 +29,20 @@
 <DevicesUnits xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1">
 
     <devices>
-        <Light fx:id="hall_light1" topic="home/hall/light1">
-            <properties name="hall_light1" label="%label.halllight1" tags="hall lamp"/>
+        <Light fx:id="living_light1" topic="home/living/light1">
+            <properties name="living_light1" label="%label.livinglight1" tags="living lamp"/>
         </Light>
-        <Light fx:id="hall_light2" topic="home/hall/light2">
-            <properties name="hall_light2" label="%label.halllight2" tags="hall lamp"/>
+        <Light fx:id="living_light2" topic="home/living/light2">
+            <properties name="living_light2" label="%label.livinglight2" tags="living lamp"/>
         </Light>
-        <Light fx:id="hall_light3" topic="home/hall/light3">
-            <properties name="hall_light3" label="%label.halllight3" tags="hall lamp"/>
+        <Light fx:id="living_light3" topic="home/living/light3">
+            <properties name="living_light3" label="%label.livinglight3" tags="living lamp"/>
         </Light>
-        <Light fx:id="hall_light4" topic="home/hall/light4">
-            <properties name="hall_light4" label="%label.halllight4" tags="hall lamp"/>
+        <Light fx:id="living_light4" topic="home/living/light4">
+            <properties name="living_light4" label="%label.livinglight4" tags="living lamp"/>
         </Light>              
-        <Light fx:id="hall_light5" topic="home/hall/light5">
-            <properties name="hall_light5" label="%label.halllight5" tags="hall lamp"/>
+        <Light fx:id="living_light5" topic="home/living/light5">
+            <properties name="living_light5" label="%label.livinglight5" tags="living lamp"/>
         </Light>
         
         <Thermostat fx:id="home_thermostat1" topic="home/thermostat1">
@@ -64,33 +64,33 @@
     
     <units>
         <LabelSection UnitPage.page="main" GridPane.columnSpan="5" text="%title.livingroomlights"/>    
-        <ViewSimple UnitPage.page="main" device="$hall_light1" iconStatus="BULBTEXT/1"/>        
-        <ViewSimple UnitPage.page="main" device="$hall_light2" iconStatus="BULBTEXT/2"/>
-        <ViewSimple UnitPage.page="main" device="$hall_light3" iconStatus="BULBTEXT/3"/>
-        <ViewSimple UnitPage.page="main" device="$hall_light4" iconStatus="BULBTEXT/4"/>
-        <ViewSimple UnitPage.page="main" device="$hall_light5" iconStatus="BULBTEXT/5"/>            
-        <LabelSection UnitPage.page="main" GridPane.columnSpan="5" text="Light status"/>    
-        <EditStatus device="$hall_light1"/>
-        <EditStatus device="$hall_light2"/>
-        <EditStatus device="$hall_light3"/>
-        <EditStatus device="$hall_light4"/>
-        <EditStatus device="$hall_light5"/>
+        <ViewSimple UnitPage.page="main" device="$living_light1" iconStatus="BULBTEXT/1"/>        
+        <ViewSimple UnitPage.page="main" device="$living_light2" iconStatus="BULBTEXT/2"/>
+        <ViewSimple UnitPage.page="main" device="$living_light3" iconStatus="BULBTEXT/3"/>
+        <ViewSimple UnitPage.page="main" device="$living_light4" iconStatus="BULBTEXT/4"/>
+        <ViewSimple UnitPage.page="main" device="$living_light5" iconStatus="BULBTEXT/5"/>            
+        <LabelSection UnitPage.page="main" GridPane.columnSpan="5" text="%title.ligthstatus"/>    
+        <EditStatus device="$living_light1"/>
+        <EditStatus device="$living_light2"/>
+        <EditStatus device="$living_light3"/>
+        <EditStatus device="$living_light4"/>
+        <EditStatus device="$living_light5"/>
         <LabelSection UnitPage.page="main" GridPane.columnSpan="5" text="%title.lightswitchs"/>    
-        <ButtonSimple UnitPage.page="main" device="$hall_light1" iconStatus="TOGGLE"/>
-        <ButtonSimple UnitPage.page="main" device="$hall_light2" iconStatus="TOGGLE"/>
-        <ButtonSimple UnitPage.page="main" device="$hall_light3" iconStatus="TOGGLE"/>
-        <ButtonSimple UnitPage.page="main" device="$hall_light4" iconStatus="TOGGLE"/>
-        <ButtonSimple UnitPage.page="main" device="$hall_light5" iconStatus="TOGGLE"/>
+        <ButtonSimple UnitPage.page="main" device="$living_light1" iconStatus="TOGGLE"/>
+        <ButtonSimple UnitPage.page="main" device="$living_light2" iconStatus="TOGGLE"/>
+        <ButtonSimple UnitPage.page="main" device="$living_light3" iconStatus="TOGGLE"/>
+        <ButtonSimple UnitPage.page="main" device="$living_light4" iconStatus="TOGGLE"/>
+        <ButtonSimple UnitPage.page="main" device="$living_light5" iconStatus="TOGGLE"/>
         <LabelSection UnitPage.page="main" GridPane.columnSpan="5" text="%title.moreactions"/>    
-        <ButtonSimple UnitPage.page="main" device="$hall_light1"/>
+        <ButtonSimple UnitPage.page="main" device="$living_light1"/>
         <ButtonScript UnitPage.page="main" text="%label.timerlight1">
             <graphic><Icon iconAwesome="FA_CLOCK_O" size="48" color="WHITE" shine="WHITE"/></graphic>
             <scriptCode><![CDATA[
-                _allDevices().getByName('hall_light1').sendON(2000);
+                _allDevices().getByName('living_light1').sendON(2000);
             ]]></scriptCode>
         </ButtonScript>     
         <ButtonsSwitch UnitPage.page="main">
-            <parameters light1="$hall_light1"/>
+            <parameters light1="$living_light1"/>
             <scriptCode><![CDATA[
                 light1.sendStatus(_status);
             ]]></scriptCode>
@@ -105,7 +105,7 @@
         </ButtonScript>                                   
         <ButtonScript UnitPage.page="main" text="%label.dance">
             <graphic><Icon iconAwesome="FA_STAR_O" size="48" color="GREEN" shine="WHITE"/></graphic>
-            <parameters light1="$hall_light1" light2="$hall_light2" light3="$hall_light3" light4="$hall_light4" light5="$hall_light5"/>
+            <parameters light1="$living_light1" light2="$living_light2" light3="$living_light3" light4="$living_light4" light5="$living_light5"/>
             <scriptCode><![CDATA[
                 
                 light1.sendOFF();
@@ -134,28 +134,28 @@
             ]]></scriptCode>
         </ButtonScript>         
            
-        <LabelSection UnitPage.page="Programs" GridPane.columnSpan="5" text="%title.thermostats"/>    
-        <ViewGauge UnitPage.page="Programs" device="$home_thermostat1"/>        
-        <ViewGauge UnitPage.page="Programs" device="$home_thermostat2"/>        
-        <ViewGauge UnitPage.page="Programs" device="$home_thermostat3"/>        
-        <ViewGauge UnitPage.page="Programs" device="$home_thermostat4"/>        
-        <ViewGauge UnitPage.page="Programs" device="$home_thermostat5"/>        
-        <LabelSection UnitPage.page="Programs" GridPane.columnSpan="5" text="%title.temperaturecontrol"/>    
-        <EditStatus UnitPage.page="Programs" device="$home_thermostat1"/>
-        <EditStatus UnitPage.page="Programs" device="$home_thermostat2"/>
-        <EditStatus UnitPage.page="Programs" device="$home_thermostat3"/>
-        <EditStatus UnitPage.page="Programs" device="$home_thermostat4"/>
-        <EditStatus UnitPage.page="Programs" device="$home_thermostat5"/>        
-        <ButtonsSpinner UnitPage.page="Programs" device="$home_thermostat1"/>
-        <ButtonsSpinner UnitPage.page="Programs" device="$home_thermostat2"/>
-        <ButtonsSpinner UnitPage.page="Programs" device="$home_thermostat3"/>
-        <ButtonsSpinner UnitPage.page="Programs" device="$home_thermostat4"/>
-        <ButtonsSpinner UnitPage.page="Programs" device="$home_thermostat5"/>
-        <SliderSimple UnitPage.page="Programs" device="$home_thermostat1"/> 
-        <SliderSimple UnitPage.page="Programs" device="$home_thermostat2"/> 
-        <SliderSimple UnitPage.page="Programs" device="$home_thermostat3"/> 
-        <SliderSimple UnitPage.page="Programs" device="$home_thermostat4"/> 
-        <SliderSimple UnitPage.page="Programs" device="$home_thermostat5"/> 
+        <LabelSection UnitPage.page="%page.programs" GridPane.columnSpan="5" text="%title.thermostats"/>    
+        <ViewGauge UnitPage.page="%page.programs" device="$home_thermostat1"/>        
+        <ViewGauge UnitPage.page="%page.programs" device="$home_thermostat2"/>        
+        <ViewGauge UnitPage.page="%page.programs" device="$home_thermostat3"/>        
+        <ViewGauge UnitPage.page="%page.programs" device="$home_thermostat4"/>        
+        <ViewGauge UnitPage.page="%page.programs" device="$home_thermostat5"/>        
+        <LabelSection UnitPage.page="%page.programs" GridPane.columnSpan="5" text="%title.temperaturecontrol"/>    
+        <EditStatus UnitPage.page="%page.programs" device="$home_thermostat1"/>
+        <EditStatus UnitPage.page="%page.programs" device="$home_thermostat2"/>
+        <EditStatus UnitPage.page="%page.programs" device="$home_thermostat3"/>
+        <EditStatus UnitPage.page="%page.programs" device="$home_thermostat4"/>
+        <EditStatus UnitPage.page="%page.programs" device="$home_thermostat5"/>        
+        <ButtonsSpinner UnitPage.page="%page.programs" device="$home_thermostat1"/>
+        <ButtonsSpinner UnitPage.page="%page.programs" device="$home_thermostat2"/>
+        <ButtonsSpinner UnitPage.page="%page.programs" device="$home_thermostat3"/>
+        <ButtonsSpinner UnitPage.page="%page.programs" device="$home_thermostat4"/>
+        <ButtonsSpinner UnitPage.page="%page.programs" device="$home_thermostat5"/>
+        <SliderSimple UnitPage.page="%page.programs" device="$home_thermostat1"/> 
+        <SliderSimple UnitPage.page="%page.programs" device="$home_thermostat2"/> 
+        <SliderSimple UnitPage.page="%page.programs" device="$home_thermostat3"/> 
+        <SliderSimple UnitPage.page="%page.programs" device="$home_thermostat4"/> 
+        <SliderSimple UnitPage.page="%page.programs" device="$home_thermostat5"/> 
                     
     </units>
 </DevicesUnits>
