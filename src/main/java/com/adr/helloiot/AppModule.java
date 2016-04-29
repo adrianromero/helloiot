@@ -23,11 +23,13 @@ import com.adr.helloiot.device.Device;
 import com.adr.helloiot.media.ClipFactory;
 import com.adr.helloiot.media.SilentClipFactory;
 import com.adr.helloiot.media.StandardClipFactory;
+import com.google.common.base.Strings;
 import com.google.inject.AbstractModule;
 import com.google.inject.Scopes;
 import com.google.inject.name.Names;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Properties;
 import java.util.ResourceBundle;
 import java.util.ServiceLoader;
@@ -70,6 +72,12 @@ public class AppModule extends AbstractModule {
         properties.putAll(configproperties);
 
         Names.bindProperties(binder(), properties);
+        
+        // Set default locale
+        String localization = properties.getProperty("app.locale");
+        if (!Strings.isNullOrEmpty(localization)) {
+            Locale.setDefault(Locale.forLanguageTag(localization));
+        }
         
         // External services
         List<UnitPage> appunitpages = new ArrayList<>();
