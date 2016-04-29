@@ -20,8 +20,10 @@ import com.google.common.base.Strings;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import java.io.File;
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.animation.KeyFrame;
@@ -49,14 +51,18 @@ public class MainApp extends Application {
     
     private Stage stage;
     
-    protected URL getConfigProperties() {
-        try {
-            String param = getParameters().getNamed().get("config-properites");
-            return new File(Strings.isNullOrEmpty(param) ? "helloiot.properties" : param).toURI().toURL();
-        } catch (MalformedURLException ex) {
-            logger.log(Level.SEVERE, null, ex);
-            throw new RuntimeException("Properties file name is not correct: " + ex.getMessage());
+    protected Properties getConfigProperties() {
+        
+        String param = getParameters().getNamed().get("config-properites");
+        File configfile = new File(Strings.isNullOrEmpty(param) ? "helloiot.properties" : param);
+        Properties config = new Properties();
+        
+        try (InputStream in = new FileInputStream(configfile)) {            
+            config.load(in);
+        } catch (IOException ex) {
+            throw new RuntimeException("Properties file name is not correct: " + configfile.toString());
         }
+        return config;
     }
   
     @Override
@@ -64,9 +70,9 @@ public class MainApp extends Application {
         
         this.stage = stage;
         
-        URL configfile = getConfigProperties();
+        Properties configproperties = getConfigProperties();
                    
-        Injector injector = Guice.createInjector(new AppModule(configfile));               
+        Injector injector = Guice.createInjector(new AppModule(configproperties));               
         mqttHelper = injector.getInstance(MQTTManager.class);        
         helloiotapp = injector.getInstance(HelloIoTApp.class);
         helloiotapp.construct(mqttHelper);

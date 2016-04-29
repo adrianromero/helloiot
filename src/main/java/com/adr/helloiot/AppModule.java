@@ -26,16 +26,11 @@ import com.adr.helloiot.media.StandardClipFactory;
 import com.google.inject.AbstractModule;
 import com.google.inject.Scopes;
 import com.google.inject.name.Names;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 import java.util.ResourceBundle;
 import java.util.ServiceLoader;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.application.ConditionalFeature;
 import javafx.application.Platform;
 
@@ -45,17 +40,15 @@ import javafx.application.Platform;
  */
 public class AppModule extends AbstractModule {
     
-    private final URL configfile;
+    private final Properties configproperties;
     
-    public AppModule(URL configfile) {
-        this.configfile = configfile;
+    public AppModule(Properties configproperties) {
+        this.configproperties = configproperties;
     }
     
     @Override
     protected void configure() { 
         // Configuration
-        bind(URL.class).annotatedWith(Names.named("arg.configuration")).toInstance(configfile);
-        
         Properties properties = new Properties();
         // default values    
         properties.setProperty("app.title", "Hello IoT");
@@ -73,12 +66,9 @@ public class AppModule extends AbstractModule {
         properties.setProperty("mqtt.topicapp", "_LOCAL_/_sys_helloIoT/mainapp");
         
         properties.setProperty("devicesunits", ""); // do not load any fxml
+        
+        properties.putAll(configproperties);
 
-        try (InputStream in = configfile.openStream()) {            
-            properties.load(in);
-        } catch (IOException ex) {
-            Logger.getLogger(AppModule.class.getName()).log(Level.SEVERE, null, ex);
-        }
         Names.bindProperties(binder(), properties);
         
         // External services
