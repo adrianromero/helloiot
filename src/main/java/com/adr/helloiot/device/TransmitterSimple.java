@@ -20,16 +20,6 @@ package com.adr.helloiot.device;
  * @author adrian
  */
 public class TransmitterSimple extends DeviceBase {
-
-    private int qos = -1;
-    
-    public final int getQos() {
-        return qos;
-    }
-
-    public final void setQos(int qos) {
-        this.qos = qos;
-    }
   
     @Override
     public String getDeviceName() {
@@ -37,6 +27,6 @@ public class TransmitterSimple extends DeviceBase {
     }
     
     public void sendEvent(String event) {
-        mqttHelper.publishEvent(getTopic(), event, qos);
+        mqttHelper.publishEvent(getTopic(), getQos(), event);
     }
 }

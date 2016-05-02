@@ -28,7 +28,8 @@ public abstract class Device {
     protected ResourceBundle resources = ResourceBundle.getBundle("com/adr/helloiot/resources/devices");
     
     private String id = null; // can be null
-    private String subscriptiontopic = null;
+    private String subscriptiontopic = null;       
+    private int qos = -1;
     private final Properties properties = new Properties();
     
     // The device generic device name
@@ -42,20 +43,22 @@ public abstract class Device {
         this.id = id;
     }
 
-    /**
-     * @return the topic
-     */
     public String getTopic() {
         return subscriptiontopic;
     }
 
-    /**
-     * @param topic the topic to set
-     */
     public void setTopic(String topic) {
         this.subscriptiontopic = topic;
     }
+    
+    public final int getQos() {
+        return qos;
+    }
 
+    public final void setQos(int qos) {
+        this.qos = qos;
+    }
+    
     public Properties getProperties() {
         return properties;
     }

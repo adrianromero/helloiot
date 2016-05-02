@@ -72,7 +72,7 @@ public final class MQTTManager implements MqttCallback {
     
     private Consumer<Throwable> connectionLost = null;
     
-    private final Set<String> topicsubscriptions;
+    private final Set<TopicQos> topicsubscriptions;
     private final Map<String, List<Subscription>> subscriptions;
     
     public MQTTManager(String url, String topicapp) {
@@ -99,13 +99,22 @@ public final class MQTTManager implements MqttCallback {
 
     public CompletableAsync<Void> open() {
         
-        String[] listtopics = topicsubscriptions.stream()
-                .filter(s -> !s.startsWith(LOCAL_PREFIX))
-                .map(s -> s.startsWith(SYS_PREFIX) ? s : topicprefix + s)
-                .toArray(size -> new String[size]);
-        int[] listqos = new int[topicsubscriptions.size()];
-        Arrays.fill(listqos, defaultqos);       
+        List<String> worktopics = new ArrayList<>();
+        List<Integer> workqos = new ArrayList<>();
+        topicsubscriptions.stream()
+                .filter(tq -> !tq.getTopic().startsWith(LOCAL_PREFIX))
+                .map(tq -> new TopicQos(tq.getTopic().startsWith(SYS_PREFIX) ? tq.getTopic() : topicprefix + tq.getTopic(), tq.getQos()))
+                .forEach(tq -> {
+                    worktopics.add(tq.getTopic());
+                    workqos.add(tq.getQos());
+                });
         
+        String[] listtopics = worktopics.stream().toArray(String[]::new);       
+        int[] listqos = new int[workqos.size()];
+        for (int i = 0; i < workqos.size(); i++) {
+            listqos[i] = workqos.get(i);
+        }
+             
         return CompletableAsync.runAsync(() -> {
             if (mqttClient == null) {
                 try {
@@ -132,7 +141,7 @@ public final class MQTTManager implements MqttCallback {
                     mqttClient.subscribe(listtopics, listqos).waitForCompletion(1000);
 
                     if (!getStatusTopic().startsWith(LOCAL_PREFIX)) {
-                        publish(getStatusTopic(), StatusSwitch.ON, true, defaultqos); 
+                        publish(getStatusTopic(), defaultqos, StatusSwitch.ON, true); 
                         logger.log(Level.INFO, "Publish status ON.");
                     }
                     
@@ -179,7 +188,7 @@ public final class MQTTManager implements MqttCallback {
             if (mqttClient.isConnected()) {
                 try {
                     if (!getStatusTopic().startsWith(LOCAL_PREFIX)) {
-                        publish(getStatusTopic(), StatusSwitch.OFF, true, defaultqos);
+                        publish(getStatusTopic(), defaultqos, StatusSwitch.OFF, true);
                         logger.log(Level.INFO, "Publish status OFF.");
                     }
                     mqttClient.setCallback(null);
@@ -205,14 +214,14 @@ public final class MQTTManager implements MqttCallback {
         return topicapp + STATUS_TOPIC_SUFFIX;
     }
 
-    public Subscription subscribe(String topic) {
+    public Subscription subscribe(String topic, int qos) {
         
         if (mqttClient != null) {
             throw new RuntimeException("Status incorrect. All subscriptions must be done before connection.");
         }
         
         // To be subscribed in MQTT
-        topicsubscriptions.add(topic);
+        topicsubscriptions.add(new TopicQos(topic, qos < 0 ? defaultqos : qos));
         
         // To be invoked in JavaFX Thread 
         List<Subscription> subs = subscriptions.get(topic);
@@ -236,27 +245,27 @@ public final class MQTTManager implements MqttCallback {
         }        
     }
 
-    public void publishEvent(String topic, String message, int qos) {
+    public void publishEvent(String topic, int qos, String message) {
         if (mqttClient != null) {
             try {                
-                publish(topic, message, false, qos);
+                publish(topic, qos, message, false);
             } catch (MqttException ex) {
                 throw new CompletionException(ex);
             }                
         }
     }
     
-    public void publishStatus(String topic, String message, int qos) {
+    public void publishStatus(String topic, int qos, String message) {
         if (mqttClient != null) {
             try {
-                publish(topic, message, true, qos);
+                publish(topic, qos, message, true);
             } catch (MqttException ex) {
                 throw new CompletionException(ex);
             }
         }
     }
     
-    private void publish(String topic, String message, boolean isStatus, int qos) throws MqttException {
+    private void publish(String topic, int qos, String message, boolean isStatus) throws MqttException {
         // To be executed in Executor thread
         try {
             MqttMessage mm = new MqttMessage(message.getBytes("UTF-8"));
@@ -356,6 +365,21 @@ public final class MQTTManager implements MqttCallback {
         }
         public void setConsumer(Consumer<EventMessage> consumer) {
             this.consumer = consumer;
+        }
+    }
+    
+    private static class TopicQos {
+        private final String topic;
+        private final int qos;
+        public TopicQos(String topic, int qos) {
+            this.topic = topic;
+            this.qos = qos;
+        }
+        public String getTopic() {
+            return topic;
+        }
+        public int getQos() {
+            return qos;
         }
     }
 }

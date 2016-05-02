@@ -26,23 +26,13 @@ public class DeviceSimple extends DeviceBasic {
 
     private ScheduledFuture<?> sf = null;
     private final Object sflock = new Object();
-    
-    private int qos = -1;
 
     // Overwrite this  method
     @Override
     public String getDeviceName() {
         return resources.getString("devicename.devicesimple");
     } 
-
-    public final int getQos() {
-        return qos;
-    }
-
-    public final void setQos(int qos) {
-        this.qos = qos;
-    }
-    
+   
     // Overwrite this method 
     public String prevStatus() {
         return readStatus();
@@ -68,7 +58,7 @@ public class DeviceSimple extends DeviceBasic {
     
     public void sendStatus(String status) {
         cancelTimer();
-        mqttHelper.publishStatus(getTopic(), status, qos);
+        mqttHelper.publishStatus(getTopic(), getQos(), status);
     }
 
     public void sendStatus(String status, long delay) {

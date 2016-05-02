@@ -29,21 +29,11 @@ public class TreeEvent extends Device {
     private ScheduledFuture<?> sf = null;
     private final Object sflock = new Object();  
     
-    private int qos = -1;
-    
     @Override
     public String getDeviceName() {
         return resources.getString("devicename.treeevent");
     }
-    
-    public final int getQos() {
-        return qos;
-    }
 
-    public final void setQos(int qos) {
-        this.qos = qos;
-    }
- 
     @Override
     public final void construct(MQTTManager mqttManager) {
         this.mqttManager = mqttManager;
@@ -54,7 +44,7 @@ public class TreeEvent extends Device {
     
     public final void sendEvent(String branch, String message) {
         cancelTimer();
-        mqttManager.publishEvent(getTopic() + "/" + branch, message, qos);
+        mqttManager.publishEvent(getTopic() + "/" + branch, getQos(), message);
     }  
     public void sendEvent(String branch, String message, long delay) {            
         synchronized (sflock) {

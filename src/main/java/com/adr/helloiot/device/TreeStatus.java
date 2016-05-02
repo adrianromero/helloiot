@@ -37,20 +37,10 @@ public class TreeStatus extends Device {
     private ScheduledFuture<?> sf = null;    
     private final Object sflock = new Object();  
     
-    private int qos = -1;
-    
     @Override
     public String getDeviceName() {
         return resources.getString("devicename.treestatus");
     }    
-    
-    public final int getQos() {
-        return qos;
-    }
-
-    public final void setQos(int qos) {
-        this.qos = qos;
-    }
  
     protected void consumeMessage(EventMessage message) {
         status.put(message.getTopic(), message.getMessage());
@@ -59,7 +49,7 @@ public class TreeStatus extends Device {
     @Override
     public final void construct(MQTTManager mqttManager) {
         this.mqttManager = mqttManager;
-        mqttstatus = mqttManager.subscribe(this.getTopic() + "/#");
+        mqttstatus = mqttManager.subscribe(getTopic() + "/#", getQos());
         mqttstatus.setConsumer(this::consumeMessage);
     }
     
@@ -75,7 +65,7 @@ public class TreeStatus extends Device {
     
     public void sendStatus(String branch, String message) {
         cancelTimer();
-        mqttManager.publishStatus(getTopic() + "/" + branch, message, qos);
+        mqttManager.publishStatus(getTopic() + "/" + branch, getQos(), message);
     }
     
     public void sendStatus(String branch, String message, long delay) {            

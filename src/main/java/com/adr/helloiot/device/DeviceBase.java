@@ -35,7 +35,7 @@ public abstract class DeviceBase extends Device {
     private MQTTManager.Subscription mqttstatus = null;
     
     private final EventBus statusbus = new EventBus();
-
+    
     public StringFormat getFormat() {
         return FORMAT;
     }
@@ -50,7 +50,7 @@ public abstract class DeviceBase extends Device {
     @Override
     public final void construct(MQTTManager mqttHelper) {
         this.mqttHelper = mqttHelper;
-        mqttstatus = mqttHelper.subscribe(this.getTopic());
+        mqttstatus = mqttHelper.subscribe(getTopic(), getQos());
         mqttstatus.setConsumer((message) -> {
             consumeMessage(message); 
             statusbus.post(message);
