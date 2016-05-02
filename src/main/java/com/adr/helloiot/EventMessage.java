@@ -22,9 +22,9 @@ package com.adr.helloiot;
 public class EventMessage {
     
     private final String topic;
-    private final String message;       
+    private final byte[] message;       
     
-    public EventMessage(String topic, String message) {
+    public EventMessage(String topic, byte[] message) {
         this.topic = topic;
         this.message = message;
     }
@@ -33,7 +33,7 @@ public class EventMessage {
         return topic;
     }
     
-    public String getMessage() {
+    public byte[] getMessage() {
         return message;
     }
 }

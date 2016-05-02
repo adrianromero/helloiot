@@ -21,6 +21,7 @@ import com.adr.fonticon.IconBuilder;
 import com.adr.hellocommon.dialog.DialogView;
 import com.adr.hellocommon.dialog.MessageUtils;
 import com.adr.hellocommon.utils.AbstractController;
+import com.adr.helloiot.device.format.StringFormatIdentity;
 import com.adr.helloiot.unit.Unit;
 import com.adr.helloiot.media.ClipFactory;
 import com.google.common.base.Strings;
@@ -227,7 +228,11 @@ public final class MainController extends AnchorPane implements AbstractControll
         });
     }     
 
-    private void updateStatus(String status) {
+    private void updateStatus(byte[] status) {
+        gotoPage(StringFormatIdentity.INSTANCE.format(status));   
+    }
+    
+    private void gotoPage(String status) {
             
         listpages.getSelectionModel().select(-1);
         MessageUtils.disposeAllDialogs(stackparent);
@@ -397,7 +402,7 @@ public final class MainController extends AnchorPane implements AbstractControll
             }        
         });
         
-        updateStatus("start");
+        gotoPage("start");
         
         // Remove menubutton if 0 or 1 visible page.
         if (listpages.getItems().size() <=1) {

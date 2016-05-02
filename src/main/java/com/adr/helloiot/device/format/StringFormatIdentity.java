@@ -15,19 +15,37 @@
 
 package com.adr.helloiot.device.format;
 
+import java.io.UnsupportedEncodingException;
+
 /**
  *
  * @author adrian
  */
 public class StringFormatIdentity implements StringFormat {
+    
+    public static final StringFormat INSTANCE = new StringFormatIdentity();
 
     @Override
-    public String format(String value) {
-        return value;
+    public String format(byte[] value) {
+        if (value == null) {
+            return null;
+        }       
+        try {
+            return new String(value, "UTF-8");
+        } catch (UnsupportedEncodingException ex) {
+            throw new RuntimeException(ex);
+        }
     }
 
     @Override
-    public String parse(String formattedvalue) {
-        return formattedvalue;
+    public byte[] parse(String formattedvalue) {
+        if (formattedvalue == null) {
+            return null;
+        }
+        try {
+            return formattedvalue.getBytes("UTF-8");
+        } catch (UnsupportedEncodingException ex) {
+            throw new RuntimeException(ex);
+        }
     }
 }

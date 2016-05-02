@@ -15,6 +15,8 @@
 
 package com.adr.helloiot.device;
 
+import java.util.Arrays;
+
 /**
  *
  * @author adrian
@@ -27,13 +29,13 @@ public class DeviceSwitch extends DeviceSimple {
     }
     
     @Override
-    public String nextStatus() {     
-        boolean current = StatusSwitch.getFromString(readStatus());
+    public byte[] nextStatus() {     
+        boolean current = StatusSwitch.getFromBytes(readStatus());
         return StatusSwitch.getFromValue(!current);    
     }
 
     @Override
-    public String prevStatus() {
+    public byte[] prevStatus() {
         return nextStatus();
     }
 
@@ -61,7 +63,7 @@ public class DeviceSwitch extends DeviceSimple {
     
     public void sendON(long duration) {
         
-        if (StatusSwitch.ON.equals(readStatus()) && !hasTimer()) {
+        if (Arrays.equals(StatusSwitch.ON, readStatus()) && !hasTimer()) {
             // If  already on and not with a timer then do nothing
             return;
         }

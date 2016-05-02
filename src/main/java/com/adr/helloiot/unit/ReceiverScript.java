@@ -41,8 +41,8 @@ public class ReceiverScript extends ReceiverBase {
             logger.warning("There is no action code to execute.");
         } else {
             String topic = message.getTopic();
-            String status = message.getMessage();
-            if (condition == null || (status != null && status.matches(condition))) {           
+            byte[] status = message.getMessage();
+            if (condition == null || (this.getDevice().getFormat().format(status).matches(condition))) {           
                 Map<String, Object> mergedParams = new HashMap<>();
                 mergedParams.putAll(params);
                 mergedParams.put("_device", getDevice());

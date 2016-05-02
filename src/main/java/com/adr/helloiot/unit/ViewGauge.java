@@ -54,13 +54,13 @@ public class ViewGauge extends StackPane implements Unit  {
         Platform.runLater(() -> updateStatus(message.getMessage()));  
     }
     
-    private void updateStatus(String status) {
+    private void updateStatus(byte[] status) {
         
         if (gauge == null) {
             return;
         }
         
-        double newvalue = StatusNumber.getFromString(status);
+        double newvalue = StatusNumber.getFromBytes(status);
         if (newvalue < gauge.getMinValue()) {
             newvalue = gauge.getMinValue();
         }

@@ -52,7 +52,7 @@ public class ViewText extends StackPane implements Unit, AbstractController {
         Platform.runLater(() -> updateStatus(message.getMessage()));  
     } 
     
-    private void updateStatus(String newstatus) {
+    private void updateStatus(byte[] newstatus) {
         level.setText(device.getFormat().format(newstatus));
     }  
     

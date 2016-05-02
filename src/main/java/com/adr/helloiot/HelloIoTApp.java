@@ -169,7 +169,7 @@ public class HelloIoTApp {
     } 
     
     public String readSYSStatus(String branch) {
-        return ((TreeStatus) getDevice(SystemDevicesUnits.SYS_VALUE_ID)).readStatus(branch);
+        return ((TreeStatus) getDevice(SystemDevicesUnits.SYS_VALUE_ID)).loadStatus(branch);
     }
     public void sendSYSStatus(String branch, String message) {
         ((TreeStatus) getDevice(SystemDevicesUnits.SYS_VALUE_ID)).sendStatus(branch, message);

@@ -19,6 +19,7 @@ import com.adr.helloiot.device.StatusSwitch;
 import com.adr.helloiot.media.Clip;
 import com.adr.helloiot.media.ClipFactory;
 import com.google.common.eventbus.Subscribe;
+import java.util.Arrays;
 import javafx.application.Platform;
 import javafx.scene.control.Label;
 import javafx.scene.media.AudioClip;
@@ -44,11 +45,11 @@ public class Beeper {
         Platform.runLater(() -> updateStatus(message.getMessage()));               
     }
     
-    private void updateStatus(String status) {
+    private void updateStatus(byte[] status) {
         alert.setVisible(false);
         beep.stop();           
 
-        if (StatusSwitch.ON.equals(status)){
+        if (Arrays.equals(StatusSwitch.ON, status)){
             alert.setVisible(true);
             beep.play();
         }          

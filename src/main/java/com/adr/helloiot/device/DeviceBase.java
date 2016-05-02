@@ -17,8 +17,6 @@ package com.adr.helloiot.device;
 
 import com.adr.helloiot.EventMessage;
 import com.adr.helloiot.MQTTManager;
-import com.adr.helloiot.device.format.StringFormat;
-import com.adr.helloiot.device.format.StringFormatIdentity;
 import com.adr.helloiot.graphic.IconStatus;
 import com.adr.helloiot.graphic.IconText;
 import com.google.common.eventbus.EventBus;
@@ -28,17 +26,11 @@ import com.google.common.eventbus.EventBus;
  * @author adrian
  */
 public abstract class DeviceBase extends Device {
-   
-    public static final StringFormat FORMAT = new StringFormatIdentity();
     
     protected MQTTManager mqttHelper;
     private MQTTManager.Subscription mqttstatus = null;
     
     private final EventBus statusbus = new EventBus();
-    
-    public StringFormat getFormat() {
-        return FORMAT;
-    }
     
     public IconStatus getIconStatus() {
         return new IconText(getFormat());

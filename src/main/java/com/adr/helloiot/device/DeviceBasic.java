@@ -24,7 +24,7 @@ import java.util.concurrent.atomic.AtomicReference;
  */
 public class DeviceBasic extends DeviceBase {
 
-    private final AtomicReference<String> status = new AtomicReference<>(null); 
+    private final AtomicReference<byte[]> status = new AtomicReference<>(null); 
 
     // Overwrite this  method
     @Override
@@ -37,7 +37,11 @@ public class DeviceBasic extends DeviceBase {
         status.set(message.getMessage());
     }    
     
-    public String readStatus() {
+    public byte[] readStatus() {
         return status.get();
+    }
+    
+    public String loadStatus() {
+        return getFormat().format(readStatus());
     }             
 }

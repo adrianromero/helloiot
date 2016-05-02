@@ -34,11 +34,11 @@ public class DeviceSimple extends DeviceBasic {
     } 
    
     // Overwrite this method 
-    public String prevStatus() {
+    public byte[] prevStatus() {
         return readStatus();
     }
     // Overwrite this  method
-    public String nextStatus() {
+    public byte[] nextStatus() {
         return readStatus();
     }
     // Overwrite this  method
@@ -56,18 +56,27 @@ public class DeviceSimple extends DeviceBasic {
         super.destroy();
     }
     
-    public void sendStatus(String status) {
+    public void sendStatus(byte[] status) {
         cancelTimer();
         mqttHelper.publishStatus(getTopic(), getQos(), status);
     }
+    
+    public void sendStatus(String status) {
+        sendStatus(getFormat().parse(status));
+    }
 
-    public void sendStatus(String status, long delay) {
+    public void sendStatus(byte[] status, long delay) {
+
         synchronized (sflock) {
             cancelTimer();       
             sf = CompletableAsync.scheduleTask(delay, () -> {
                 DeviceSimple.this.sendStatus(status);
             });
         }        
+    }
+    
+    public void sendStatus(String status, long delay) {
+        sendStatus(getFormat().parse(status), delay);
     }
     
     public boolean hasTimer() {

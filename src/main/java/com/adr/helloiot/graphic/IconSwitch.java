@@ -16,6 +16,7 @@
 package com.adr.helloiot.graphic;
 
 import com.adr.helloiot.device.StatusSwitch;
+import java.util.Arrays;
 import javafx.scene.Node;
 
 /**
@@ -25,8 +26,8 @@ import javafx.scene.Node;
 public interface IconSwitch extends IconStatus {
 
     @Override
-    public default Node buildIcon(String status) {
-        if (StatusSwitch.ON.equals(status)){
+    public default Node buildIcon(byte[] status) {
+        if (Arrays.equals(StatusSwitch.ON, status)) {
             return buildIconOn();
         } else {
             return buildIconOff();

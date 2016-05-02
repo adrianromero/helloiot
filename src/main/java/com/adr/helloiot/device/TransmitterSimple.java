@@ -26,7 +26,11 @@ public class TransmitterSimple extends DeviceBase {
         return resources.getString("devicename.transmittersimple");
     }
     
-    public void sendEvent(String event) {
+    public void sendEvent(byte[] event) {
         mqttHelper.publishEvent(getTopic(), getQos(), event);
+    }
+    
+    public void sendEvent(String event) {
+        sendEvent(getFormat().parse(event));
     }
 }

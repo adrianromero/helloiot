@@ -77,22 +77,22 @@ public abstract class DeviceNumber extends DeviceSimple {
     }
     
     @Override
-    public String prevStatus() {
-        return StatusNumber.getFromValue(adjustLevel(StatusNumber.getFromString(readStatus()) - increment)); 
+    public byte[] prevStatus() {
+        return StatusNumber.getFromValue(adjustLevel(StatusNumber.getFromBytes(readStatus()) - increment)); 
     }
     
     @Override
-    public String nextStatus() {
-        return StatusNumber.getFromValue(adjustLevel(StatusNumber.getFromString(readStatus()) + increment)); 
+    public byte[] nextStatus() {
+        return StatusNumber.getFromValue(adjustLevel(StatusNumber.getFromBytes(readStatus()) + increment)); 
     } 
 
     @Override
     public boolean hasPrevStatus() {
-        return StatusNumber.getFromString(readStatus()) > levelmin;
+        return StatusNumber.getFromBytes(readStatus()) > levelmin;
     }
 
     @Override
     public boolean hasNextStatus() {
-        return StatusNumber.getFromString(readStatus()) < levelmax;
+        return StatusNumber.getFromBytes(readStatus()) < levelmax;
     }    
 }

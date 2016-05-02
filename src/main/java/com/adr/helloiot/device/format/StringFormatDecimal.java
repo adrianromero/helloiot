@@ -15,6 +15,8 @@
 
 package com.adr.helloiot.device.format;
 
+import com.google.common.base.Strings;
+import java.io.UnsupportedEncodingException;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
@@ -48,33 +50,46 @@ public class StringFormatDecimal implements StringFormat {
     }
     
     @Override
-    public String format(String value) {
+    public String format(byte[] value) {
         
         if (value == null) {
             return "";
         }
         
         try {
-            return format.format(Double.parseDouble(value));
+            return format.format(Double.parseDouble(new String(value, "UTF-8")));
         } catch (NumberFormatException ex) {
             return "ERROR";
+        } catch (UnsupportedEncodingException ex) {
+            throw new RuntimeException(ex);
         }
     }
     
     @Override
-    public String parse(String formattedvalue) {
+    public byte[] parse(String formattedvalue) {
+        
+        if (Strings.isNullOrEmpty(pattern)) {
+            return null;
+        }
+        
         try {
-            return format.parse(formattedvalue).toString();
+            return format.parse(formattedvalue).toString().getBytes("UTF-8");
         } catch (ParseException ex) {
             return parseGeneral(formattedvalue);
+        } catch (UnsupportedEncodingException ex) {
+            throw new RuntimeException(ex);
         }
     }  
     
-    protected static String parseGeneral(String formattedvalue) {
+    protected static byte[] parseGeneral(String formattedvalue) {
         try {
-            return GENERALFORMAT.parse(formattedvalue).toString();
-        } catch (ParseException ex) {            
-            return Integer.toString(0);
+            try {
+                return GENERALFORMAT.parse(formattedvalue).toString().getBytes("UTF-8");
+            } catch (ParseException ex) {            
+                return Integer.toString(0).getBytes("UTF-8");
+            }
+        } catch (UnsupportedEncodingException ex) {
+            throw new RuntimeException(ex);
         }        
     }
 }

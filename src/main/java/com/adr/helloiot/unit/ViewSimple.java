@@ -57,7 +57,7 @@ public class ViewSimple extends Label implements Unit  {
         Platform.runLater(() -> updateStatus(message.getMessage()));  
     }
     
-    private void updateStatus(String status) {
+    private void updateStatus(byte[] status) {
         setGraphic(iconbuilder.buildIcon(status));
     }
     

@@ -139,7 +139,7 @@ public class ButtonsSwitch extends StackPane implements Unit, AbstractController
         return iconbuilder;
     }     
     
-    private void doRunSwitch(ActionEvent event, String status) {
+    private void doRunSwitch(ActionEvent event, byte[] status) {
         if (code == null) {
             MessageUtils.showError(MessageUtils.getRoot(this), goup.getText(), resources.getString("message.nocode"));        
         } else {

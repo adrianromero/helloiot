@@ -42,11 +42,16 @@ public class TreeEvent extends Device {
     public final void destroy() {       
     }    
     
-    public final void sendEvent(String branch, String message) {
+    public final void sendEvent(String branch, byte[] message) {
         cancelTimer();
         mqttManager.publishEvent(getTopic() + "/" + branch, getQos(), message);
     }  
-    public void sendEvent(String branch, String message, long delay) {            
+    
+    public final void sendEvent(String branch, String message) {
+        sendEvent(branch, getFormat().parse(message));
+    }
+
+    public void sendEvent(String branch, byte[] message, long delay) {            
         synchronized (sflock) {
             cancelTimer();  
             sf = CompletableAsync.scheduleTask(delay, () -> {
@@ -54,12 +59,19 @@ public class TreeEvent extends Device {
             });
         }
     }
+    
+    public void sendEvent(String branch, String message, long delay) {
+        sendEvent(branch, getFormat().parse(message), delay);    
+    }           
+    
     public final void sendEvent(String branch) {
-        sendEvent(branch, "");
+        sendEvent(branch, new byte[0]);
     }  
+    
     public void sendEvent(String branch, long delay) {
-        TreeEvent.this.sendEvent(branch, "", delay);
+        sendEvent(branch, new byte[0], delay);
     }     
+    
     public void cancelTimer() {
         synchronized (sflock) {
             if (sf != null) {

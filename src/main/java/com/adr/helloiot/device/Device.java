@@ -16,6 +16,8 @@
 package com.adr.helloiot.device;
 
 import com.adr.helloiot.MQTTManager;
+import com.adr.helloiot.device.format.StringFormat;
+import com.adr.helloiot.device.format.StringFormatIdentity;
 import java.util.Properties;
 import java.util.ResourceBundle;
 
@@ -24,6 +26,8 @@ import java.util.ResourceBundle;
  * @author adrian
  */
 public abstract class Device {
+   
+    public static final StringFormat FORMAT = new StringFormatIdentity();
     
     protected ResourceBundle resources = ResourceBundle.getBundle("com/adr/helloiot/resources/devices");
     
@@ -34,7 +38,11 @@ public abstract class Device {
     
     // The device generic device name
     public abstract String getDeviceName();
-
+    
+    public StringFormat getFormat() {
+        return FORMAT;
+    }
+    
     public String getId() {
         return id;
     }
@@ -43,11 +51,11 @@ public abstract class Device {
         this.id = id;
     }
 
-    public String getTopic() {
+    public final String getTopic() {
         return subscriptiontopic;
     }
 
-    public void setTopic(String topic) {
+    public final void setTopic(String topic) {
         this.subscriptiontopic = topic;
     }
     
@@ -59,11 +67,11 @@ public abstract class Device {
         this.qos = qos;
     }
     
-    public Properties getProperties() {
+    public final Properties getProperties() {
         return properties;
     }
     
     // Runtime methods
     public abstract void construct(MQTTManager mqttHelper);
-    public abstract void destroy();      
+    public abstract void destroy();  
 }

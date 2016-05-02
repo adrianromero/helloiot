@@ -19,9 +19,7 @@ import com.adr.helloiot.device.StatusSwitch;
 import com.adr.helloiot.util.CompletableAsync;
 import com.google.common.base.Strings;
 import java.io.File;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -122,12 +120,8 @@ public final class MQTTManager implements MqttCallback {
                     MqttConnectOptions options = new MqttConnectOptions();
                     options.setCleanSession(true);
                     if (!getStatusTopic().startsWith(LOCAL_PREFIX)) {
-                        try {
-                            options.setWill(topicprefix + getStatusTopic(), StatusSwitch.OFF.getBytes("UTF-8"), 1, true);
-                            logger.log(Level.INFO, "Set will status OFF.");
-                        } catch (UnsupportedEncodingException ex) {
-                            throw new RuntimeException(ex);
-                        }
+                        options.setWill(topicprefix + getStatusTopic(), StatusSwitch.OFF, 1, true);
+                        logger.log(Level.INFO, "Set will status OFF.");
                     }
                     if (!Strings.isNullOrEmpty(username)) {
                         options.setUserName(username);
@@ -245,7 +239,7 @@ public final class MQTTManager implements MqttCallback {
         }        
     }
 
-    public void publishEvent(String topic, int qos, String message) {
+    public void publishEvent(String topic, int qos, byte[] message) {
         if (mqttClient != null) {
             try {                
                 publish(topic, qos, message, false);
@@ -255,7 +249,7 @@ public final class MQTTManager implements MqttCallback {
         }
     }
     
-    public void publishStatus(String topic, int qos, String message) {
+    public void publishStatus(String topic, int qos, byte[] message) {
         if (mqttClient != null) {
             try {
                 publish(topic, qos, message, true);
@@ -265,40 +259,36 @@ public final class MQTTManager implements MqttCallback {
         }
     }
     
-    private void publish(String topic, int qos, String message, boolean isStatus) throws MqttException {
+    private void publish(String topic, int qos, byte[] message, boolean isStatus) throws MqttException {
         // To be executed in Executor thread
-        try {
-            MqttMessage mm = new MqttMessage(message.getBytes("UTF-8"));
-            mm.setQos(qos < 0 ? defaultqos : qos);
-            mm.setRetained(isStatus);
-            if (topic.startsWith(LOCAL_PREFIX)) {
-                CompletableAsync.runAsync(() -> {
-                    try {
-                        if (isStatus) {
-                            mapClient.put(topic, mm.getPayload());
-                            dbClient.commit();
-                        }
-                        messageArrived(topicprefix + topic, mm);
-                    } catch (Exception ex) {
-                        logger.log(Level.SEVERE, "Cannot publish locally.", ex);
+        MqttMessage mm = new MqttMessage(message);
+        mm.setQos(qos < 0 ? defaultqos : qos);
+        mm.setRetained(isStatus);
+        if (topic.startsWith(LOCAL_PREFIX)) {
+            CompletableAsync.runAsync(() -> {
+                try {
+                    if (isStatus) {
+                        mapClient.put(topic, mm.getPayload());
+                        dbClient.commit();
                     }
-                });
-                logger.log(Level.INFO, "Publishing message to local.");
-            } else {
-                mqttClient.publish(topicprefix + topic, mm);
-                logger.log(Level.INFO, "Publishing message to broker.");
-            }
-        } catch (UnsupportedEncodingException ex) {
-            throw new RuntimeException(ex);
+                    messageArrived(topicprefix + topic, mm);
+                } catch (Exception ex) {
+                    logger.log(Level.SEVERE, "Cannot publish locally.", ex);
+                }
+            });
+            logger.log(Level.INFO, "Publishing message to local.");
+        } else {
+            mqttClient.publish(topicprefix + topic, mm);
+            logger.log(Level.INFO, "Publishing message to broker.");
         }
     }
     
-    private void distributeMessage(String topic, String message) {
+    private void distributeMessage(String topic, byte[] message) {
         distributeWilcardMessage(topic, topic, message);
         distributeRecursiveMessage(topic, topic.length() - 1,  message);
     }
     
-    private void distributeRecursiveMessage(String topic, int starting, String message) {
+    private void distributeRecursiveMessage(String topic, int starting, byte[] message) {
         int i = topic.lastIndexOf('/', starting);
         if (i < 0) {
             distributeWilcardMessage("#" , topic, message);
@@ -308,7 +298,7 @@ public final class MQTTManager implements MqttCallback {
         }   
     }
    
-    private void distributeWilcardMessage(String subscriptiontopic, String topic, String message) {
+    private void distributeWilcardMessage(String subscriptiontopic, String topic, byte[] message) {
         List<Subscription> subs = subscriptions.get(subscriptiontopic);
         if (subs != null) {
             for (Subscription s: subs) {
@@ -330,17 +320,12 @@ public final class MQTTManager implements MqttCallback {
 
     @Override
     public void messageArrived(String topic, MqttMessage mm) throws Exception {
-        try {
-            if (topic.startsWith(topicprefix)){
-                distributeMessage(topic.substring(topicprefix.length()), new String(mm.getPayload(), "UTF-8"));
-            } else if (topic.startsWith(SYS_PREFIX)) {
-                distributeMessage(topic, new String(mm.getPayload(), "UTF-8"));
-            } else {
-                throw new RuntimeException("Bad topic prefix.");
-            }
-                        
-        } catch (UnsupportedEncodingException ex) {
-            throw new RuntimeException(ex);
+        if (topic.startsWith(topicprefix)){
+            distributeMessage(topic.substring(topicprefix.length()), mm.getPayload());
+        } else if (topic.startsWith(SYS_PREFIX)) {
+            distributeMessage(topic, mm.getPayload());
+        } else {
+            throw new RuntimeException("Bad topic prefix.");
         }
     }
 

@@ -15,6 +15,8 @@
 
 package com.adr.helloiot.device;
 
+import java.io.UnsupportedEncodingException;
+
 /**
  *
  * @author adrian
@@ -22,18 +24,24 @@ package com.adr.helloiot.device;
 public final class StatusNumber {
     private StatusNumber() {}
     
-    public static String getFromValue(double value) {
-        return Double.toString(value);
+    public static byte[] getFromValue(double value) {
+        try {
+            return Double.toString(value).getBytes("UTF-8");
+        } catch (UnsupportedEncodingException ex) {
+            throw new RuntimeException(ex);
+        }
     }
     
-    public static double getFromString(String status) {
+    public static double getFromBytes(byte[] status) {
         if (status == null) {
             return 0.0;
         }
         try {
-            return Double.parseDouble(status);
+            return Double.parseDouble(new String(status, "UTF-8"));
         } catch (NumberFormatException e) {
             return 0.0;
+        } catch (UnsupportedEncodingException ex) {
+            throw new RuntimeException(ex);
         }
     }    
 }

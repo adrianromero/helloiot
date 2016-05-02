@@ -63,10 +63,10 @@ public class SliderSimple extends StackPane implements Unit, AbstractController 
         Platform.runLater(() -> updateStatus(message.getMessage()));  
     }
 
-    private void updateStatus(String status) {
+    private void updateStatus(byte[] status) {
         levelupdating = true;
         level.setText(device.getFormat().format(status));
-        slider.setValue(StatusNumber.getFromString(status));
+        slider.setValue(StatusNumber.getFromBytes(status));
         levelupdating = false;
     }  
     

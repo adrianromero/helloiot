@@ -32,7 +32,7 @@ public class TreeStatus extends Device {
     protected MQTTManager mqttManager;
     private MQTTManager.Subscription mqttstatus = null;
     
-    private final Map<String, String> status = new ConcurrentHashMap<>();
+    private final Map<String, byte[]> status = new ConcurrentHashMap<>();
     
     private ScheduledFuture<?> sf = null;    
     private final Object sflock = new Object();  
@@ -59,23 +59,36 @@ public class TreeStatus extends Device {
         mqttstatus = null;
     }   
     
-    public String readStatus(String branch) {
+    public byte[] readStatus(String branch) {
         return status.get(getTopic() + "/" + branch);
     }
     
-    public void sendStatus(String branch, String message) {
+    public String loadStatus(String branch) {
+        return getFormat().format(readStatus(branch));
+    }
+    
+    public void sendStatus(String branch, byte[] message) {
         cancelTimer();
         mqttManager.publishStatus(getTopic() + "/" + branch, getQos(), message);
     }
     
-    public void sendStatus(String branch, String message, long delay) {            
+    public void sendStatus(String branch, String message) {
+        sendStatus(branch, getFormat().parse(message));
+    }
+    
+    public void sendStatus(String branch, byte[] message, long delay) {            
         synchronized (sflock) {
             cancelTimer();  
             sf = CompletableAsync.scheduleTask(delay, () -> {
                 TreeStatus.this.sendStatus(branch, message);
             });
         }
-    }    
+    }  
+    
+    public void sendStatus(String branch, String message, long delay) {      
+        sendStatus(branch, getFormat().parse(message), delay);
+    }
+    
     public void cancelTimer() {
         synchronized (sflock) {
             if (sf != null) {

@@ -15,22 +15,34 @@
 
 package com.adr.helloiot.device;
 
+import java.io.UnsupportedEncodingException;
+import java.util.Arrays;
+
 /**
  *
  * @author adrian
  */
 public final class StatusSwitch {
     
-    public final static String ON = "ON";
-    public final static String OFF = "OFF";
+    public final static byte[] ON;
+    public final static byte[] OFF;
+    
+    static {
+        try {
+            ON = "ON".getBytes("UTF-8");
+            OFF = "OFF".getBytes("UTF-8");
+        } catch (UnsupportedEncodingException ex) {
+            throw new RuntimeException(ex);
+        }
+    }
     
     private StatusSwitch() {}
     
-    public static boolean getFromString(String v) {
-        return ON.equals(v);
+    public static boolean getFromBytes(byte[] v) {
+        return Arrays.equals(ON, v);
     }
     
-    public static String getFromValue(boolean v) {
+    public static byte[] getFromValue(boolean v) {
         return v ? ON : OFF;
     }
 }

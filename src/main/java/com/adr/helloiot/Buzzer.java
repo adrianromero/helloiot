@@ -15,6 +15,7 @@
 
 package com.adr.helloiot;
 
+import com.adr.helloiot.device.format.StringFormatIdentity;
 import com.adr.helloiot.media.Clip;
 import com.adr.helloiot.media.ClipFactory;
 import com.google.common.eventbus.Subscribe;
@@ -52,22 +53,25 @@ public class Buzzer {
         Platform.runLater(() -> updateStatus(message.getMessage()));
     } 
     
-    private void updateStatus(String status) { 
-        if ("ERROR".equals(status)) {
+    private void updateStatus(byte[] status) {
+        
+        String statusvalue = StringFormatIdentity.INSTANCE.format(status);
+        
+        if ("ERROR".equals(statusvalue)) {
             buzzer01.play();
-        } else if ("BEEP1".equals(status)) {
+        } else if ("BEEP1".equals(statusvalue)) {
             buzzer04.play();
-        } else if ("BEEP2".equals(status)) {
+        } else if ("BEEP2".equals(statusvalue)) {
             buzzer09.play();
-        } else if ("BEEP3".equals(status)) {
+        } else if ("BEEP3".equals(statusvalue)) {
             buzzer25.play();
-        } else if ("BEEP4".equals(status)) {
+        } else if ("BEEP4".equals(statusvalue)) {
             buzzer28.play();
-        } else if ("BUTTON1".equals(status)) {
+        } else if ("BUTTON1".equals(statusvalue)) {
             buzzerb04.play();
-        } else if ("BUTTON2".equals(status)) {
+        } else if ("BUTTON2".equals(statusvalue)) {
             buzzerb41.play();
-        } else if ("RING1".equals(status)) {
+        } else if ("RING1".equals(statusvalue)) {
             buzzerr03.play();
         } else {
             buzzer01.play();

@@ -64,7 +64,7 @@ public class ButtonsSpinner extends StackPane implements Unit, AbstractControlle
         Platform.runLater(() -> updateStatus(message.getMessage()));  
     }
 
-    private void updateStatus(String status) {
+    private void updateStatus(byte[] status) {
         level.setText(device.getFormat().format(status));
         goup.setDisable(!device.hasNextStatus());
         godown.setDisable(!device.hasPrevStatus());

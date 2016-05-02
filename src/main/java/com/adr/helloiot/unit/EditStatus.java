@@ -70,7 +70,7 @@ public class EditStatus extends VBox implements Unit, AbstractController {
         Platform.runLater(() -> updateStatus(message.getMessage()));  
     }
 
-    private void updateStatus(String status) {
+    private void updateStatus(byte[] status) {
         statusview.setText(device.getFormat().format(status));
     }  
     
