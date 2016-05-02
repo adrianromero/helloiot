@@ -99,7 +99,10 @@ public final class MQTTManager implements MqttCallback {
 
     public CompletableAsync<Void> open() {
         
-        String[] listtopics = topicsubscriptions.stream().map(s -> s.startsWith(SYS_PREFIX) ? s : topicprefix + s).toArray(size -> new String[size]);
+        String[] listtopics = topicsubscriptions.stream()
+                .filter(s -> !s.startsWith(LOCAL_PREFIX))
+                .map(s -> s.startsWith(SYS_PREFIX) ? s : topicprefix + s)
+                .toArray(size -> new String[size]);
         int[] listqos = new int[topicsubscriptions.size()];
         Arrays.fill(listqos, defaultqos);       
         
