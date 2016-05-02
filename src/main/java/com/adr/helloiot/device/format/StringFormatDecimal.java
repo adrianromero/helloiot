@@ -27,6 +27,8 @@ import java.text.ParseException;
  */
 public class StringFormatDecimal implements StringFormat {
     
+    public static StringFormat INTEGER = new StringFormatDecimal();
+    
     private static NumberFormat GENERALFORMAT = NumberFormat.getNumberInstance();
     
     private NumberFormat format;

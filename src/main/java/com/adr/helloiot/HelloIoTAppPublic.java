@@ -40,16 +40,28 @@ public class HelloIoTAppPublic {
         return app.getDevice(id);
     }
     
-    public String readSYSStatus(String branch) {
+    public byte[] readSYSStatus(String branch) {
         return app.readSYSStatus(branch);
+    }  
+    public String loadSYSStatus(String branch) {
+        return app.loadSYSStatus(branch);
     }  
     public void sendSYSStatus(String branch, String message) {
         app.sendSYSStatus(branch, message);
     }
-   public final void sendSYSEvent(String branch, String message) {
+    public void sendSYSStatus(String branch, byte[] message) {
+        app.sendSYSStatus(branch, message);
+    }
+    public final void sendSYSEvent(String branch, String message) {
+        app.sendSYSEvent(branch, message);
+    }  
+    public final void sendSYSEvent(String branch, byte[] message) {
         app.sendSYSEvent(branch, message);
     }  
     public void sendSYSEvent(String branch, String message, long delay) {            
+        app.sendSYSEvent(branch, message, delay);
+    }
+    public void sendSYSEvent(String branch, byte[] message, long delay) {            
         app.sendSYSEvent(branch, message, delay);
     }
     public final void sendSYSEvent(String branch) {

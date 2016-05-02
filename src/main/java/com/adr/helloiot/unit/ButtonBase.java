@@ -105,7 +105,7 @@ public abstract class ButtonBase extends Button implements Unit {
             dialog.setTitle(this.getText());
             dialog.setContent(sec);
             dialog.setActionOK((ActionEvent evok) -> {
-                if (CryptUtils.validatePassword(sec.getPassword(), app.readSYSStatus(securitykey))) {
+                if (CryptUtils.validatePassword(sec.getPassword(), app.loadSYSStatus(securitykey))) {
                     doRun(evok);
                 } else {
                     evok.consume();
