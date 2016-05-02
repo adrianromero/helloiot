@@ -63,7 +63,7 @@ public class AppModule extends AbstractModule {
         properties.setProperty("mqtt.password", "");
         properties.setProperty("mqtt.connectiontimeout", "30");
         properties.setProperty("mqtt.keepaliveinterval", "60");
-        properties.setProperty("mqtt.qos", "1");
+        properties.setProperty("mqtt.defaultqos", "1");
         properties.setProperty("mqtt.topicprefix", "");
         properties.setProperty("mqtt.topicapp", "_LOCAL_/_sys_helloIoT/mainapp");
         
