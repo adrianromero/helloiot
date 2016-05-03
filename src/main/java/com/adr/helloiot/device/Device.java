@@ -26,22 +26,21 @@ import java.util.ResourceBundle;
  * @author adrian
  */
 public abstract class Device {
-   
-    public static final StringFormat FORMAT = new StringFormatIdentity();
     
     protected ResourceBundle resources = ResourceBundle.getBundle("com/adr/helloiot/resources/devices");
     
     private String id = null; // can be null
     private String subscriptiontopic = null;       
     private int qos = -1;
+    private StringFormat format;
     private final Properties properties = new Properties();
+    
+    public Device() {
+        setFormat(StringFormatIdentity.INSTANCE);
+    }
     
     // The device generic device name
     public abstract String getDeviceName();
-    
-    public StringFormat getFormat() {
-        return FORMAT;
-    }
     
     public String getId() {
         return id;
@@ -65,6 +64,14 @@ public abstract class Device {
 
     public final void setQos(int qos) {
         this.qos = qos;
+    }
+    
+    public final StringFormat getFormat() {
+        return format;
+    }
+    
+    public final void setFormat(StringFormat format) {
+        this.format = format;
     }
     
     public final Properties getProperties() {

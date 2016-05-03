@@ -23,17 +23,14 @@ import com.adr.helloiot.device.format.StringFormatDecimal;
  * @author adrian
  */
 public abstract class DeviceNumber extends DeviceSimple {
-
-    public static final StringFormat NUMBERFORMAT = new StringFormatDecimal("0.000");    
     
     private double increment = 1.0;
     private double levelmax = 100.0;
     private double levelmin = 0.0;
     
-    @Override
-    public StringFormat getFormat() {
-        return NUMBERFORMAT;
-    }        
+    public DeviceNumber() {
+        setFormat(new StringFormatDecimal("0.000"));
+    }     
     
     public String getUnit() {
         return "";

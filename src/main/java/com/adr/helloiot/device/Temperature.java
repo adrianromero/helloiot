@@ -23,23 +23,17 @@ import com.adr.helloiot.device.format.StringFormatDecimal;
  * @author adrian
  */
 public class Temperature extends TransmitterNumber {
-
-    public static final StringFormat TEMPERATUREFORMAT = new StringFormatDecimal("0.0°");
     
     public Temperature() {
         setLevelMin(-40.0);
         setLevelMax(70.0);
+        setFormat(new StringFormatDecimal("0.0°"));
     } 
     
     @Override
     public String getDeviceName() {
         return resources.getString("devicename.temperature");
     }
-    
-    @Override
-    public StringFormat getFormat() {
-        return TEMPERATUREFORMAT;
-    }  
     
     @Override
     public String getUnit() {

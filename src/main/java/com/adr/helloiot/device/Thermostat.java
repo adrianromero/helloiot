@@ -23,23 +23,17 @@ import com.adr.helloiot.device.format.StringFormatDecimal;
  * @author adrian
  */
 public class Thermostat extends DeviceNumber {
-
-    public static final StringFormat TEMPERATUREFORMAT = new StringFormatDecimal("0.0°");
     
     public Thermostat() {
         setLevelMin(15.0);
         setLevelMax(29.0);
         setIncrement(0.2);
+        setFormat(new StringFormatDecimal("0.0°"));
     } 
     
     @Override
     public String getDeviceName() {
         return resources.getString("devicename.thermostat");
-    }
-    
-    @Override
-    public StringFormat getFormat() {
-        return TEMPERATUREFORMAT;
     }
     
     @Override

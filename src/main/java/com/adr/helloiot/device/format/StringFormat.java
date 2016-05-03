@@ -22,4 +22,18 @@ package com.adr.helloiot.device.format;
 public interface StringFormat {
     public String format(byte[] value);
     public byte[] parse(String formattedvalue);
+    
+    public static StringFormat valueOf(String value) {
+        if ("IDENTITY".equals(value)) {
+            return StringFormatIdentity.INSTANCE;
+        } else if ("INTEGER".equals(value)) {
+            return StringFormatDecimal.INTEGER;
+        } else if ("HEXADECIMAL".equals(value)) {
+            return StringFormatHex.INSTANCE;
+        } else if (value.startsWith("DECIMAL/")) {
+            return new StringFormatDecimal(value.substring(8));            
+        } else {
+            throw new IllegalArgumentException("Cannot create StringFormat: " + value);
+        }    
+    }
 }

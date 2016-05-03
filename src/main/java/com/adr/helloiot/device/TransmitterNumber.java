@@ -28,17 +28,16 @@ public class TransmitterNumber extends TransmitterSimple {
     
     private double levelmax = 100.0;
     private double levelmin = 0.0;
+    
+    public TransmitterNumber() {
+        setFormat(new StringFormatDecimal("0.000"));
+    }
 
     @Override
     public String getDeviceName() {
         return resources.getString("devicename.transmitternumber");
     }
-    
-    @Override
-    public StringFormat getFormat() {
-        return NUMBERFORMAT;
-    }  
-    
+
     public String getUnit() {
         return "";
     }

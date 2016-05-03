@@ -65,7 +65,7 @@ public interface IconStatus {
                 return new IconTextSwitch(RESOURCES.getString("icon.open"), RESOURCES.getString("icon.closed"));   
             }
         } else {
-            throw new RuntimeException("Cannot create IconStatus: " + value);
+            throw new IllegalArgumentException("Cannot create IconStatus: " + value);
         }
     }      
 
