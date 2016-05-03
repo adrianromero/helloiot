@@ -52,12 +52,10 @@ public class StringFormatDecimal implements StringFormat {
     }
     
     @Override
-    public String format(byte[] value) {
-        
-        if (value == null) {
+    public String format(byte[] value) {        
+        if (value == null || value.length == 0) {
             return "";
-        }
-        
+        }       
         try {
             return format.format(Double.parseDouble(new String(value, "UTF-8")));
         } catch (NumberFormatException ex) {
@@ -68,12 +66,10 @@ public class StringFormatDecimal implements StringFormat {
     }
     
     @Override
-    public byte[] parse(String formattedvalue) {
-        
-        if (Strings.isNullOrEmpty(pattern)) {
-            return null;
-        }
-        
+    public byte[] parse(String formattedvalue) {       
+        if (Strings.isNullOrEmpty(formattedvalue)) {
+            return new byte[0];
+        }        
         try {
             return format.parse(formattedvalue).toString().getBytes("UTF-8");
         } catch (ParseException ex) {

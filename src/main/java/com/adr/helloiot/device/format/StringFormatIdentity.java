@@ -15,6 +15,7 @@
 
 package com.adr.helloiot.device.format;
 
+import com.google.common.base.Strings;
 import java.io.UnsupportedEncodingException;
 
 /**
@@ -27,8 +28,8 @@ public class StringFormatIdentity implements StringFormat {
 
     @Override
     public String format(byte[] value) {
-        if (value == null) {
-            return null;
+        if (value == null || value.length == 0) {
+            return "";
         }       
         try {
             return new String(value, "UTF-8");
@@ -39,9 +40,9 @@ public class StringFormatIdentity implements StringFormat {
 
     @Override
     public byte[] parse(String formattedvalue) {
-        if (formattedvalue == null) {
-            return null;
-        }
+        if (Strings.isNullOrEmpty(formattedvalue)) {
+            return new byte[0];
+        }  
         try {
             return formattedvalue.getBytes("UTF-8");
         } catch (UnsupportedEncodingException ex) {
