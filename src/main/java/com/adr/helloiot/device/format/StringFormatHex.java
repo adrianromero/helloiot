@@ -16,6 +16,8 @@
 package com.adr.helloiot.device.format;
 
 import com.google.common.base.Strings;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -23,6 +25,7 @@ import com.google.common.base.Strings;
  */
 public class StringFormatHex implements StringFormat {
     
+    private final static Logger logger = Logger.getLogger(StringFormatHex.class.getName());    
     public static final StringFormat INSTANCE = new StringFormatHex();
 
     @Override
@@ -44,6 +47,7 @@ public class StringFormatHex implements StringFormat {
     public static byte[] parseHexString(String formattedvalue) {
         int lenght = formattedvalue.length();        
         if (lenght % 2 != 0) {
+            logger.log(Level.WARNING, "Hexadecimal string length needs to be even: {0}", formattedvalue);
             throw new IllegalArgumentException("Hexadecimal string length needs to be even: " + formattedvalue);
         }
 
@@ -70,6 +74,7 @@ public class StringFormatHex implements StringFormat {
         if (c >= 'a' && c <= 'f') {
             return c - 'a' + 10;
         }     
+        logger.log(Level.WARNING, "Illegal hexadecimal character: {0}", c);
         throw new IllegalArgumentException("Illegal hexadecimal character: " + c);
     }  
     

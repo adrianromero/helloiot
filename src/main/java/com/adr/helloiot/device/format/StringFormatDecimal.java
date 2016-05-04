@@ -15,12 +15,14 @@
 
 package com.adr.helloiot.device.format;
 
+import com.adr.helloiot.unit.ReceiverScript;
 import com.google.common.base.Strings;
 import java.io.UnsupportedEncodingException;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
-import java.util.IllegalFormatException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -28,8 +30,9 @@ import java.util.IllegalFormatException;
  */
 public class StringFormatDecimal implements StringFormat {
     
-    public static StringFormat INTEGER = new StringFormatDecimal();
+    public static StringFormat INTEGER = new StringFormatDecimal();   
     
+    private final static Logger logger = Logger.getLogger(StringFormatDecimal.class.getName());
     private static NumberFormat GENERALFORMAT = NumberFormat.getNumberInstance();
     
     private NumberFormat format;
@@ -82,7 +85,8 @@ public class StringFormatDecimal implements StringFormat {
         try {
             try {
                 return GENERALFORMAT.parse(formattedvalue).toString().getBytes("UTF-8");
-            } catch (ParseException ex) {            
+            } catch (ParseException ex) {   
+                logger.log(Level.WARNING, null, ex);
                 throw new IllegalArgumentException(ex);
             }
         } catch (UnsupportedEncodingException ex) {
