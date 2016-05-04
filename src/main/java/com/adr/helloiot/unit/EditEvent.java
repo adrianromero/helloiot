@@ -17,9 +17,11 @@ package com.adr.helloiot.unit;
 
 import com.adr.fonticon.FontAwesome;
 import com.adr.fonticon.IconBuilder;
+import com.adr.hellocommon.dialog.MessageUtils;
 import com.adr.hellocommon.utils.AbstractController;
 import com.adr.helloiot.device.TransmitterSimple;
 import com.google.common.base.Strings;
+import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -33,6 +35,8 @@ import javafx.scene.layout.VBox;
  * @author adrian
  */
 public class EditEvent extends VBox implements Unit, AbstractController {
+    
+    protected ResourceBundle resources = ResourceBundle.getBundle("com/adr/helloiot/fxml/basic"); 
     
     @FXML private Label field;
     @FXML private TextInputControl payload;
@@ -108,12 +112,17 @@ public class EditEvent extends VBox implements Unit, AbstractController {
     
     @FXML
     void onSendEvent(ActionEvent event) {
-        device.sendEvent(device.getFormat().parse(payload.getText()));
-        if (deleteSent) {
-            payload.setText(defaultValue);
+        
+        try {
+            device.sendEvent(device.getFormat().parse(payload.getText()));
+            if (deleteSent) {
+                payload.setText(defaultValue);
+            }
+            payload.selectAll();
+            payload.requestFocus();
+        } catch (IllegalArgumentException ex) {
+            MessageUtils.showException(MessageUtils.getRoot(this), resources.getString("label.sendevent"), resources.getString("message.valueerror"), ex);    
         }
-        payload.selectAll();
-        payload.requestFocus();        
     }
     
     @FXML

@@ -17,12 +17,14 @@ package com.adr.helloiot.unit;
 
 import com.adr.fonticon.FontAwesome;
 import com.adr.fonticon.IconBuilder;
+import com.adr.hellocommon.dialog.MessageUtils;
 import com.adr.hellocommon.utils.AbstractController;
 import com.adr.helloiot.EventMessage;
 import com.adr.helloiot.HelloIoTAppPublic;
 import com.adr.helloiot.device.DeviceSimple;
 import com.google.common.base.Strings;
 import com.google.common.eventbus.Subscribe;
+import java.util.ResourceBundle;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -38,6 +40,8 @@ import javafx.scene.layout.VBox;
  * @author adrian
  */
 public class EditStatus extends VBox implements Unit, AbstractController {
+    
+    protected ResourceBundle resources = ResourceBundle.getBundle("com/adr/helloiot/fxml/basic");
     
     @FXML private Label field;
     @FXML private TextInputControl statusview;
@@ -143,10 +147,13 @@ public class EditStatus extends VBox implements Unit, AbstractController {
     }
 
     @FXML void onOkEvent(ActionEvent event) {
-        boxedit.setVisible(false);
-        boxview.setVisible(true);
-        device.sendStatus(device.getFormat().parse(statusedit.getText()));        
-    }
+        try{
+            boxedit.setVisible(false);
+            boxview.setVisible(true);
+            device.sendStatus(device.getFormat().parse(statusedit.getText()));
+        } catch (IllegalArgumentException ex) {
+            MessageUtils.showException(MessageUtils.getRoot(this), resources.getString("label.sendstatus"), resources.getString("message.valueerror"), ex);    
+        }    }
     
     @FXML
     void onEnterEvent(ActionEvent event) {
