@@ -20,6 +20,7 @@ import java.io.UnsupportedEncodingException;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
+import java.util.IllegalFormatException;
 
 /**
  *
@@ -58,8 +59,6 @@ public class StringFormatDecimal implements StringFormat {
         }       
         try {
             return format.format(Double.parseDouble(new String(value, "UTF-8")));
-        } catch (NumberFormatException ex) {
-            return "ERROR";
         } catch (UnsupportedEncodingException ex) {
             throw new RuntimeException(ex);
         }
@@ -84,7 +83,7 @@ public class StringFormatDecimal implements StringFormat {
             try {
                 return GENERALFORMAT.parse(formattedvalue).toString().getBytes("UTF-8");
             } catch (ParseException ex) {            
-                return Integer.toString(0).getBytes("UTF-8");
+                throw new IllegalArgumentException(ex);
             }
         } catch (UnsupportedEncodingException ex) {
             throw new RuntimeException(ex);

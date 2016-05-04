@@ -16,7 +16,6 @@
 package com.adr.helloiot.device.format;
 
 import com.google.common.base.Strings;
-import java.io.UnsupportedEncodingException;
 
 /**
  *
@@ -24,14 +23,14 @@ import java.io.UnsupportedEncodingException;
  */
 public class StringFormatHex implements StringFormat {
     
-    public static final StringFormat INSTANCE = new StringFormatIdentity();
+    public static final StringFormat INSTANCE = new StringFormatHex();
 
     @Override
     public String format(byte[] value) {
         if (value == null || value.length == 0) {
             return "";
         }       
-        return formatHexString(value);
+        return fixedSplit(formatHexString(value));
     }
 
     @Override
@@ -39,7 +38,7 @@ public class StringFormatHex implements StringFormat {
         if (Strings.isNullOrEmpty(formattedvalue)) {
             return new byte[0];
         }  
-        return parseHexString(formattedvalue);
+        return parseHexString(formattedvalue.replaceAll("\\s",""));
     }
     
     public static byte[] parseHexString(String formattedvalue) {
@@ -85,4 +84,8 @@ public class StringFormatHex implements StringFormat {
         }
         return new String(hex);
     }      
+    
+    public static String fixedSplit(String s) {
+        return String.join("\n", s.split("(?<=\\G.{76})"));
+    }    
 }

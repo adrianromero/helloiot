@@ -28,6 +28,8 @@ public interface StringFormat {
             return StringFormatIdentity.INSTANCE;
         } else if ("INTEGER".equals(value)) {
             return StringFormatDecimal.INTEGER;
+        } else if ("BASE64".equals(value)) {
+            return StringFormatBase64.INSTANCE;
         } else if ("HEXADECIMAL".equals(value)) {
             return StringFormatHex.INSTANCE;
         } else if (value.startsWith("DECIMAL/")) {
