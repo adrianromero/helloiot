@@ -55,8 +55,8 @@ public class AppModule extends AbstractModule {
         // default values    
         properties.setProperty("app.title", "Hello IoT");
         properties.setProperty("app.exitbutton", "false");
-        properties.setProperty("app.fullscreen", "true");
-        properties.setProperty("app.clock", "false"); // do not show clock
+        properties.setProperty("app.fullscreen", "false");
+        properties.setProperty("app.clock", "true"); // do not show clock
 
         properties.setProperty("mqtt.url", "tcp://localhost:1883");
         properties.setProperty("mqtt.username", "");

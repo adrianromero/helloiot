@@ -23,6 +23,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -53,15 +54,30 @@ public class MainApp extends Application {
     
     protected Properties getConfigProperties() {
         
-        String param = getParameters().getNamed().get("config-properites");
-        File configfile = new File(Strings.isNullOrEmpty(param) ? "helloiot.properties" : param);
         Properties config = new Properties();
         
+        // read the configuration properties 
+        List<String> unnamed = getParameters().getUnnamed();    
+        File configfile;
+        if (unnamed.isEmpty()) {
+            configfile = new File("helloiot.properties");
+        } else {
+            String param = unnamed.get(0);
+            if (Strings.isNullOrEmpty(param)) {
+                configfile = new File("helloiot.properties");
+            } else {
+                configfile = new File(param); 
+            }
+        }
         try (InputStream in = new FileInputStream(configfile)) {            
             config.load(in);
         } catch (IOException ex) {
             throw new RuntimeException("Properties file name is not correct: " + configfile.toString());
         }
+        
+        // read the parameters
+        config.putAll(getParameters().getNamed());
+        
         return config;
     }
   
