@@ -36,6 +36,14 @@ dependencies {
     compile group: 'org.mapdb', name: 'mapdb', version: '3.0.0-M6'
 }
 
+applicationDistribution.from("${rootProject.projectDir}") {
+    include "README.md", "LICENSE", \
+        "helloiot.properties", \
+        "application*", \
+        "mosquitto*"
+    into "bin"
+}
+
 task sourcesJar(type: Jar, dependsOn: classes) {
     classifier = 'sources'
     from sourceSets.main.allSource
