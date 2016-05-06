@@ -18,6 +18,7 @@ package com.adr.helloiot.unit;
 import com.adr.hellocommon.utils.AbstractController;
 import com.adr.helloiot.EventMessage;
 import com.adr.helloiot.HelloIoTAppPublic;
+import com.adr.helloiot.device.DeviceBase;
 import com.adr.helloiot.device.DeviceBasic;
 import com.google.common.base.Strings;
 import com.google.common.eventbus.Subscribe;
@@ -37,7 +38,7 @@ public class EditView extends VBox implements Unit, AbstractController {
     @FXML private Label field;
     @FXML private TextInputControl statusview;
     
-    private DeviceBasic device = null;
+    private DeviceBase device = null;
     
     public EditView() {
         loadFXML();
@@ -88,14 +89,14 @@ public class EditView extends VBox implements Unit, AbstractController {
         return this;
     }
     
-    public void setDevice(DeviceBasic device) {
+    public void setDevice(DeviceBase device) {
         this.device = device;
         if (Strings.isNullOrEmpty(getLabel())) {
             setLabel(device.getProperties().getProperty("label"));
         }   
     }
     
-    public DeviceBasic getDevice() {
+    public DeviceBase getDevice() {
         return device;
     }
     
