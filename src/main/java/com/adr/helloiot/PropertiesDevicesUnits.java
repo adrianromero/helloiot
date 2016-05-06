@@ -21,6 +21,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.Locale;
+import java.util.MissingResourceException;
 import java.util.Properties;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -47,7 +48,7 @@ public class PropertiesDevicesUnits extends FXMLDevicesUnits {
             URL[] urls = {file.getAbsoluteFile().getParentFile().toURI().toURL()};
             ClassLoader loader = new URLClassLoader(urls);
             return ResourceBundle.getBundle(file.getName(), Locale.getDefault(), loader);
-        } catch (MalformedURLException ex) {
+        } catch (MalformedURLException | MissingResourceException ex) {
             Logger.getLogger(FXMLDevicesUnits.class.getName()).log(Level.SEVERE, null, ex);
             return null;
         }
