@@ -25,6 +25,12 @@
 
 @font-face {
     src: url('Roboto-Light.ttf');
+} 
+
+.root {
+}
+
+.maincontainer {
 }
 
 .header {
@@ -150,13 +156,26 @@
 
 .buttonbase {
     -fx-font-family: 'ROBOTO LIGHT';
-    -fx-font-size: 16px;    
+    -fx-font-size: 16px;
+    -fx-background-radius: 10;
+}
+
+.buttonup {
+    -fx-background-radius: 10 10 0 0;
+}
+
+.buttondown {
+    -fx-background-radius: 0 0 10 10;
+}
+
+.unitbase {
+    -fx-background-radius: 10;
 }
 
 .labelbase {
     -fx-font-family: 'ROBOTO LIGHT';
     -fx-font-size: 16px;   
-    -fx-text-fill: #777777;       
+    -fx-text-fill: #777777;   
 }
 
 .levelbase {
