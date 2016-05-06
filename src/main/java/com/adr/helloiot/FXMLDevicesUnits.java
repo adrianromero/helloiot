@@ -17,18 +17,11 @@ package com.adr.helloiot;
 
 import com.adr.helloiot.device.Device;
 import com.adr.helloiot.unit.Unit;
-import com.google.common.base.Strings;
-import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLClassLoader;
 import java.util.List;
-import java.util.Locale;
 import java.util.Properties;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.fxml.FXMLLoader;
 
 /**
