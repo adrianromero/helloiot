@@ -61,6 +61,8 @@ public class ButtonsSwitch extends StackPane implements Unit, AbstractController
         };
         VBox.setVgrow(goup, Priority.SOMETIMES);  
         goup.setContentDisplay(ContentDisplay.LEFT);
+        goup.getStyleClass().remove("buttonbase");
+        goup.getStyleClass().add("buttonup");
         
         godown = new ButtonBase() {
             @Override
@@ -70,6 +72,8 @@ public class ButtonsSwitch extends StackPane implements Unit, AbstractController
         };
         VBox.setVgrow(godown, Priority.SOMETIMES);
         godown.setContentDisplay(ContentDisplay.LEFT);
+        godown.getStyleClass().remove("buttonbase");
+        godown.getStyleClass().add("buttondown");
         
         getChildren().add(new VBox(goup, godown));
         

@@ -22,7 +22,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<fx:root styleClass="viewcomponent" type="StackPane" GridPane.hgrow="SOMETIMES" GridPane.vgrow="SOMETIMES" xmlns="http://javafx.com/javafx/8.0.66" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root styleClass="unitbase" type="StackPane" GridPane.hgrow="SOMETIMES" GridPane.vgrow="SOMETIMES" xmlns="http://javafx.com/javafx/8.0.66" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <VBox maxHeight="-Infinity" maxWidth="-Infinity">
          <children>

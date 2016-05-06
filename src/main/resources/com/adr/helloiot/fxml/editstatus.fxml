@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <!--
     This file is part of HelloIot.
 
@@ -16,11 +17,12 @@
     along with HelloIot.  If not, see <http://www.gnu.org/licenses/>.
 -->
 
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<fx:root maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" type="VBox" GridPane.rowSpan="2" xmlns="http://javafx.com/javafx/8.0.72" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="unitbase" type="VBox" GridPane.rowSpan="2" xmlns="http://javafx.com/javafx/8.0.92" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Label fx:id="field" styleClass="fieldlabel" />
       <StackPane>
@@ -30,6 +32,9 @@
                   <TextField fx:id="statusview" editable="false" focusTraversable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="noneditable" HBox.hgrow="SOMETIMES" />
                   <Button fx:id="editaction" focusTraversable="false" mnemonicParsing="false" onAction="#onEditEvent" />
                </children>
+               <StackPane.margin>
+                  <Insets right="10.0" />
+               </StackPane.margin>
             </HBox>
             <HBox fx:id="boxedit" spacing="5.0" visible="false">
                <children>
@@ -37,6 +42,9 @@
                   <Button fx:id="okaction" focusTraversable="false" mnemonicParsing="false" onAction="#onOkEvent" />
                   <Button fx:id="cancelaction" focusTraversable="false" mnemonicParsing="false" onAction="#onCancelEvent" />
                </children>
+               <StackPane.margin>
+                  <Insets right="10.0" />
+               </StackPane.margin>
             </HBox>
          </children>
       </StackPane>

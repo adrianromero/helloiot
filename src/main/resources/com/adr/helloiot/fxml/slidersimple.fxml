@@ -22,7 +22,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<fx:root maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" type="StackPane" GridPane.hgrow="SOMETIMES" GridPane.vgrow="SOMETIMES" xmlns="http://javafx.com/javafx/8.0.72" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" type="StackPane" styleClass="unitbase" GridPane.hgrow="SOMETIMES" GridPane.vgrow="SOMETIMES" xmlns="http://javafx.com/javafx/8.0.72" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <VBox>
          <children>

@@ -44,6 +44,7 @@ public class ViewSimple extends Label implements Unit  {
         
         setContentDisplay(ContentDisplay.TOP);
         setAlignment(Pos.CENTER);
+        getStyleClass().add("unitbase");
         getStyleClass().add("labelbase");
         GridPane.setVgrow(this, Priority.SOMETIMES);
         GridPane.setHgrow(this, Priority.SOMETIMES);

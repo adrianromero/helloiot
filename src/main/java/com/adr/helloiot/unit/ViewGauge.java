@@ -41,7 +41,7 @@ public class ViewGauge extends StackPane implements Unit  {
     private GaugeType type = GaugeType.DASHBOARD;
         
     public ViewGauge() { 
-        getStyleClass().add("viewcomponent");
+        getStyleClass().add("unitbase");
         this.setPadding(new Insets(4));
         GridPane.setVgrow(this, Priority.SOMETIMES);
         GridPane.setHgrow(this, Priority.SOMETIMES);
@@ -147,5 +147,5 @@ public class ViewGauge extends StackPane implements Unit  {
         setLabel(label == null 
             ? device.getProperties().getProperty("label")
             : label);
-}
+    }
 }
