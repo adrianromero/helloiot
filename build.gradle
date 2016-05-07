@@ -3,7 +3,7 @@ apply plugin: 'maven'
 apply plugin: 'application'
 
 group = 'com.github.adrianromero'
-version = '1.0.8'
+version = '1.0.9'
 
 mainClassName = 'com.adr.helloiot.MainApp'
 ext.mainClass = 'com.adr.helloiot.MainApp'
