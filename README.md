@@ -30,7 +30,8 @@ Download the latests binaries from [Releases](releases), uncompress to a folder 
 The standard installation of the Mosquitto broker will work.
 
 ```
-bin/helloiot
+cd bin
+helloiot
 ```
 
 If you prefer to run HelloIot from sources clone the repository, build and execute.
