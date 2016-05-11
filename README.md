@@ -6,8 +6,8 @@ With HelloIot you can publish and subscribe to topics using a collection of widg
 
 ![Screenshot](http://i.imgur.com/Uv3mF63.gif)
 
-Starting
-========
+Getting started
+===============
 
 Install a MQTT Broker
 ----------------------
@@ -26,8 +26,14 @@ or the [OpenJDK 8](http://openjdk.java.net/install/) or later.
 Execute HelloIot
 ----------------
 
-Download, build and run HelloIot. By default HelloIot is configured to be connected to a MQTT broker installed locally, listening on port 1883, with no security configured. 
+Download the latests binaries from [Releases](releases), uncompress to a folder and execute. By default HelloIot is configured to be connected to a MQTT broker installed locally, listening on port 1883, with no security configured. 
 The standard installation of the Mosquitto broker will work.
+
+```
+bin/helloiot
+```
+
+If you prefer to run HelloIot from sources clone the repository, build and execute.
  
 ```
 git clone https://github.com/adrianromero/helloiot
@@ -36,7 +42,7 @@ cd ./helloiot
 ```
 
 Configure HelloIot
-==================
+------------------
 
 If you want to connect to a different MQTT broker or create your own MQTT dashboard ou need to edit the file *helloiot.properties*.
 
@@ -53,6 +59,7 @@ Acknowledgments
 ===============
 
 * Font Awesome 4.4.0 by @davegandy - http://fontawesome.io - @fontawesome License - http://fontawesome.io/license (Font: SIL OFL 1.1, CSS: MIT License)
+* Roboto font https://www.google.com/fonts/specimen/Roboto (Apache License Version 2.0)
 * Sound clips from http://www.soundjay.com/
 * Medusa JavaFX library for Gauges by Gerrit Grunwald. https://github.com/HanSolo/Medusa (Apache License Version 2.0)
 * Eclipse Paho MQTT Java library. https://www.eclipse.org/paho/clients/java/ (Eclipse Public License 1.0)
