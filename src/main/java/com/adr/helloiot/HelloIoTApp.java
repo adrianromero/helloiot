@@ -194,10 +194,7 @@ public class HelloIoTApp {
     }
     public final void sendSYSEvent(String branch) {
         ((TreeEvent) getDevice(SystemDevicesUnits.SYS_EVENT_ID)).sendEvent(branch);
-    }  
-    public void sendSYSEvent(String branch, long delay) {
-        ((TreeEvent) getDevice(SystemDevicesUnits.SYS_EVENT_ID)).sendEvent(branch, delay);
-    }     
+    }   
     public void cancelSYSEventTimer() {
         ((TreeEvent) getDevice(SystemDevicesUnits.SYS_EVENT_ID)).cancelTimer();
     }

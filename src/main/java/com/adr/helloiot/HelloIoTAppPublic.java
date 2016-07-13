@@ -66,10 +66,7 @@ public class HelloIoTAppPublic {
     }
     public final void sendSYSEvent(String branch) {
         app.sendSYSEvent(branch);
-    }  
-    public void sendSYSEvent(String branch, long delay) {
-        app.sendSYSEvent(branch, delay);
-    }     
+    }   
     public void cancelSYSEventTimer() {
         app.cancelSYSEventTimer();
     }    
