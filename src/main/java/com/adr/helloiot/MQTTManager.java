@@ -132,7 +132,7 @@ public final class MQTTManager implements MqttCallback {
                     options.setSSLProperties(sslproperties);
                     mqttClient.connect(options).waitForCompletion(1000);    
                     mqttClient.setCallback(this);
-                    mqttClient.subscribe(listtopics, listqos).waitForCompletion(1000);
+                    mqttClient.subscribe(listtopics, listqos);
 
                     if (!getStatusTopic().startsWith(LOCAL_PREFIX)) {
                         publish(getStatusTopic(), defaultqos, StatusSwitch.ON, true); 
