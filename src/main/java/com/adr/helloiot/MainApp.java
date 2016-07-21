@@ -26,8 +26,10 @@ import com.google.inject.name.Named;
 import com.google.inject.name.Names;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
@@ -56,6 +58,9 @@ public class MainApp extends Application {
     private HelloIoTApp helloiotapp;
     
     private Stage stage;
+    
+    private Properties appproperties;
+    private File fileproperties;    
     
     protected Properties getConfigProperties() {
         
@@ -103,6 +108,8 @@ public class MainApp extends Application {
         
         initializeApp();
         
+        loadAppProperties();
+        
         this.stage = stage;
         
         Properties configproperties = getConfigProperties();
@@ -138,12 +145,12 @@ public class MainApp extends Application {
             
             root.getStylesheets().add(getClass().getResource("/com/adr/helloiot/styles/fullscreen.css").toExternalForm());            
         } else {
-            boolean maximized = Boolean.parseBoolean(helloiotapp.getProperties().getProperty("window.maximized"));
+            boolean maximized = Boolean.parseBoolean(appproperties.getProperty("window.maximized"));
             if (maximized) {
                 stage.setMaximized(true);
             } else {         
-                stage.setWidth(Double.parseDouble(helloiotapp.getProperties().getProperty("window.width")));
-                stage.setHeight(Double.parseDouble(helloiotapp.getProperties().getProperty("window.height")));
+                stage.setWidth(Double.parseDouble(appproperties.getProperty("window.width")));
+                stage.setHeight(Double.parseDouble(appproperties.getProperty("window.height")));
             }
         }
 
@@ -189,9 +196,12 @@ public class MainApp extends Application {
     
     @Override
     public final void stop() throws Exception {
-        helloiotapp.getProperties().setProperty("window.height", Double.toString(stage.getHeight()));
-        helloiotapp.getProperties().setProperty("window.width", Double.toString(stage.getWidth()));
-        helloiotapp.getProperties().setProperty("window.maximized", Boolean.toString(stage.isMaximized()));
+        
+        // Save Properties
+        appproperties.setProperty("window.height", Double.toString(stage.getHeight()));
+        appproperties.setProperty("window.width", Double.toString(stage.getWidth()));
+        appproperties.setProperty("window.maximized", Boolean.toString(stage.isMaximized()));
+        saveAppProperties();
         
         // Stop subscriptions and callback    
         helloiotapp.stop();
@@ -203,6 +213,29 @@ public class MainApp extends Application {
         CompletableAsync.shutdown();
         
         this.stage = null;
+    }
+    
+    private void loadAppProperties() {
+        // Load the properties
+        appproperties = new Properties();
+        appproperties.setProperty("window.height", "600.0");
+        appproperties.setProperty("window.width", "800.0");
+        appproperties.setProperty("window.maximized", "false");
+        fileproperties = new File(System.getProperty("user.home"), ".helloiot-app.properties");
+        try (InputStream in = new FileInputStream(fileproperties)) {            
+            appproperties.load(in);
+        } catch (IOException ex) {
+            Logger.getLogger(HelloIoTApp.class.getName()).log(Level.WARNING, ex.getMessage());
+        }            
+    }
+    
+    private void saveAppProperties() {
+        // Save the properties...
+        try (OutputStream out = new FileOutputStream(fileproperties)) {            
+            appproperties.store(out, "HelloIoT properties");
+        } catch (IOException ex) {
+            Logger.getLogger(HelloIoTApp.class.getName()).log(Level.WARNING, ex.getMessage());
+        }           
     }
     
     /**

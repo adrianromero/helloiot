@@ -56,6 +56,7 @@ public final class MQTTManager implements MqttCallback {
        
     private MqttAsyncClient mqttClient;
     private DB dbClient;
+    private boolean freshClient = false;
     private ConcurrentMap<String, byte[]> mapClient;
 
     private final String url;
@@ -139,7 +140,9 @@ public final class MQTTManager implements MqttCallback {
                         logger.log(Level.INFO, "Publish status ON.");
                     }
                     
-                    dbClient = DBMaker.fileDB(new File(System.getProperty("user.home"), ".helloiot-" + getClient() + ".mapdb")).make();
+                    File dbfile = new File(System.getProperty("user.home"), ".helloiot-" + topicapp.replaceAll("[^a-zA-Z0-9.-]", "_") + ".mapdb");  
+                    freshClient = dbfile.exists();
+                    dbClient = DBMaker.fileDB(dbfile).make();
                     mapClient = dbClient.hashMap("map", Serializer.STRING, Serializer.BYTE_ARRAY).createOrOpen();
                     
                     mapClient.forEach((topic, payload) -> {
@@ -200,10 +203,10 @@ public final class MQTTManager implements MqttCallback {
         connectionLost = callback;
     }
     
-    public String getClient() {
-        return topicapp.replaceAll("[^a-zA-Z0-9.-]", "_");
+    public boolean isFreshClient() {
+        return freshClient;
     }
-
+    
     private String getStatusTopic() {
         return topicapp + STATUS_TOPIC_SUFFIX;
     }

@@ -45,8 +45,6 @@ public class HelloIoTApp {
     private final List<Device> devices = new ArrayList<>();    
     
     private MQTTManager mqtthelper;
-    private Properties properties;
-    private File fileproperties;
     
     private HelloIoTAppPublic apppublic = null;
     private DeviceSimple unitpage;
@@ -62,18 +60,6 @@ public class HelloIoTApp {
         
         this.mqtthelper = mqtthelper;
         
-        // Load the properties
-        properties = new Properties();
-        properties.setProperty("window.height", "600.0");
-        properties.setProperty("window.width", "800.0");
-        properties.setProperty("window.maximized", "false");
-        fileproperties = new File(System.getProperty("user.home"), ".helloiot-" + mqtthelper.getClient() + ".properties");
-        try (InputStream in = new FileInputStream(fileproperties)) {            
-            properties.load(in);
-        } catch (IOException ex) {
-            Logger.getLogger(HelloIoTApp.class.getName()).log(Level.WARNING, ex.getMessage());
-        }    
-        
         // Construct All
         for (Unit s: units) {
             s.construct(this.getAppPublic());
@@ -85,18 +71,7 @@ public class HelloIoTApp {
     
     public void start() {
         
-        File f = new File(System.getProperty("user.home"), ".helloiot-" + mqtthelper.getClient());  
-        boolean fexists = f.exists();
-        
-        initFirstTime(fexists);        
-        
-        if (!fexists) {                      
-            try {
-                f.createNewFile();
-            } catch (IOException ex) {
-                Logger.getLogger(HelloIoTApp.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }     
+        initFirstTime(mqtthelper.isFreshClient());          
    
         for (Unit s: units) {
             s.start();
@@ -110,13 +85,7 @@ public class HelloIoTApp {
     }
     
     public void destroy() {
-        
-        // Save the properties...
-        try (OutputStream out = new FileOutputStream(fileproperties)) {            
-            properties.store(out, "HelloIoT properties");
-        } catch (IOException ex) {
-            Logger.getLogger(HelloIoTApp.class.getName()).log(Level.WARNING, ex.getMessage());
-        }         
+           
         
         // Destroy All
         for (Unit s: units) {
@@ -129,10 +98,6 @@ public class HelloIoTApp {
     
     public MQTTManager getMQTTHelper() {
         return mqtthelper;
-    }
-    
-    public Properties getProperties() {
-        return properties;
     }
     
     public DeviceSimple getUnitPage() {
