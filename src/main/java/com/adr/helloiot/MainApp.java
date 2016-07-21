@@ -15,16 +15,20 @@
 
 package com.adr.helloiot;
 
+import com.adr.helloiot.device.Device;
+import com.adr.helloiot.unit.Unit;
 import com.adr.helloiot.util.CompletableAsync;
 import com.google.common.base.Strings;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
+import com.google.inject.Key;
+import com.google.inject.name.Named;
+import com.google.inject.name.Names;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
-import java.util.Locale;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -102,10 +106,16 @@ public class MainApp extends Application {
         this.stage = stage;
         
         Properties configproperties = getConfigProperties();
-                   
-        Injector injector = Guice.createInjector(new AppModule(configproperties));               
+
+        Injector injector = Guice.createInjector(new AppModule(configproperties));
+        
+//        Device[] appdevices = injector.getInstance(Key.get(Device[].class, Names.named("app.devices")));
+//        Unit[] appunits = injector.getInstance(Key.get(Unit[].class, Names.named("app.units")));
+//        helloiotapp = new HelloIoTApp();
+//        helloiotapp.loadNamespace(appdevices, appunits);
+        
         mqttHelper = injector.getInstance(MQTTManager.class);        
-        helloiotapp = injector.getInstance(HelloIoTApp.class);
+        helloiotapp = injector.getInstance(HelloIoTApp.class); // There is a provider so.... 
         helloiotapp.construct(mqttHelper);
                 
         
@@ -186,8 +196,10 @@ public class MainApp extends Application {
         // Stop subscriptions and callback    
         helloiotapp.stop();
         mqttHelper.close();
-        helloiotapp.destroy();
         root.destroy();
+                
+        helloiotapp.destroy();
+
         CompletableAsync.shutdown();
         
         this.stage = null;
