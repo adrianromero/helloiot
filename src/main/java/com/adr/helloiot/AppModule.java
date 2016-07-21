@@ -53,9 +53,7 @@ public class AppModule extends AbstractModule {
         // Configuration
         Properties properties = new Properties();
         // default values    
-        properties.setProperty("app.title", "Hello IoT");
         properties.setProperty("app.exitbutton", "false");
-        properties.setProperty("app.fullscreen", "false");
         properties.setProperty("app.clock", "true"); // do not show clock
 
         properties.setProperty("mqtt.url", "tcp://localhost:1883");
@@ -72,13 +70,7 @@ public class AppModule extends AbstractModule {
         properties.putAll(configproperties);
 
         Names.bindProperties(binder(), properties);
-        
-        // Set default locale
-        String localization = properties.getProperty("app.locale");
-        if (!Strings.isNullOrEmpty(localization)) {
-            Locale.setDefault(Locale.forLanguageTag(localization));
-        }
-        
+               
         // External services
         List<UnitPage> appunitpages = new ArrayList<>();
         List<Device> appdevices = new ArrayList<>();

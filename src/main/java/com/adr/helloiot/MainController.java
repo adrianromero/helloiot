@@ -95,9 +95,7 @@ public final class MainController extends AnchorPane implements AbstractControll
     private final Buzzer buzzer;
     private final HelloIoTApp app;
     private final boolean appclock;
-    private final String apptitle;
     private final String appexitbutton;
-    private final boolean appfullscreen;
 
     @Inject 
     public MainController(
@@ -105,15 +103,11 @@ public final class MainController extends AnchorPane implements AbstractControll
             ClipFactory factory,
             @Named("app.unitpages") UnitPage[] appunitpages,
             @Named("app.clock") String appclock,
-            @Named("app.title") String apptitle,
-            @Named("app.exitbutton") String appexitbutton,
-            @Named("app.fullscreen") String appfullscreen) {
+            @Named("app.exitbutton") String appexitbutton) {
         
         this.app = app;
-        this.appclock = "true".equals(appclock);
-        this.apptitle = apptitle;
+        this.appclock = Boolean.parseBoolean(appclock);
         this.appexitbutton = appexitbutton;
-        this.appfullscreen = "true".equals(appfullscreen);
         load("/com/adr/helloiot/fxml/main.fxml", "com/adr/helloiot/fxml/main");
         MessageUtils.setDialogRoot(stackparent, true);
         beeper = new Beeper(factory, alert);
@@ -333,14 +327,6 @@ public final class MainController extends AnchorPane implements AbstractControll
         }
 
         animateListPages(-1.0);
-    }
-    
-    public String getAppTitle() {
-        return apptitle;
-    }
-    
-    public boolean getAppFullScreen() {
-        return appfullscreen;
     }
     
     public void showConnecting() {

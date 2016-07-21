@@ -24,6 +24,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+import java.util.Locale;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -80,9 +81,23 @@ public class MainApp extends Application {
         
         return config;
     }
+    
+    protected boolean isFullScreen() {
+        return false;
+    }
+    
+    protected String getAppTitle() {
+        return "Hello IoT";
+    }
+    
+    protected void initializeApp() {
+        // Locale.setDefault(Locale.forLanguageTag("en-US"));      
+    }
   
     @Override
     public final void start(Stage stage) {  
+        
+        initializeApp();
         
         this.stage = stage;
         
@@ -102,7 +117,7 @@ public class MainApp extends Application {
         stage.setScene(scene);
          
         // injector.getInstance(Key.get(String.class, Names.named("annotation")));
-        if (root.getAppFullScreen()) {
+        if (isFullScreen()) {
             scene.setCursor(Cursor.NONE);
             Rectangle2D dimension = Screen.getPrimary().getBounds();
             stage.setX(dimension.getMinX());
@@ -122,7 +137,7 @@ public class MainApp extends Application {
             }
         }
 
-        stage.setTitle(root.getAppTitle());
+        stage.setTitle(getAppTitle());
         stage.show();
         
         // hack to avoid slider to get the focus.
