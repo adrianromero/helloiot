@@ -15,6 +15,8 @@
 
 package com.adr.helloiot;
 
+import com.adr.fonticon.FontAwesome;
+import com.adr.fonticon.IconBuilder;
 import com.adr.helloiot.unit.Unit;
 import com.adr.helloiot.device.Device;
 import com.adr.helloiot.device.DeviceSimple;
@@ -22,18 +24,18 @@ import com.adr.helloiot.device.DeviceSwitch;
 import com.adr.helloiot.device.TransmitterSimple;
 import com.adr.helloiot.device.TreeEvent;
 import com.adr.helloiot.device.TreeStatus;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import com.adr.helloiot.media.SilentClipFactory;
+import com.adr.helloiot.media.StandardClipFactory;
+import com.adr.helloiot.unit.UnitPage;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Properties;
+import java.util.ResourceBundle;
+import java.util.ServiceLoader;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.application.ConditionalFeature;
+import javafx.application.Platform;
 
 /**
  *
@@ -44,34 +46,94 @@ public class HelloIoTApp {
     private final List<Unit> units = new ArrayList<>();    
     private final List<Device> devices = new ArrayList<>();    
     
-    private MQTTManager mqtthelper;
+    private final MQTTManager mqttmanager;
+    private final MQTTMainNode mqttnode;
     
     private HelloIoTAppPublic apppublic = null;
     private DeviceSimple unitpage;
     private DeviceSwitch beeper;
     private TransmitterSimple buzzer;
     
-    public void loadNamespace(Device[] appdevices, Unit[] appunits) {
-        Collections.addAll(devices, appdevices);
-        Collections.addAll(units, appunits);
-    }
-       
-    public void construct(MQTTManager mqtthelper) {
+    public HelloIoTApp(Properties configproperties) {
+
+        // Configuration
+        Properties properties = new Properties();
+        // default values    
+        properties.setProperty("app.exitbutton", "false");
+        properties.setProperty("app.clock", "true"); // do not show clock
+
+        properties.setProperty("mqtt.url", "tcp://localhost:1883");
+        properties.setProperty("mqtt.username", "");
+        properties.setProperty("mqtt.password", "");
+        properties.setProperty("mqtt.connectiontimeout", "30");
+        properties.setProperty("mqtt.keepaliveinterval", "60");
+        properties.setProperty("mqtt.defaultqos", "1");
+        properties.setProperty("mqtt.topicprefix", "");
+        properties.setProperty("mqtt.topicapp", "_LOCAL_/_sys_helloIoT/mainapp");
         
-        this.mqtthelper = mqtthelper;
+        properties.setProperty("devicesunits", ""); // do not load any fxml
+        
+        properties.putAll(configproperties);
+               
+        // External services
+        List<UnitPage> appunitpages = new ArrayList<>();
+        List<Device> appdevices = new ArrayList<>();
+        List<Unit> appunits = new ArrayList<>();
+        
+        ServiceLoader<ApplicationUnitPages> unitpagesloader = ServiceLoader.load(ApplicationUnitPages.class);
+        unitpagesloader.forEach(c -> {
+            c.init(properties);
+            appunitpages.addAll(c.getUnitPages());
+        });
+        // Add "main" unit page if needed
+        if (!appunitpages.stream().anyMatch(p -> "main".equals(p.getName()))) {
+            ResourceBundle resources = ResourceBundle.getBundle("com/adr/helloiot/fxml/main");
+            UnitPage main = new UnitPage("main", IconBuilder.create(FontAwesome.FA_HOME, 24.0).build(), resources.getString("page.main"));
+            main.setOrder(0);     
+            appunitpages.add(main);
+        }
+         
+        ServiceLoader<ApplicationDevicesUnits> devicesunitsloader = ServiceLoader.load(ApplicationDevicesUnits.class);
+        devicesunitsloader.forEach(c -> {
+            c.init(properties);
+            appdevices.addAll(c.getDevices());
+            appunits.addAll(c.getUnits());                 
+        });
+        
+        devices.addAll(appdevices);
+        units.addAll(appunits);
+        
+        // MQTT Manager   
+        mqttmanager = new MQTTManager(
+                properties.getProperty("mqtt.url"),
+                properties.getProperty("mqtt.username"), 
+                properties.getProperty("mqtt.password"),
+                Integer.parseInt(properties.getProperty("mqtt.connectiontimeout")), 
+                Integer.parseInt(properties.getProperty("mqtt.keepaliveinterval")),
+                Integer.parseInt(properties.getProperty("mqtt.defaultqos")), 
+                null, 
+                properties.getProperty("mqtt.topicprefix"), 
+                properties.getProperty("mqtt.topicapp"));        
+
+        mqttnode = new MQTTMainNode(
+                this, 
+                Platform.isSupported(ConditionalFeature.MEDIA) ? new StandardClipFactory(): new SilentClipFactory(),
+                appunitpages.toArray(new UnitPage[appunitpages.size()]),
+                properties.getProperty("app.clock"),
+                properties.getProperty("app.exitbutton"));
         
         // Construct All
         for (Unit s: units) {
             s.construct(this.getAppPublic());
         }
         for (Device d: devices) {
-            d.construct(mqtthelper);
+            d.construct(mqttmanager);
         }      
     }
     
     public void start() {
         
-        initFirstTime(mqtthelper.isFreshClient());          
+        initFirstTime(mqttmanager.isFreshClient());          
    
         for (Unit s: units) {
             s.start();
@@ -97,7 +159,11 @@ public class HelloIoTApp {
     }
     
     public MQTTManager getMQTTHelper() {
-        return mqtthelper;
+        return mqttmanager;
+    }
+    
+    public MQTTMainNode getMQTTNode() {
+        return mqttnode;
     }
     
     public DeviceSimple getUnitPage() {

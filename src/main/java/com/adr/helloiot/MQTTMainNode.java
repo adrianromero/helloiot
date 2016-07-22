@@ -26,10 +26,7 @@ import com.adr.helloiot.unit.Unit;
 import com.adr.helloiot.media.ClipFactory;
 import com.google.common.base.Strings;
 import com.google.common.eventbus.Subscribe;
-import com.google.inject.name.Named;
-import java.net.URL;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 import javafx.animation.FadeTransition;
@@ -65,11 +62,8 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
-import javax.inject.Inject;
-import javax.inject.Singleton;
 
-@Singleton
-public final class MainController extends AnchorPane implements AbstractController {
+public final class MQTTMainNode extends AnchorPane implements AbstractController {
     
 //    @FXML private URL url;
     @FXML private ResourceBundle resources;
@@ -97,13 +91,12 @@ public final class MainController extends AnchorPane implements AbstractControll
     private final boolean appclock;
     private final String appexitbutton;
 
-    @Inject 
-    public MainController(
+    public MQTTMainNode(
             HelloIoTApp app,
             ClipFactory factory,
-            @Named("app.unitpages") UnitPage[] appunitpages,
-            @Named("app.clock") String appclock,
-            @Named("app.exitbutton") String appexitbutton) {
+            UnitPage[] appunitpages,
+            String appclock,
+            String appexitbutton) {
         
         this.app = app;
         this.appclock = Boolean.parseBoolean(appclock);
@@ -120,6 +113,40 @@ public final class MainController extends AnchorPane implements AbstractControll
         // Add configured unitpages.
         for(UnitPage up: appunitpages) {
             this.addUnitPage(up);
+        }
+
+        //Init unit nodes
+        app.getUnits().forEach((Unit u) -> {
+            Node n = u.getNode();
+            if (n != null) {
+                UnitPage unitpage = buildUnitPage(UnitPage.getPage(n));
+                unitpage.getUnits().add(n);
+            }                   
+        });
+        
+        // Build listpages based on unitpages
+        unitpages.values().stream().sorted().forEach(value -> {
+            if (!value.isSystem() && value.getUnits().size() > 0 && (value.getName() == null || !value.getName().startsWith("."))) {
+                listpages.getItems().add(value);
+            }        
+        });
+        
+        gotoPage("start");
+        
+        // Remove menubutton if 0 or 1 visible page.
+        if (listpages.getItems().size() <=1) {
+            menubutton.setVisible(false);
+            headerbox.getChildren().remove(menubutton);
+            menubutton = null;
+        }
+        
+        // Remove headerbox if empty
+        if ((headertitle.getText() == null || headertitle.getText().equals("")) &&
+                clock == null && 
+                menubutton == null &&
+                exitbutton == null) {
+            // There is nothing visible in the headerbox
+            appcontainer.getChildren().remove(headerbox);
         }
     }
     
@@ -368,43 +395,6 @@ public final class MainController extends AnchorPane implements AbstractControll
             addUnitPage(unitpage);
         }
         return unitpage;
-    }
-
-    public void initUnitNodes(List<Unit> units) {
-        
-        // Get all units that has node
-        units.forEach((Unit u) -> {
-            Node n = u.getNode();
-            if (n != null) {
-                UnitPage unitpage = buildUnitPage(UnitPage.getPage(n));
-                unitpage.getUnits().add(n);
-            }                   
-        });
-        
-        // Build listpages based on unitpages
-        unitpages.values().stream().sorted().forEach(value -> {
-            if (!value.isSystem() && value.getUnits().size() > 0 && (value.getName() == null || !value.getName().startsWith("."))) {
-                listpages.getItems().add(value);
-            }        
-        });
-        
-        gotoPage("start");
-        
-        // Remove menubutton if 0 or 1 visible page.
-        if (listpages.getItems().size() <=1) {
-            menubutton.setVisible(false);
-            headerbox.getChildren().remove(menubutton);
-            menubutton = null;
-        }
-        
-        // Remove headerbox if empty
-        if ((headertitle.getText() == null || headertitle.getText().equals("")) &&
-                clock == null && 
-                menubutton == null &&
-                exitbutton == null) {
-            // There is nothing visible in the headerbox
-            appcontainer.getChildren().remove(headerbox);
-        }
     }
     
     private static class UnitPageCell extends ListCell<UnitPage> {

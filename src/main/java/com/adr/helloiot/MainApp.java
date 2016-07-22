@@ -15,15 +15,8 @@
 
 package com.adr.helloiot;
 
-import com.adr.helloiot.device.Device;
-import com.adr.helloiot.unit.Unit;
 import com.adr.helloiot.util.CompletableAsync;
 import com.google.common.base.Strings;
-import com.google.inject.Guice;
-import com.google.inject.Injector;
-import com.google.inject.Key;
-import com.google.inject.name.Named;
-import com.google.inject.name.Names;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -54,7 +47,7 @@ public class MainApp extends Application {
     private final static Logger logger = Logger.getLogger(MainApp.class.getName());
 
     private MQTTManager mqttHelper;
-    private MainController root;
+    private MQTTMainNode root;
     private HelloIoTApp helloiotapp;
     
     private Stage stage;
@@ -112,23 +105,11 @@ public class MainApp extends Application {
         
         this.stage = stage;
         
-        Properties configproperties = getConfigProperties();
-
-        Injector injector = Guice.createInjector(new AppModule(configproperties));
-        
-//        Device[] appdevices = injector.getInstance(Key.get(Device[].class, Names.named("app.devices")));
-//        Unit[] appunits = injector.getInstance(Key.get(Unit[].class, Names.named("app.units")));
-//        helloiotapp = new HelloIoTApp();
-//        helloiotapp.loadNamespace(appdevices, appunits);
-        
-        mqttHelper = injector.getInstance(MQTTManager.class);        
-        helloiotapp = injector.getInstance(HelloIoTApp.class); // There is a provider so.... 
-        helloiotapp.construct(mqttHelper);
-                
-        
-        root = injector.getInstance(MainController.class);
-        
-        root.initUnitNodes(helloiotapp.getUnits());
+        Properties configproperties = getConfigProperties();        
+       
+        helloiotapp = new HelloIoTApp(configproperties);
+        mqttHelper = helloiotapp.getMQTTHelper();       
+        root = helloiotapp.getMQTTNode();
 
         Scene scene = new Scene(root);
         stage.setScene(scene);
@@ -176,7 +157,7 @@ public class MainApp extends Application {
         restartConnection(root);
     }
         
-    private void restartConnection(MainController root) {
+    private void restartConnection(MQTTMainNode root) {
         root.showConnecting();
         tryConnection();        
     }
