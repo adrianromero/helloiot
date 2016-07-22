@@ -15,10 +15,6 @@
     along with HelloIot.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-.maincontainer {
-    -fx-padding: 15px;
-}
-
 .button:hover {
     -fx-color: -fx-base;
 }

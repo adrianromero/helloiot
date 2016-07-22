@@ -27,27 +27,21 @@ import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.beans.value.ObservableValue;
+import javafx.geometry.Insets;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Slider;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import javafx.util.Duration;
 
 public class MainApp extends Application {
-    
-    private final static Logger logger = Logger.getLogger(MainApp.class.getName());
 
-    private MQTTManager mqttHelper;
-    private MQTTMainNode root;
     private HelloIoTApp helloiotapp;
     
     private Stage stage;
@@ -99,18 +93,14 @@ public class MainApp extends Application {
     @Override
     public final void start(Stage stage) {  
         
-        initializeApp();
-        
-        loadAppProperties();
-        
         this.stage = stage;
+        StackPane root = new StackPane();
         
+        initializeApp();       
+        loadAppProperties();
         Properties configproperties = getConfigProperties();        
-       
-        helloiotapp = new HelloIoTApp(configproperties);
-        mqttHelper = helloiotapp.getMQTTHelper();       
-        root = helloiotapp.getMQTTNode();
 
+        // Construct root graph scene
         Scene scene = new Scene(root);
         stage.setScene(scene);
          
@@ -124,8 +114,10 @@ public class MainApp extends Application {
             stage.setHeight(dimension.getHeight());
             stage.initStyle(StageStyle.UNDECORATED);
             
-            root.getStylesheets().add(getClass().getResource("/com/adr/helloiot/styles/fullscreen.css").toExternalForm());            
+            root.setPadding(new Insets(15.0));
+            root.getStylesheets().add(getClass().getResource("/com/adr/helloiot/styles/fullscreen.css").toExternalForm());    
         } else {
+            // Dimension properties only managed if not fullscreen
             boolean maximized = Boolean.parseBoolean(appproperties.getProperty("window.maximized"));
             if (maximized) {
                 stage.setMaximized(true);
@@ -135,9 +127,6 @@ public class MainApp extends Application {
             }
         }
 
-        stage.setTitle(getAppTitle());
-        stage.show();
-        
         // hack to avoid slider to get the focus.
         scene.focusOwnerProperty().addListener((ObservableValue<? extends Node> observable, Node oldValue, Node newValue) -> {
             if (newValue != null && newValue instanceof Slider) {
@@ -145,51 +134,27 @@ public class MainApp extends Application {
             }
         });
 
-        // Start connection at the end and callback
-        mqttHelper.setOnConnectionLost(t -> {
-            logger.log(Level.WARNING, "Connection lost to broker.", t);
-            Platform.runLater(() -> {
-                helloiotapp.stop();
-                restartConnection(root); 
-            });                
-        });
+        helloiotapp = new HelloIoTApp(configproperties);
+        root.getChildren().add(helloiotapp.getMQTTNode());
+        helloiotapp.start();
         
-        restartConnection(root);
+        stage.setTitle(getAppTitle());
+        stage.show();        
     }
-        
-    private void restartConnection(MQTTMainNode root) {
-        root.showConnecting();
-        tryConnection();        
-    }
-    
-    private void tryConnection() {
-        mqttHelper.open().thenAcceptFX((v) -> {
-            // success
-            root.hideConnecting();
-            helloiotapp.start();
-        }).exceptionallyFX(ex -> {
-            new Timeline(new KeyFrame(Duration.millis(2500), ev -> {
-                tryConnection();
-            })).play();  
-            return null;
-        }); 
-    }
-    
+
     @Override
     public final void stop() throws Exception {
         
-        // Save Properties
-        appproperties.setProperty("window.height", Double.toString(stage.getHeight()));
-        appproperties.setProperty("window.width", Double.toString(stage.getWidth()));
-        appproperties.setProperty("window.maximized", Boolean.toString(stage.isMaximized()));
+        if (!isFullScreen()) {
+            // Dimension properties only managed if not fullscreen
+            appproperties.setProperty("window.height", Double.toString(stage.getHeight()));
+            appproperties.setProperty("window.width", Double.toString(stage.getWidth()));
+            appproperties.setProperty("window.maximized", Boolean.toString(stage.isMaximized()));
+        }
         saveAppProperties();
         
         // Stop subscriptions and callback    
-        helloiotapp.stop();
-        mqttHelper.close();
-        root.destroy();
-                
-        helloiotapp.destroy();
+        helloiotapp.stopAndDestroy();
 
         CompletableAsync.shutdown();
         

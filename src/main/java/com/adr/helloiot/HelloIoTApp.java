@@ -34,14 +34,19 @@ import java.util.ResourceBundle;
 import java.util.ServiceLoader;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.ConditionalFeature;
 import javafx.application.Platform;
+import javafx.util.Duration;
 
 /**
  *
  * @author adrian
  */
 public class HelloIoTApp {
+        
+    private final static Logger LOGGER = Logger.getLogger(HelloIoTApp.class.getName());
     
     private final List<Unit> units = new ArrayList<>();    
     private final List<Device> devices = new ArrayList<>();    
@@ -113,7 +118,14 @@ public class HelloIoTApp {
                 Integer.parseInt(properties.getProperty("mqtt.defaultqos")), 
                 null, 
                 properties.getProperty("mqtt.topicprefix"), 
-                properties.getProperty("mqtt.topicapp"));        
+                properties.getProperty("mqtt.topicapp"));
+        mqttmanager.setOnConnectionLost(t -> {
+            LOGGER.log(Level.WARNING, "Connection lost to broker.", t);
+            Platform.runLater(() -> {
+                stopUnits();
+                start(); 
+            });                
+        });        
 
         mqttnode = new MQTTMainNode(
                 this, 
@@ -128,28 +140,33 @@ public class HelloIoTApp {
         }
         for (Device d: devices) {
             d.construct(mqttmanager);
-        }      
+        }  
     }
     
     public void start() {
-        
-        initFirstTime(mqttmanager.isFreshClient());          
-   
-        for (Unit s: units) {
-            s.start();
-        }               
+        mqttnode.showConnecting();
+        tryConnection();                 
     }
     
-    public void stop() {
-        for (Unit s: units) {
-            s.stop();
-        }        
+    private void tryConnection() {
+        mqttmanager.open().thenAcceptFX((v) -> {
+            // success
+            mqttnode.hideConnecting();
+            startUnits();
+        }).exceptionallyFX(ex -> {
+            new Timeline(new KeyFrame(Duration.millis(2500), ev -> {
+                tryConnection();
+            })).play();  
+            return null;
+        }); 
     }
     
-    public void destroy() {
-           
-        
-        // Destroy All
+    
+    public void stopAndDestroy() {
+        stopUnits();
+        mqttmanager.close();
+                
+        // Destroy all units
         for (Unit s: units) {
             s.destroy();
         }         
@@ -158,10 +175,21 @@ public class HelloIoTApp {
         }        
     }
     
-    public MQTTManager getMQTTHelper() {
-        return mqttmanager;
+    private void startUnits() {
+        
+        initFirstTime(mqttmanager.isFreshClient());          
+   
+        for (Unit s: units) {
+            s.start();
+        }               
     }
     
+    private void stopUnits() {
+        for (Unit s: units) {
+            s.stop();
+        }        
+    }
+
     public MQTTMainNode getMQTTNode() {
         return mqttnode;
     }
