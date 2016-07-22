@@ -16,14 +16,12 @@
 package com.adr.helloiot;
 
 import com.adr.helloiot.util.CompletableAsync;
-import com.google.common.base.Strings;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -41,41 +39,15 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 public class MainApp extends Application {
-
-    private HelloIoTApp helloiotapp;
     
+    private MainManager manager;    
     private Stage stage;
     
     private Properties appproperties;
     private File fileproperties;    
     
-    protected Properties getConfigProperties() {
-        
-        Properties config = new Properties();
-        
-        // read the configuration properties 
-        List<String> unnamed = getParameters().getUnnamed();    
-        File configfile;
-        if (unnamed.isEmpty()) {
-            configfile = new File("helloiot.properties");
-        } else {
-            String param = unnamed.get(0);
-            if (Strings.isNullOrEmpty(param)) {
-                configfile = new File("helloiot.properties");
-            } else {
-                configfile = new File(param); 
-            }
-        }
-        try (InputStream in = new FileInputStream(configfile)) {            
-            config.load(in);
-        } catch (IOException ex) {
-            throw new RuntimeException("Properties file name is not correct: " + configfile.toString());
-        }
-        
-        // read the parameters
-        config.putAll(getParameters().getNamed());
-        
-        return config;
+    protected MainManager createManager() {
+        return new MainManager();
     }
     
     protected boolean isFullScreen() {
@@ -97,8 +69,7 @@ public class MainApp extends Application {
         StackPane root = new StackPane();
         
         initializeApp();       
-        loadAppProperties();
-        Properties configproperties = getConfigProperties();        
+        loadAppProperties();    
 
         // Construct root graph scene
         Scene scene = new Scene(root);
@@ -133,11 +104,10 @@ public class MainApp extends Application {
                 root.requestFocus();
             }
         });
-
-        helloiotapp = new HelloIoTApp(configproperties);
-        root.getChildren().add(helloiotapp.getMQTTNode());
-        helloiotapp.start();
         
+        manager = new MainManager();
+        manager.construct(root, getParameters());
+
         stage.setTitle(getAppTitle());
         stage.show();        
     }
@@ -153,9 +123,8 @@ public class MainApp extends Application {
         }
         saveAppProperties();
         
-        // Stop subscriptions and callback    
-        helloiotapp.stopAndDestroy();
-
+        manager.destroy();
+        
         CompletableAsync.shutdown();
         
         this.stage = null;
