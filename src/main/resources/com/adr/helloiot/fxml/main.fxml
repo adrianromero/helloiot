@@ -54,7 +54,7 @@
                         <Button fx:id="menubutton" focusTraversable="false" mnemonicParsing="false" onAction="#onMenuAction" styleClass="headerbutton" />
                         <Label fx:id="headertitle" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="headertitle" text="Hello IoT" HBox.hgrow="SOMETIMES" />
                         <Label fx:id="currenttime" maxHeight="1.7976931348623157E308" styleClass="currenttime" />
-                        <Button fx:id="exitbutton" focusTraversable="false" mnemonicParsing="false" onAction="#onExitAction" styleClass="headerbutton" />
+                        <Button fx:id="exitbutton" focusTraversable="false" mnemonicParsing="false" styleClass="headerbutton" />
                      </children>
                   </HBox>
                </top>

@@ -36,6 +36,7 @@ import javafx.animation.Transition;
 import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -154,6 +155,12 @@ public final class MQTTMainNode extends AnchorPane implements AbstractController
         app.getUnitPage().unsubscribeStatus(this);         
         app.getBeeper().unsubscribeStatus(beeper);         
     }
+    
+    public void setOnExitAction(EventHandler<ActionEvent> exitevent) {
+        if (exitbutton != null) {
+            exitbutton.setOnAction(exitevent);
+        }
+    }
 
     @FXML public void initialize() {
         
@@ -202,10 +209,6 @@ public final class MQTTMainNode extends AnchorPane implements AbstractController
                 listpagesgray.setVisible(false);
             }
         });       
-    }
-    
-    @FXML void onExitAction(ActionEvent e) {
-        getScene().getWindow().hide();
     }
     
     @FXML void onMenuAction(ActionEvent e) {

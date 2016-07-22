@@ -64,6 +64,10 @@ public class MainManager {
     
     public void construct(StackPane root, Parameters params) {
         helloiotapp = new HelloIoTApp(getConfigProperties(params));
+        helloiotapp.getMQTTNode().setOnExitAction(event -> {
+            root.getScene().getWindow().hide();            
+        });
+        
         root.getChildren().add(helloiotapp.getMQTTNode());
         helloiotapp.start();        
     }
