@@ -15,36 +15,22 @@
 
 package com.adr.helloiot;
 
-import com.adr.helloiot.unit.Unit;
-import com.adr.helloiot.device.Device;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 /**
  *
  * @author adrian
  */
-public abstract class AbstractApplicationDevicesUnits implements ApplicationDevicesUnits {
+public class ApplicationConfig {
+
+    public boolean app_exitbutton = false;
+    public boolean app_clock = true;
+    public boolean app_retryconnection = false;
     
-    private List<Device> devices = new ArrayList<>();
-    private List<Unit> units = new ArrayList<>();
-    
-    protected final void createDevices(Device... devices) {
-        this.devices = Arrays.asList(devices);
-    }
-    
-    protected final void createUnits(Unit... units) {
-        this.units = Arrays.asList(units);
-    }
-    
-    @Override
-    public final List<Device> getDevices() {
-        return devices;
-    } 
-    
-    @Override
-    public final List<Unit> getUnits() {
-        return units;
-    } 
+    public String mqtt_url = "tcp://localhost:1883";
+    public String mqtt_username = "";
+    public String mqtt_password = "";
+    public int mqtt_connectiontimeout = 30;
+    public int mqtt_keepaliveinterval = 60;
+    public int mqtt_defaultqos = 1;
+    public String mqtt_topicprefix = "";
+    public String mqtt_topicapp = "_LOCAL_/_sys_helloIoT/mainapp";  
 }

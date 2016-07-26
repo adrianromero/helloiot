@@ -18,15 +18,12 @@ package com.adr.helloiot;
 import com.adr.helloiot.unit.Unit;
 import com.adr.helloiot.device.Device;
 import java.util.List;
-import java.util.Properties;
 
 /**
  *
  * @author adrian
  */
 public interface ApplicationDevicesUnits {
-     
-    public default void init(Properties config) {}
     public List<Device> getDevices();
     public List<Unit> getUnits();
 }

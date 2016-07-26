@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<fx:root prefHeight="510.0" prefWidth="800.0" stylesheets="@../styles/main.css" type="BorderPane" xmlns="http://javafx.com/javafx/8.0.91" xmlns:fx="http://javafx.com/fxml/1">
+    <top>
+       <HBox fx:id="headerbox" spacing="5.0" styleClass="header" BorderPane.alignment="CENTER">
+          <children>
+             <Label fx:id="headertitle" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="headertitle" text="%label.clientlogin" HBox.hgrow="SOMETIMES" />
+             <Button fx:id="nextbutton" focusTraversable="false" mnemonicParsing="false" styleClass="headerbutton" text="%button.connect" />
+          </children>
+       </HBox>
+    </top>    
+   <center>
+      <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
+        <tabs>
+          <Tab text="%tab.mqttbroker">
+               <content>
+                  <AnchorPane>
+                     <children>
+                        <Label layoutX="15.0" layoutY="48.0" styleClass="fieldlabel" text="%label.url" />
+                        <TextField fx:id="url" layoutX="181.0" layoutY="51.0" prefHeight="26.0" prefWidth="363.0" styleClass="fieldtextbox" />
+                        <Label layoutX="14.0" layoutY="88.0" styleClass="fieldlabel" text="%label.username" />
+                        <TextField fx:id="username" layoutX="181.0" layoutY="91.0" prefHeight="26.0" prefWidth="171.0" styleClass="fieldtextbox" />
+                        <Label layoutX="15.0" layoutY="128.0" styleClass="fieldlabel" text="%label.password" />
+                        <PasswordField fx:id="password" layoutX="181.0" layoutY="131.0" styleClass="fieldtextbox" />
+                        <Label layoutX="15.0" layoutY="175.0" prefHeight="37.0" prefWidth="724.0" styleClass="labelsection" text="%label.extendedproperties" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="13.0" />
+                        <Label layoutX="15.0" layoutY="218.0" styleClass="fieldlabel" text="%label.timeout" />
+                        <TextField fx:id="timeout" layoutX="179.0" layoutY="224.0" prefHeight="26.0" prefWidth="171.0" styleClass="fieldtextbox" />
+                        <Label layoutX="15.0" layoutY="258.0" styleClass="fieldlabel" text="%label.keepalive" />
+                        <Label layoutX="15.0" layoutY="295.0" styleClass="fieldlabel" text="%label.defaultqos" />
+                        <TextField fx:id="keepalive" layoutX="179.0" layoutY="262.0" prefHeight="26.0" prefWidth="171.0" styleClass="fieldtextbox" />
+                        <RadioButton fx:id="qos0" layoutX="179.0" layoutY="305.0" mnemonicParsing="false" selected="true" styleClass="fieldtextbox" text="0">
+                           <toggleGroup>
+                              <ToggleGroup fx:id="qos" />
+                           </toggleGroup>
+                        </RadioButton>
+                        <RadioButton fx:id="qos1" layoutX="229.0" layoutY="305.0" mnemonicParsing="false" styleClass="fieldtextbox" text="1" toggleGroup="$qos" />
+                        <RadioButton fx:id="qos2" layoutX="279.0" layoutY="305.0" mnemonicParsing="false" styleClass="fieldtextbox" text="2" toggleGroup="$qos" />
+                        <Label prefHeight="37.0" prefWidth="724.0" styleClass="labelsection" text="%label.connection" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" />
+                     </children>
+                  </AnchorPane>
+               </content>
+            </Tab>
+          <Tab text="%tab.devicesunits" />
+        </tabs>
+      </TabPane>
+   </center>
+</fx:root>

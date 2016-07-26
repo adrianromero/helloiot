@@ -18,17 +18,18 @@ package com.adr.helloiot;
 import com.adr.fonticon.FontAwesome;
 import com.adr.fonticon.IconBuilder;
 import com.adr.helloiot.unit.UnitPage;
-import java.util.Properties;
+import java.util.Arrays;
+import java.util.List;
 import java.util.ResourceBundle;
 
 /**
  *
  * @author adrian
  */
-public class ApplicationUnitPagesBasic extends AbstractApplicationUnitPages {
-    
+public class ApplicationUnitPagesBasic implements ApplicationUnitPages {
+
     @Override
-    public void init(Properties config) {
+    public List<UnitPage> getUnitPages() {
         
         ResourceBundle resources = ResourceBundle.getBundle("com/adr/helloiot/fxml/main");
         
@@ -42,8 +43,8 @@ public class ApplicationUnitPagesBasic extends AbstractApplicationUnitPages {
 
         UnitPage start = new UnitPage("start", IconBuilder.create(FontAwesome.FA_STAR_O, 24.0).build(), resources.getString("page.start"));
         start.setEmptyLabel(resources.getString("label.start"));
-        start.setSystem(true);        
+        start.setSystem(true);   
         
-        createUnitPages(cfg, info, notfound, start);
-    }        
+        return Arrays.asList(cfg, info, notfound, start);
+    }
 }

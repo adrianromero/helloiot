@@ -15,6 +15,7 @@
 
 package com.adr.helloiot;
 
+import com.adr.hellocommon.dialog.MessageUtils;
 import com.adr.helloiot.util.CompletableAsync;
 import java.io.File;
 import java.io.FileInputStream;
@@ -47,7 +48,8 @@ public class MainApp extends Application {
     private File fileproperties;    
     
     protected MainManager createManager() {
-        return new MainManager();
+//        return new MainManagerPlatform();
+        return new MainManagerClient();
     }
     
     protected boolean isFullScreen() {
@@ -67,6 +69,7 @@ public class MainApp extends Application {
         
         this.stage = stage;
         StackPane root = new StackPane();
+        MessageUtils.setDialogRoot(root, true);
         
         initializeApp();       
         loadAppProperties();    
@@ -105,7 +108,7 @@ public class MainApp extends Application {
             }
         });
         
-        manager = new MainManager();
+        manager = createManager();
         manager.construct(root, getParameters());
 
         stage.setTitle(getAppTitle());

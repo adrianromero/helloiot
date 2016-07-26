@@ -17,14 +17,11 @@ package com.adr.helloiot;
 
 import com.adr.helloiot.unit.UnitPage;
 import java.util.List;
-import java.util.Properties;
 
 /**
  *
  * @author adrian
  */
 public interface ApplicationUnitPages {
-    
-    public default void init(Properties config) {}
     public List<UnitPage> getUnitPages();
 }

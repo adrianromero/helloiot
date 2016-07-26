@@ -27,7 +27,7 @@ repositories {
 
 dependencies {
     compile group: 'com.github.adrianromero', name: 'fonticon', version:'1.2.1'
-    compile group: 'com.github.adrianromero', name: 'hellocommon', version:'1.2.4'
+    compile group: 'com.github.adrianromero', name: 'hellocommon', version:'1.2.5'
     compile group: 'org.eclipse.paho', name: 'org.eclipse.paho.client.mqttv3', version:'1.0.2'
     compile group: 'com.jidesoft', name: 'jidefx-common', version:'0.9.1'
     compile group: 'eu.hansolo', name: 'Medusa', version:'5.4'

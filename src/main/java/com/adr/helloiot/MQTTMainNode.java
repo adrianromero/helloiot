@@ -27,6 +27,7 @@ import com.adr.helloiot.media.ClipFactory;
 import com.google.common.base.Strings;
 import com.google.common.eventbus.Subscribe;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 import javafx.animation.FadeTransition;
@@ -90,22 +91,24 @@ public final class MQTTMainNode extends AnchorPane implements AbstractController
     private final Buzzer buzzer;
     private final HelloIoTApp app;
     private final boolean appclock;
-    private final String appexitbutton;
+    private final boolean appexitbutton;
 
     public MQTTMainNode(
             HelloIoTApp app,
             ClipFactory factory,
-            UnitPage[] appunitpages,
-            String appclock,
-            String appexitbutton) {
+            
+            boolean appclock,
+            boolean appexitbutton) {
         
         this.app = app;
-        this.appclock = Boolean.parseBoolean(appclock);
+        this.appclock = appclock;
         this.appexitbutton = appexitbutton;
         load("/com/adr/helloiot/fxml/main.fxml", "com/adr/helloiot/fxml/main");
-        MessageUtils.setDialogRoot(stackparent, true);
         beeper = new Beeper(factory, alert);
         buzzer = new Buzzer(factory);
+    }
+    
+    public void construct(List<UnitPage> appunitpages) {
         
         app.getUnitPage().subscribeStatus(this);
         app.getBeeper().subscribeStatus(beeper);
@@ -153,7 +156,8 @@ public final class MQTTMainNode extends AnchorPane implements AbstractController
     
     public void destroy() {
         app.getUnitPage().unsubscribeStatus(this);         
-        app.getBeeper().unsubscribeStatus(beeper);         
+        app.getBeeper().unsubscribeStatus(beeper);       
+        app.getBuzzer().unsubscribeStatus(buzzer);
     }
     
     public void setOnExitAction(EventHandler<ActionEvent> exitevent) {
@@ -166,7 +170,7 @@ public final class MQTTMainNode extends AnchorPane implements AbstractController
         
         alert.setGraphic(IconBuilder.create(FontAwesome.FA_VOLUME_UP, 72.0).fill(Color.WHITE).shine(Color.RED).build());
         
-        if ("true".equals(appexitbutton)) {
+        if (appexitbutton) {
             exitbutton.setGraphic(IconBuilder.create(FontAwesome.FA_SIGN_OUT, 18.0).build());
         } else {
             exitbutton.setVisible(false);
@@ -259,7 +263,11 @@ public final class MQTTMainNode extends AnchorPane implements AbstractController
     private void gotoPage(String status) {
             
         listpages.getSelectionModel().select(-1);
-        MessageUtils.disposeAllDialogs(stackparent);
+        StackPane messagesroot = MessageUtils.getRoot(this);
+        if (messagesroot != null) {
+            // If it is not already added to the scene, there is no need to dispose dialogs.
+            MessageUtils.disposeAllDialogs(messagesroot);
+        }
 
         UnitPage unitpage = unitpages.get(status);
 
@@ -376,7 +384,7 @@ public final class MQTTMainNode extends AnchorPane implements AbstractController
             connectingdialog = new DialogView();
             connectingdialog.setMaster(true);
             connectingdialog.setContent(box);
-            connectingdialog.show(stackparent);
+            connectingdialog.show(MessageUtils.getRoot(this));
         }
     }
     
