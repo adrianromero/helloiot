@@ -54,7 +54,6 @@ public final class MQTTManager implements MqttCallback {
        
     private MqttAsyncClient mqttClient;
     private DB dbClient;
-    private boolean freshClient = false;
     private ConcurrentMap<String, byte[]> mapClient;
 
     private final String url;
@@ -128,7 +127,6 @@ public final class MQTTManager implements MqttCallback {
                     mqttClient.subscribe(listtopics, listqos);
                     
                     File dbfile = new File(System.getProperty("user.home"), ".helloiot-" + CryptUtils.hashMD5(url) + ".mapdb"); // dbfile is function of url only
-                    freshClient = dbfile.exists(); // exists if function of url and topicapp
                     dbClient = DBMaker.fileDB(dbfile).make();
                     mapClient = dbClient.hashMap("map", Serializer.STRING, Serializer.BYTE_ARRAY).createOrOpen();
                     
@@ -184,10 +182,6 @@ public final class MQTTManager implements MqttCallback {
     public void setOnConnectionLost(Consumer<Throwable> callback) {
         // To be invoked in JavaFX Thread. 
         connectionLost = callback;
-    }
-    
-    public boolean isFreshClient() {
-        return freshClient;
     }
 
     public Subscription subscribe(String topic, int qos) {

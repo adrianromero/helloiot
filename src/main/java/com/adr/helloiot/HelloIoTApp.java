@@ -28,6 +28,7 @@ import com.adr.helloiot.device.TreeStatus;
 import com.adr.helloiot.media.SilentClipFactory;
 import com.adr.helloiot.media.StandardClipFactory;
 import com.adr.helloiot.unit.UnitPage;
+import com.adr.helloiot.util.CryptUtils;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -73,6 +74,7 @@ public class HelloIoTApp {
     private final List<Unit> appunits = new ArrayList<>();    
     private final List<Device> appdevices = new ArrayList<>();    
     
+    private final ApplicationConfig config;
     private final MQTTManager mqttmanager;
     private final MQTTMainNode mqttnode;
     private final ResourceBundle resources;
@@ -82,13 +84,15 @@ public class HelloIoTApp {
     private DeviceSwitch beeper;
     private TransmitterSimple buzzer;
     
-    private final Runnable styleConnection;
     private EventHandler<ActionEvent> exitevent = null;
+    private final Runnable styleConnection;
     
     public HelloIoTApp(ApplicationConfig config) {
+        
+        this.config = config;
 
         // Load resources
-        resources = ResourceBundle.getBundle("com/adr/helloiot/fxml/main");
+        resources = ResourceBundle.getBundle("com/adr/helloiot/fxml/main");      
         
         // System devices units
         addSystemDevicesUnits(config.mqtt_topicapp);
@@ -262,7 +266,7 @@ public class HelloIoTApp {
     
     private void startUnits() {
         
-        initFirstTime(mqttmanager.isFreshClient());          
+        initFirstTime();          
    
         for (Unit s: appunits) {
             s.start();
@@ -350,12 +354,21 @@ public class HelloIoTApp {
         return apppublic;
     }
     
-    private void initFirstTime(boolean initexists) {   
-        
-        if (!initexists) {
-            Logger.getLogger(HelloIoTApp.class.getName()).log(Level.INFO, "Executing unit page initialization.");
+    private void initFirstTime() {   
+
+        // Check if it is first time  
+        File freshfile = new File(System.getProperty("user.home"), ".helloiot-" + CryptUtils.hashMD5(config.mqtt_url + config.mqtt_topicapp));
+        if (!freshfile.exists()) {
+            // This is the first time initialization
+            LOGGER.log(Level.INFO, "Executing unit page initialization.");
             getUnitPage().sendStatus("main");
-            Logger.getLogger(HelloIoTApp.class.getName()).log(Level.INFO, "Finished unitpage initialization.");   
+            LOGGER.log(Level.INFO, "Finished unitpage initialization.");   
         }
+        
+        try {
+            freshfile.createNewFile();
+        } catch (IOException ex) {
+            LOGGER.log(Level.WARNING, "Cannot create configuration file.", ex);
+        }        
     }    
 }
