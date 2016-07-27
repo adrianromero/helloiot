@@ -28,11 +28,35 @@ import java.util.Base64;
  */
 public class CryptUtils {
     
+    final protected static char[] HEXARRAY=  {'0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F'};
+    
     public static byte[] generateSalt() {
         SecureRandom random = new SecureRandom();
         byte salt[] = new byte[32];
         random.nextBytes(salt);     
         return salt;
+    }
+    
+    public static String hexString(byte[] bytes) {
+        char[] hexChars = new char[bytes.length * 2];
+        for (int i = 0; i < bytes.length; i++) {
+            int v = bytes[i] & 0xFF;
+            hexChars[i * 2] = HEXARRAY[v >>> 4];
+            hexChars[i * 2 + 1] = HEXARRAY[v & 0x0F];
+        }
+        return new String(hexChars);
+    }    
+    
+    public static String hashMD5(String input) {
+        try {
+            // generate hash
+            MessageDigest digest = MessageDigest.getInstance("MD5");
+            digest.reset();
+            byte[] hashedBytes = digest.digest(input.getBytes("UTF-8"));
+            return hexString(hashedBytes);
+        } catch (NoSuchAlgorithmException | UnsupportedEncodingException ex) {
+            throw new RuntimeException(ex);
+        }        
     }
     
     public static String hashsaltPassword(String input, byte[] salt) {

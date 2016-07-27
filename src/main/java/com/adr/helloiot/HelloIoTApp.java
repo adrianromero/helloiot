@@ -102,8 +102,7 @@ public class HelloIoTApp {
                 config.mqtt_keepaliveinterval,
                 config.mqtt_defaultqos, 
                 null, 
-                config.mqtt_topicprefix, 
-                config.mqtt_topicapp);
+                config.mqtt_topicprefix);
         mqttmanager.setOnConnectionLost(t -> {
             LOGGER.log(Level.WARNING, "Connection lost to broker.", t);
             Platform.runLater(() -> {

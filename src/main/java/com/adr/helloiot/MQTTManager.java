@@ -15,8 +15,8 @@
 
 package com.adr.helloiot;
 
-import com.adr.helloiot.device.StatusSwitch;
 import com.adr.helloiot.util.CompletableAsync;
+import com.adr.helloiot.util.CryptUtils;
 import com.google.common.base.Strings;
 import java.io.File;
 import java.util.ArrayList;
@@ -64,7 +64,6 @@ public final class MQTTManager implements MqttCallback {
     private final int keepalive;
     private final Properties sslproperties;
     private final String topicprefix;
-    private final String topicapp;
     private final int defaultqos;   
     
     private Consumer<Throwable> connectionLost = null;
@@ -72,11 +71,11 @@ public final class MQTTManager implements MqttCallback {
     private final Set<TopicQos> topicsubscriptions;
     private final Map<String, List<Subscription>> subscriptions;
     
-    public MQTTManager(String url, String topicapp) {
-        this(url, null, null, 30, 60, 1, null, "", topicapp);
+    public MQTTManager(String url) {
+        this(url, null, null, 30, 60, 1, null, "");
     }
     
-    public MQTTManager(String url, String username, String password, int timeout, int keepalive, int defaultqos, Properties sslproperties, String topicprefix, String topicapp) {
+    public MQTTManager(String url, String username, String password, int timeout, int keepalive, int defaultqos, Properties sslproperties, String topicprefix) {
         
         this.mqttClient = null;
         
@@ -88,7 +87,6 @@ public final class MQTTManager implements MqttCallback {
         this.defaultqos = defaultqos;        
         this.sslproperties = sslproperties;
         this.topicprefix = topicprefix;
-        this.topicapp = topicapp;
         
         this.subscriptions = new HashMap<>();
         this.topicsubscriptions = new HashSet<>();
@@ -129,7 +127,7 @@ public final class MQTTManager implements MqttCallback {
                     mqttClient.setCallback(this);
                     mqttClient.subscribe(listtopics, listqos);
                     
-                    File dbfile = new File(System.getProperty("user.home"), ".helloiot-" + topicapp.replaceAll("[^a-zA-Z0-9.-]", "_") + ".mapdb"); // dbfile is function of url only
+                    File dbfile = new File(System.getProperty("user.home"), ".helloiot-" + CryptUtils.hashMD5(url) + ".mapdb"); // dbfile is function of url only
                     freshClient = dbfile.exists(); // exists if function of url and topicapp
                     dbClient = DBMaker.fileDB(dbfile).make();
                     mapClient = dbClient.hashMap("map", Serializer.STRING, Serializer.BYTE_ARRAY).createOrOpen();
