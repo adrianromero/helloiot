@@ -71,7 +71,7 @@ public class MainManagerClient implements MainManager {
         
         helloiotapp = new HelloIoTApp(config);
         
-        helloiotapp.addFXMLFileDevicesUnits("application");
+        helloiotapp.addFXMLFileDevicesUnits("application"); // TODO: Remove
         helloiotapp.addFXMLFileDevicesUnits("mosquitto");
         
         helloiotapp.setOnExitAction(event -> {

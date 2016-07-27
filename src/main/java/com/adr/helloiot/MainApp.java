@@ -39,7 +39,7 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
-public class MainApp extends Application {
+public abstract class MainApp extends Application {
     
     private MainManager manager;    
     private Stage stage;
@@ -47,10 +47,7 @@ public class MainApp extends Application {
     private Properties appproperties;
     private File fileproperties;    
     
-    protected MainManager createManager() {
-//        return new MainManagerPlatform();
-        return new MainManagerClient();
-    }
+    protected abstract MainManager createManager();
     
     protected boolean isFullScreen() {
         return false;
@@ -154,17 +151,5 @@ public class MainApp extends Application {
         } catch (IOException ex) {
             Logger.getLogger(HelloIoTApp.class.getName()).log(Level.WARNING, ex.getMessage());
         }           
-    }
-    
-    /**
-     * The main() method is ignored in correctly deployed JavaFX application.
-     * main() serves only as fallback in case the application can not be
-     * launched through deployment artifacts, e.g., in IDEs with limited FX
-     * support. NetBeans ignores main().
-     *
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        launch(args);
-    }     
+    }    
 }
