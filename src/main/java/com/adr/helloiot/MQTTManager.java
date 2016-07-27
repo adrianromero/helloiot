@@ -120,10 +120,6 @@ public final class MQTTManager implements MqttCallback {
                     mqttClient = new MqttAsyncClient(url, MqttAsyncClient.generateClientId()); 
                     MqttConnectOptions options = new MqttConnectOptions();
                     options.setCleanSession(true);
-                    if (!getStatusTopic().startsWith(LOCAL_PREFIX)) {
-                        options.setWill(topicprefix + getStatusTopic(), StatusSwitch.OFF, 1, true);
-                        logger.log(Level.INFO, "Set will status OFF.");
-                    }
                     if (!Strings.isNullOrEmpty(username)) {
                         options.setUserName(username);
                         options.setPassword(password.toCharArray());
@@ -134,14 +130,9 @@ public final class MQTTManager implements MqttCallback {
                     mqttClient.connect(options).waitForCompletion(1000);    
                     mqttClient.setCallback(this);
                     mqttClient.subscribe(listtopics, listqos);
-
-                    if (!getStatusTopic().startsWith(LOCAL_PREFIX)) {
-                        publish(getStatusTopic(), defaultqos, StatusSwitch.ON, true); 
-                        logger.log(Level.INFO, "Publish status ON.");
-                    }
                     
-                    File dbfile = new File(System.getProperty("user.home"), ".helloiot-" + topicapp.replaceAll("[^a-zA-Z0-9.-]", "_") + ".mapdb");  
-                    freshClient = dbfile.exists();
+                    File dbfile = new File(System.getProperty("user.home"), ".helloiot-" + topicapp.replaceAll("[^a-zA-Z0-9.-]", "_") + ".mapdb"); // dbfile is function of url only
+                    freshClient = dbfile.exists(); // exists if function of url and topicapp
                     dbClient = DBMaker.fileDB(dbfile).make();
                     mapClient = dbClient.hashMap("map", Serializer.STRING, Serializer.BYTE_ARRAY).createOrOpen();
                     
@@ -184,10 +175,6 @@ public final class MQTTManager implements MqttCallback {
             
             if (mqttClient.isConnected()) {
                 try {
-                    if (!getStatusTopic().startsWith(LOCAL_PREFIX)) {
-                        publish(getStatusTopic(), defaultqos, StatusSwitch.OFF, true);
-                        logger.log(Level.INFO, "Publish status OFF.");
-                    }
                     mqttClient.setCallback(null);
                     mqttClient.disconnect();
                 } catch (MqttException ex) {
@@ -205,10 +192,6 @@ public final class MQTTManager implements MqttCallback {
     
     public boolean isFreshClient() {
         return freshClient;
-    }
-    
-    private String getStatusTopic() {
-        return topicapp + STATUS_TOPIC_SUFFIX;
     }
 
     public Subscription subscribe(String topic, int qos) {
