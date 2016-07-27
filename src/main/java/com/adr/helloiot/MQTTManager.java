@@ -50,8 +50,6 @@ public final class MQTTManager implements MqttCallback {
     public final static String SYS_PREFIX = "$SYS/";
     public final static String LOCAL_PREFIX = "_LOCAL_/";
     
-    private final static String STATUS_TOPIC_SUFFIX = "/status";
-    
     private final static Logger logger = Logger.getLogger(MQTTManager.class.getName());
        
     private MqttAsyncClient mqttClient;
