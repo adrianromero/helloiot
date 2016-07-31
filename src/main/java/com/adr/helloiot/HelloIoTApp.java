@@ -31,7 +31,6 @@ import com.adr.helloiot.unit.UnitPage;
 import com.adr.helloiot.util.CryptUtils;
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
@@ -39,7 +38,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
-import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 import java.util.ServiceLoader;
 import java.util.logging.Level;
@@ -80,9 +78,9 @@ public class HelloIoTApp {
     private final ResourceBundle resources;
     
     private HelloIoTAppPublic apppublic = null;
-    private DeviceSimple unitpage;
-    private DeviceSwitch beeper;
-    private TransmitterSimple buzzer;
+    private DeviceSimple appunitpage;
+    private DeviceSwitch appbeeper;
+    private TransmitterSimple appbuzzer;
     
     private EventHandler<ActionEvent> exitevent = null;
     private final Runnable styleConnection;
@@ -165,18 +163,20 @@ public class HelloIoTApp {
     public void addFXMLFileDevicesUnits(String filedescriptor) {
         
         try {
-            URL fxmlurl = new File(filedescriptor + ".fxml").toURI().toURL();
-            
+            URL fxmlurl;
             ResourceBundle fxmlresources;
-            try {
+            if (filedescriptor.startsWith("local:")) {
+                // Is a local resource
+                fxmlurl = HelloIoTApp.class.getResource("/" + filedescriptor.substring(6) + ".fxml");
+                fxmlresources = ResourceBundle.getBundle(filedescriptor.substring(6));
+            } else {
+                // Is a file       
+                fxmlurl = new File(filedescriptor + ".fxml").toURI().toURL();
                 File file = new File(filedescriptor);
                 URL[] urls = {file.getAbsoluteFile().getParentFile().toURI().toURL()};
                 ClassLoader loader = new URLClassLoader(urls);
                 fxmlresources = ResourceBundle.getBundle(file.getName(), Locale.getDefault(), loader);  
-            } catch (MalformedURLException | MissingResourceException ex) {
-                Logger.getLogger(HelloIoTApp.class.getName()).log(Level.SEVERE, null, ex);
-                fxmlresources = null;
-            }               
+            }
 
             FXMLLoader fxmlloader;
             fxmlloader = new FXMLLoader(fxmlurl);
@@ -187,7 +187,7 @@ public class HelloIoTApp {
             addDevicesUnits(du.getDevices(), du.getUnits());
         } catch (IOException ex) {
             throw new RuntimeException(ex);
-        }     
+        }
     }
     
     public void setOnExitAction(EventHandler<ActionEvent> exitevent) {
@@ -286,22 +286,22 @@ public class HelloIoTApp {
     }
     
     public DeviceSimple getUnitPage() {
-        if (unitpage == null) {
-            unitpage = ((DeviceSimple) getDevice(SYS_UNITPAGE_ID));
+        if (appunitpage == null) {
+            appunitpage = ((DeviceSimple) getDevice(SYS_UNITPAGE_ID));
         }
-        return unitpage;
+        return appunitpage;
     }
     public DeviceSwitch getBeeper() {
-        if (beeper == null) {
-            beeper = ((DeviceSwitch) getDevice(SYS_BEEPER_ID));
+        if (appbeeper == null) {
+            appbeeper = ((DeviceSwitch) getDevice(SYS_BEEPER_ID));
         }
-        return beeper;
+        return appbeeper;
     }
     public TransmitterSimple getBuzzer() {
-        if (buzzer == null) {
-            buzzer = ((TransmitterSimple) getDevice(SYS_BUZZER_ID));
+        if (appbuzzer == null) {
+            appbuzzer = ((TransmitterSimple) getDevice(SYS_BUZZER_ID));
         }
-        return buzzer;
+        return appbuzzer;
     }
     public List<Unit> getUnits() {
         return appunits;

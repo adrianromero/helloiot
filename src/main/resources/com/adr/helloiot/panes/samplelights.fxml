@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    This file is part of HelloIot.
+
+    HelloIot is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    HelloIot is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with HelloIot.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.layout.*?>
+<?import com.adr.fonticon.*?>
+<?import com.adr.helloiot.*?>
+<?import com.adr.helloiot.unit.*?>
+<?import com.adr.helloiot.unitsensor.*?>
+<?import com.adr.helloiot.device.*?>
+<?import com.adr.helloiot.graphic.*?>
+
+<DevicesUnits xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1">
+
+    <devices>
+        <Light fx:id="living_light1" topic="home/living/light1">
+            <properties name="living_light1" label="%label.livinglight1" tags="living lamp"/>
+        </Light>
+        <Light fx:id="living_light2" topic="home/living/light2">
+            <properties name="living_light2" label="%label.livinglight2" tags="living lamp"/>
+        </Light>
+        <Light fx:id="living_light3" topic="home/living/light3">
+            <properties name="living_light3" label="%label.livinglight3" tags="living lamp"/>
+        </Light>
+        <Light fx:id="living_light4" topic="home/living/light4">
+            <properties name="living_light4" label="%label.livinglight4" tags="living lamp"/>
+        </Light>              
+        <Light fx:id="living_light5" topic="home/living/light5">
+            <properties name="living_light5" label="%label.livinglight5" tags="living lamp"/>
+        </Light>                 
+    </devices>
+    
+    <units>
+        <LabelSection UnitPage.page="main" GridPane.columnSpan="5" text="%title.livingroomlights"/>    
+        <ViewSimple UnitPage.page="main" device="$living_light1" iconStatus="BULBTEXT/1"/>        
+        <ViewSimple UnitPage.page="main" device="$living_light2" iconStatus="BULBTEXT/2"/>
+        <ViewSimple UnitPage.page="main" device="$living_light3" iconStatus="BULBTEXT/3"/>
+        <ViewSimple UnitPage.page="main" device="$living_light4" iconStatus="BULBTEXT/4"/>
+        <ViewSimple UnitPage.page="main" device="$living_light5" iconStatus="BULBTEXT/5"/>            
+        <LabelSection UnitPage.page="main" GridPane.columnSpan="5" text="%title.ligthstatus"/>    
+        <EditStatus device="$living_light1"/>
+        <EditStatus device="$living_light2"/>
+        <EditStatus device="$living_light3"/>
+        <EditStatus device="$living_light4"/>
+        <EditStatus device="$living_light5"/>
+        <LabelSection UnitPage.page="main" GridPane.columnSpan="5" text="%title.lightswitchs"/>    
+        <ButtonSimple UnitPage.page="main" device="$living_light1" iconStatus="TOGGLE"/>
+        <ButtonSimple UnitPage.page="main" device="$living_light2" iconStatus="TOGGLE"/>
+        <ButtonSimple UnitPage.page="main" device="$living_light3" iconStatus="TOGGLE"/>
+        <ButtonSimple UnitPage.page="main" device="$living_light4" iconStatus="TOGGLE"/>
+        <ButtonSimple UnitPage.page="main" device="$living_light5" iconStatus="TOGGLE"/>
+        <LabelSection UnitPage.page="main" GridPane.columnSpan="5" text="%title.moreactions"/>    
+        <ButtonSimple UnitPage.page="main" device="$living_light1"/>
+        <ButtonScript UnitPage.page="main" text="%label.timerlight1">
+            <graphic><Icon iconAwesome="FA_CLOCK_O" size="48" color="WHITE" shine="WHITE"/></graphic>
+            <scriptCode><![CDATA[
+                _allDevices().getByName('living_light1').sendON(2000);
+            ]]></scriptCode>
+        </ButtonScript>     
+        <ButtonsSwitch UnitPage.page="main">
+            <parameters light1="$living_light1"/>
+            <scriptCode><![CDATA[
+                light1.sendStatus(_status);
+            ]]></scriptCode>
+        </ButtonsSwitch>                      
+        <ButtonScript UnitPage.page="main" text="%label.switchalloff" confirm="true">
+            <graphic><Icon iconAwesome="FA_POWER_OFF" size="48" color="RED" shine="WHITE"/></graphic>
+            <scriptCode><![CDATA[
+                _allDevices().tagged('lamp').forEach(function (d) {
+                    d.sendOFF();
+                });
+            ]]></scriptCode>
+        </ButtonScript>                                   
+        <ButtonScript UnitPage.page="main" text="%label.dance">
+            <graphic><Icon iconAwesome="FA_STAR_O" size="48" color="GREEN" shine="WHITE"/></graphic>
+            <parameters light1="$living_light1" light2="$living_light2" light3="$living_light3" light4="$living_light4" light5="$living_light5"/>
+            <scriptCode><![CDATA[
+                
+                light1.sendOFF();
+                light2.sendOFF();
+                light3.sendOFF();
+                light4.sendOFF();
+                light5.sendOFF();
+                
+                for (var i = 1; i < 5; i++) {
+                    light1.sendON();
+                    java.lang.Thread.sleep(100);
+                    light1.sendOFF();
+                    light2.sendON();                
+                    java.lang.Thread.sleep(100);
+                    light2.sendOFF();
+                    light3.sendON(); 
+                    java.lang.Thread.sleep(100);
+                    light3.sendOFF();
+                    light4.sendON();                 
+                    java.lang.Thread.sleep(100);
+                    light4.sendOFF();
+                    light5.sendON();             
+                    java.lang.Thread.sleep(100);
+                    light5.sendOFF();                                                                                      
+                }
+            ]]></scriptCode>
+        </ButtonScript>                            
+    </units>
+</DevicesUnits>

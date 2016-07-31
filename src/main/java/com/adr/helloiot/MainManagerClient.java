@@ -80,10 +80,11 @@ public class MainManagerClient implements MainManager {
         helloiotapp = new HelloIoTApp(config);
         
         if (clientlogin.getBrokerPane() == 1) {
-            helloiotapp.addFXMLFileDevicesUnits("mosquitto");
+            helloiotapp.addFXMLFileDevicesUnits("local:com/adr/helloiot/panes/mosquitto");
         }
         
-        helloiotapp.addFXMLFileDevicesUnits("application"); // TODO: Remove
+        helloiotapp.addFXMLFileDevicesUnits("local:com/adr/helloiot/panes/samplelights");
+        helloiotapp.addFXMLFileDevicesUnits("local:com/adr/helloiot/panes/sampletemperature");
 
         
         helloiotapp.setOnExitAction(event -> {

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    This file is part of HelloIot.
+
+    HelloIot is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    HelloIot is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with HelloIot.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.layout.*?>
+<?import com.adr.fonticon.*?>
+<?import com.adr.helloiot.*?>
+<?import com.adr.helloiot.unit.*?>
+<?import com.adr.helloiot.unitsensor.*?>
+<?import com.adr.helloiot.device.*?>
+<?import com.adr.helloiot.graphic.*?>
+
+<DevicesUnits xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1">
+
+    <devices>
+        <Thermostat fx:id="home_thermostat1" topic="home/thermostat1">
+            <properties label="%label.thermostat1"/>
+        </Thermostat>        
+        <Thermostat fx:id="home_thermostat2" topic="home/thermostat2">
+            <properties label="%label.thermostat2"/>
+        </Thermostat>        
+        <Thermostat fx:id="home_thermostat3" topic="home/thermostat3">
+            <properties label="%label.thermostat3"/>
+        </Thermostat>        
+        <Thermostat fx:id="home_thermostat4" topic="home/thermostat4">
+            <properties label="%label.thermostat4"/>
+        </Thermostat>        
+        <Thermostat fx:id="home_thermostat5" topic="home/thermostat5">
+            <properties label="%label.thermostat5"/>
+        </Thermostat>                    
+    </devices>
+    
+    <units>        
+        <LabelSection UnitPage.page="%page.programs" GridPane.columnSpan="5" text="%title.thermostats"/>    
+        <ViewGauge UnitPage.page="%page.programs" device="$home_thermostat1"/>        
+        <ViewGauge UnitPage.page="%page.programs" device="$home_thermostat2"/>        
+        <ViewGauge UnitPage.page="%page.programs" device="$home_thermostat3"/>        
+        <ViewGauge UnitPage.page="%page.programs" device="$home_thermostat4"/>        
+        <ViewGauge UnitPage.page="%page.programs" device="$home_thermostat5"/>        
+        <LabelSection UnitPage.page="%page.programs" GridPane.columnSpan="5" text="%title.temperaturecontrol"/>    
+        <EditStatus UnitPage.page="%page.programs" device="$home_thermostat1"/>
+        <EditStatus UnitPage.page="%page.programs" device="$home_thermostat2"/>
+        <EditStatus UnitPage.page="%page.programs" device="$home_thermostat3"/>
+        <EditStatus UnitPage.page="%page.programs" device="$home_thermostat4"/>
+        <EditStatus UnitPage.page="%page.programs" device="$home_thermostat5"/>        
+        <ButtonsSpinner UnitPage.page="%page.programs" device="$home_thermostat1"/>
+        <ButtonsSpinner UnitPage.page="%page.programs" device="$home_thermostat2"/>
+        <ButtonsSpinner UnitPage.page="%page.programs" device="$home_thermostat3"/>
+        <ButtonsSpinner UnitPage.page="%page.programs" device="$home_thermostat4"/>
+        <ButtonsSpinner UnitPage.page="%page.programs" device="$home_thermostat5"/>
+        <SliderSimple UnitPage.page="%page.programs" device="$home_thermostat1"/> 
+        <SliderSimple UnitPage.page="%page.programs" device="$home_thermostat2"/> 
+        <SliderSimple UnitPage.page="%page.programs" device="$home_thermostat3"/> 
+        <SliderSimple UnitPage.page="%page.programs" device="$home_thermostat4"/> 
+        <SliderSimple UnitPage.page="%page.programs" device="$home_thermostat5"/>                    
+    </units>
+</DevicesUnits>
