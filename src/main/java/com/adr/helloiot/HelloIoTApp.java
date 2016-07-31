@@ -105,6 +105,8 @@ public class HelloIoTApp {
                 config.mqtt_connectiontimeout, 
                 config.mqtt_keepaliveinterval,
                 config.mqtt_defaultqos, 
+                config.mqtt_version,
+                config.mqtt_cleansession,
                 null, 
                 config.mqtt_topicprefix);
         mqttmanager.setOnConnectionLost(t -> {

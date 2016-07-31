@@ -23,12 +23,14 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 
 /**
  *
@@ -49,6 +51,14 @@ public class ClientLoginNode extends BorderPane implements AbstractController {
     private TextField username;
     @FXML
     private PasswordField password;
+    @FXML
+    private RadioButton versiondefault;
+    @FXML
+    private RadioButton version311;
+    @FXML
+    private RadioButton version31;    
+    @FXML
+    private CheckBox cleansession;    
 
     @FXML
     private TextField timeout;
@@ -60,6 +70,21 @@ public class ClientLoginNode extends BorderPane implements AbstractController {
     private RadioButton qos1;
     @FXML
     private RadioButton qos2;
+    @FXML
+    private TextField topicprefix;
+    @FXML
+    private TextField topicapp;
+    @FXML
+    private RadioButton brokernone;
+    @FXML
+    private RadioButton brokermosquitto;  
+    
+    @FXML
+    private CheckBox gaugespane;
+    @FXML
+    private CheckBox lightspane;    
+    
+    
 
     ClientLoginNode() {
         load("/com/adr/helloiot/fxml/clientlogin.fxml", "com/adr/helloiot/fxml/clientlogin");
@@ -133,5 +158,70 @@ public class ClientLoginNode extends BorderPane implements AbstractController {
                 qos0.setSelected(true);
                 break;
         }
+    }
+    
+    public String getTopicPrefix() {
+        return topicprefix.getText();
+    }
+    
+    public void setTopicPrefix(String value) {
+        topicprefix.setText(value);
+    }
+    
+    public String getTopicApp() {
+        return topicapp.getText();
+    }
+    
+    public void setTopicApp(String value) {
+        topicapp.setText(value);
+    }
+    
+    public int getBrokerPane() {
+        if (brokermosquitto.isSelected()) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
+    
+    public void setBrokerPane(int value) {
+        switch (value) {
+            case 1:
+                brokermosquitto.setSelected(true);
+                break;
+            default: 
+                brokernone.setSelected(true);
+        }
+    }
+    
+    public int getVersion() {
+        if (version311.isSelected()) {
+            return MqttConnectOptions.MQTT_VERSION_3_1_1;
+        } else if (version31.isSelected()) {
+            return MqttConnectOptions.MQTT_VERSION_3_1;
+        } else {
+            return MqttConnectOptions.MQTT_VERSION_DEFAULT;
+        }
+    }
+    
+    public void setVersion(int value) {
+        switch (value) {
+            case MqttConnectOptions.MQTT_VERSION_3_1_1:
+                version311.setSelected(true);
+                break;
+            case MqttConnectOptions.MQTT_VERSION_3_1:
+                version31.setSelected(true);
+                break;
+            default: 
+                versiondefault.setSelected(true);
+        }
+    }
+    
+    public boolean isCleanSession() {
+        return cleansession.isSelected();
+    }
+    
+    public void setCleanSession(boolean value) {
+        cleansession.setSelected(value);
     }
 }

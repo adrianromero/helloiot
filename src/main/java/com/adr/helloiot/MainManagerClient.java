@@ -17,6 +17,7 @@ package com.adr.helloiot;
 
 import javafx.application.Application.Parameters;
 import javafx.scene.layout.StackPane;
+import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 
 /**
  *
@@ -35,9 +36,14 @@ public class MainManagerClient implements MainManager {
         clientlogin = new ClientLoginNode();
         clientlogin.setURL("tcp://localhost:1883");
         clientlogin.setUserName("");
-        clientlogin.setConnectionTimeout(30);
-        clientlogin.setKeepAliveInterval(60);
+        clientlogin.setConnectionTimeout(MqttConnectOptions.CONNECTION_TIMEOUT_DEFAULT);
+        clientlogin.setKeepAliveInterval(MqttConnectOptions.KEEP_ALIVE_INTERVAL_DEFAULT);
         clientlogin.setDefaultQoS(1);
+        clientlogin.setVersion(MqttConnectOptions.MQTT_VERSION_DEFAULT);
+        clientlogin.setCleanSession(MqttConnectOptions.CLEAN_SESSION_DEFAULT);
+        clientlogin.setBrokerPane(0); //none
+        clientlogin.setTopicPrefix("");
+        clientlogin.setTopicApp("_LOCAL_/_sys_helloIoT/mainapp");
          
         clientlogin.setOnNextAction(e -> {                
             showApplication();
@@ -62,8 +68,10 @@ public class MainManagerClient implements MainManager {
         config.mqtt_connectiontimeout = clientlogin.getConnectionTimeout();
         config.mqtt_keepaliveinterval = clientlogin.getKeepAliveInterval();
         config.mqtt_defaultqos = clientlogin.getDefaultQoS();
-        config.mqtt_topicprefix = "";
-        config.mqtt_topicapp = "_LOCAL_/_sys_helloIoT/mainapp";
+        config.mqtt_version = clientlogin.getVersion();
+        config.mqtt_cleansession = clientlogin.isCleanSession();
+        config.mqtt_topicprefix = clientlogin.getTopicPrefix();
+        config.mqtt_topicapp = clientlogin.getTopicApp();
         
         config.app_clock = true;
         config.app_exitbutton = true;
@@ -71,8 +79,12 @@ public class MainManagerClient implements MainManager {
         
         helloiotapp = new HelloIoTApp(config);
         
+        if (clientlogin.getBrokerPane() == 1) {
+            helloiotapp.addFXMLFileDevicesUnits("mosquitto");
+        }
+        
         helloiotapp.addFXMLFileDevicesUnits("application"); // TODO: Remove
-        helloiotapp.addFXMLFileDevicesUnits("mosquitto");
+
         
         helloiotapp.setOnExitAction(event -> {
             showLogin();            

@@ -15,6 +15,8 @@
 
 package com.adr.helloiot;
 
+import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
+
 /**
  *
  * @author adrian
@@ -28,9 +30,11 @@ public class ApplicationConfig {
     public String mqtt_url = "tcp://localhost:1883";
     public String mqtt_username = "";
     public String mqtt_password = "";
-    public int mqtt_connectiontimeout = 30;
-    public int mqtt_keepaliveinterval = 60;
+    public int mqtt_connectiontimeout = MqttConnectOptions.CONNECTION_TIMEOUT_DEFAULT;
+    public int mqtt_keepaliveinterval = MqttConnectOptions.KEEP_ALIVE_INTERVAL_DEFAULT;
     public int mqtt_defaultqos = 1;
+    public int mqtt_version = MqttConnectOptions.MQTT_VERSION_DEFAULT; // 0
+    public boolean mqtt_cleansession = MqttConnectOptions.CLEAN_SESSION_DEFAULT;
     public String mqtt_topicprefix = "";
     public String mqtt_topicapp = "_LOCAL_/_sys_helloIoT/mainapp";  
 }

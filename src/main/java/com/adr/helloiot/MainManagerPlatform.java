@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Properties;
 import javafx.application.Application.Parameters;
 import javafx.scene.layout.StackPane;
+import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 
 /**
  *
@@ -71,9 +72,11 @@ public class MainManagerPlatform implements MainManager {
         config.mqtt_url = properties.getProperty("mqtt.url", "tcp://localhost:1883");
         config.mqtt_username = properties.getProperty("mqtt.username", "");
         config.mqtt_password = properties.getProperty("mqtt.password", "");
-        config.mqtt_connectiontimeout = Integer.parseInt(properties.getProperty("mqtt.connectiontimeout", "30"));
-        config.mqtt_keepaliveinterval = Integer.parseInt(properties.getProperty("mqtt.keepaliveinterval", "60"));
+        config.mqtt_connectiontimeout = Integer.parseInt(properties.getProperty("mqtt.connectiontimeout", Integer.toString(MqttConnectOptions.CONNECTION_TIMEOUT_DEFAULT)));
+        config.mqtt_keepaliveinterval = Integer.parseInt(properties.getProperty("mqtt.keepaliveinterval", Integer.toString(MqttConnectOptions.KEEP_ALIVE_INTERVAL_DEFAULT)));
         config.mqtt_defaultqos =  Integer.parseInt(properties.getProperty("mqtt.defaultqos", "1"));
+        config.mqtt_version = Integer.parseInt(properties.getProperty("mqtt.version", Integer.toString(MqttConnectOptions.MQTT_VERSION_DEFAULT))); // MQTT_VERSION_DEFAULT = 0; MQTT_VERSION_3_1 = 3; MQTT_VERSION_3_1_1 = 4;
+        config.mqtt_cleansession = Boolean.parseBoolean(properties.getProperty("mqtt.cleansession", Boolean.toString(MqttConnectOptions.CLEAN_SESSION_DEFAULT)));
         config.mqtt_topicprefix =  properties.getProperty("mqtt.topicprefix", "");;
         config.mqtt_topicapp =  properties.getProperty("mqtt.topicapp", "_LOCAL_/_sys_helloIoT/mainapp");
         

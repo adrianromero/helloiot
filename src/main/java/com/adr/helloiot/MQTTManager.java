@@ -63,7 +63,9 @@ public final class MQTTManager implements MqttCallback {
     private final int keepalive;
     private final Properties sslproperties;
     private final String topicprefix;
-    private final int defaultqos;   
+    private final int defaultqos;  
+    private final int version;
+    private final boolean cleansession;
     
     private Consumer<Throwable> connectionLost = null;
     
@@ -71,10 +73,10 @@ public final class MQTTManager implements MqttCallback {
     private final Map<String, List<Subscription>> subscriptions;
     
     public MQTTManager(String url) {
-        this(url, null, null, 30, 60, 1, null, "");
+        this(url, null, null, MqttConnectOptions.CONNECTION_TIMEOUT_DEFAULT, MqttConnectOptions.KEEP_ALIVE_INTERVAL_DEFAULT, 1, MqttConnectOptions.MQTT_VERSION_DEFAULT, MqttConnectOptions.CLEAN_SESSION_DEFAULT, null, "");
     }
     
-    public MQTTManager(String url, String username, String password, int timeout, int keepalive, int defaultqos, Properties sslproperties, String topicprefix) {
+    public MQTTManager(String url, String username, String password, int timeout, int keepalive, int defaultqos, int version, boolean cleansession, Properties sslproperties, String topicprefix) {
         
         this.mqttClient = null;
         
@@ -83,7 +85,9 @@ public final class MQTTManager implements MqttCallback {
         this.password = password;
         this.timeout = timeout;
         this.keepalive = keepalive;
-        this.defaultqos = defaultqos;        
+        this.defaultqos = defaultqos;     
+        this.version = version;
+        this.cleansession = cleansession;
         this.sslproperties = sslproperties;
         this.topicprefix = topicprefix;
         
@@ -121,6 +125,8 @@ public final class MQTTManager implements MqttCallback {
                     }
                     options.setConnectionTimeout(timeout);
                     options.setKeepAliveInterval(keepalive);
+                    options.setMqttVersion(version);
+                    options.setCleanSession(cleansession);
                     options.setSSLProperties(sslproperties);
                     mqttClient.connect(options).waitForCompletion(1000);    
                     mqttClient.setCallback(this);
