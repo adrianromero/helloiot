@@ -112,7 +112,7 @@ public class HelloIoTApp {
             LOGGER.log(Level.WARNING, "Connection lost to broker.", t);
             Platform.runLater(() -> {
                 stopUnits();
-                startAndConstruct(); 
+                connection();             
             });                
         });      
         
@@ -202,7 +202,7 @@ public class HelloIoTApp {
     
     public void startAndConstruct() {
         
-        // External services       
+        // External services
         ServiceLoader<ApplicationUnitPages> unitpagesloader = ServiceLoader.load(ApplicationUnitPages.class);
         unitpagesloader.forEach(c -> {
             appunitpages.addAll(c.getUnitPages());
@@ -223,8 +223,13 @@ public class HelloIoTApp {
             d.construct(mqttmanager);
         }  
         
+        connection();
+    }
+    
+    private void connection() {
+         // connect !!!
         mqttnode.showConnecting();
-        styleConnection.run();
+        styleConnection.run();       
     }
     
     private void oneConnection() {

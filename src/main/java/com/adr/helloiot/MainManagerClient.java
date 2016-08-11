@@ -80,7 +80,7 @@ public class MainManagerClient implements MainManager {
         
         config.app_clock = true;
         config.app_exitbutton = false;
-        config.app_retryconnection = false;       
+        config.app_retryconnection = false;
         
         helloiotapp = new HelloIoTApp(config);
                 

@@ -155,6 +155,7 @@ public final class MQTTMainNode extends AnchorPane implements AbstractController
         app.getUnitPage().unsubscribeStatus(this);         
         app.getBeeper().unsubscribeStatus(beeper);       
         app.getBuzzer().unsubscribeStatus(buzzer);
+        unitpages.clear();
     }
 
     public void setOnBackAction(EventHandler<ActionEvent> backevent, Node graphic, String text) {
