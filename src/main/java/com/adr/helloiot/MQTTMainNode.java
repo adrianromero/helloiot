@@ -76,6 +76,7 @@ public final class MQTTMainNode extends AnchorPane implements AbstractController
     @FXML private Pane listpagesgray;
     @FXML private HBox headerbox;
     @FXML private Button menubutton;
+    @FXML private Button backbutton;
     @FXML private Button exitbutton;
     @FXML private Label headertitle;
     @FXML private Label currenttime;
@@ -138,11 +139,7 @@ public final class MQTTMainNode extends AnchorPane implements AbstractController
         gotoPage("start");
         
         // Remove menubutton if 0 or 1 visible page.
-        if (listpages.getItems().size() <=1) {
-            menubutton.setVisible(false);
-            headerbox.getChildren().remove(menubutton);
-            menubutton = null;
-        }
+        menubutton.setVisible(!listpages.getItems().isEmpty());
         
         // Remove headerbox if empty
         if ((headertitle.getText() == null || headertitle.getText().equals("")) &&
@@ -159,19 +156,24 @@ public final class MQTTMainNode extends AnchorPane implements AbstractController
         app.getBeeper().unsubscribeStatus(beeper);       
         app.getBuzzer().unsubscribeStatus(buzzer);
     }
-    
-    public void setOnExitAction(EventHandler<ActionEvent> exitevent) {
-        if (exitbutton != null) {
-            exitbutton.setOnAction(exitevent);
-        }
+
+    public void setOnBackAction(EventHandler<ActionEvent> backevent, Node graphic, String text) {
+        backbutton.setOnAction(backevent);
+        backbutton.setText(text);              
+        backbutton.setGraphic(graphic);
+        backbutton.setVisible(backevent != null);
     }
 
     @FXML public void initialize() {
         
         alert.setGraphic(IconBuilder.create(FontAwesome.FA_VOLUME_UP, 72.0).fill(Color.WHITE).shine(Color.RED).build());
+
         
         if (appexitbutton) {
-            exitbutton.setGraphic(IconBuilder.create(FontAwesome.FA_SIGN_OUT, 18.0).build());
+            exitbutton.setGraphic(IconBuilder.create(FontAwesome.FA_POWER_OFF, 18.0).build());
+            exitbutton.setOnAction(ev -> {
+                getScene().getWindow().hide();
+            });         
         } else {
             exitbutton.setVisible(false);
             headerbox.getChildren().remove(exitbutton);

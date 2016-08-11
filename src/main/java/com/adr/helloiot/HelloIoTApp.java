@@ -69,6 +69,7 @@ public class HelloIoTApp {
     public final static String SYS_BEEPER_ID = "SYSBEEPERID";
     public final static String SYS_BUZZER_ID = "SYSBUZZERID";    
     
+    private final List<UnitPage> appunitpages = new ArrayList<>();
     private final List<Unit> appunits = new ArrayList<>();    
     private final List<Device> appdevices = new ArrayList<>();    
     
@@ -122,6 +123,10 @@ public class HelloIoTApp {
                 Platform.isSupported(ConditionalFeature.MEDIA) ? new StandardClipFactory(): new SilentClipFactory(),
                 config.app_clock,
                 config.app_exitbutton);
+    }
+    
+    public void addUnitPages(List<UnitPage> unitpages) {
+        appunitpages.addAll(unitpages);
     }
     
     public void addDevicesUnits(List<Device> devices, List<Unit> units) {
@@ -192,14 +197,12 @@ public class HelloIoTApp {
     
     public void setOnExitAction(EventHandler<ActionEvent> exitevent) {
         this.exitevent = exitevent;
-        mqttnode.setOnExitAction(exitevent);
+        mqttnode.setOnBackAction(exitevent, IconBuilder.create(FontAwesome.FA_SIGN_OUT, 18.0).build(), resources.getString("label.disconnect"));
     }    
     
     public void startAndConstruct() {
         
-        // External services
-        List<UnitPage> appunitpages = new ArrayList<>();
-        
+        // External services       
         ServiceLoader<ApplicationUnitPages> unitpagesloader = ServiceLoader.load(ApplicationUnitPages.class);
         unitpagesloader.forEach(c -> {
             appunitpages.addAll(c.getUnitPages());

@@ -15,6 +15,11 @@
 
 package com.adr.helloiot;
 
+import com.adr.fonticon.FontAwesome;
+import com.adr.fonticon.IconBuilder;
+import com.adr.helloiot.unit.UnitPage;
+import java.util.Arrays;
+import java.util.ResourceBundle;
 import javafx.application.Application.Parameters;
 import javafx.scene.layout.StackPane;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
@@ -74,19 +79,35 @@ public class MainManagerClient implements MainManager {
         config.mqtt_topicapp = clientlogin.getTopicApp();
         
         config.app_clock = true;
-        config.app_exitbutton = true;
+        config.app_exitbutton = false;
         config.app_retryconnection = false;       
         
         helloiotapp = new HelloIoTApp(config);
+                
+        // add sample panes
+        ResourceBundle resources = ResourceBundle.getBundle("com/adr/helloiot/fxml/main");   
         
         if (clientlogin.getBrokerPane() == 1) {
+            UnitPage info = new UnitPage("info", IconBuilder.create(FontAwesome.FA_INFO, 24.0).build(), resources.getString("page.info"));
+            info.setColumns(6);
+            helloiotapp.addUnitPages(Arrays.asList(info));            
             helloiotapp.addFXMLFileDevicesUnits("local:com/adr/helloiot/panes/mosquitto");
         }
+  
+        if (clientlogin.isLightsPane()) {
+            helloiotapp.addUnitPages(Arrays.asList(
+                new UnitPage("light", IconBuilder.create(FontAwesome.FA_LIGHTBULB_O, 24.0).build(), resources.getString("page.light")))
+            );
+            helloiotapp.addFXMLFileDevicesUnits("local:com/adr/helloiot/panes/samplelights");
+        }
         
-        helloiotapp.addFXMLFileDevicesUnits("local:com/adr/helloiot/panes/samplelights");
-        helloiotapp.addFXMLFileDevicesUnits("local:com/adr/helloiot/panes/sampletemperature");
+        if (clientlogin.isGaugesPane()) {
+            helloiotapp.addUnitPages(Arrays.asList(
+                new UnitPage("temperature", IconBuilder.create(FontAwesome.FA_DASHBOARD, 24.0).build(), resources.getString("page.temperature")))
+            );
+            helloiotapp.addFXMLFileDevicesUnits("local:com/adr/helloiot/panes/sampletemperature");
+        }
 
-        
         helloiotapp.setOnExitAction(event -> {
             showLogin();            
             hideApplication();            

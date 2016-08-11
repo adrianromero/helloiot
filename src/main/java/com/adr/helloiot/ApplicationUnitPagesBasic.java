@@ -34,17 +34,14 @@ public class ApplicationUnitPagesBasic implements ApplicationUnitPages {
         ResourceBundle resources = ResourceBundle.getBundle("com/adr/helloiot/fxml/main");
         
         UnitPage cfg = new UnitPage("config", IconBuilder.create(FontAwesome.FA_SLIDERS, 24.0).build(), resources.getString("page.config"));
-        UnitPage info = new UnitPage("info", IconBuilder.create(FontAwesome.FA_INFO, 24.0).build(), resources.getString("page.info"));
-        info.setColumns(6);
         
         UnitPage notfound = new UnitPage("notfound", IconBuilder.create(FontAwesome.FA_BAN, 24.0).build(), resources.getString("page.notfound"));
         notfound.setEmptyLabel(resources.getString("label.notfound"));
-        notfound.setSystem(true);
 
         UnitPage start = new UnitPage("start", IconBuilder.create(FontAwesome.FA_STAR_O, 24.0).build(), resources.getString("page.start"));
         start.setEmptyLabel(resources.getString("label.start"));
         start.setSystem(true);   
         
-        return Arrays.asList(cfg, info, notfound, start);
+        return Arrays.asList(cfg, notfound, start);
     }
 }

@@ -47,39 +47,39 @@
     </devices>
     
     <units>
-        <LabelSection UnitPage.page="main" GridPane.columnSpan="5" text="%title.livingroomlights"/>    
-        <ViewSimple UnitPage.page="main" device="$living_light1" iconStatus="BULBTEXT/1"/>        
-        <ViewSimple UnitPage.page="main" device="$living_light2" iconStatus="BULBTEXT/2"/>
-        <ViewSimple UnitPage.page="main" device="$living_light3" iconStatus="BULBTEXT/3"/>
-        <ViewSimple UnitPage.page="main" device="$living_light4" iconStatus="BULBTEXT/4"/>
-        <ViewSimple UnitPage.page="main" device="$living_light5" iconStatus="BULBTEXT/5"/>            
-        <LabelSection UnitPage.page="main" GridPane.columnSpan="5" text="%title.ligthstatus"/>    
-        <EditStatus device="$living_light1"/>
-        <EditStatus device="$living_light2"/>
-        <EditStatus device="$living_light3"/>
-        <EditStatus device="$living_light4"/>
-        <EditStatus device="$living_light5"/>
-        <LabelSection UnitPage.page="main" GridPane.columnSpan="5" text="%title.lightswitchs"/>    
-        <ButtonSimple UnitPage.page="main" device="$living_light1" iconStatus="TOGGLE"/>
-        <ButtonSimple UnitPage.page="main" device="$living_light2" iconStatus="TOGGLE"/>
-        <ButtonSimple UnitPage.page="main" device="$living_light3" iconStatus="TOGGLE"/>
-        <ButtonSimple UnitPage.page="main" device="$living_light4" iconStatus="TOGGLE"/>
-        <ButtonSimple UnitPage.page="main" device="$living_light5" iconStatus="TOGGLE"/>
-        <LabelSection UnitPage.page="main" GridPane.columnSpan="5" text="%title.moreactions"/>    
-        <ButtonSimple UnitPage.page="main" device="$living_light1"/>
-        <ButtonScript UnitPage.page="main" text="%label.timerlight1">
+        <LabelSection UnitPage.page="light" GridPane.columnSpan="5" text="%title.livingroomlights"/>    
+        <ViewSimple UnitPage.page="light" device="$living_light1" iconStatus="BULBTEXT/1"/>        
+        <ViewSimple UnitPage.page="light" device="$living_light2" iconStatus="BULBTEXT/2"/>
+        <ViewSimple UnitPage.page="light" device="$living_light3" iconStatus="BULBTEXT/3"/>
+        <ViewSimple UnitPage.page="light" device="$living_light4" iconStatus="BULBTEXT/4"/>
+        <ViewSimple UnitPage.page="light" device="$living_light5" iconStatus="BULBTEXT/5"/>            
+        <LabelSection UnitPage.page="light" GridPane.columnSpan="5" text="%title.ligthstatus"/>    
+        <EditStatus UnitPage.page="light" device="$living_light1"/>
+        <EditStatus UnitPage.page="light" device="$living_light2"/>
+        <EditStatus UnitPage.page="light" device="$living_light3"/>
+        <EditStatus UnitPage.page="light" device="$living_light4"/>
+        <EditStatus UnitPage.page="light" device="$living_light5"/>
+        <LabelSection UnitPage.page="light" GridPane.columnSpan="5" text="%title.lightswitchs"/>    
+        <ButtonSimple UnitPage.page="light" device="$living_light1" iconStatus="TOGGLE"/>
+        <ButtonSimple UnitPage.page="light" device="$living_light2" iconStatus="TOGGLE"/>
+        <ButtonSimple UnitPage.page="light" device="$living_light3" iconStatus="TOGGLE"/>
+        <ButtonSimple UnitPage.page="light" device="$living_light4" iconStatus="TOGGLE"/>
+        <ButtonSimple UnitPage.page="light" device="$living_light5" iconStatus="TOGGLE"/>
+        <LabelSection UnitPage.page="light" GridPane.columnSpan="5" text="%title.moreactions"/>    
+        <ButtonSimple UnitPage.page="light" device="$living_light1"/>
+        <ButtonScript UnitPage.page="light" text="%label.timerlight1">
             <graphic><Icon iconAwesome="FA_CLOCK_O" size="48" color="WHITE" shine="WHITE"/></graphic>
             <scriptCode><![CDATA[
                 _allDevices().getByName('living_light1').sendON(2000);
             ]]></scriptCode>
         </ButtonScript>     
-        <ButtonsSwitch UnitPage.page="main">
+        <ButtonsSwitch UnitPage.page="light">
             <parameters light1="$living_light1"/>
             <scriptCode><![CDATA[
                 light1.sendStatus(_status);
             ]]></scriptCode>
         </ButtonsSwitch>                      
-        <ButtonScript UnitPage.page="main" text="%label.switchalloff" confirm="true">
+        <ButtonScript UnitPage.page="light" text="%label.switchalloff" confirm="true">
             <graphic><Icon iconAwesome="FA_POWER_OFF" size="48" color="RED" shine="WHITE"/></graphic>
             <scriptCode><![CDATA[
                 _allDevices().tagged('lamp').forEach(function (d) {
@@ -87,7 +87,7 @@
                 });
             ]]></scriptCode>
         </ButtonScript>                                   
-        <ButtonScript UnitPage.page="main" text="%label.dance">
+        <ButtonScript UnitPage.page="light" text="%label.dance">
             <graphic><Icon iconAwesome="FA_STAR_O" size="48" color="GREEN" shine="WHITE"/></graphic>
             <parameters light1="$living_light1" light2="$living_light2" light3="$living_light3" light4="$living_light4" light5="$living_light5"/>
             <scriptCode><![CDATA[

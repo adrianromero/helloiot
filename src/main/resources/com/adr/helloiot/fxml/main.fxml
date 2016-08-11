@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <!--
     This file is part of HelloIot.
 
@@ -16,15 +17,20 @@
     along with HelloIot.  If not, see <http://www.gnu.org/licenses/>.
 -->
 
-<?import javafx.scene.text.*?>
-<?import javafx.geometry.*?>
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
 
-<fx:root prefHeight="400.0" prefWidth="800.0" stylesheets="@../styles/main.css" type="AnchorPane" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root prefHeight="400.0" prefWidth="800.0" stylesheets="@../styles/main.css" type="AnchorPane" xmlns="http://javafx.com/javafx/8.0.101" xmlns:fx="http://javafx.com/fxml/1">
 <StackPane fx:id="stackparent" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
    <children>
       <AnchorPane prefHeight="200.0" prefWidth="200.0" styleClass="maincontainer">
@@ -54,6 +60,7 @@
                         <Button fx:id="menubutton" focusTraversable="false" mnemonicParsing="false" onAction="#onMenuAction" styleClass="headerbutton" />
                         <Label fx:id="headertitle" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="headertitle" text="Hello IoT" HBox.hgrow="SOMETIMES" />
                         <Label fx:id="currenttime" maxHeight="1.7976931348623157E308" styleClass="currenttime" />
+                           <Button fx:id="backbutton" focusTraversable="false" layoutX="781.0" layoutY="15.0" mnemonicParsing="false" styleClass="headerbutton" />
                         <Button fx:id="exitbutton" focusTraversable="false" mnemonicParsing="false" styleClass="headerbutton" />
                      </children>
                   </HBox>
@@ -65,5 +72,5 @@
       </AnchorPane>
    </children>
 </StackPane>
-   <Label fx:id="alert" alignment="CENTER" mouseTransparent="true" visible="false" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="10.0"/>
+   <Label fx:id="alert" alignment="CENTER" mouseTransparent="true" visible="false" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="10.0" />
 </fx:root>

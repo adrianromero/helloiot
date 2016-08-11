@@ -48,7 +48,7 @@ public class UnitPage implements Comparable<UnitPage> {
         
         this.emptylabel = RESOURCES.getString("label.empty");
         this.columns = 5;
-        this.system = false;
+        this.system = false; // System units have the Unit pages menu disabled and do not appear in the menu too
         this.maxwidth = Double.MAX_VALUE;
         this.maxheight = Double.MAX_VALUE;
     }

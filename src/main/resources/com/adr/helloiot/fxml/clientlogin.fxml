@@ -71,7 +71,7 @@
                         </RadioButton>
                         <RadioButton fx:id="versiondefault" layoutX="554.0" layoutY="55.0" mnemonicParsing="false" selected="true" styleClass="fieldtextbox" text="%label.default" toggleGroup="$version" />
                         <RadioButton fx:id="version311" layoutX="644.0" layoutY="55.0" mnemonicParsing="false" styleClass="fieldtextbox" text="3.1.1" toggleGroup="$version" />
-                        <CheckBox fx:id="cleansession" layoutX="390.0" layoutY="91.0" mnemonicParsing="false" selected="true" styleClass="fieldlabel" text="%label.cleansession" />
+                        <CheckBox fx:id="cleansession" layoutX="390.0" layoutY="86.0" mnemonicParsing="false" selected="true" styleClass="fieldlabel" text="%label.cleansession" />
                      </children>
                   </AnchorPane>
                </content>
@@ -80,9 +80,11 @@
                <content>
                   <AnchorPane prefHeight="200.0" prefWidth="200.0">
                      <children>
-                        <CheckBox fx:id="gaugespane" layoutX="14.0" layoutY="51.0" mnemonicParsing="false" selected="true" styleClass="fieldlabel" text="%label.gaugespane" />
-                        <CheckBox fx:id="lightspane" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" selected="true" styleClass="fieldlabel" text="%label.lightspane" />
-                        <CheckBox layoutX="55.0" layoutY="123.0" mnemonicParsing="false" styleClass="fieldlabel" text="Start main pane" />
+                        <CheckBox fx:id="gaugespane" layoutX="15.0" layoutY="54.0" mnemonicParsing="false" styleClass="fieldlabel" text="%label.gaugespane" />
+                        <CheckBox fx:id="lightspane" layoutX="15.0" layoutY="14.0" mnemonicParsing="false" styleClass="fieldlabel" text="%label.lightspane" />
+                        <CheckBox fx:id="mainpage" layoutX="15.0" layoutY="94.0" mnemonicParsing="false" styleClass="fieldlabel" text="%label.mainpage" />
+                        <Label layoutX="28.0" layoutY="230.0" styleClass="fieldlabel" text="Add fxml file" />
+                        <TextField fx:id="url1" layoutX="146.0" layoutY="218.0" prefWidth="171.0" styleClass="fieldtextbox" />
                      </children>
                   </AnchorPane>
                </content></Tab>

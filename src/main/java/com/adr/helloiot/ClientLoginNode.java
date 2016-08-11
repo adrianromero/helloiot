@@ -83,6 +83,8 @@ public class ClientLoginNode extends BorderPane implements AbstractController {
     private CheckBox gaugespane;
     @FXML
     private CheckBox lightspane;    
+    @FXML
+    private CheckBox mainpage;    
     
     
 
@@ -223,5 +225,28 @@ public class ClientLoginNode extends BorderPane implements AbstractController {
     
     public void setCleanSession(boolean value) {
         cleansession.setSelected(value);
+    } 
+    
+    public boolean isLightsPane() {
+        return lightspane.isSelected();
+    }
+    
+    public void setLightsPane(boolean value) {
+        lightspane.setSelected(value);
+    }    
+    
+    public boolean isGaugesPane() {
+        return gaugespane.isSelected();
+    }
+    
+    public void setGaugesPane(boolean value) {
+        gaugespane.setSelected(value);
+    }    
+    public boolean isMainPage() {
+        return mainpage.isSelected();
+    }
+    
+    public void setMainPage(boolean value) {
+        mainpage.setSelected(value);
     }
 }
