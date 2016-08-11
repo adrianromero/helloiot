@@ -158,7 +158,7 @@ public final class MQTTMainNode extends AnchorPane implements AbstractController
         unitpages.clear();
     }
 
-    public void setOnBackAction(EventHandler<ActionEvent> backevent, Node graphic, String text) {
+    public void setToolbarButton(EventHandler<ActionEvent> backevent, Node graphic, String text) {
         backbutton.setOnAction(backevent);
         backbutton.setText(text);              
         backbutton.setGraphic(graphic);
@@ -171,6 +171,7 @@ public final class MQTTMainNode extends AnchorPane implements AbstractController
 
         
         if (appexitbutton) {
+            exitbutton.setVisible(true);
             exitbutton.setGraphic(IconBuilder.create(FontAwesome.FA_POWER_OFF, 18.0).build());
             exitbutton.setOnAction(ev -> {
                 getScene().getWindow().hide();

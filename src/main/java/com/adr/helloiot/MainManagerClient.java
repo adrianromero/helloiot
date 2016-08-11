@@ -21,6 +21,8 @@ import com.adr.helloiot.unit.UnitPage;
 import java.util.Arrays;
 import java.util.ResourceBundle;
 import javafx.application.Application.Parameters;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.layout.StackPane;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 
@@ -108,10 +110,13 @@ public class MainManagerClient implements MainManager {
             helloiotapp.addFXMLFileDevicesUnits("local:com/adr/helloiot/panes/sampletemperature");
         }
 
-        helloiotapp.setOnExitAction(event -> {
+        
+        EventHandler<ActionEvent> showloginevent = (event -> {
             showLogin();            
             hideApplication();            
         });
+        helloiotapp.setOnDisconnectAction(showloginevent);
+        helloiotapp.getMQTTNode().setToolbarButton(showloginevent, IconBuilder.create(FontAwesome.FA_SIGN_OUT, 18.0).build(), resources.getString("label.disconnect"));
 
         root.getChildren().add(helloiotapp.getMQTTNode());
         helloiotapp.startAndConstruct();        

@@ -80,8 +80,8 @@ public class MainManagerPlatform implements MainManager {
         config.mqtt_topicprefix =  properties.getProperty("mqtt.topicprefix", "");;
         config.mqtt_topicapp =  properties.getProperty("mqtt.topicapp", "_LOCAL_/_sys_helloIoT/mainapp");
         
-        config.app_clock = Boolean.getBoolean(properties.getProperty("app.clock", "true"));
-        config.app_exitbutton = Boolean.getBoolean(properties.getProperty("app.exitbutton", "true"));
+        config.app_clock = Boolean.parseBoolean(properties.getProperty("app.clock", "true"));
+        config.app_exitbutton = Boolean.parseBoolean(properties.getProperty("app.exitbutton", "true"));
         config.app_retryconnection = true;
         
         helloiotapp = new HelloIoTApp(config);
@@ -95,7 +95,7 @@ public class MainManagerPlatform implements MainManager {
             }
         }
     
-        helloiotapp.setOnExitAction(event -> {
+        helloiotapp.setOnDisconnectAction(event -> {
             root.getScene().getWindow().hide();            
         });
         

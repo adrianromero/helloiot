@@ -49,6 +49,7 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.util.Duration;
 
 /**
@@ -195,10 +196,9 @@ public class HelloIoTApp {
         }
     }
     
-    public void setOnExitAction(EventHandler<ActionEvent> exitevent) {
+    public void setOnDisconnectAction(EventHandler<ActionEvent> exitevent) {
         this.exitevent = exitevent;
-        mqttnode.setOnBackAction(exitevent, IconBuilder.create(FontAwesome.FA_SIGN_OUT, 18.0).build(), resources.getString("label.disconnect"));
-    }    
+    }
     
     public void startAndConstruct() {
         
