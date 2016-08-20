@@ -15,7 +15,6 @@
 
 package com.adr.helloiot.device.format;
 
-import com.adr.helloiot.unit.ReceiverScript;
 import com.google.common.base.Strings;
 import java.io.UnsupportedEncodingException;
 import java.text.DecimalFormat;
