@@ -17,6 +17,7 @@ package com.adr.helloiot;
 
 import com.adr.fonticon.FontAwesome;
 import com.adr.fonticon.IconBuilder;
+import com.adr.helloiot.client.TopicStatus;
 import com.adr.helloiot.unit.UnitPage;
 import java.util.Arrays;
 import java.util.ResourceBundle;
@@ -91,7 +92,6 @@ public class MainManagerClient implements MainManager {
         
         if (clientlogin.getBrokerPane() == 1) {
             UnitPage info = new UnitPage("info", IconBuilder.create(FontAwesome.FA_INFO, 24.0).build(), resources.getString("page.info"));
-            info.setColumns(6);
             helloiotapp.addUnitPages(Arrays.asList(info));            
             helloiotapp.addFXMLFileDevicesUnits("local:com/adr/helloiot/panes/mosquitto");
         }
@@ -110,6 +110,17 @@ public class MainManagerClient implements MainManager {
             helloiotapp.addFXMLFileDevicesUnits("local:com/adr/helloiot/panes/sampletemperature");
         }
 
+        TopicStatus ts = TopicStatus.buildTopicStatus("hello/test1");
+        helloiotapp.addDevicesUnits(ts.getDevices(), ts.getUnits());
+        
+        ts = TopicStatus.buildTopicStatus("hello/test1", "HEXADECIMAL");
+        helloiotapp.addDevicesUnits(ts.getDevices(), ts.getUnits());
+        
+        ts = TopicStatus.buildTopicStatus("hello/test1", "INTEGER");
+        helloiotapp.addDevicesUnits(ts.getDevices(), ts.getUnits());
+        
+        ts = TopicStatus.buildTopicStatus("hello/test1", "BASE64");
+        helloiotapp.addDevicesUnits(ts.getDevices(), ts.getUnits());
         
         EventHandler<ActionEvent> showloginevent = (event -> {
             showLogin();            

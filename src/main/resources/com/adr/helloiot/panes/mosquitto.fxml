@@ -52,7 +52,9 @@
     </devices>
     
     <units>
+        <StartLine UnitPage.page="info" VBox.vgrow= "NEVER" />        
         <LabelSection GridPane.columnSpan="6" UnitPage.page="info" text="%title.broker"/>         
+        <StartLine UnitPage.page="info" VBox.vgrow= "NEVER" />        
         <EditView GridPane.columnSpan="2" UnitPage.page="info" label="%label.version" device="$version" />
         <EditView GridPane.columnSpan="2" UnitPage.page="info" label="%label.changeset" device="$changeset"/>
         <EditView GridPane.columnSpan="2" UnitPage.page="info" label="%label.timestamp" device="$timestamp" />
@@ -60,7 +62,9 @@
         <EditView GridPane.columnSpan="2" UnitPage.page="info" label="%label.clients" device="$clients" />
         <EditView GridPane.columnSpan="2" UnitPage.page="info" label="%label.subscriptions" device="$subscriptions" />
         
+        <StartLine UnitPage.page="info" VBox.vgrow= "NEVER" />        
         <LabelSection GridPane.columnSpan="6" UnitPage.page="info" text="%title.load"/>    
+        <StartLine UnitPage.page="info" VBox.vgrow= "NEVER" />        
         <EditView GridPane.columnSpan="1" UnitPage.page="info" label="%label.heapcurrent" device="$heapcurrent" />
         <EditView GridPane.columnSpan="1" UnitPage.page="info" label="%label.heapmax" device="$heapmax" />
         <EditView GridPane.columnSpan="1" UnitPage.page="info" label="%label.bytesreceived" device="$bytesreceived" />
@@ -68,7 +72,9 @@
         <EditView GridPane.columnSpan="1" UnitPage.page="info" label="%label.bytessent" device="$bytessent" />
         <EditView GridPane.columnSpan="1" UnitPage.page="info" label="%label.loadbytessent" device="$loadbytessent" />
 
+        <StartLine UnitPage.page="info" VBox.vgrow= "NEVER" />        
         <LabelSection GridPane.columnSpan="6" UnitPage.page="info" text="%title.messages"/>    
+        <StartLine UnitPage.page="info" VBox.vgrow= "NEVER" />        
         <EditView GridPane.columnSpan="1" UnitPage.page="info" label="%label.retained" device="$retained" />
         <EditView GridPane.columnSpan="1" UnitPage.page="info" label="%label.stored" device="$stored" />
         <EditView GridPane.columnSpan="1" UnitPage.page="info" label="%label.inflight" device="$inflight" />

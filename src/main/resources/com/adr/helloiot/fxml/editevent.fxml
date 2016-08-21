@@ -17,12 +17,14 @@
     along with HelloIot.  If not, see <http://www.gnu.org/licenses/>.
 -->
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import java.lang.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 
-<fx:root maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="unitbase" type="VBox" GridPane.rowSpan="2" xmlns="http://javafx.com/javafx/8.0.92" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="120" prefWidth="120.0" styleClass="unitbase" type="VBox" HBox.hgrow="SOMETIMES" xmlns="http://javafx.com/javafx/8.0.101" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Label fx:id="field" styleClass="fieldlabel" />
       <HBox spacing="5.0">

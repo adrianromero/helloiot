@@ -46,24 +46,30 @@
         </Thermostat>                    
     </devices>
     
-    <units>        
-        <LabelSection UnitPage.page="temperature" GridPane.columnSpan="5" text="%title.thermostats"/>    
+    <units>
+        <StartLine UnitPage.page="temperature" VBox.vgrow= "NEVER" />
+        <LabelSection UnitPage.page="temperature" text="%title.thermostats"/>    
+        <StartLine UnitPage.page="temperature" VBox.vgrow= "SOMETIMES" />
         <ViewGauge UnitPage.page="temperature" device="$home_thermostat1"/>        
         <ViewGauge UnitPage.page="temperature" device="$home_thermostat2"/>        
         <ViewGauge UnitPage.page="temperature" device="$home_thermostat3"/>        
         <ViewGauge UnitPage.page="temperature" device="$home_thermostat4"/>        
-        <ViewGauge UnitPage.page="temperature" device="$home_thermostat5"/>        
-        <LabelSection UnitPage.page="temperature" GridPane.columnSpan="5" text="%title.temperaturecontrol"/>    
+        <ViewGauge UnitPage.page="temperature" device="$home_thermostat5"/>    
+        <StartLine UnitPage.page="temperature" VBox.vgrow= "NEVER" />            
+        <LabelSection UnitPage.page="temperature" text="%title.temperaturecontrol"/>
+        <StartLine UnitPage.page="temperature" VBox.vgrow= "NEVER" />        
         <EditStatus UnitPage.page="temperature" device="$home_thermostat1"/>
         <EditStatus UnitPage.page="temperature" device="$home_thermostat2"/>
         <EditStatus UnitPage.page="temperature" device="$home_thermostat3"/>
         <EditStatus UnitPage.page="temperature" device="$home_thermostat4"/>
-        <EditStatus UnitPage.page="temperature" device="$home_thermostat5"/>        
+        <EditStatus UnitPage.page="temperature" device="$home_thermostat5"/> 
+        <StartLine UnitPage.page="temperature" VBox.vgrow= "NEVER" />            
         <ButtonsSpinner UnitPage.page="temperature" device="$home_thermostat1"/>
         <ButtonsSpinner UnitPage.page="temperature" device="$home_thermostat2"/>
         <ButtonsSpinner UnitPage.page="temperature" device="$home_thermostat3"/>
         <ButtonsSpinner UnitPage.page="temperature" device="$home_thermostat4"/>
         <ButtonsSpinner UnitPage.page="temperature" device="$home_thermostat5"/>
+        <StartLine UnitPage.page="temperature" VBox.vgrow= "NEVER" />        
         <SliderSimple UnitPage.page="temperature" device="$home_thermostat1"/> 
         <SliderSimple UnitPage.page="temperature" device="$home_thermostat2"/> 
         <SliderSimple UnitPage.page="temperature" device="$home_thermostat3"/> 

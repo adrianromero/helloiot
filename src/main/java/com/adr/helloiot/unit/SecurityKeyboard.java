@@ -28,7 +28,7 @@ import javafx.scene.layout.VBox;
  *
  * @author adrian
  */
-public class SecurityKeyboard  extends VBox implements AbstractController {
+public class SecurityKeyboard extends VBox implements AbstractController {
     
     @FXML private Button btndelete;
     @FXML private PasswordField password;

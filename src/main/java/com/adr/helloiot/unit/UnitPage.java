@@ -31,15 +31,13 @@ public class UnitPage implements Comparable<UnitPage> {
     private final String name;
     private final Node graphic;
     private final String text;
-    
-    private int columns;
     private String emptylabel;
     private boolean system;
     private double maxwidth;
     private double maxheight;
     private int order = 10000;
     
-    private final List<Node> units = new ArrayList<>();
+    private final List<StartLine> unitlines = new ArrayList<>();
     
     public UnitPage(String name, Node graphic, String text) {
         this.name = name;
@@ -47,7 +45,6 @@ public class UnitPage implements Comparable<UnitPage> {
         this.text = text;
         
         this.emptylabel = RESOURCES.getString("label.empty");
-        this.columns = 5;
         this.system = false; // System units have the Unit pages menu disabled and do not appear in the menu too
         this.maxwidth = Double.MAX_VALUE;
         this.maxheight = Double.MAX_VALUE;
@@ -66,14 +63,6 @@ public class UnitPage implements Comparable<UnitPage> {
         return text;
     }
 
-    public void setColumns(int value) {
-        columns = value;
-    }
-    
-    public int getColumns() {
-        return columns;
-    }
-    
     public void setSystem(boolean value) {
         system = value;
     }
@@ -118,8 +107,23 @@ public class UnitPage implements Comparable<UnitPage> {
         this.order = order;
     }
     
-    public List<Node> getUnits() {
-        return units;
+    public List<StartLine> getUnitLines() {
+        return unitlines;
+    }
+    
+    public void addUnitNode(Node n) {
+        if (n instanceof StartLine) {
+            unitlines.add((StartLine) n);
+        } else {
+            StartLine lastPane;
+            if (unitlines.isEmpty()) {
+                lastPane = new StartLine();
+                unitlines.add(lastPane);
+            } else {
+                lastPane = unitlines.get(unitlines.size() - 1);
+            }
+            lastPane.getChildren().add(n);
+        }
     }
     
     public static void setPage(Node node, String value) {

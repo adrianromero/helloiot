@@ -47,25 +47,33 @@
     </devices>
     
     <units>
+        <StartLine UnitPage.page="light" VBox.vgrow= "NEVER" />
         <LabelSection UnitPage.page="light" GridPane.columnSpan="5" text="%title.livingroomlights"/>    
+        <StartLine UnitPage.page="light" VBox.vgrow= "SOMETIMES" />
         <ViewSimple UnitPage.page="light" device="$living_light1" iconStatus="BULBTEXT/1"/>        
         <ViewSimple UnitPage.page="light" device="$living_light2" iconStatus="BULBTEXT/2"/>
         <ViewSimple UnitPage.page="light" device="$living_light3" iconStatus="BULBTEXT/3"/>
         <ViewSimple UnitPage.page="light" device="$living_light4" iconStatus="BULBTEXT/4"/>
-        <ViewSimple UnitPage.page="light" device="$living_light5" iconStatus="BULBTEXT/5"/>            
-        <LabelSection UnitPage.page="light" GridPane.columnSpan="5" text="%title.ligthstatus"/>    
+        <ViewSimple UnitPage.page="light" device="$living_light5" iconStatus="BULBTEXT/5"/>
+        <StartLine UnitPage.page="light" VBox.vgrow= "NEVER" />      
+        <LabelSection UnitPage.page="light" GridPane.columnSpan="5" text="%title.ligthstatus"/>
+        <StartLine UnitPage.page="light" VBox.vgrow= "NEVER" />  
         <EditStatus UnitPage.page="light" device="$living_light1"/>
         <EditStatus UnitPage.page="light" device="$living_light2"/>
         <EditStatus UnitPage.page="light" device="$living_light3"/>
         <EditStatus UnitPage.page="light" device="$living_light4"/>
         <EditStatus UnitPage.page="light" device="$living_light5"/>
+        <StartLine UnitPage.page="light" VBox.vgrow= "NEVER" />
         <LabelSection UnitPage.page="light" GridPane.columnSpan="5" text="%title.lightswitchs"/>    
+        <StartLine UnitPage.page="light" VBox.vgrow= "SOMETIMES" />
         <ButtonSimple UnitPage.page="light" device="$living_light1" iconStatus="TOGGLE"/>
         <ButtonSimple UnitPage.page="light" device="$living_light2" iconStatus="TOGGLE"/>
         <ButtonSimple UnitPage.page="light" device="$living_light3" iconStatus="TOGGLE"/>
         <ButtonSimple UnitPage.page="light" device="$living_light4" iconStatus="TOGGLE"/>
         <ButtonSimple UnitPage.page="light" device="$living_light5" iconStatus="TOGGLE"/>
-        <LabelSection UnitPage.page="light" GridPane.columnSpan="5" text="%title.moreactions"/>    
+        <StartLine UnitPage.page="light" VBox.vgrow= "NEVER" />
+        <LabelSection UnitPage.page="light" GridPane.columnSpan="5" text="%title.moreactions"/> 
+        <StartLine UnitPage.page="light" VBox.vgrow= "SOMETIMES" />
         <ButtonSimple UnitPage.page="light" device="$living_light1"/>
         <ButtonScript UnitPage.page="light" text="%label.timerlight1">
             <graphic><Icon iconAwesome="FA_CLOCK_O" size="48" color="WHITE" shine="WHITE"/></graphic>

@@ -24,6 +24,7 @@ import com.adr.hellocommon.utils.AbstractController;
 import com.adr.helloiot.device.format.StringFormatIdentity;
 import com.adr.helloiot.unit.Unit;
 import com.adr.helloiot.media.ClipFactory;
+import com.adr.helloiot.unit.StartLine;
 import com.google.common.base.Strings;
 import com.google.common.eventbus.Subscribe;
 import java.util.LinkedHashMap;
@@ -53,9 +54,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.CornerRadii;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
@@ -69,9 +68,9 @@ public final class MQTTMainNode extends AnchorPane implements AbstractController
     
 //    @FXML private URL url;
     @FXML private ResourceBundle resources;
-    @FXML private StackPane stackparent;
+//    @FXML private StackPane stackparent;
     @FXML private BorderPane appcontainer;
-    @FXML private GridPane container;
+    @FXML private VBox container;
     @FXML private ListView<UnitPage> listpages;
     @FXML private Pane listpagesgray;
     @FXML private HBox headerbox;
@@ -125,13 +124,13 @@ public final class MQTTMainNode extends AnchorPane implements AbstractController
             Node n = u.getNode();
             if (n != null) {
                 UnitPage unitpage = buildUnitPage(UnitPage.getPage(n));
-                unitpage.getUnits().add(n);
+                unitpage.addUnitNode(n);
             }                   
         });
         
         // Build listpages based on unitpages
         unitpages.values().stream().sorted().forEach(value -> {
-            if (!value.isSystem() && value.getUnits().size() > 0 && (value.getName() == null || !value.getName().startsWith("."))) {
+            if (!value.isSystem() && value.getUnitLines().size() > 0 && (value.getName() == null || !value.getName().startsWith("."))) {
                 listpages.getItems().add(value);
             }        
         });
@@ -249,10 +248,6 @@ public final class MQTTMainNode extends AnchorPane implements AbstractController
         }
     }
     
-    private int unbox(Integer i) {
-        return i == null ? 1 : i;
-    }
-    
     @Subscribe
     public void selectUnitPage(EventMessage message) {
         Platform.runLater(() -> {
@@ -289,50 +284,10 @@ public final class MQTTMainNode extends AnchorPane implements AbstractController
         s2.playFromStart();
 
         // Initialize grid
-        container.getRowConstraints().clear();   
-        container.getColumnConstraints().clear();
         container.setMaxSize(unitpage.getMaxWidth(), unitpage.getMaxHeight());
-
-        // Add columns to grid
-        for (int i = 0; i < unitpage.getColumns(); i++) {
-            ColumnConstraints cc = new ColumnConstraints();
-            cc.setPercentWidth(100.0 / unitpage.getColumns());
-            container.getColumnConstraints().add(cc);
-        }
-
-        int columns = container.getColumnConstraints().size();
-        int totalrows = 0;
-        int col = 0;
-        int row = 0;
-        int nextrowspan = 1;
-        for (Node n : unitpage.getUnits()) {
-            int rowspan = unbox(GridPane.getRowSpan(n));
-            int columnspan = unbox(GridPane.getColumnSpan(n));
-            if (columnspan == GridPane.REMAINING) {
-                if (col < columns) {
-                    columnspan = columns - col;
-                } else {
-                    columnspan = columns;
-                }
-            }
-
-            if (col + columnspan > columns) {
-                col = 0;
-                row += nextrowspan; 
-                nextrowspan = rowspan;
-            } else if (nextrowspan < rowspan) {
-                nextrowspan = rowspan;
-            }
-            while (row + nextrowspan > totalrows) {             
-                RowConstraints rc = new RowConstraints();
-                rc.setMinHeight(10.0);
-                rc.setPrefHeight(30.0);                
-                container.getRowConstraints().add(rc);  
-                totalrows ++;
-            }            
-            container.add(n, col, row);
-            col += columnspan;          
-        }  
+        for (StartLine line : unitpage.getUnitLines()) {
+            container.getChildren().add(line);
+        }        
 
         headertitle.setText(unitpage.getText());
 
@@ -344,23 +299,14 @@ public final class MQTTMainNode extends AnchorPane implements AbstractController
             RowConstraints rc = new RowConstraints();
             rc.setMinHeight(10.0);
             rc.setPrefHeight(30.0);                
-            container.getRowConstraints().add(rc); 
-
-            container.getColumnConstraints().clear();
-            ColumnConstraints cc = new ColumnConstraints();
-            cc.setPercentWidth(100.0);
-            container.getColumnConstraints().add(cc);  
 
             Label l = new Label();
             l.setText(unitpage.getEmptyLabel());
             l.setAlignment(Pos.CENTER);
             l.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
             l.getStyleClass().add("emptypanel");
-            GridPane.setVgrow(l, Priority.SOMETIMES);
-            GridPane.setHgrow(l, Priority.SOMETIMES);                      
-            GridPane.setRowSpan(l, 1);
-            GridPane.setColumnSpan(l, 1);
-            container.add(l, 0, 0);        
+            VBox.setVgrow(l, Priority.SOMETIMES);
+            container.getChildren().add(l);
         }
 
         // Modify panel if system

@@ -30,7 +30,8 @@ import javafx.event.ActionEvent;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContentDisplay;
-import javafx.scene.layout.GridPane;
+import javafx.scene.control.Control;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.util.Duration;
 
@@ -54,8 +55,9 @@ public class ButtonEngine extends Button implements Unit {
         
         setContentDisplay(ContentDisplay.TOP);
         this.getStyleClass().add("buttonbase");
-        GridPane.setVgrow(this, Priority.SOMETIMES);
-        GridPane.setHgrow(this, Priority.SOMETIMES);        
+        HBox.setHgrow(this, Priority.SOMETIMES);  
+        setMinSize(120.0, Control.USE_COMPUTED_SIZE);
+        setPrefSize(120.0, Control.USE_COMPUTED_SIZE);
         setMaxSize(Integer.MAX_VALUE, Integer.MAX_VALUE);
         setFocusTraversable(false);
         setDisable(true);

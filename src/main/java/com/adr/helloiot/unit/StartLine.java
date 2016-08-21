@@ -15,42 +15,29 @@
 
 package com.adr.helloiot.unit;
 
-import java.util.ResourceBundle;
 import javafx.scene.Node;
-import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
 
 /**
  *
  * @author adrian
  */
-public class LabelSection extends Label implements Unit {
-
-    protected boolean confirm = false;
-    protected ResourceBundle resources = ResourceBundle.getBundle("com/adr/helloiot/fxml/basic"); 
-            
-    public LabelSection() {   
-        
-        this.getStyleClass().add("labelsection");
-        HBox.setHgrow(this, Priority.SOMETIMES);
-        setMaxSize(Integer.MAX_VALUE, Integer.MAX_VALUE);
-        setFocusTraversable(false);
-        setDisable(true);
-    }
+public class StartLine extends HBox implements Unit {
     
+    public StartLine() {
+        setSpacing(5.0);       
+    }
+
     @Override
     public void start() {
-        setDisable(false);
     }
 
     @Override
     public void stop() {
-        setDisable(true);
     }
 
     @Override
     public Node getNode() {
         return this;
-    }
+    }   
 }

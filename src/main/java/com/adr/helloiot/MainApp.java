@@ -33,6 +33,7 @@ import javafx.geometry.Rectangle2D;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Slider;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Screen;
@@ -100,7 +101,7 @@ public abstract class MainApp extends Application {
 
         // hack to avoid slider to get the focus.
         scene.focusOwnerProperty().addListener((ObservableValue<? extends Node> observable, Node oldValue, Node newValue) -> {
-            if (newValue != null && newValue instanceof Slider) {
+            if (newValue != null && (newValue instanceof Slider || newValue instanceof ScrollPane)) {
                 root.requestFocus();
             }
         });

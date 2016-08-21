@@ -25,8 +25,9 @@ import javafx.application.Platform;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.ContentDisplay;
+import javafx.scene.control.Control;
 import javafx.scene.control.Label;
-import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 
 /**
@@ -46,8 +47,9 @@ public class ViewSimple extends Label implements Unit  {
         setAlignment(Pos.CENTER);
         getStyleClass().add("unitbase");
         getStyleClass().add("labelbase");
-        GridPane.setVgrow(this, Priority.SOMETIMES);
-        GridPane.setHgrow(this, Priority.SOMETIMES);
+        HBox.setHgrow(this, Priority.SOMETIMES);
+        setMinSize(120.0, Control.USE_COMPUTED_SIZE);
+        setPrefSize(120.0, Control.USE_COMPUTED_SIZE);   
         setMaxSize(Integer.MAX_VALUE, Integer.MAX_VALUE);
         setDisable(true);
         setText(null);
