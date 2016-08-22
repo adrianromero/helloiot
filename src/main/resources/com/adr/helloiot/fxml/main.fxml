@@ -49,11 +49,15 @@
                   <center>
                      <ScrollPane fitToHeight="true" fitToWidth="true" focusTraversable="false" BorderPane.alignment="CENTER">
                         <content>
-                           <VBox fx:id="container" spacing="5.0">
-                              <padding>
-                                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                              </padding>
-                           </VBox>
+                           <StackPane>
+                              <children>
+                                 <VBox fx:id="container" spacing="5.0">
+                                    <padding>
+                                       <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                    </padding>
+                                 </VBox>
+                              </children>
+                           </StackPane>
                         </content>
                      </ScrollPane>
                   </center>

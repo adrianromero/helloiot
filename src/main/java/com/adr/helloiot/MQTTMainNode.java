@@ -58,7 +58,6 @@ import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
-import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -294,11 +293,7 @@ public final class MQTTMainNode extends AnchorPane implements AbstractController
         // Set label if empty
         if (container.getChildren().isEmpty()) {
 
-            container.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-
-            RowConstraints rc = new RowConstraints();
-            rc.setMinHeight(10.0);
-            rc.setPrefHeight(30.0);                
+            container.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);    
 
             Label l = new Label();
             l.setText(unitpage.getEmptyLabel());
