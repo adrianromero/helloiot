@@ -6,16 +6,20 @@
 package com.adr.helloiot.client;
 
 import com.adr.helloiot.device.Device;
+import com.adr.helloiot.device.DeviceBasic;
 import com.adr.helloiot.device.DeviceSimple;
+import com.adr.helloiot.device.TransmitterSimple;
 import com.adr.helloiot.device.format.StringFormat;
-import com.adr.helloiot.device.format.StringFormatIdentity;
+import com.adr.helloiot.unit.EditAreaEvent;
+import com.adr.helloiot.unit.EditAreaStatus;
+import com.adr.helloiot.unit.EditAreaView;
+import com.adr.helloiot.unit.EditEvent;
 import com.adr.helloiot.unit.EditStatus;
+import com.adr.helloiot.unit.EditView;
 import com.adr.helloiot.unit.StartLine;
 import com.adr.helloiot.unit.Unit;
 import java.util.Arrays;
 import java.util.List;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
 
 /**
  *
@@ -26,33 +30,58 @@ public class TopicStatus {
     private List<Device> devices;
     private List<Unit> units;
     
-    public static TopicStatus buildTopicStatus(String topic) {
-        return buildTopicStatus(topic, StringFormatIdentity.INSTANCE);
-    }
-    
-    public static TopicStatus buildTopicStatus(String topic, String format) {
-        return buildTopicStatus(topic, StringFormat.valueOf(format));
-    }
-    
-    public static TopicStatus buildTopicStatus(String topic, StringFormat format) {
-//        <DeviceSimple fx:id="sampleformat2" topic="home/livingroom/sampleformat" format ="HEXADECIMAL" />
-        DeviceSimple d = new DeviceSimple();
+    public static TopicStatus buildTopicPublish(String topic, int qos, StringFormat format,  boolean multiline) {
+
+        TransmitterSimple d = new TransmitterSimple();
         d.setTopic(topic);
+        d.setQos(qos);
         d.setFormat(format);
-        
-        
-        
-//        <EditAreaStatus UnitPage.page="Status" GridPane.columnSpan="2" label="Sample topic" device="$sampleformat" style="-fx-background-color: cyan;"/>
-        EditStatus u = new EditStatus(); // EditAreaStatus
+
+        EditEvent u = multiline ? new EditAreaEvent() : new EditEvent();
         u.setLabel(topic);
         u.setDevice(d);
         u.setStyle("-fx-background-color: white;");
-        HBox.setHgrow(u, Priority.SOMETIMES);
         
         TopicStatus ts = new TopicStatus();
         ts.devices = Arrays.asList(d);
         ts.units = Arrays.asList(new StartLine(), u);
         return ts;                       
+    }    
+    
+    public static TopicStatus buildTopicPublishRetained(String topic, int qos, StringFormat format,  boolean multiline) {
+
+        DeviceSimple d = new DeviceSimple();
+        d.setTopic(topic);
+        d.setQos(qos);
+        d.setFormat(format);
+
+        EditStatus u = multiline ? new EditAreaStatus() : new EditStatus();
+        u.setLabel(topic);
+        u.setDevice(d);
+        u.setStyle("-fx-background-color: white;");
+        
+        TopicStatus ts = new TopicStatus();
+        ts.devices = Arrays.asList(d);
+        ts.units = Arrays.asList(new StartLine(), u);
+        return ts;                       
+    }
+    
+    public static TopicStatus buildTopicSubscription(String topic, int qos, StringFormat format,  boolean multiline) {
+
+        DeviceBasic d = new DeviceBasic();
+        d.setTopic(topic);
+        d.setQos(qos);
+        d.setFormat(format);
+
+        EditView u = multiline ? new EditAreaView() : new EditView();
+        u.setLabel(topic);
+        u.setDevice(d);
+        u.setStyle("-fx-background-color: white;");
+        
+        TopicStatus ts = new TopicStatus();
+        ts.devices = Arrays.asList(d);
+        ts.units = Arrays.asList(new StartLine(), u);
+        return ts;          
     }
     
     private TopicStatus() {}

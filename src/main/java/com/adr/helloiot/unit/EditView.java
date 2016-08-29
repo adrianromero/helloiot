@@ -19,7 +19,6 @@ import com.adr.hellocommon.utils.AbstractController;
 import com.adr.helloiot.EventMessage;
 import com.adr.helloiot.HelloIoTAppPublic;
 import com.adr.helloiot.device.DeviceBase;
-import com.adr.helloiot.device.DeviceBasic;
 import com.google.common.base.Strings;
 import com.google.common.eventbus.Subscribe;
 import javafx.application.Platform;

@@ -86,9 +86,6 @@
                            <children>
                               <CheckBox fx:id="gaugespane" layoutX="15.0" layoutY="54.0" mnemonicParsing="false" styleClass="fieldlabel" text="%label.gaugespane" />
                               <CheckBox fx:id="lightspane" layoutX="15.0" layoutY="14.0" mnemonicParsing="false" styleClass="fieldlabel" text="%label.lightspane" />
-                              <CheckBox fx:id="mainpage" layoutX="15.0" layoutY="94.0" mnemonicParsing="false" styleClass="fieldlabel" text="%label.mainpage" />
-                              <Label layoutX="28.0" layoutY="230.0" styleClass="fieldlabel" text="Add fxml file" />
-                              <TextField fx:id="url1" layoutX="146.0" layoutY="218.0" prefWidth="171.0" styleClass="fieldtextbox" />
                            </children>
                         </AnchorPane>
                      </content>

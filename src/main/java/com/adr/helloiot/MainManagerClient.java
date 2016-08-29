@@ -18,6 +18,8 @@ package com.adr.helloiot;
 import com.adr.fonticon.FontAwesome;
 import com.adr.fonticon.IconBuilder;
 import com.adr.helloiot.client.TopicStatus;
+import com.adr.helloiot.device.format.StringFormat;
+import com.adr.helloiot.device.format.StringFormatIdentity;
 import com.adr.helloiot.unit.UnitPage;
 import java.util.Arrays;
 import java.util.ResourceBundle;
@@ -110,17 +112,27 @@ public class MainManagerClient implements MainManager {
             helloiotapp.addFXMLFileDevicesUnits("local:com/adr/helloiot/panes/sampletemperature");
         }
 
-        TopicStatus ts = TopicStatus.buildTopicStatus("hello/test1");
+        TopicStatus ts = TopicStatus.buildTopicPublishRetained("hello/test1", -1, StringFormatIdentity.INSTANCE, true);
         helloiotapp.addDevicesUnits(ts.getDevices(), ts.getUnits());
         
-        ts = TopicStatus.buildTopicStatus("hello/test1", "HEXADECIMAL");
+        ts = TopicStatus.buildTopicPublishRetained("hello/test1", -1, StringFormat.valueOf("HEXADECIMAL"), true);
         helloiotapp.addDevicesUnits(ts.getDevices(), ts.getUnits());
         
-        ts = TopicStatus.buildTopicStatus("hello/test1", "INTEGER");
+        ts = TopicStatus.buildTopicPublishRetained("hello/test1", -1, StringFormat.valueOf("INTEGER"), true);
         helloiotapp.addDevicesUnits(ts.getDevices(), ts.getUnits());
         
-        ts = TopicStatus.buildTopicStatus("hello/test1", "BASE64");
+        ts = TopicStatus.buildTopicPublishRetained("hello/test1", -1, StringFormat.valueOf("BASE64"), true);
         helloiotapp.addDevicesUnits(ts.getDevices(), ts.getUnits());
+        
+        ts = TopicStatus.buildTopicPublish("hello/test2", -1, StringFormatIdentity.INSTANCE, false);
+        helloiotapp.addDevicesUnits(ts.getDevices(), ts.getUnits());
+        
+        ts = TopicStatus.buildTopicSubscription("hello/test2", -1, StringFormatIdentity.INSTANCE, false);
+        helloiotapp.addDevicesUnits(ts.getDevices(), ts.getUnits());
+        
+        ts = TopicStatus.buildTopicSubscription("$SYS/broker/uptime", -1, StringFormatIdentity.INSTANCE, false);
+        helloiotapp.addDevicesUnits(ts.getDevices(), ts.getUnits());
+
         
         EventHandler<ActionEvent> showloginevent = (event -> {
             showLogin();            

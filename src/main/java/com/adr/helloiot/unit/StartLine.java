@@ -17,6 +17,8 @@ package com.adr.helloiot.unit;
 
 import javafx.scene.Node;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
 
 /**
  *
@@ -25,7 +27,8 @@ import javafx.scene.layout.HBox;
 public class StartLine extends HBox implements Unit {
     
     public StartLine() {
-        setSpacing(5.0);       
+        setSpacing(5.0);
+        VBox.setVgrow(this, Priority.NEVER);
     }
 
     @Override
