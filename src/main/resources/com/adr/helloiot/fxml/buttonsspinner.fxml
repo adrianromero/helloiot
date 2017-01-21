@@ -20,25 +20,22 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
 
 <VBox xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Button fx:id="goup" focusTraversable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onGoUp" styleClass="buttonbase" VBox.vgrow="SOMETIMES">
-         <VBox.margin>
-            <Insets bottom="10.0" />
-         </VBox.margin>
-      </Button>
       <Label fx:id="level" alignment="CENTER_RIGHT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="20.0" styleClass="levelbase" text="level">
          <VBox.margin>
             <Insets />
          </VBox.margin>
       </Label>
-      <Button fx:id="godown" focusTraversable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onGoDown" styleClass="buttonbase" VBox.vgrow="SOMETIMES">
-         <VBox.margin>
-            <Insets top="10.0" />
-         </VBox.margin>
-      </Button>
+      <HBox spacing="6.0">
+         <children>
+            <Button fx:id="godown" focusTraversable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onGoDown" styleClass="buttonbase" HBox.hgrow="SOMETIMES" />
+            <Button fx:id="goup" focusTraversable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onGoUp" styleClass="buttonbase" HBox.hgrow="SOMETIMES" />
+         </children>
+      </HBox>
    </children>
 </VBox>
