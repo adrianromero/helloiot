@@ -16,19 +16,32 @@
 package com.adr.helloiot.unit;
 
 import javafx.scene.Node;
+import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
 
 /**
  *
  * @author adrian
  */
-public class EditAreaStatus extends EditStatus {
+public class StartFlow extends FlowPane implements UnitLine {
+    
+    public StartFlow() {
+        setVgap(12);
+        setHgap(12);
+        VBox.setVgrow(this, Priority.NEVER);
+    }
 
-//    @Override
-//    protected void loadFXML() {   
-//        this.load("/com/adr/helloiot/fxml/editareastatus.fxml");   
-//    }  
     @Override
-    public Node constructContent() {   
-        return loadFXML("/com/adr/helloiot/fxml/editareastatus.fxml");       
-    }     
+    public void start() {
+    }
+
+    @Override
+    public void stop() {
+    }
+
+    @Override
+    public Node getNode() {
+        return this;
+    }   
 }

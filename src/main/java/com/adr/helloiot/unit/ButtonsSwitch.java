@@ -25,95 +25,66 @@ import java.util.Map;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.ContentDisplay;
-import javafx.scene.control.Control;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
 /**
  *
  * @author adrian
  */
-public class ButtonsSwitch extends StackPane implements Unit, AbstractController {
+public class ButtonsSwitch extends Tile implements Unit, AbstractController {
 
     protected ResourceBundle resources = ResourceBundle.getBundle("com/adr/helloiot/fxml/basic"); 
 
     private IconStatus iconbuilder;
     
-    private final ButtonBase goup;
-    private final ButtonBase godown;
+    private Button goup;
+    private Button godown;
 
     private final Map<String, Object> params = new HashMap<>();
     private ScriptCode code = null;
     
-    public ButtonsSwitch() {   
+    @Override
+    public Node constructContent() {   
 
-        HBox.setHgrow(this, Priority.SOMETIMES);     
-        setMinSize(120.0, Control.USE_COMPUTED_SIZE);
-        setPrefSize(120.0, Control.USE_COMPUTED_SIZE);
-        setMaxSize(Integer.MAX_VALUE, Integer.MAX_VALUE);
-
-        goup = new ButtonBase() {
-            @Override
-            protected void doRun(ActionEvent event) {
-                doRunSwitch(event, StatusSwitch.ON);
-            }     
-        };
-        VBox.setVgrow(goup, Priority.SOMETIMES);  
-        goup.setContentDisplay(ContentDisplay.LEFT);
-        goup.getStyleClass().remove("buttonbase");
+        goup = new Button();
+        goup.setContentDisplay(ContentDisplay.TOP);
+        goup.getStyleClass().add("buttonbase");
         goup.getStyleClass().add("buttonup");
-        
-        godown = new ButtonBase() {
-            @Override
-            protected void doRun(ActionEvent event) {
-                doRunSwitch(event, StatusSwitch.OFF);
-            }     
-        };
-        VBox.setVgrow(godown, Priority.SOMETIMES);
-        godown.setContentDisplay(ContentDisplay.LEFT);
-        godown.getStyleClass().remove("buttonbase");
+        VBox.setVgrow(goup, Priority.SOMETIMES);   
+        goup.setMaxSize(Integer.MAX_VALUE, Integer.MAX_VALUE);
+        goup.setFocusTraversable(false);        
+        goup.setOnAction(event -> {
+            doRunSwitch(event, StatusSwitch.ON);
+        });
+ 
+        godown = new Button();
+        godown.setContentDisplay(ContentDisplay.TOP);
+        godown.getStyleClass().add("buttonbase");
         godown.getStyleClass().add("buttondown");
-        
-        getChildren().add(new VBox(goup, godown));
+        VBox.setVgrow(godown, Priority.SOMETIMES);   
+        godown.setMaxSize(Integer.MAX_VALUE, Integer.MAX_VALUE);
+        godown.setFocusTraversable(false);             
+        godown.setOnAction(event -> {
+                doRunSwitch(event, StatusSwitch.OFF);
+        });
         
         setIconStatus(IconStatus.valueOf("TEXT/ON/OFF"));
+        
+        VBox content = new VBox(goup, godown);
+        VBox.setVgrow(content, Priority.SOMETIMES);   
+        content.setMaxSize(Integer.MAX_VALUE, Integer.MAX_VALUE);        
+        return content;       
     }
     
     @Override
     public void construct(HelloIoTAppPublic app) {
         Unit.super.construct(app);
         code.construct(app);
-        goup.construct(app);
-        godown.construct(app);
     }
 
-    @Override
-    public void destroy() {
-        Unit.super.destroy();
-        goup.destroy();
-        godown.destroy();
-    }
-    
-    @Override
-    public void start() {
-        goup.start();
-        godown.start();
-    }
-
-    @Override
-    public void stop() {
-        goup.stop();
-        godown.stop();
-    }
-
-    @Override
-    public Node getNode() {
-        return this;
-    }
-    
     public Map<String, Object> getParameters() {
         return params;
     }
@@ -124,15 +95,6 @@ public class ButtonsSwitch extends StackPane implements Unit, AbstractController
     
     public ScriptCode getScriptCode() {
         return code;
-    }
-    
-    public void setLabel(String value) {
-        goup.setText(value);
-        godown.setText(value);
-    }
-    
-    public String getLabel() {
-        return goup.getText();
     }
     
     public void setIconStatus(IconStatus iconbuilder) {
@@ -147,13 +109,13 @@ public class ButtonsSwitch extends StackPane implements Unit, AbstractController
     
     private void doRunSwitch(ActionEvent event, byte[] status) {
         if (code == null) {
-            MessageUtils.showError(MessageUtils.getRoot(this), goup.getText(), resources.getString("message.nocode"));        
+            MessageUtils.showError(MessageUtils.getRoot(this), getLabel(), resources.getString("message.nocode"));        
         } else {
             Map<String, Object> newparams = new HashMap<>();
             newparams.putAll(params);
             newparams.put("_status", status);
             code.run(newparams).exceptionallyFX((ex) -> {
-                MessageUtils.showException(MessageUtils.getRoot(this), goup.getText(), resources.getString("message.erroraction"), ex);
+                MessageUtils.showException(MessageUtils.getRoot(this), getLabel(), resources.getString("message.erroraction"), ex);
                 return null;
             });  
         }        

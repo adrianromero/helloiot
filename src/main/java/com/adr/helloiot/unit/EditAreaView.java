@@ -15,14 +15,15 @@
 
 package com.adr.helloiot.unit;
 
+import javafx.scene.Node;
+
 /**
  *
  * @author adrian
  */
 public class EditAreaView extends EditView {
-
     @Override
-    protected void loadFXML() {   
-        this.load("/com/adr/helloiot/fxml/editareaview.fxml");   
-    }   
+    public Node constructContent() {   
+        return loadFXML("/com/adr/helloiot/fxml/editareaview.fxml");       
+    }  
 }

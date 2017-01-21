@@ -18,7 +18,6 @@ package com.adr.helloiot.unit;
 import com.adr.fonticon.FontAwesome;
 import com.adr.fonticon.IconBuilder;
 import com.adr.hellocommon.dialog.MessageUtils;
-import com.adr.hellocommon.utils.AbstractController;
 import com.adr.helloiot.EventMessage;
 import com.adr.helloiot.HelloIoTAppPublic;
 import com.adr.helloiot.device.DeviceSimple;
@@ -30,20 +29,17 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextInputControl;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
 
 /**
  *
  * @author adrian
  */
-public class EditStatus extends VBox implements Unit, AbstractController {
+public class EditStatus extends Tile implements Unit {
     
     protected ResourceBundle resources = ResourceBundle.getBundle("com/adr/helloiot/fxml/basic");
     
-    @FXML private Label field;
     @FXML private TextInputControl statusview;
     @FXML private Button editaction;
     @FXML private TextInputControl statusedit;
@@ -53,14 +49,11 @@ public class EditStatus extends VBox implements Unit, AbstractController {
     @FXML private Pane boxedit;
     
     private DeviceSimple device = null;
-    
-    public EditStatus() {
-        loadFXML();
-    }   
-    
-    protected void loadFXML() {        
-        this.load("/com/adr/helloiot/fxml/editstatus.fxml");   
-    }   
+      
+    @Override
+    public Node constructContent() {   
+        return loadFXML("/com/adr/helloiot/fxml/editstatus.fxml");       
+    } 
     
     @FXML public void initialize() {
         editaction.setGraphic(IconBuilder.create(FontAwesome.FA_EDIT, 16).build());
@@ -91,21 +84,6 @@ public class EditStatus extends VBox implements Unit, AbstractController {
         device.unsubscribeStatus(this);    
     }    
     
-    @Override
-    public void start() {
-        setDisable(false);
-    }
-
-    @Override
-    public void stop() {
-        setDisable(true);
-    }
-
-    @Override
-    public Node getNode() {
-        return this;
-    }
-    
     public void setDevice(DeviceSimple device) {
         this.device = device;
         if (Strings.isNullOrEmpty(getLabel())) {
@@ -115,14 +93,6 @@ public class EditStatus extends VBox implements Unit, AbstractController {
     
     public DeviceSimple getDevice() {
         return device;
-    }
-    
-    public void setLabel(String label) {
-        field.setText(label);
-    }
-    
-    public String getLabel() {
-        return field.getText();
     }
     
     public void setReadOnly(boolean value) {

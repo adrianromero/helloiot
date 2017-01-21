@@ -69,7 +69,7 @@
 }
 
 .list-cell {
-   -fx-font-family: 'ROBOTO REGULART';
+   -fx-font-family: 'ROBOTO REGULAR';
    -fx-font-size: 18px; 
 }
 /*
@@ -129,8 +129,7 @@
 .fieldlabel {
     -fx-font-family: 'ROBOTO LIGHT';
     -fx-font-size: 16px;
-    -fx-text-fill: #777777;   
-    -fx-padding: 10px 10px 5px 10px;      
+    -fx-text-fill: #777777;       
 }
 
 .fieldtextbox {
@@ -169,7 +168,11 @@
 }
 
 .unitbase {
-    -fx-background-radius: 10;
+    -fx-background-radius: 6, 5;
+    -fx-background-insets: 0, 1;
+    -fx-background-color:  #9f9f9f, #fafafa;        
+    -fx-effect: dropshadow(three-pass-box, gray, 4, 0, 0, 0);
+    -fx-padding: 4px 6px 4px 6px;
 }
 
 .labelbase {
@@ -178,7 +181,47 @@
     -fx-text-fill: #777777;   
 }
 
+.footerbase {
+    -fx-padding: 4px 0px 0px 0px;
+    -fx-alignment: top-right;
+}
+
+.footerbase .styledtext {
+    -fx-fill: #777777;
+    -fx-font-family: 'ROBOTO REGULAR';
+    -fx-font-size: 12px;       
+}
+
 .levelbase {
     -fx-font-family: 'ROBOTO BOLD';
-    -fx-font-size: 18px;
+    -fx-font-size: 36px;
 }
+
+.slider .thumb {
+    -fx-background-color:
+        linear-gradient(to bottom, derive(-fx-text-box-border, -20%), derive(-fx-text-box-border, -30%)),
+        -fx-inner-border,
+        -fx-body-color;
+    -fx-background-insets: 0, 1, 2;
+    -fx-background-radius: 2.0em; /* makes sure this remains circular */
+    -fx-padding: 2em /*1.583333em*/;    
+    /*-fx-effect: dropshadow(two-pass-box , rgba(0, 0, 0, 0.1), 5, 0.0 , 0, 2);*/
+}
+.slider .track {
+      -fx-background-color:
+          -fx-shadow-highlight-color,
+          linear-gradient(to bottom, derive(-fx-text-box-border, -10%), -fx-text-box-border),
+          linear-gradient(to bottom,
+            derive(-fx-control-inner-background, -9%),
+            derive(-fx-control-inner-background, 0%),
+            derive(-fx-control-inner-background, -5%),
+            derive(-fx-control-inner-background, -12%)
+          );
+    -fx-background-insets: 0 0 -1 0, 0, 1;
+    -fx-background-radius: 0.25em, 0.25em, 0.166667em;  
+    -fx-padding: 1.0em;   
+}
+/*
+.text-area *.text {
+    -fx-text-alignment: right;
+}*/

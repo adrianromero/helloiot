@@ -44,7 +44,12 @@ public class StringFormatDecimal implements StringFormat {
     public StringFormatDecimal() {
         setPattern("0");
     }
-
+    
+    @Override
+    public String getName() {
+        return "DEC";
+    }
+    
     public final void setPattern(String pattern) {
         this.format = new DecimalFormat(pattern);
         this.pattern = pattern;

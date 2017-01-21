@@ -25,34 +25,32 @@ import javafx.application.Platform;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.ContentDisplay;
-import javafx.scene.control.Control;
 import javafx.scene.control.Label;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
 
 /**
  *
  * @author adrian
  */
-public class ViewSimple extends Label implements Unit  {
+public class ViewSimple extends Tile implements Unit  {
+
+//    private final Label title;
+    private Label content;
     
     private final static IconStatus ICONNULL = new IconNull();
     private IconStatus iconbuilder = ICONNULL;
     
     private DeviceBase device = null;
-        
-    public ViewSimple() {   
-        
-        setContentDisplay(ContentDisplay.TOP);
-        setAlignment(Pos.CENTER);
-        getStyleClass().add("unitbase");
-        getStyleClass().add("labelbase");
-        HBox.setHgrow(this, Priority.SOMETIMES);
-        setMinSize(120.0, Control.USE_COMPUTED_SIZE);
-        setPrefSize(120.0, Control.USE_COMPUTED_SIZE);   
-        setMaxSize(Integer.MAX_VALUE, Integer.MAX_VALUE);
-        setDisable(true);
-        setText(null);
+            
+    @Override
+    protected Node constructContent() {
+        content = new Label(null);
+        content.setContentDisplay(ContentDisplay.TOP);
+        content.setAlignment(Pos.CENTER);
+        content.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+        VBox.setVgrow(content, Priority.SOMETIMES);
+        return content;
     }
     
     @Subscribe
@@ -61,7 +59,7 @@ public class ViewSimple extends Label implements Unit  {
     }
     
     private void updateStatus(byte[] status) {
-        setGraphic(iconbuilder.buildIcon(status));
+        content.setGraphic(iconbuilder.buildIcon(status));
     }
     
     @Override
@@ -75,21 +73,6 @@ public class ViewSimple extends Label implements Unit  {
     public void destroy() {
         Unit.super.destroy();
         device.unsubscribeStatus(this);    
-    }
-        
-    @Override
-    public void start() {
-        setDisable(false);
-    }
-
-    @Override
-    public void stop() {
-        setDisable(true);
-    }
-
-    @Override
-    public Node getNode() {
-        return this;
     }
     
     public void setDevice(DeviceBase device) {
@@ -105,15 +88,7 @@ public class ViewSimple extends Label implements Unit  {
     public DeviceBase getDevice() {
         return device;
     }
-    
-    public void setLabel(String label) {
-        setText(label);
-    }
-    
-    public String getLabel() {
-        return getText();
-    }
-    
+
     public void setIconStatus(IconStatus iconbuilder) {
         this.iconbuilder = iconbuilder;
     }

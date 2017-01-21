@@ -17,39 +17,25 @@
     along with HelloIot.  If not, see <http://www.gnu.org/licenses/>.
 -->
 
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
-<?import javafx.scene.layout.VBox?>
 
-<fx:root maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="120" prefWidth="120.0" styleClass="unitbase" type="VBox" HBox.hgrow="SOMETIMES" xmlns="http://javafx.com/javafx/8.0.101" xmlns:fx="http://javafx.com/fxml/1">
+<StackPane xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Label fx:id="field" styleClass="fieldlabel" />
-      <StackPane>
+      <HBox fx:id="boxview" spacing="6.0">
          <children>
-            <HBox fx:id="boxview" spacing="5.0">
-               <children>
-                  <TextField fx:id="statusview" editable="false" focusTraversable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="noneditable" HBox.hgrow="SOMETIMES" />
-                  <Button fx:id="editaction" focusTraversable="false" mnemonicParsing="false" onAction="#onEditEvent" />
-               </children>
-               <StackPane.margin>
-                  <Insets right="10.0" />
-               </StackPane.margin>
-            </HBox>
-            <HBox fx:id="boxedit" spacing="5.0" visible="false">
-               <children>
-                  <TextField fx:id="statusedit" onAction="#onEnterEvent" styleClass="fieldtextbox" HBox.hgrow="SOMETIMES" />
-                  <Button fx:id="okaction" focusTraversable="false" mnemonicParsing="false" onAction="#onOkEvent" />
-                  <Button fx:id="cancelaction" focusTraversable="false" mnemonicParsing="false" onAction="#onCancelEvent" />
-               </children>
-               <StackPane.margin>
-                  <Insets right="10.0" />
-               </StackPane.margin>
-            </HBox>
+            <TextField fx:id="statusview" editable="false" focusTraversable="false" styleClass="noneditable" HBox.hgrow="SOMETIMES" />
+            <Button fx:id="editaction" focusTraversable="false" mnemonicParsing="false" onAction="#onEditEvent" />
          </children>
-      </StackPane>
+      </HBox>
+      <HBox fx:id="boxedit" spacing="6.0" visible="false">
+         <children>
+            <TextField fx:id="statusedit" onAction="#onEnterEvent" styleClass="fieldtextbox" HBox.hgrow="SOMETIMES" />
+            <Button fx:id="okaction" focusTraversable="false" mnemonicParsing="false" onAction="#onOkEvent" />
+            <Button fx:id="cancelaction" focusTraversable="false" mnemonicParsing="false" onAction="#onCancelEvent" />
+         </children>
+      </HBox>
    </children>
-</fx:root>
+</StackPane>

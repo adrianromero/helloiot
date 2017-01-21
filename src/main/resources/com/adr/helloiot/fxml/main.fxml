@@ -29,7 +29,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<fx:root prefHeight="400.0" prefWidth="800.0" stylesheets="@../styles/main.css" type="AnchorPane" xmlns="http://javafx.com/javafx/8.0.101" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root prefHeight="400.0" prefWidth="800.0" stylesheets="@../styles/main.css" type="AnchorPane" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
 <StackPane fx:id="stackparent" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
    <children>
       <AnchorPane prefHeight="200.0" prefWidth="200.0" styleClass="maincontainer">
@@ -47,17 +47,13 @@
                   </HBox>
                </top>
                   <center>
-                     <ScrollPane fitToHeight="true" fitToWidth="true" focusTraversable="false" BorderPane.alignment="CENTER">
+                     <ScrollPane fitToWidth="true" focusTraversable="false" BorderPane.alignment="CENTER">
                         <content>
-                           <StackPane>
-                              <children>
-                                 <VBox fx:id="container" spacing="5.0">
-                                    <padding>
-                                       <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                    </padding>
-                                 </VBox>
-                              </children>
-                           </StackPane>
+                           <VBox fx:id="container" spacing="12.0">
+                              <padding>
+                                 <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
+                              </padding>
+                           </VBox>
                         </content>
                      </ScrollPane>
                   </center>

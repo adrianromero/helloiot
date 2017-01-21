@@ -15,14 +15,15 @@
 
 package com.adr.helloiot.unit;
 
+import javafx.scene.Node;
+
 /**
  *
  * @author adrian
  */
 public class EditAreaEvent extends EditEvent {
-    
     @Override
-    protected void loadFXML() {   
-        this.load("/com/adr/helloiot/fxml/editareaevent.fxml");   
-    }        
+    public Node constructContent() {   
+        return loadFXML("/com/adr/helloiot/fxml/editareaevent.fxml");       
+    }         
 }

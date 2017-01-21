@@ -25,6 +25,11 @@ import java.util.Base64;
 public class StringFormatBase64 implements StringFormat {
     
     public static final StringFormat INSTANCE = new StringFormatBase64();
+    
+    @Override
+    public String getName() {
+        return "BASE64";
+    }
 
     @Override
     public String format(byte[] value) {

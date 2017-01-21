@@ -24,7 +24,7 @@ import com.adr.hellocommon.utils.AbstractController;
 import com.adr.helloiot.device.format.StringFormatIdentity;
 import com.adr.helloiot.unit.Unit;
 import com.adr.helloiot.media.ClipFactory;
-import com.adr.helloiot.unit.StartLine;
+import com.adr.helloiot.unit.UnitLine;
 import com.google.common.base.Strings;
 import com.google.common.eventbus.Subscribe;
 import java.util.LinkedHashMap;
@@ -284,8 +284,8 @@ public final class MQTTMainNode extends AnchorPane implements AbstractController
 
         // Initialize grid
         container.setMaxSize(unitpage.getMaxWidth(), unitpage.getMaxHeight());
-        for (StartLine line : unitpage.getUnitLines()) {
-            container.getChildren().add(line);
+        for (UnitLine line : unitpage.getUnitLines()) {
+            container.getChildren().add(line.getNode());
         }        
 
         headertitle.setText(unitpage.getText());

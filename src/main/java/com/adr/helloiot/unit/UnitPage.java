@@ -37,7 +37,7 @@ public class UnitPage implements Comparable<UnitPage> {
     private double maxheight;
     private int order = 10000;
     
-    private final List<StartLine> unitlines = new ArrayList<>();
+    private final List<UnitLine> unitlines = new ArrayList<>();
     
     public UnitPage(String name, Node graphic, String text) {
         this.name = name;
@@ -107,15 +107,15 @@ public class UnitPage implements Comparable<UnitPage> {
         this.order = order;
     }
     
-    public List<StartLine> getUnitLines() {
+    public List<UnitLine> getUnitLines() {
         return unitlines;
     }
     
     public void addUnitNode(Node n) {
-        if (n instanceof StartLine) {
-            unitlines.add((StartLine) n);
+        if (n instanceof UnitLine) {
+            unitlines.add((UnitLine) n);
         } else {
-            StartLine lastPane;
+            UnitLine lastPane;
             if (unitlines.isEmpty()) {
                 lastPane = new StartLine();
                 unitlines.add(lastPane);

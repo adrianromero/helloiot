@@ -51,10 +51,10 @@ public class ButtonScript extends ButtonBase implements Unit {
     @Override
     protected void doRun(ActionEvent event) {
         if (code == null) {
-            MessageUtils.showError(MessageUtils.getRoot(this), getText(), resources.getString("message.nocode"));        
+            MessageUtils.showError(MessageUtils.getRoot(this), getLabel(), resources.getString("message.nocode"));        
         } else {
             code.run(params).exceptionallyFX((ex) -> {
-                MessageUtils.showException(MessageUtils.getRoot(this), getText(), resources.getString("message.erroraction"), ex);
+                MessageUtils.showException(MessageUtils.getRoot(this), getLabel(), resources.getString("message.erroraction"), ex);
                 return null;
             }); 
         }

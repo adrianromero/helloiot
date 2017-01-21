@@ -27,7 +27,12 @@ public class StringFormatHex implements StringFormat {
     
     private final static Logger logger = Logger.getLogger(StringFormatHex.class.getName());    
     public static final StringFormat INSTANCE = new StringFormatHex();
-
+    
+    @Override
+    public String getName() {
+        return "HEX";
+    }
+    
     @Override
     public String format(byte[] value) {
         if (value == null || value.length == 0) {

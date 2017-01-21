@@ -19,17 +19,20 @@ import com.adr.fonticon.FontAwesome;
 import com.adr.fonticon.IconBuilder;
 import com.adr.hellocommon.utils.AbstractController;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.util.StringConverter;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 
 /**
@@ -86,7 +89,7 @@ public class ClientLoginNode extends BorderPane implements AbstractController {
     @FXML
     private CheckBox mainpage;    
     
-    
+    @FXML ChoiceBox<Integer> editqos;
 
     ClientLoginNode() {
         load("/com/adr/helloiot/fxml/clientlogin.fxml", "com/adr/helloiot/fxml/clientlogin");
@@ -94,6 +97,21 @@ public class ClientLoginNode extends BorderPane implements AbstractController {
 
     @FXML
     public void initialize() {
+        
+        editqos.setConverter(new StringConverter<Integer>() {
+            @Override
+            public String toString(Integer object) {
+                return object.toString();
+            }
+
+            @Override
+            public Integer fromString(String string) {
+                return Integer.getInteger(string);
+            }
+        });
+        editqos.setItems(FXCollections.observableArrayList(-1, 0, 1, 2));
+        
+        
         nextbutton.setGraphic(IconBuilder.create(FontAwesome.FA_PLAY, 18.0).build());
         Platform.runLater(url::requestFocus);
     }

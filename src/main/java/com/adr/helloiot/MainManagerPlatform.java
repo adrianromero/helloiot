@@ -16,12 +16,7 @@
 package com.adr.helloiot;
 
 import com.google.common.base.Strings;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.util.List;
-import java.util.Properties;
 import javafx.application.Application.Parameters;
 import javafx.scene.layout.StackPane;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
@@ -32,63 +27,39 @@ import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
  */
 public class MainManagerPlatform implements MainManager {
 
-    private HelloIoTApp helloiotapp = null;
-    
-    protected Properties getConfigProperties(Parameters params) {
-        
-        Properties config = new Properties();
-        
-        // read the configuration properties 
-        List<String> unnamed = params.getUnnamed();    
-        File configfile;
-        if (unnamed.isEmpty()) {
-            configfile = new File("helloiot.properties");
-        } else {
-            String param = unnamed.get(0);
-            if (Strings.isNullOrEmpty(param)) {
-                configfile = new File("helloiot.properties");
-            } else {
-                configfile = new File(param); 
-            }
-        }
-        try (InputStream in = new FileInputStream(configfile)) {            
-            config.load(in);
-        } catch (IOException ex) {
-            throw new RuntimeException("Properties file name is not correct: " + configfile.toString());
-        }
-        
-        // read the parameters
-        config.putAll(params.getNamed());
-        
-        return config;
-    }    
-    
+    private HelloIoTApp helloiotapp = null; 
+
     @Override
     public void construct(StackPane root, Parameters params) {
         
-        Properties properties = getConfigProperties(params);
+        ConfigProperties configprops = new ConfigProperties(params);
+        try {
+            configprops.load();
+        } catch (IOException ex) {
+            throw new RuntimeException("Configuration file cannot be loaded.", ex);
+        }
         
         ApplicationConfig config = new ApplicationConfig();
-        config.mqtt_url = properties.getProperty("mqtt.url", "tcp://localhost:1883");
-        config.mqtt_username = properties.getProperty("mqtt.username", "");
-        config.mqtt_password = properties.getProperty("mqtt.password", "");
-        config.mqtt_connectiontimeout = Integer.parseInt(properties.getProperty("mqtt.connectiontimeout", Integer.toString(MqttConnectOptions.CONNECTION_TIMEOUT_DEFAULT)));
-        config.mqtt_keepaliveinterval = Integer.parseInt(properties.getProperty("mqtt.keepaliveinterval", Integer.toString(MqttConnectOptions.KEEP_ALIVE_INTERVAL_DEFAULT)));
-        config.mqtt_defaultqos =  Integer.parseInt(properties.getProperty("mqtt.defaultqos", "1"));
-        config.mqtt_version = Integer.parseInt(properties.getProperty("mqtt.version", Integer.toString(MqttConnectOptions.MQTT_VERSION_DEFAULT))); // MQTT_VERSION_DEFAULT = 0; MQTT_VERSION_3_1 = 3; MQTT_VERSION_3_1_1 = 4;
-        config.mqtt_cleansession = Boolean.parseBoolean(properties.getProperty("mqtt.cleansession", Boolean.toString(MqttConnectOptions.CLEAN_SESSION_DEFAULT)));
-        config.mqtt_topicprefix =  properties.getProperty("mqtt.topicprefix", "");;
-        config.mqtt_topicapp =  properties.getProperty("mqtt.topicapp", "_LOCAL_/_sys_helloIoT/mainapp");
+        config.mqtt_url = configprops.getProperty("mqtt.url", "tcp://localhost:1883");
+        config.mqtt_username = configprops.getProperty("mqtt.username", "");
+        config.mqtt_password = configprops.getProperty("mqtt.password", "");
+        config.mqtt_connectiontimeout = Integer.parseInt(configprops.getProperty("mqtt.connectiontimeout", Integer.toString(MqttConnectOptions.CONNECTION_TIMEOUT_DEFAULT)));
+        config.mqtt_keepaliveinterval = Integer.parseInt(configprops.getProperty("mqtt.keepaliveinterval", Integer.toString(MqttConnectOptions.KEEP_ALIVE_INTERVAL_DEFAULT)));
+        config.mqtt_defaultqos =  Integer.parseInt(configprops.getProperty("mqtt.defaultqos", "1"));
+        config.mqtt_version = Integer.parseInt(configprops.getProperty("mqtt.version", Integer.toString(MqttConnectOptions.MQTT_VERSION_DEFAULT))); // MQTT_VERSION_DEFAULT = 0; MQTT_VERSION_3_1 = 3; MQTT_VERSION_3_1_1 = 4;
+        config.mqtt_cleansession = Boolean.parseBoolean(configprops.getProperty("mqtt.cleansession", Boolean.toString(MqttConnectOptions.CLEAN_SESSION_DEFAULT)));
+        config.mqtt_topicprefix =  configprops.getProperty("mqtt.topicprefix", "");;
+        config.mqtt_topicapp =  configprops.getProperty("mqtt.topicapp", "_LOCAL_/_sys_helloIoT/mainapp");
         
-        config.app_clock = Boolean.parseBoolean(properties.getProperty("app.clock", "true"));
-        config.app_exitbutton = Boolean.parseBoolean(properties.getProperty("app.exitbutton", "true"));
+        config.app_clock = Boolean.parseBoolean(configprops.getProperty("app.clock", "true"));
+        config.app_exitbutton = Boolean.parseBoolean(configprops.getProperty("app.exitbutton", "true"));
         config.app_retryconnection = true;
         
         helloiotapp = new HelloIoTApp(config);
         
         // Add all devices and units
         helloiotapp.addServiceDevicesUnits();
-        String devproperty = properties.getProperty("devicesunits");
+        String devproperty = configprops.getProperty("devicesunits", null);
         if (!Strings.isNullOrEmpty(devproperty)) {
             for (String s: devproperty.split(",")) {
                 helloiotapp.addFXMLFileDevicesUnits(s);

@@ -17,22 +17,17 @@
     along with HelloIot.  If not, see <http://www.gnu.org/licenses/>.
 -->
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import java.lang.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.StackPane?>
 
-<fx:root maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="120" prefWidth="120.0" type="VBox" styleClass="unitbase" HBox.hgrow="SOMETIMES" xmlns="http://javafx.com/javafx/8.0.92" xmlns:fx="http://javafx.com/fxml/1">
+
+<StackPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Label fx:id="field" styleClass="fieldlabel" />
-      <StackPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" VBox.vgrow="SOMETIMES">
-         <children>
-            <BorderPane fx:id="boxview">
-               <center>
-                  <TextArea fx:id="statusview" editable="false" focusTraversable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="100.0" styleClass="noneditable" BorderPane.alignment="CENTER" />
-               </center>
-            </BorderPane>
-         </children>
-      </StackPane>
+      <BorderPane fx:id="boxview">
+         <center>
+            <TextArea fx:id="statusview" editable="false" focusTraversable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="100.0" styleClass="noneditable" BorderPane.alignment="CENTER" />
+         </center>
+      </BorderPane>
    </children>
-</fx:root>
+</StackPane>

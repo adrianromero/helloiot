@@ -32,20 +32,16 @@ import javafx.scene.layout.VBox;
  *
  * @author adrian
  */
-public class EditView extends VBox implements Unit, AbstractController {
+public class EditView extends Tile implements Unit {
     
-    @FXML private Label field;
     @FXML private TextInputControl statusview;
     
     private DeviceBase device = null;
     
-    public EditView() {
-        loadFXML();
-    }   
-    
-    protected void loadFXML() {        
-        this.load("/com/adr/helloiot/fxml/editview.fxml");   
-    }   
+    @Override
+    public Node constructContent() {   
+        return loadFXML("/com/adr/helloiot/fxml/editview.fxml");       
+    } 
     
     @FXML public void initialize() {
         setDisable(true);
@@ -73,21 +69,6 @@ public class EditView extends VBox implements Unit, AbstractController {
         device.unsubscribeStatus(this);    
     }    
     
-    @Override
-    public void start() {
-        setDisable(false);
-    }
-
-    @Override
-    public void stop() {
-        setDisable(true);
-    }
-
-    @Override
-    public Node getNode() {
-        return this;
-    }
-    
     public void setDevice(DeviceBase device) {
         this.device = device;
         if (Strings.isNullOrEmpty(getLabel())) {
@@ -97,13 +78,5 @@ public class EditView extends VBox implements Unit, AbstractController {
     
     public DeviceBase getDevice() {
         return device;
-    }
-    
-    public void setLabel(String label) {
-        field.setText(label);
-    }
-    
-    public String getLabel() {
-        return field.getText();
-    }   
+    }  
 }

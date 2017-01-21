@@ -38,9 +38,9 @@ public class ButtonPassword extends ButtonBase implements Unit {
             displayPasswordDialog(resources.getString("label.repeatpassword"), (String p2) -> {
                 if (p1.equals(p2)) {
                     app.sendSYSStatus(securitykey, CryptUtils.hashsaltPassword(p2, CryptUtils.generateSalt()));
-                    MessageUtils.showInfo(MessageUtils.getRoot(this), this.getText(), resources.getString("message.passworchangesuccess"));
+                    MessageUtils.showInfo(MessageUtils.getRoot(this), getLabel(), resources.getString("message.passworchangesuccess"));
                 } else {
-                    MessageUtils.showWarning(MessageUtils.getRoot(this), this.getText(), resources.getString("message.passworchangeerror"));
+                    MessageUtils.showWarning(MessageUtils.getRoot(this), getLabel(), resources.getString("message.passworchangeerror"));
                 }
             });            
         });

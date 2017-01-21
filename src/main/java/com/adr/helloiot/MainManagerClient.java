@@ -20,9 +20,14 @@ import com.adr.fonticon.IconBuilder;
 import com.adr.helloiot.client.TopicStatus;
 import com.adr.helloiot.device.format.StringFormat;
 import com.adr.helloiot.device.format.StringFormatIdentity;
+import com.adr.helloiot.unit.StartFlow;
 import com.adr.helloiot.unit.UnitPage;
+import java.io.IOException;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Application.Parameters;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -34,27 +39,30 @@ import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
  * @author adrian
  */
 public class MainManagerClient implements MainManager {
+    
+    private static final Logger LOGGER = Logger.getLogger(MainManagerClient.class.getName());
 
     private HelloIoTApp helloiotapp = null;
     private ClientLoginNode clientlogin = null;
     
-    private Parameters params = null;
+    private ConfigProperties configprops = null;
     private StackPane root = null;
     
+    private void showLogin() {     
 
-    private void showLogin() {
         clientlogin = new ClientLoginNode();
-        clientlogin.setURL("tcp://localhost:1883");
-        clientlogin.setUserName("");
-        clientlogin.setConnectionTimeout(MqttConnectOptions.CONNECTION_TIMEOUT_DEFAULT);
-        clientlogin.setKeepAliveInterval(MqttConnectOptions.KEEP_ALIVE_INTERVAL_DEFAULT);
-        clientlogin.setDefaultQoS(1);
-        clientlogin.setVersion(MqttConnectOptions.MQTT_VERSION_DEFAULT);
-        clientlogin.setCleanSession(MqttConnectOptions.CLEAN_SESSION_DEFAULT);
-        clientlogin.setBrokerPane(0); //none
-        clientlogin.setTopicPrefix("");
-        clientlogin.setTopicApp("_LOCAL_/_sys_helloIoT/mainapp");
-         
+        clientlogin.setURL(configprops.getProperty("mqtt.url", "tcp://localhost:1883"));
+        clientlogin.setUserName(configprops.getProperty("mqtt.username", ""));
+        clientlogin.setConnectionTimeout(Integer.parseInt(configprops.getProperty("mqtt.connectiontimeout", Integer.toString(MqttConnectOptions.CONNECTION_TIMEOUT_DEFAULT))));
+        clientlogin.setKeepAliveInterval(Integer.parseInt(configprops.getProperty("mqtt.keepaliveinterval", Integer.toString(MqttConnectOptions.KEEP_ALIVE_INTERVAL_DEFAULT))));
+        clientlogin.setDefaultQoS(Integer.parseInt(configprops.getProperty("mqtt.defaultqos", "1")));
+        clientlogin.setVersion(Integer.parseInt(configprops.getProperty("mqtt.version", Integer.toString(MqttConnectOptions.MQTT_VERSION_DEFAULT))));
+        clientlogin.setCleanSession(Boolean.parseBoolean(configprops.getProperty("mqtt.cleansession", Boolean.toString(MqttConnectOptions.CLEAN_SESSION_DEFAULT))));
+        clientlogin.setTopicPrefix(configprops.getProperty("mqtt.topicprefix", ""));
+        clientlogin.setTopicApp(configprops.getProperty("mqtt.topicapp", "_LOCAL_/_sys_helloIoT/mainapp"));
+
+        clientlogin.setBrokerPane(Integer.parseInt(configprops.getProperty("client.broker", "0"))); //none
+
         clientlogin.setOnNextAction(e -> {                
             showApplication();
             hideLogin(); 
@@ -70,6 +78,24 @@ public class MainManagerClient implements MainManager {
     }
     
     private void showApplication() {
+        
+        configprops.setProperty("mqtt.url", clientlogin.getURL());
+        configprops.setProperty("mqtt.username", clientlogin.getUserName());
+        configprops.setProperty("mqtt.connectiontimeout", Integer.toString(clientlogin.getConnectionTimeout()));
+        configprops.setProperty("mqtt.keepaliveinterval", Integer.toString(clientlogin.getKeepAliveInterval()));
+        configprops.setProperty("mqtt.defaultqos", Integer.toString(clientlogin.getDefaultQoS()));
+        configprops.setProperty("mqtt.version", Integer.toString(clientlogin.getVersion()));
+        configprops.setProperty("mqtt.cleansession", Boolean.toString(clientlogin.isCleanSession()));
+        configprops.setProperty("mqtt.topicprefix", clientlogin.getTopicPrefix());
+        configprops.setProperty("mqtt.topicapp", clientlogin.getTopicApp());
+        
+        configprops.setProperty("client.broker", Integer.toString(clientlogin.getBrokerPane()));
+        
+        try {
+            configprops.save();
+        } catch (IOException ex) {
+            LOGGER.log(Level.WARNING, "Cannot save configuration properties.", ex);
+        }
 
         ApplicationConfig config = new ApplicationConfig();
         config.mqtt_url = clientlogin.getURL();
@@ -111,27 +137,31 @@ public class MainManagerClient implements MainManager {
             );
             helloiotapp.addFXMLFileDevicesUnits("local:com/adr/helloiot/panes/sampletemperature");
         }
+        
+        helloiotapp.addDevicesUnits(Collections.emptyList(), Collections.singletonList(new StartFlow()));
 
-        TopicStatus ts = TopicStatus.buildTopicPublishRetained("hello/test1", -1, StringFormatIdentity.INSTANCE, true);
+        TopicStatus ts;
+        
+        ts = TopicStatus.buildTopicPublishRetained("hello/test1", 0, StringFormatIdentity.INSTANCE, true);
         helloiotapp.addDevicesUnits(ts.getDevices(), ts.getUnits());
         
-        ts = TopicStatus.buildTopicPublishRetained("hello/test1", -1, StringFormat.valueOf("HEXADECIMAL"), true);
+        ts = TopicStatus.buildTopicPublishRetained("hello/test1", 0, StringFormat.valueOf("HEXADECIMAL"), false);
         helloiotapp.addDevicesUnits(ts.getDevices(), ts.getUnits());
         
-        ts = TopicStatus.buildTopicPublishRetained("hello/test1", -1, StringFormat.valueOf("INTEGER"), true);
+        ts = TopicStatus.buildTopicPublish("hello/test1", -1, StringFormat.valueOf("INTEGER"), true);
         helloiotapp.addDevicesUnits(ts.getDevices(), ts.getUnits());
         
-        ts = TopicStatus.buildTopicPublishRetained("hello/test1", -1, StringFormat.valueOf("BASE64"), true);
+        ts = TopicStatus.buildTopicPublish("hello/test1", -1, StringFormat.valueOf("BASE64"), false);
         helloiotapp.addDevicesUnits(ts.getDevices(), ts.getUnits());
         
-        ts = TopicStatus.buildTopicPublish("hello/test2", -1, StringFormatIdentity.INSTANCE, false);
+        ts = TopicStatus.buildTopicSubscription("hello/test1", 1, StringFormatIdentity.INSTANCE, true);
         helloiotapp.addDevicesUnits(ts.getDevices(), ts.getUnits());
         
-        ts = TopicStatus.buildTopicSubscription("hello/test2", -1, StringFormatIdentity.INSTANCE, false);
+        ts = TopicStatus.buildTopicSubscription("hello/test1", 1, StringFormatIdentity.INSTANCE, false);
         helloiotapp.addDevicesUnits(ts.getDevices(), ts.getUnits());
         
-        ts = TopicStatus.buildTopicSubscription("$SYS/broker/uptime", -1, StringFormatIdentity.INSTANCE, false);
-        helloiotapp.addDevicesUnits(ts.getDevices(), ts.getUnits());
+//        ts = TopicStatus.buildTopicSubscription("$SYS/broker/uptime", -1, StringFormatIdentity.INSTANCE, false);
+//        helloiotapp.addDevicesUnits(ts.getDevices(), ts.getUnits());
 
         
         EventHandler<ActionEvent> showloginevent = (event -> {
@@ -154,10 +184,15 @@ public class MainManagerClient implements MainManager {
     }
     
     @Override
-    public void construct(StackPane root, Parameters params) {
+    public void construct(StackPane root, Parameters params) {        
+        this.configprops = new ConfigProperties(params);
         this.root = root;
-        this.params = params;
-        
+        try {
+            this.configprops.load();
+        } catch (IOException ex) {
+            LOGGER.log(Level.WARNING, null, ex);
+        }
+
         showLogin();
     }
     

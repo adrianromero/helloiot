@@ -20,6 +20,7 @@ package com.adr.helloiot.device.format;
  * @author adrian
  */
 public interface StringFormat {
+    public String getName();
     public String format(byte[] value);
     public byte[] parse(String formattedvalue);
     

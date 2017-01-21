@@ -24,10 +24,10 @@ import javafx.scene.layout.VBox;
  *
  * @author adrian
  */
-public class StartLine extends HBox implements Unit {
+public class StartLine extends HBox implements UnitLine {
     
     public StartLine() {
-        setSpacing(5.0);
+        setSpacing(12.0);
         VBox.setVgrow(this, Priority.NEVER);
     }
 

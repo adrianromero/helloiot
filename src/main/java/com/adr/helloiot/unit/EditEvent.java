@@ -18,7 +18,6 @@ package com.adr.helloiot.unit;
 import com.adr.fonticon.FontAwesome;
 import com.adr.fonticon.IconBuilder;
 import com.adr.hellocommon.dialog.MessageUtils;
-import com.adr.hellocommon.utils.AbstractController;
 import com.adr.helloiot.device.TransmitterSimple;
 import com.google.common.base.Strings;
 import java.util.ResourceBundle;
@@ -26,19 +25,16 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextInputControl;
-import javafx.scene.layout.VBox;
 
 /**
  *
  * @author adrian
  */
-public class EditEvent extends VBox implements Unit, AbstractController {
+public class EditEvent extends Tile implements Unit {
     
     protected ResourceBundle resources = ResourceBundle.getBundle("com/adr/helloiot/fxml/basic"); 
     
-    @FXML private Label field;
     @FXML private TextInputControl payload;
     @FXML private Button fireaction;
     
@@ -46,32 +42,14 @@ public class EditEvent extends VBox implements Unit, AbstractController {
     private boolean deleteSent = false;
     private TransmitterSimple device;
     
-    public EditEvent() {
-        loadFXML();
-    }   
-    
-    protected void loadFXML() {
-        this.load("/com/adr/helloiot/fxml/editevent.fxml"); 
-    }
+    @Override
+    public Node constructContent() {   
+        return loadFXML("/com/adr/helloiot/fxml/editevent.fxml");       
+    } 
     
     @FXML public void initialize() {
         fireaction.setGraphic(IconBuilder.create(FontAwesome.FA_SEND, 16).build());
         setDisable(true);        
-    }
-    
-    @Override
-    public void start() {
-        setDisable(false);
-    }
-
-    @Override
-    public void stop() {
-        setDisable(true);
-    }
-
-    @Override
-    public Node getNode() {
-        return this;
     }
     
     public void setDevice(TransmitterSimple device) {
@@ -83,14 +61,6 @@ public class EditEvent extends VBox implements Unit, AbstractController {
     
     public TransmitterSimple getDevice() {
         return device;
-    }
-    
-    public void setLabel(String label) {
-        field.setText(label);
-    }
-    
-    public String getLabel() {
-        return field.getText();
     }
     
     public void setDefaultValue(String value) {

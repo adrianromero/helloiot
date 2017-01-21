@@ -25,7 +25,12 @@ import java.io.UnsupportedEncodingException;
 public class StringFormatIdentity implements StringFormat {
     
     public static final StringFormat INSTANCE = new StringFormatIdentity();
-
+    
+    @Override
+    public String getName() {
+        return "";
+    }
+    
     @Override
     public String format(byte[] value) {
         if (value == null || value.length == 0) {

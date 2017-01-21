@@ -24,33 +24,33 @@ import javafx.event.ActionEvent;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContentDisplay;
-import javafx.scene.control.Control;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
 
 /**
  *
  * @author adrian
  */
-public abstract class ButtonBase extends Button implements Unit {
+public abstract class ButtonBase extends Tile implements Unit {
 
+    protected Button button;
     protected boolean confirm = false;
     protected String securitykey = null;
     protected ResourceBundle resources = ResourceBundle.getBundle("com/adr/helloiot/fxml/basic"); 
             
     protected HelloIoTAppPublic app;
            
-    public ButtonBase() {
+    @Override
+    public Node constructContent() {
         
-        setContentDisplay(ContentDisplay.TOP);
-        this.getStyleClass().add("buttonbase");
-        HBox.setHgrow(this, Priority.SOMETIMES);   
-        setMinSize(120.0, Control.USE_COMPUTED_SIZE);
-        setPrefSize(120.0, Control.USE_COMPUTED_SIZE);
-        setMaxSize(Integer.MAX_VALUE, Integer.MAX_VALUE);
-        setFocusTraversable(false);
-        setDisable(true);
-        setOnAction(this::onScriptAction);
+        button = new Button();
+        button.setContentDisplay(ContentDisplay.TOP);
+        button.getStyleClass().add("buttonbase");
+        VBox.setVgrow(button, Priority.SOMETIMES);   
+        button.setMaxSize(Integer.MAX_VALUE, Integer.MAX_VALUE);
+        button.setFocusTraversable(false);
+        button.setOnAction(this::onScriptAction);
+        return button;
     }
     
     @Override
@@ -58,21 +58,6 @@ public abstract class ButtonBase extends Button implements Unit {
         Unit.super.construct(app);
         this.app = app;
     }   
-    
-    @Override
-    public void start() {
-        setDisable(false);
-    }
-
-    @Override
-    public void stop() {
-        setDisable(true);
-    }
-
-    @Override
-    public Node getNode() {
-        return this;
-    }
     
     public void setConfirm(boolean value) {
         confirm = value;
@@ -88,11 +73,19 @@ public abstract class ButtonBase extends Button implements Unit {
     
     public String getSecurityKey() {
         return securitykey;
-    }            
+    }
+
+    public void setGraphic(Node graphic) {
+        button.setGraphic(graphic);
+    }
+
+    public Node getGraphic() {
+        return button.getGraphic();
+    }
     
     void onScriptAction(ActionEvent event) {
         if (confirm) {
-            MessageUtils.showConfirm(MessageUtils.getRoot(this), getText(), resources.getString("message.confirm"), this::doSecurityAction);    
+            MessageUtils.showConfirm(MessageUtils.getRoot(this), getLabel(), resources.getString("message.confirm"), this::doSecurityAction);    
         } else {
             doSecurityAction(event);
         }
@@ -104,7 +97,7 @@ public abstract class ButtonBase extends Button implements Unit {
         } else {
             SecurityKeyboard sec = new SecurityKeyboard();
             DialogView dialog = new DialogView();
-            dialog.setTitle(this.getText());
+            dialog.setTitle(getLabel());
             dialog.setContent(sec);
             dialog.setActionOK((ActionEvent evok) -> {
                 if (CryptUtils.validatePassword(sec.getPassword(), app.loadSYSStatus(securitykey))) {
@@ -112,7 +105,7 @@ public abstract class ButtonBase extends Button implements Unit {
                 } else {
                     evok.consume();
                     sec.setPassword("");
-                    MessageUtils.showWarning(MessageUtils.getRoot(this), this.getText(), resources.getString("message.wrongpassword"));
+                    MessageUtils.showWarning(MessageUtils.getRoot(this), getLabel(), resources.getString("message.wrongpassword"));
                 }
             });
             dialog.addButtons(dialog.createCancelButton(), dialog.createOKButton());

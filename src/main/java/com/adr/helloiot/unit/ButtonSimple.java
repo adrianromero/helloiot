@@ -34,10 +34,6 @@ public class ButtonSimple extends ButtonBase implements Unit {
     private IconStatus iconbuilder = ICONNULL;
     
     private DeviceSimple device = null;
-    
-    public ButtonSimple() {   
-        setText(null);
-    }
 
     @Subscribe
     public void receivedStatus(EventMessage message) {
@@ -45,7 +41,7 @@ public class ButtonSimple extends ButtonBase implements Unit {
     }
     
     private void updateStatus(byte[] status) {
-        setGraphic(iconbuilder.buildIcon(status));
+        button.setGraphic(iconbuilder.buildIcon(status));
     }
     
     @Override
@@ -73,14 +69,6 @@ public class ButtonSimple extends ButtonBase implements Unit {
     
     public DeviceSimple getDevice() {
         return device;
-    }
-    
-    public void setLabel(String label) {
-        setText(label);
-    }
-    
-    public String getLabel() {
-        return getText();
     }
     
     public void setIconStatus(IconStatus iconbuilder) {
