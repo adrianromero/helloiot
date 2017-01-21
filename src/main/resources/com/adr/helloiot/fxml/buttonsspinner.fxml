@@ -20,29 +20,25 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<fx:root maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="120" prefWidth="120.0" styleClass="unitbase" type="StackPane" HBox.hgrow="SOMETIMES" xmlns="http://javafx.com/javafx/8.0.101" xmlns:fx="http://javafx.com/fxml/1">
+
+<VBox xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <VBox>
-         <children>
-            <Button fx:id="goup" focusTraversable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onGoUp" styleClass="buttonbase" VBox.vgrow="SOMETIMES">
-               <VBox.margin>
-                  <Insets bottom="10.0" />
-               </VBox.margin></Button>
-            <Label fx:id="level" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="20.0" styleClass="levelbase" text="level">
-               <VBox.margin>
-                  <Insets />
-               </VBox.margin>
-            </Label>
-            <Label fx:id="label" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="20.0" styleClass="labelbase" text="label" />
-            <Button fx:id="godown" focusTraversable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onGoDown" styleClass="buttonbase" VBox.vgrow="SOMETIMES">
-               <VBox.margin>
-                  <Insets top="10.0" />
-               </VBox.margin></Button>
-         </children>
-      </VBox>
+      <Button fx:id="goup" focusTraversable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onGoUp" styleClass="buttonbase" VBox.vgrow="SOMETIMES">
+         <VBox.margin>
+            <Insets bottom="10.0" />
+         </VBox.margin>
+      </Button>
+      <Label fx:id="level" alignment="CENTER_RIGHT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="20.0" styleClass="levelbase" text="level">
+         <VBox.margin>
+            <Insets />
+         </VBox.margin>
+      </Label>
+      <Button fx:id="godown" focusTraversable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onGoDown" styleClass="buttonbase" VBox.vgrow="SOMETIMES">
+         <VBox.margin>
+            <Insets top="10.0" />
+         </VBox.margin>
+      </Button>
    </children>
-</fx:root>
+</VBox>

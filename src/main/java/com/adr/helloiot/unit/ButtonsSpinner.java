@@ -28,25 +28,23 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.StackPane;
 import jidefx.utils.AutoRepeatButtonUtils;
 
 /**
  *
  * @author adrian
  */
-public class ButtonsSpinner extends StackPane implements Unit, AbstractController {
+public class ButtonsSpinner extends Tile implements Unit, AbstractController {
     
     @FXML private Button goup;
     @FXML private Button godown;
     @FXML private Label level;
-    @FXML private Label label;
     
     private DeviceSimple device = null;
 
-    public ButtonsSpinner() {   
-
-        this.load("/com/adr/helloiot/fxml/buttonsspinner.fxml");   
+    @Override
+    public Node constructContent() {   
+        return loadFXML("/com/adr/helloiot/fxml/buttonsspinner.fxml");   
     }
     
     @FXML public void initialize() {
@@ -58,9 +56,7 @@ public class ButtonsSpinner extends StackPane implements Unit, AbstractControlle
         godown.getStyleClass().remove("buttonbase");
         godown.getStyleClass().add("buttondown");
         AutoRepeatButtonUtils.install(godown);
-        label.setText(null);
         level.setText(null);
-        setDisable(true);
     }
     
     @Subscribe
@@ -87,21 +83,6 @@ public class ButtonsSpinner extends StackPane implements Unit, AbstractControlle
         device.unsubscribeStatus(this);    
     }
     
-    @Override
-    public void start() {
-        setDisable(false);
-    }
-
-    @Override
-    public void stop() {
-        setDisable(true);
-    }
-
-    @Override
-    public Node getNode() {
-        return this;
-    }
-    
     public void setDevice(DeviceSimple device) {
         this.device = device;
         if (getLabel() == null) {
@@ -111,14 +92,6 @@ public class ButtonsSpinner extends StackPane implements Unit, AbstractControlle
     
     public DeviceSimple getDevice() {
         return device;
-    }
-    
-    public void setLabel(String value) {
-        label.setText(value);
-    }
-    
-    public String getLabel() {
-        return label.getText();
     }
     
     @FXML
