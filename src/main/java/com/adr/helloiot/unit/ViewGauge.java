@@ -33,24 +33,29 @@ import javafx.scene.layout.StackPane;
  *
  * @author adrian
  */
-public class ViewGauge extends StackPane implements Unit  {
+public class ViewGauge extends Tile implements Unit  {
   
     private DeviceNumber device = null;
-    
+
+    private StackPane gaugecontainer;
     private Gauge gauge = null;
-    private String label = null;
     private GaugeType type = GaugeType.DASHBOARD;
         
-    public ViewGauge() { 
-        getStyleClass().add("unitbase");
-        this.setPadding(new Insets(4));
-        HBox.setHgrow(this, Priority.SOMETIMES);
-        setMinSize(120.0, Control.USE_COMPUTED_SIZE);
-        setPrefSize(120.0, Control.USE_COMPUTED_SIZE);
-        setMaxSize(Integer.MAX_VALUE, Integer.MAX_VALUE);
-        setDisable(true);
-    }
-    
+//    public ViewGauge() { 
+//        getStyleClass().add("unitbase");
+//        this.setPadding(new Insets(4));
+//        HBox.setHgrow(this, Priority.SOMETIMES);
+//        setMinSize(120.0, Control.USE_COMPUTED_SIZE);
+//        setPrefSize(120.0, Control.USE_COMPUTED_SIZE);
+//        setMaxSize(Integer.MAX_VALUE, Integer.MAX_VALUE);
+//        setDisable(true);
+//    }
+
+    @Override
+    protected Node constructContent() {
+        gaugecontainer = new StackPane();
+        return gaugecontainer;
+    }    
     @Subscribe
     public void receivedStatus(EventMessage message) {
         Platform.runLater(() -> updateStatus(message.getMessage()));  
@@ -84,21 +89,6 @@ public class ViewGauge extends StackPane implements Unit  {
         Unit.super.destroy();
         device.unsubscribeStatus(this);    
     }
-        
-    @Override
-    public void start() {
-        setDisable(false);
-    }
-
-    @Override
-    public void stop() {
-        setDisable(true);
-    }
-
-    @Override
-    public Node getNode() {
-        return this;
-    }
     
     public void setDevice(DeviceNumber device) {
         this.device = device;       
@@ -108,17 +98,6 @@ public class ViewGauge extends StackPane implements Unit  {
     public DeviceNumber getDevice() {
         return device;
     }
-    
-    public void setLabel(String label) {
-        this.label = label;
-        if (gauge != null) {
-            gauge.setTitle(label);
-        }
-    }
-    
-    public String getLabel() {
-        return label;
-    }   
     
     public void setType(GaugeType type) {
         this.type = type == null ? GaugeType.DASHBOARD : type;
@@ -134,7 +113,7 @@ public class ViewGauge extends StackPane implements Unit  {
         // Device not null
         
         if (gauge != null) {
-            getChildren().remove(gauge);
+            gaugecontainer.getChildren().remove(gauge);
             gauge = null;
         }
         
@@ -144,10 +123,10 @@ public class ViewGauge extends StackPane implements Unit  {
 
         gauge = type.build(device.getLevelMin(), device.getLevelMax());  
         gauge.setUnit(device.getUnit());
-        getChildren().add(gauge);
+        gaugecontainer.getChildren().add(gauge);
         
-        setLabel(label == null 
-            ? device.getProperties().getProperty("label")
-            : label);
+        if (getLabel() == null) {
+            setLabel(device.getProperties().getProperty("label"));
+        }
     }
 }
