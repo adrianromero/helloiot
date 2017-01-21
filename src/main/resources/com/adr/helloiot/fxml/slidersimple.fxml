@@ -20,29 +20,23 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Slider?>
-<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
-<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<fx:root maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="120" prefWidth="120.0" styleClass="unitbase" type="StackPane" HBox.hgrow="SOMETIMES" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+
+<VBox xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <VBox>
-         <children>
-            <Label fx:id="label" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="20.0" styleClass="labelbase" text="label" />
-            <Pane VBox.vgrow="SOMETIMES" />
-            <Label fx:id="level" alignment="CENTER_RIGHT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="20.0" styleClass="levelbase" text="level">
-               <VBox.margin>
-                  <Insets />
-               </VBox.margin>
-            </Label>
-            <Slider fx:id="slider" focusTraversable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="20.0">
-               <VBox.margin>
-                  <Insets top="10.0" />
-               </VBox.margin>
-            </Slider>
-            <Pane VBox.vgrow="SOMETIMES" />
-         </children>
-      </VBox>
+      <Pane VBox.vgrow="SOMETIMES" />
+      <Label fx:id="level" alignment="CENTER_RIGHT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="20.0" styleClass="levelbase" text="level">
+         <VBox.margin>
+            <Insets />
+         </VBox.margin>
+      </Label>
+      <Slider fx:id="slider" focusTraversable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="20.0">
+         <VBox.margin>
+            <Insets top="10.0" />
+         </VBox.margin>
+      </Slider>
+      <Pane VBox.vgrow="SOMETIMES" />
    </children>
-</fx:root>
+</VBox>

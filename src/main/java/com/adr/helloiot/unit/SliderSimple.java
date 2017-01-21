@@ -33,18 +33,17 @@ import javafx.scene.layout.StackPane;
  *
  * @author adrian
  */
-public class SliderSimple extends StackPane implements Unit, AbstractController {
+public class SliderSimple extends Tile implements Unit, AbstractController {
     
     @FXML private Slider slider;
     @FXML private Label level;
-    @FXML private Label label;
     
     private boolean levelupdating = false;
     private DeviceNumber device = null;
 
-    public SliderSimple() {   
-
-        this.load("/com/adr/helloiot/fxml/slidersimple.fxml");  
+    @Override
+    public Node constructContent() {   
+        return loadFXML("/com/adr/helloiot/fxml/slidersimple.fxml");  
     }
 
     @FXML public void initialize() {
@@ -53,9 +52,7 @@ public class SliderSimple extends StackPane implements Unit, AbstractController 
                 device.sendStatus(StatusNumber.getFromValue(device.adjustLevel(new_val.doubleValue())));
             }
         });
-        label.setText(null);
         level.setText(null);
-        setDisable(true);
     }
     
     @Subscribe
@@ -82,22 +79,7 @@ public class SliderSimple extends StackPane implements Unit, AbstractController 
         Unit.super.destroy();
         device.unsubscribeStatus(this);    
     }
-    
-    @Override
-    public void start() {
-        setDisable(false);
-    }
-
-    @Override
-    public void stop() {
-        setDisable(true);
-    }
-
-    @Override
-    public Node getNode() {
-        return this;
-    }
-    
+        
     public void setDevice(DeviceNumber device) {
         this.device = device;
         if (getLabel() == null) {
@@ -112,13 +94,5 @@ public class SliderSimple extends StackPane implements Unit, AbstractController 
     
     public DeviceNumber getDevice() {
         return device;
-    }
-    
-    public void setLabel(String value) {
-        label.setText(value);
-    }
-    
-    public String getLabel() {
-        return label.getText();
     }
 }
