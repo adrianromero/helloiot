@@ -146,10 +146,10 @@
 .noneditable .scroll-pane {
     -fx-background-color: transparent;
 }
-.noneditable .scroll-pane .viewport{
+.noneditable .scroll-pane .viewport {
     -fx-background-color: transparent;
 }
-.noneditable .scroll-pane .content{
+.noneditable .scroll-pane .content {
     -fx-background-color: transparent;
 }
 
@@ -201,7 +201,7 @@
     -fx-background-color:
         linear-gradient(to bottom, derive(-fx-text-box-border, -20%), derive(-fx-text-box-border, -30%)),
         -fx-inner-border,
-        -fx-body-color;
+        #0000dd;
     -fx-background-insets: 0, 1, 2;
     -fx-background-radius: 2.0em; /* makes sure this remains circular */
     -fx-padding: 2em /*1.583333em*/;    
@@ -221,7 +221,13 @@
     -fx-background-radius: 0.25em, 0.25em, 0.166667em;  
     -fx-padding: 1.0em;   
 }
-/*
-.text-area *.text {
+
+.textinput-right *.text {
     -fx-text-alignment: right;
-}*/
+    -fx-alignment: center-right;
+}
+
+.textinput-right {
+    -fx-text-alignment: right;
+    -fx-alignment: center-right;
+}
