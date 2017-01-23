@@ -26,7 +26,7 @@
 
 <VBox xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Label fx:id="level" alignment="CENTER_RIGHT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="20.0" styleClass="levelbase" text="level">
+      <Label fx:id="level" alignment="CENTER_RIGHT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="levelbase" text="level" VBox.vgrow="SOMETIMES">
          <VBox.margin>
             <Insets />
          </VBox.margin>

@@ -25,7 +25,7 @@
 
 <BorderPane xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
    <center>
-      <TextArea fx:id="payload" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="100.0" styleClass="fieldtextbox" BorderPane.alignment="CENTER" />
+      <TextArea fx:id="payload" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="100.0" styleClass="fieldtextbox" />
    </center>
    <right>
       <Button fx:id="fireaction" focusTraversable="false" mnemonicParsing="false" onAction="#onSendEvent" BorderPane.alignment="TOP_CENTER">

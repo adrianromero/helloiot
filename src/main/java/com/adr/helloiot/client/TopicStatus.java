@@ -27,8 +27,9 @@ import java.util.List;
 public class TopicStatus {
     
     private final static String STYLEFORMAT = "{} {-fx-background-color: gray; -fx-background-radius: 10px; -fx-fill:white; -fx-padding: 0 5 0 5; -fx-pref-width: 60px; -fx-text-alignment: center;}";
-    private final static String STYLEQOS = "{} {-fx-background-color: darkblue; -fx-background-radius: 10px; -fx-fill:white; -fx-padding: 0 5 0 5; -fx-pref-width: 60px; -fx-text-alignment: center;}";
-    private final static String STYLESPACE = "{} {-fx-padding: 0 5 0 5; -fx-pref-width: 60px;}";
+    private final static String STYLEFORMATSPACE = "{} {-fx-padding: 0 5 0 5; -fx-pref-width: 60px;}";
+    private final static String STYLEQOS = "{} {-fx-background-color: darkblue; -fx-background-radius: 10px; -fx-fill:white; -fx-padding: 0 5 0 5; -fx-pref-width: 30px; -fx-text-alignment: center;}";
+    private final static String STYLEQOSSPACE = "{} {-fx-padding: 0 5 0 5; -fx-pref-width: 30px;}";
     
     private List<Device> devices;
     private List<Unit> units;
@@ -63,14 +64,14 @@ public class TopicStatus {
     
     private static String getFormatBadge(String s) {
         if (s == null || s.isEmpty()) {
-            return STYLESPACE;
+            return STYLEFORMATSPACE;
         } else {
             return STYLEFORMAT + s;
         }
     }
     private static String getQOSBadge(int i) {
         if (i < 0) {
-            return STYLESPACE;
+            return STYLEQOSSPACE;
         } else {
             return STYLEQOS + Integer.toString(i);
         }

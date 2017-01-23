@@ -27,6 +27,7 @@ import java.util.ResourceBundle;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.geometry.HPos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextInputControl;
@@ -88,7 +89,14 @@ public class EditStatus extends Tile implements Unit {
         this.device = device;
         if (Strings.isNullOrEmpty(getLabel())) {
             setLabel(device.getProperties().getProperty("label"));
-        }   
+        }
+        if (device.getFormat().alignment().getHpos() == HPos.RIGHT) {
+            statusview.getStyleClass().add("textinput-right");
+            statusedit.getStyleClass().add("textinput-right");
+        } else {
+            statusview.getStyleClass().remove("textinput-right");
+            statusedit.getStyleClass().remove("textinput-right");
+        }        
     }
     
     public DeviceSimple getDevice() {

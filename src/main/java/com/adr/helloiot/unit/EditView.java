@@ -15,7 +15,6 @@
 
 package com.adr.helloiot.unit;
 
-import com.adr.hellocommon.utils.AbstractController;
 import com.adr.helloiot.EventMessage;
 import com.adr.helloiot.HelloIoTAppPublic;
 import com.adr.helloiot.device.DeviceBase;
@@ -23,10 +22,9 @@ import com.google.common.base.Strings;
 import com.google.common.eventbus.Subscribe;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.geometry.HPos;
 import javafx.scene.Node;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextInputControl;
-import javafx.scene.layout.VBox;
 
 /**
  *
@@ -74,6 +72,11 @@ public class EditView extends Tile implements Unit {
         if (Strings.isNullOrEmpty(getLabel())) {
             setLabel(device.getProperties().getProperty("label"));
         }   
+        if (device.getFormat().alignment().getHpos() == HPos.RIGHT) {
+            statusview.getStyleClass().add("textinput-right");
+        } else {
+            statusview.getStyleClass().remove("textinput-right");
+        }        
     }
     
     public DeviceBase getDevice() {

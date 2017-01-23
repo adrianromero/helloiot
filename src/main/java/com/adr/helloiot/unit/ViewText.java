@@ -15,7 +15,6 @@
 
 package com.adr.helloiot.unit;
 
-import com.adr.hellocommon.utils.AbstractController;
 import com.adr.helloiot.device.DeviceBase;
 import com.adr.helloiot.EventMessage;
 import com.adr.helloiot.HelloIoTAppPublic;
@@ -24,27 +23,24 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
-import javafx.scene.layout.StackPane;
 
 /**
  *
  * @author adrian
  */
-public class ViewText extends StackPane implements Unit, AbstractController {
+public class ViewText extends Tile implements Unit {
     
     @FXML private Label level;
-    @FXML private Label label; 
     
     private DeviceBase device = null;
     
-    public ViewText() {   
-        this.load("/com/adr/helloiot/fxml/viewtext.fxml");  
+    @Override
+    protected Node constructContent() {
+        return loadFXML("/com/adr/helloiot/fxml/viewtext.fxml");  
     }
     
     @FXML public void initialize() {
-        label.setText(null);
         level.setText(null);
-        setDisable(true);
     }
     
     @Subscribe
@@ -68,21 +64,6 @@ public class ViewText extends StackPane implements Unit, AbstractController {
         Unit.super.destroy();
         device.unsubscribeStatus(this);    
     }
-    
-    @Override
-    public void start() {
-        setDisable(false);
-    }
-
-    @Override
-    public void stop() {
-        setDisable(true);
-    }
-
-    @Override
-    public Node getNode() {
-        return this;
-    }
 
     public void setDevice(DeviceBase device) {
         this.device = device;
@@ -93,14 +74,5 @@ public class ViewText extends StackPane implements Unit, AbstractController {
     
     public DeviceBase getDevice() {
         return device;
-    }
-    
-    
-    public void setLabel(String value) {
-        label.setText(value);
-    }
-    
-    public String getLabel() {
-        return label.getText();
-    }    
+    }  
 }

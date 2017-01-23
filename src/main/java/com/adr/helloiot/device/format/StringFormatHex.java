@@ -18,6 +18,7 @@ package com.adr.helloiot.device.format;
 import com.google.common.base.Strings;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.geometry.Pos;
 
 /**
  *
@@ -48,6 +49,11 @@ public class StringFormatHex implements StringFormat {
         }  
         return parseHexString(formattedvalue.replaceAll("\\s",""));
     }
+    
+    @Override
+    public Pos alignment() {
+        return Pos.CENTER_LEFT;
+    }    
     
     public static byte[] parseHexString(String formattedvalue) {
         int lenght = formattedvalue.length();        

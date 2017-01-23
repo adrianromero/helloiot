@@ -52,7 +52,7 @@
             </HBox>
          </right>
          <center>
-            <TextArea fx:id="statusedit" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="100.0" styleClass="fieldtextbox" BorderPane.alignment="CENTER" />
+            <TextArea fx:id="statusedit" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="100.0" styleClass="fieldtextbox"/>
          </center>
          <StackPane.margin>
             <Insets />

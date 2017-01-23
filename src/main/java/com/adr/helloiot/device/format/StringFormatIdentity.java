@@ -17,6 +17,7 @@ package com.adr.helloiot.device.format;
 
 import com.google.common.base.Strings;
 import java.io.UnsupportedEncodingException;
+import javafx.geometry.Pos;
 
 /**
  *
@@ -53,5 +54,10 @@ public class StringFormatIdentity implements StringFormat {
         } catch (UnsupportedEncodingException ex) {
             throw new RuntimeException(ex);
         }
+    }
+    
+    @Override
+    public Pos alignment() {
+        return Pos.CENTER_LEFT;
     }
 }

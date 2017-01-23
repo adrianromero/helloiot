@@ -22,6 +22,7 @@ import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.geometry.Pos;
 
 /**
  *
@@ -85,6 +86,11 @@ public class StringFormatDecimal implements StringFormat {
         }
     }  
     
+    @Override
+    public Pos alignment() {
+        return Pos.CENTER_RIGHT;
+    }
+    
     protected static byte[] parseGeneral(String formattedvalue) {
         try {
             try {
@@ -96,5 +102,5 @@ public class StringFormatDecimal implements StringFormat {
         } catch (UnsupportedEncodingException ex) {
             throw new RuntimeException(ex);
         }        
-    }
+    }    
 }

@@ -17,6 +17,7 @@ package com.adr.helloiot.device.format;
 
 import com.google.common.base.Strings;
 import java.util.Base64;
+import javafx.geometry.Pos;
 
 /**
  *
@@ -46,4 +47,9 @@ public class StringFormatBase64 implements StringFormat {
         }  
         return Base64.getMimeDecoder().decode(formattedvalue);
     }
+    
+    @Override
+    public Pos alignment() {
+        return Pos.CENTER_LEFT;
+    }    
 }

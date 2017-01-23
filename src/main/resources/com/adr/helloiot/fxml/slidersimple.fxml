@@ -20,14 +20,12 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Slider?>
-<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
 
 <VBox xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Pane VBox.vgrow="SOMETIMES" />
-      <Label fx:id="level" alignment="CENTER_RIGHT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="20.0" styleClass="levelbase" text="level">
+      <Label fx:id="level" alignment="CENTER_RIGHT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="levelbase" text="level" VBox.vgrow="SOMETIMES">
          <VBox.margin>
             <Insets />
          </VBox.margin>
@@ -37,6 +35,5 @@
             <Insets top="10.0" />
          </VBox.margin>
       </Slider>
-      <Pane VBox.vgrow="SOMETIMES" />
    </children>
 </VBox>

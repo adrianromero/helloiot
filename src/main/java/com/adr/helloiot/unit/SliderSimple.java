@@ -32,7 +32,7 @@ import javafx.scene.control.Slider;
  *
  * @author adrian
  */
-public class SliderSimple extends Tile implements Unit, AbstractController {
+public class SliderSimple extends Tile implements Unit {
     
     @FXML private Slider slider;
     @FXML private Label level;

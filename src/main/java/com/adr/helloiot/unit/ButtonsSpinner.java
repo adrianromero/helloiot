@@ -34,7 +34,7 @@ import jidefx.utils.AutoRepeatButtonUtils;
  *
  * @author adrian
  */
-public class ButtonsSpinner extends Tile implements Unit, AbstractController {
+public class ButtonsSpinner extends Tile implements Unit {
     
     @FXML private Button goup;
     @FXML private Button godown;

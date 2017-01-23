@@ -15,6 +15,8 @@
 
 package com.adr.helloiot.device.format;
 
+import javafx.geometry.Pos;
+
 /**
  *
  * @author adrian
@@ -23,6 +25,7 @@ public interface StringFormat {
     public String getName();
     public String format(byte[] value);
     public byte[] parse(String formattedvalue);
+    public Pos alignment();
     
     public static StringFormat valueOf(String value) {
         if ("IDENTITY".equals(value)) {
@@ -33,6 +36,8 @@ public interface StringFormat {
             return StringFormatBase64.INSTANCE;
         } else if ("HEXADECIMAL".equals(value)) {
             return StringFormatHex.INSTANCE;
+        } else if ("DECIMAL".equals(value)) {
+            return new StringFormatDecimal("#.00");            
         } else if (value.startsWith("DECIMAL/")) {
             return new StringFormatDecimal(value.substring(8));            
         } else {

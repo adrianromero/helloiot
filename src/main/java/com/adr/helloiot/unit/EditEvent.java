@@ -23,6 +23,7 @@ import com.google.common.base.Strings;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.geometry.HPos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextInputControl;
@@ -56,7 +57,12 @@ public class EditEvent extends Tile implements Unit {
         this.device = device;
         if (Strings.isNullOrEmpty(getLabel())) {
             setLabel(device.getProperties().getProperty("label"));
-        }   
+        }  
+        if (device.getFormat().alignment().getHpos() == HPos.RIGHT) {
+            payload.getStyleClass().add("textinput-right");
+        } else {
+            payload.getStyleClass().remove("textinput-right");
+        }        
     }
     
     public TransmitterSimple getDevice() {

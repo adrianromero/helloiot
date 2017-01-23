@@ -19,7 +19,6 @@ import com.adr.fonticon.FontAwesome;
 import com.adr.fonticon.IconBuilder;
 import com.adr.helloiot.client.TopicStatus;
 import com.adr.helloiot.device.format.StringFormat;
-import com.adr.helloiot.device.format.StringFormatIdentity;
 import com.adr.helloiot.unit.StartFlow;
 import com.adr.helloiot.unit.UnitPage;
 import java.io.IOException;
@@ -142,7 +141,7 @@ public class MainManagerClient implements MainManager {
 
         TopicStatus ts;
         
-        ts = TopicStatus.buildTopicPublishRetained("hello/test1", 0, StringFormatIdentity.INSTANCE, true);
+        ts = TopicStatus.buildTopicPublishRetained("hello/test1", 0, StringFormat.valueOf("INTEGER"), true);
         helloiotapp.addDevicesUnits(ts.getDevices(), ts.getUnits());
         
         ts = TopicStatus.buildTopicPublishRetained("hello/test1", 0, StringFormat.valueOf("HEXADECIMAL"), false);
@@ -154,10 +153,10 @@ public class MainManagerClient implements MainManager {
         ts = TopicStatus.buildTopicPublish("hello/test1", -1, StringFormat.valueOf("BASE64"), false);
         helloiotapp.addDevicesUnits(ts.getDevices(), ts.getUnits());
         
-        ts = TopicStatus.buildTopicSubscription("hello/test1", 1, StringFormatIdentity.INSTANCE, true);
+        ts = TopicStatus.buildTopicSubscription("hello/test1", 1, StringFormat.valueOf("INTEGER"), true);
         helloiotapp.addDevicesUnits(ts.getDevices(), ts.getUnits());
         
-        ts = TopicStatus.buildTopicSubscription("hello/test1", 1, StringFormatIdentity.INSTANCE, false);
+        ts = TopicStatus.buildTopicSubscription("hello/test1", 1, StringFormat.valueOf("INTEGER"), false);
         helloiotapp.addDevicesUnits(ts.getDevices(), ts.getUnits());
         
 //        ts = TopicStatus.buildTopicSubscription("$SYS/broker/uptime", -1, StringFormatIdentity.INSTANCE, false);
