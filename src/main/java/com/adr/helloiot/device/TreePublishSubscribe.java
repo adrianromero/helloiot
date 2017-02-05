@@ -17,29 +17,27 @@ package com.adr.helloiot.device;
 
 import com.adr.helloiot.EventMessage;
 import com.adr.helloiot.MQTTManager;
-import com.adr.helloiot.util.CompletableAsync;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ScheduledFuture;
 
 
 /**
  *
  * @author adrian
  */
-public class TreeStatus extends Device {
+public class TreePublishSubscribe extends TreePublish {
     
-    protected MQTTManager mqttManager;
     private MQTTManager.Subscription mqttstatus = null;
-    
     private final Map<String, byte[]> status = new ConcurrentHashMap<>();
     
-    private ScheduledFuture<?> sf = null;    
-    private final Object sflock = new Object();  
+    public TreePublishSubscribe() {
+        super();
+        setRetained(true); // by default retained
+    }
     
     @Override
     public String getDeviceName() {
-        return resources.getString("devicename.treestatus");
+        return resources.getString("devicename.treepublishsubscribe");
     }    
  
     protected void consumeMessage(EventMessage message) {
@@ -47,54 +45,23 @@ public class TreeStatus extends Device {
     }
     
     @Override
-    public final void construct(MQTTManager mqttManager) {
-        this.mqttManager = mqttManager;
+    public void construct(MQTTManager mqttManager) {
+        super.construct(mqttManager);
         mqttstatus = mqttManager.subscribe(getTopic() + "/#", getQos());
         mqttstatus.setConsumer(this::consumeMessage);
-    }
-    
+    }    
     @Override
     public void destroy() {
+        super.destroy();
         mqttManager.unsubscribe(mqttstatus);
         mqttstatus = null;
     }   
     
-    public byte[] readStatus(String branch) {
+    public byte[] readMessage(String branch) {
         return status.get(getTopic() + "/" + branch);
     }
     
-    public String loadStatus(String branch) {
-        return getFormat().format(readStatus(branch));
+    public String loadMessage(String branch) {
+        return getFormat().format(readMessage(branch));
     }
-    
-    public void sendStatus(String branch, byte[] message) {
-        cancelTimer();
-        mqttManager.publishStatus(getTopic() + "/" + branch, getQos(), message);
-    }
-    
-    public void sendStatus(String branch, String message) {
-        sendStatus(branch, getFormat().parse(message));
-    }
-    
-    public void sendStatus(String branch, byte[] message, long delay) {            
-        synchronized (sflock) {
-            cancelTimer();  
-            sf = CompletableAsync.scheduleTask(delay, () -> {
-                TreeStatus.this.sendStatus(branch, message);
-            });
-        }
-    }  
-    
-    public void sendStatus(String branch, String message, long delay) {      
-        sendStatus(branch, getFormat().parse(message), delay);
-    }
-    
-    public void cancelTimer() {
-        synchronized (sflock) {
-            if (sf != null) {
-                sf.cancel(false);
-                sf = null;
-            }
-        }
-    }    
 }

@@ -25,6 +25,10 @@ import java.util.concurrent.atomic.AtomicReference;
 public class DeviceBasic extends DeviceBase {
 
     private final AtomicReference<byte[]> status = new AtomicReference<>(null); 
+    
+    public DeviceBasic() {
+        setRetained(true);
+    }    
 
     // Overwrite this  method
     @Override

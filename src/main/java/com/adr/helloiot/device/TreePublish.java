@@ -23,53 +23,57 @@ import java.util.concurrent.ScheduledFuture;
  *
  * @author adrian
  */
-public class TreeEvent extends Device {
+public class TreePublish extends Device {
     
     protected MQTTManager mqttManager;
     private ScheduledFuture<?> sf = null;
     private final Object sflock = new Object();  
     
+    public TreePublish() {
+        super();
+    }
+    
     @Override
     public String getDeviceName() {
-        return resources.getString("devicename.treeevent");
+        return resources.getString("devicename.treepublish");
     }
 
     @Override
-    public final void construct(MQTTManager mqttManager) {
+    public void construct(MQTTManager mqttManager) {
         this.mqttManager = mqttManager;
     }
     @Override
-    public final void destroy() {       
+    public void destroy() {       
     }    
     
-    public final void sendEvent(String branch, byte[] message) {
+    public final void sendMessage(String branch, byte[] message) {
         cancelTimer();
-        mqttManager.publishEvent(getTopic() + "/" + branch, getQos(), message);
+        mqttManager.publish(getTopic() + "/" + branch, getQos(), message, isRetained());
     }  
     
-    public final void sendEvent(String branch, String message) {
-        sendEvent(branch, getFormat().parse(message));
+    public final void sendMessage(String branch, String message) {
+        sendMessage(branch, getFormat().parse(message));
     }
 
-    public void sendEvent(String branch, byte[] message, long delay) {            
+    public void sendMessage(String branch, byte[] message, long delay) {            
         synchronized (sflock) {
             cancelTimer();  
             sf = CompletableAsync.scheduleTask(delay, () -> {
-                sendEvent(branch, message);
+                sendMessage(branch, message);
             });
         }
     }
     
-    public void sendEvent(String branch, String message, long delay) {
-        sendEvent(branch, getFormat().parse(message), delay);    
+    public void sendMessage(String branch, String message, long delay) {
+        sendMessage(branch, getFormat().parse(message), delay);    
     }           
     
-    public final void sendEvent(String branch) {
-        sendEvent(branch, new byte[0]);
+    public final void sendMessage(String branch) {
+        sendMessage(branch, new byte[0]);
     }  
     
-    public void sendEvent(String branch, long delay) {
-        sendEvent(branch, new byte[0], delay);
+    public void sendMessage(String branch, long delay) {
+        sendMessage(branch, new byte[0], delay);
     }     
     
     public void cancelTimer() {

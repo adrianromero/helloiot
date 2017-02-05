@@ -32,6 +32,7 @@ public abstract class Device {
     private String id = null; // can be null
     private String subscriptiontopic = null;       
     private int qos = -1;
+    private boolean retained = false;
     private StringFormat format;
     private final Properties properties = new Properties();
     
@@ -64,6 +65,14 @@ public abstract class Device {
 
     public final void setQos(int qos) {
         this.qos = qos;
+    }
+    
+    public final boolean isRetained() {
+        return retained;
+    }
+    
+    public final void setRetained(boolean retained) {
+        this.retained = retained;
     }
     
     public final StringFormat getFormat() {

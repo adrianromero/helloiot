@@ -23,8 +23,8 @@ import com.adr.helloiot.device.Device;
 import com.adr.helloiot.device.DeviceSimple;
 import com.adr.helloiot.device.DeviceSwitch;
 import com.adr.helloiot.device.TransmitterSimple;
-import com.adr.helloiot.device.TreeEvent;
-import com.adr.helloiot.device.TreeStatus;
+import com.adr.helloiot.device.TreePublish;
+import com.adr.helloiot.device.TreePublishSubscribe;
 import com.adr.helloiot.media.SilentClipFactory;
 import com.adr.helloiot.media.StandardClipFactory;
 import com.adr.helloiot.unit.UnitPage;
@@ -142,11 +142,11 @@ public class HelloIoTApp {
     }
     
     private void addSystemDevicesUnits(String topicapp) {
-        TreeEvent sysevents = new TreeEvent();
+        TreePublish sysevents = new TreePublish();
         sysevents.setTopic(SYS_EVENT_TOPIC);
         sysevents.setId(SYS_EVENT_ID);
         
-        TreeStatus sysstatus = new TreeStatus();
+        TreePublishSubscribe sysstatus = new TreePublishSubscribe();
         sysstatus.setTopic(SYS_VALUE_TOPIC);
         sysstatus.setId(SYS_VALUE_ID);
      
@@ -326,34 +326,34 @@ public class HelloIoTApp {
     } 
     
     public byte[] readSYSStatus(String branch) {
-        return ((TreeStatus) getDevice(SYS_VALUE_ID)).readStatus(branch);
+        return ((TreePublishSubscribe) getDevice(SYS_VALUE_ID)).readMessage(branch);
     }
     public String loadSYSStatus(String branch) {
-        return ((TreeStatus) getDevice(SYS_VALUE_ID)).loadStatus(branch);
+        return ((TreePublishSubscribe) getDevice(SYS_VALUE_ID)).loadMessage(branch);
     }
     public void sendSYSStatus(String branch, String message) {
-        ((TreeStatus) getDevice(SYS_VALUE_ID)).sendStatus(branch, message);
-    }
+        ((TreePublishSubscribe) getDevice(SYS_VALUE_ID)).sendMessage(branch, message);
+    }  
     public void sendSYSStatus(String branch, byte[] message) {
-        ((TreeStatus) getDevice(SYS_VALUE_ID)).sendStatus(branch, message);
-    }
+        ((TreePublishSubscribe) getDevice(SYS_VALUE_ID)).sendMessage(branch, message);
+    }  
    public final void sendSYSEvent(String branch, String message) {
-        ((TreeEvent) getDevice(SYS_EVENT_ID)).sendEvent(branch, message);
-    }  
-   public final void sendSYSEvent(String branch, byte[] message) {
-        ((TreeEvent) getDevice(SYS_EVENT_ID)).sendEvent(branch, message);
-    }  
-    public void sendSYSEvent(String branch, String message, long delay) {            
-        ((TreeEvent) getDevice(SYS_EVENT_ID)).sendEvent(branch, message, delay);
+        ((TreePublish) getDevice(SYS_EVENT_ID)).sendMessage(branch, message);
     }
+   public final void sendSYSEvent(String branch, byte[] message) {
+        ((TreePublish) getDevice(SYS_EVENT_ID)).sendMessage(branch, message);
+    }
+    public void sendSYSEvent(String branch, String message, long delay) {            
+        ((TreePublish) getDevice(SYS_EVENT_ID)).sendMessage(branch, message, delay);
+    }   
     public void sendSYSEvent(String branch, byte[] message, long delay) {            
-        ((TreeEvent) getDevice(SYS_EVENT_ID)).sendEvent(branch, message, delay);
+        ((TreePublish) getDevice(SYS_EVENT_ID)).sendMessage(branch, message, delay);
     }
     public final void sendSYSEvent(String branch) {
-        ((TreeEvent) getDevice(SYS_EVENT_ID)).sendEvent(branch);
+        ((TreePublish) getDevice(SYS_EVENT_ID)).sendMessage(branch);
     }   
     public void cancelSYSEventTimer() {
-        ((TreeEvent) getDevice(SYS_EVENT_ID)).cancelTimer();
+        ((TreePublish) getDevice(SYS_EVENT_ID)).cancelTimer();
     }
 
     public HelloIoTAppPublic getAppPublic() {

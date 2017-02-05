@@ -48,22 +48,22 @@ public class HelloIoTAppPublic {
     }  
     public void sendSYSStatus(String branch, String message) {
         app.sendSYSStatus(branch, message);
-    }
+    }  
     public void sendSYSStatus(String branch, byte[] message) {
         app.sendSYSStatus(branch, message);
-    }
+    }  
     public final void sendSYSEvent(String branch, String message) {
         app.sendSYSEvent(branch, message);
-    }  
+    }
     public final void sendSYSEvent(String branch, byte[] message) {
         app.sendSYSEvent(branch, message);
-    }  
+    }
     public void sendSYSEvent(String branch, String message, long delay) {            
         app.sendSYSEvent(branch, message, delay);
-    }
+    }   
     public void sendSYSEvent(String branch, byte[] message, long delay) {            
         app.sendSYSEvent(branch, message, delay);
-    }
+    }    
     public final void sendSYSEvent(String branch) {
         app.sendSYSEvent(branch);
     }   

@@ -20,6 +20,9 @@ package com.adr.helloiot.device;
  * @author adrian
  */
 public class TransmitterSimple extends DeviceBase {
+    
+    public TransmitterSimple() {
+    }
   
     @Override
     public String getDeviceName() {
@@ -27,7 +30,7 @@ public class TransmitterSimple extends DeviceBase {
     }
     
     public void sendEvent(byte[] event) {
-        mqttHelper.publishEvent(getTopic(), getQos(), event);
+        mqttHelper.publish(getTopic(), getQos(), event, isRetained());
     }
     
     public void sendEvent(String event) {

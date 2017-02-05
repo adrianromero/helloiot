@@ -220,36 +220,22 @@ public final class MQTTManager implements MqttCallback {
             }
         }        
     }
-
-    public void publishEvent(String topic, int qos, byte[] message) {
-        if (mqttClient != null) {
-            try {                
-                publish(topic, qos, message, false);
-            } catch (MqttException ex) {
-                throw new CompletionException(ex);
-            }                
-        }
-    }
-    
-    public void publishStatus(String topic, int qos, byte[] message) {
-        if (mqttClient != null) {
-            try {
-                publish(topic, qos, message, true);
-            } catch (MqttException ex) {
-                throw new CompletionException(ex);
-            }
-        }
-    }
-    
-    private void publish(String topic, int qos, byte[] message, boolean isStatus) throws MqttException {
+   
+    public void publish(String topic, int qos, byte[] message, boolean isRetained) {
+        
         // To be executed in Executor thread
+        if (mqttClient == null) {
+            return;
+        }
+        
         MqttMessage mm = new MqttMessage(message);
         mm.setQos(qos < 0 ? defaultqos : qos);
-        mm.setRetained(isStatus);
+        mm.setRetained(isRetained);
         if (topic.startsWith(LOCAL_PREFIX)) {
+            logger.log(Level.INFO, "Publishing message to local.");
             CompletableAsync.runAsync(() -> {
                 try {
-                    if (isStatus) {
+                    if (isRetained) {
                         mapClient.put(topic, mm.getPayload());
                         dbClient.commit();
                     }
@@ -258,10 +244,14 @@ public final class MQTTManager implements MqttCallback {
                     logger.log(Level.SEVERE, "Cannot publish locally.", ex);
                 }
             });
-            logger.log(Level.INFO, "Publishing message to local.");
+            
         } else {
-            mqttClient.publish(topicprefix + topic, mm);
             logger.log(Level.INFO, "Publishing message to broker.");
+            try {
+                mqttClient.publish(topicprefix + topic, mm);
+            } catch (MqttException ex) {
+                throw new CompletionException(ex);
+            }            
         }
     }
     
