@@ -28,7 +28,7 @@ public class StringFormatBase64 implements StringFormat {
     public static final StringFormat INSTANCE = new StringFormatBase64();
     
     @Override
-    public String getName() {
+    public String toString() {
         return "BASE64";
     }
 
@@ -51,5 +51,5 @@ public class StringFormatBase64 implements StringFormat {
     @Override
     public Pos alignment() {
         return Pos.CENTER_LEFT;
-    }    
+    }  
 }

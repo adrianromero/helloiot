@@ -18,6 +18,11 @@ package com.adr.helloiot;
 import com.adr.fonticon.FontAwesome;
 import com.adr.fonticon.IconBuilder;
 import com.adr.hellocommon.utils.AbstractController;
+import com.adr.helloiot.device.format.StringFormat;
+import com.adr.helloiot.device.format.StringFormatBase64;
+import com.adr.helloiot.device.format.StringFormatDecimal;
+import com.adr.helloiot.device.format.StringFormatHex;
+import com.adr.helloiot.device.format.StringFormatIdentity;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -89,7 +94,14 @@ public class ClientLoginNode extends BorderPane implements AbstractController {
     @FXML
     private CheckBox mainpage;    
     
+    @FXML Button adddeviceunit;
+    @FXML Button removedeviceunit;
+    
+    @FXML TextField edittopic;
+    @FXML ChoiceBox<String> edittype;
+    @FXML ChoiceBox<StringFormat> editformat;
     @FXML ChoiceBox<Integer> editqos;
+    @FXML CheckBox editmultiline;
 
     ClientLoginNode() {
         load("/com/adr/helloiot/fxml/clientlogin.fxml", "com/adr/helloiot/fxml/clientlogin");
@@ -101,7 +113,11 @@ public class ClientLoginNode extends BorderPane implements AbstractController {
         editqos.setConverter(new StringConverter<Integer>() {
             @Override
             public String toString(Integer object) {
-                return object.toString();
+                if (object < 0) { 
+                    return "Default";
+                } else {
+                    return object.toString();
+                }
             }
 
             @Override
@@ -110,7 +126,18 @@ public class ClientLoginNode extends BorderPane implements AbstractController {
             }
         });
         editqos.setItems(FXCollections.observableArrayList(-1, 0, 1, 2));
+        editqos.getSelectionModel().select(0);
         
+        editformat.setItems(FXCollections.observableArrayList(
+            StringFormatIdentity.INSTANCE,
+            StringFormatDecimal.INTEGER,        
+            new StringFormatDecimal("#.00"), 
+            StringFormatBase64.INSTANCE,
+            StringFormatHex.INSTANCE));
+        editformat.getSelectionModel().select(0);
+        
+        edittype.setItems(FXCollections.observableArrayList("Subscription", "Publication", "Retained Pub/Sub"));
+        edittype.getSelectionModel().select(0);
         
         nextbutton.setGraphic(IconBuilder.create(FontAwesome.FA_PLAY, 18.0).build());
         Platform.runLater(url::requestFocus);

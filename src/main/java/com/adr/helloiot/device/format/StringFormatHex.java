@@ -30,7 +30,7 @@ public class StringFormatHex implements StringFormat {
     public static final StringFormat INSTANCE = new StringFormatHex();
     
     @Override
-    public String getName() {
+    public String toString() {
         return "HEX";
     }
     

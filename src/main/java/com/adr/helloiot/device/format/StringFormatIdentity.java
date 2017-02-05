@@ -28,8 +28,8 @@ public class StringFormatIdentity implements StringFormat {
     public static final StringFormat INSTANCE = new StringFormatIdentity();
     
     @Override
-    public String getName() {
-        return "";
+    public String toString() {
+        return "STRING";
     }
     
     @Override

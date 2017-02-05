@@ -47,8 +47,12 @@ public class StringFormatDecimal implements StringFormat {
     }
     
     @Override
-    public String getName() {
-        return "DEC";
+    public String toString() {
+        if ("0".equals(pattern)) {
+            return "INT";
+        } else {
+            return "DEC (" + pattern + ")";
+        }
     }
     
     public final void setPattern(String pattern) {

@@ -31,18 +31,19 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Control;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 
 /**
  *
  * @author adrian
  */
-public class ButtonEngine extends Button implements Unit {
+public class ButtonEngine extends Tile implements Unit {
 
     protected ResourceBundle resources = ResourceBundle.getBundle("com/adr/helloiot/fxml/basic"); 
 
+    protected Button button;
     private final static IconStatus ICONNULL = new IconNull();
     private IconStatus iconbuilder = ICONNULL;    
     private DeviceSwitch device = null;
@@ -51,21 +52,18 @@ public class ButtonEngine extends Button implements Unit {
     private boolean timedarmed = false;
     private Duration initialDelay = Duration.millis(300.0);
             
-    public ButtonEngine() {   
+    @Override
+    public Node constructContent() {
         
-        setContentDisplay(ContentDisplay.TOP);
-        this.getStyleClass().add("buttonbase");
-        HBox.setHgrow(this, Priority.SOMETIMES);  
-        setMinSize(120.0, Control.USE_COMPUTED_SIZE);
-        setPrefSize(120.0, Control.USE_COMPUTED_SIZE);
-        setMaxSize(Integer.MAX_VALUE, Integer.MAX_VALUE);
-        setFocusTraversable(false);
-        setDisable(true);
-        
-        setText(null);
-        
-        armedProperty().addListener(this::onArmedChanged); 
-        setOnAction(this::onAction);
+        button = new Button();        
+        button.setContentDisplay(ContentDisplay.TOP);
+        button.getStyleClass().add("buttonbase");
+        VBox.setVgrow(button, Priority.SOMETIMES);  
+        button.setMaxSize(Integer.MAX_VALUE, Integer.MAX_VALUE);
+        button.setFocusTraversable(false);        
+        button.armedProperty().addListener(this::onArmedChanged); 
+        button.setOnAction(this::onAction);
+        return button;
     }
     
     @Override
@@ -85,11 +83,6 @@ public class ButtonEngine extends Button implements Unit {
         timedarmed = false;
         device.unsubscribeStatus(this);    
     }
-    
-    @Override
-    public void start() {
-        setDisable(false);
-    }
 
     @Override
     public void stop() {
@@ -98,12 +91,7 @@ public class ButtonEngine extends Button implements Unit {
             timerarm = null;
         }
         timedarmed = false;
-        setDisable(true);
-    }
-
-    @Override
-    public Node getNode() {
-        return this;
+        super.stop();
     }
 
     @Subscribe
@@ -112,7 +100,7 @@ public class ButtonEngine extends Button implements Unit {
     }
     
     private void updateStatus(byte[] status) {
-        setGraphic(iconbuilder.buildIcon(status));
+        button.setGraphic(iconbuilder.buildIcon(status));
     }
     
     public void setDevice(DeviceSwitch device) {
@@ -127,14 +115,6 @@ public class ButtonEngine extends Button implements Unit {
     
     public DeviceSwitch getDevice() {
         return device;
-    }
-    
-    public void setLabel(String label) {
-        setText(label);
-    }
-    
-    public String getLabel() {
-        return getText();
     }
     
     public void setInitialDelay(double millis) {

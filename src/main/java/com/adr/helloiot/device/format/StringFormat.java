@@ -22,7 +22,7 @@ import javafx.geometry.Pos;
  * @author adrian
  */
 public interface StringFormat {
-    public String getName();
+    // public String getName();
     public String format(byte[] value);
     public byte[] parse(String formattedvalue);
     public Pos alignment();

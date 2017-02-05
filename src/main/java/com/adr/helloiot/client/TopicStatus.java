@@ -10,6 +10,7 @@ import com.adr.helloiot.device.DeviceBasic;
 import com.adr.helloiot.device.DeviceSimple;
 import com.adr.helloiot.device.TransmitterSimple;
 import com.adr.helloiot.device.format.StringFormat;
+import com.adr.helloiot.device.format.StringFormatIdentity;
 import com.adr.helloiot.unit.EditAreaEvent;
 import com.adr.helloiot.unit.EditAreaStatus;
 import com.adr.helloiot.unit.EditAreaView;
@@ -62,11 +63,11 @@ public class TopicStatus {
         }
     }
     
-    private static String getFormatBadge(String s) {
-        if (s == null || s.isEmpty()) {
+    private static String getFormatBadge(StringFormat f) {
+        if (f instanceof StringFormatIdentity) {
             return STYLEFORMATSPACE;
         } else {
-            return STYLEFORMAT + s;
+            return STYLEFORMAT + f.toString();
         }
     }
     private static String getQOSBadge(int i) {
@@ -87,7 +88,7 @@ public class TopicStatus {
         EditEvent u = multiline ? new EditAreaEvent() : new EditEvent();
         u.setPrefWidth(320.0);
         u.setLabel(capitalize(leaf(topic)));
-        u.setFooter(topic + getFormatBadge(format.getName()) + getQOSBadge(qos));
+        u.setFooter(topic + getFormatBadge(format) + getQOSBadge(qos));
         u.setDevice(d);
         
         TopicStatus ts = new TopicStatus();
@@ -106,7 +107,7 @@ public class TopicStatus {
         EditStatus u = multiline ? new EditAreaStatus() : new EditStatus();
         u.setPrefWidth(320.0);
         u.setLabel(capitalize(leaf(topic)));
-        u.setFooter(topic + getFormatBadge(format.getName()) + getQOSBadge(qos));
+        u.setFooter(topic + getFormatBadge(format) + getQOSBadge(qos));
         u.setDevice(d);
         
         TopicStatus ts = new TopicStatus();
@@ -125,7 +126,7 @@ public class TopicStatus {
         EditView u = multiline ? new EditAreaView() : new EditView();
         u.setPrefWidth(320.0);
         u.setLabel(capitalize(leaf(topic)));
-        u.setFooter(topic + getFormatBadge(format.getName()) + getQOSBadge(qos));
+        u.setFooter(topic + getFormatBadge(format) + getQOSBadge(qos));
         u.setDevice(d);
         
         TopicStatus ts = new TopicStatus();

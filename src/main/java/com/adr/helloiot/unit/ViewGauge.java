@@ -22,11 +22,7 @@ import com.adr.helloiot.device.StatusNumber;
 import com.google.common.eventbus.Subscribe;
 import eu.hansolo.medusa.Gauge;
 import javafx.application.Platform;
-import javafx.geometry.Insets;
 import javafx.scene.Node;
-import javafx.scene.control.Control;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
 
 /**
@@ -40,16 +36,6 @@ public class ViewGauge extends Tile implements Unit  {
     private StackPane gaugecontainer;
     private Gauge gauge = null;
     private GaugeType type = GaugeType.DASHBOARD;
-        
-//    public ViewGauge() { 
-//        getStyleClass().add("unitbase");
-//        this.setPadding(new Insets(4));
-//        HBox.setHgrow(this, Priority.SOMETIMES);
-//        setMinSize(120.0, Control.USE_COMPUTED_SIZE);
-//        setPrefSize(120.0, Control.USE_COMPUTED_SIZE);
-//        setMaxSize(Integer.MAX_VALUE, Integer.MAX_VALUE);
-//        setDisable(true);
-//    }
 
     @Override
     protected Node constructContent() {
