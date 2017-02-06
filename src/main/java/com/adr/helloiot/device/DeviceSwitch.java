@@ -50,7 +50,7 @@ public class DeviceSwitch extends DeviceSimple {
     }    
     
     public void sendON() {
-        sendStatus(StatusSwitch.ON);       
+        sendStatus(StatusSwitch.ON);
     }
     
     public void sendOFF() {

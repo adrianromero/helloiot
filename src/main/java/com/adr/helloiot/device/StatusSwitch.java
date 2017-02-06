@@ -12,7 +12,6 @@
 //
 //    You should have received a copy of the GNU General Public License
 //    along with HelloIot.  If not, see <http://www.gnu.org/licenses/>.
-
 package com.adr.helloiot.device;
 
 import java.io.UnsupportedEncodingException;
@@ -23,10 +22,10 @@ import java.util.Arrays;
  * @author adrian
  */
 public final class StatusSwitch {
-    
+
     public final static byte[] ON;
     public final static byte[] OFF;
-    
+
     static {
         try {
             ON = "ON".getBytes("UTF-8");
@@ -35,13 +34,14 @@ public final class StatusSwitch {
             throw new RuntimeException(ex);
         }
     }
-    
-    private StatusSwitch() {}
-    
+
+    private StatusSwitch() {
+    }
+
     public static boolean getFromBytes(byte[] v) {
         return Arrays.equals(ON, v);
     }
-    
+
     public static byte[] getFromValue(boolean v) {
         return v ? ON : OFF;
     }

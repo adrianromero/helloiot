@@ -30,7 +30,8 @@ public abstract class Device {
     protected ResourceBundle resources = ResourceBundle.getBundle("com/adr/helloiot/resources/devices");
     
     private String id = null; // can be null
-    private String subscriptiontopic = null;       
+    private String subscriptiontopic = null;
+    private String publicationtopic = null; 
     private int qos = -1;
     private boolean retained = false;
     private StringFormat format;
@@ -57,6 +58,14 @@ public abstract class Device {
 
     public final void setTopic(String topic) {
         this.subscriptiontopic = topic;
+    }
+
+    public final String getTopicPublish() {
+        return publicationtopic == null ? subscriptiontopic : publicationtopic;
+    }
+
+    public final void setTopicPublish(String topic) {
+        this.publicationtopic = topic;
     }
     
     public final int getQos() {

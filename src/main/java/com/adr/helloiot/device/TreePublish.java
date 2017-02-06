@@ -48,7 +48,7 @@ public class TreePublish extends Device {
     
     public final void sendMessage(String branch, byte[] message) {
         cancelTimer();
-        mqttManager.publish(getTopic() + "/" + branch, getQos(), message, isRetained());
+        mqttManager.publish(getTopicPublish() + "/" + branch, getQos(), message, isRetained());
     }  
     
     public final void sendMessage(String branch, String message) {

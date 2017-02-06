@@ -58,7 +58,7 @@ public class DeviceSimple extends DeviceBasic {
     
     public void sendStatus(byte[] status) {
         cancelTimer();
-        mqttHelper.publish(getTopic(), getQos(), status, isRetained());
+        mqttHelper.publish(getTopicPublish(), getQos(), status, isRetained());
     }
     
     public void sendStatus(String status) {

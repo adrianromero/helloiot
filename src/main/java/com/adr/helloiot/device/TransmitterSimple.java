@@ -30,7 +30,7 @@ public class TransmitterSimple extends DeviceBase {
     }
     
     public void sendEvent(byte[] event) {
-        mqttHelper.publish(getTopic(), getQos(), event, isRetained());
+        mqttHelper.publish(getTopicPublish(), getQos(), event, isRetained());
     }
     
     public void sendEvent(String event) {

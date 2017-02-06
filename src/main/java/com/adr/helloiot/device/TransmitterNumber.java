@@ -30,6 +30,7 @@ public class TransmitterNumber extends TransmitterSimple {
     private double levelmin = 0.0;
     
     public TransmitterNumber() {
+        super();
         setFormat(new StringFormatDecimal("0.000"));
     }
 
