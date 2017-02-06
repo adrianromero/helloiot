@@ -50,7 +50,7 @@ public class ButtonPassword extends ButtonBase implements Unit {
         SecurityKeyboard sec = new SecurityKeyboard();
         DialogView dialog = new DialogView();
         dialog.setTitle(title);
-        dialog.setContent(sec);
+        dialog.setContent(sec.getNode());
         dialog.setActionOK((ActionEvent evok) -> {
             password.accept(sec.getPassword());
         });

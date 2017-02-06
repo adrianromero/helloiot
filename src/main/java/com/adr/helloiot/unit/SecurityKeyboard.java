@@ -17,24 +17,35 @@ package com.adr.helloiot.unit;
 
 import com.adr.fonticon.FontAwesome;
 import com.adr.fonticon.IconBuilder;
-import com.adr.hellocommon.utils.AbstractController;
+import java.io.IOException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
-import javafx.scene.layout.VBox;
 
 /**
  *
  * @author adrian
  */
-public class SecurityKeyboard extends VBox implements AbstractController {
+public class SecurityKeyboard {
+    
+    private Node content;
     
     @FXML private Button btndelete;
     @FXML private PasswordField password;
     
     public SecurityKeyboard() {
-        load("/com/adr/helloiot/fxml/securitykeyboard.fxml");
+        
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/adr/helloiot/fxml/securitykeyboard.fxml"));
+        loader.setController(this);
+        
+        try {
+            content = loader.load();
+        } catch (IOException exception) {
+            throw new RuntimeException(exception);
+        } 
     }  
     
     public void setPassword(String value) {
@@ -43,6 +54,10 @@ public class SecurityKeyboard extends VBox implements AbstractController {
     
     public String getPassword() {
         return password.getText();
+    }
+    
+    public Node getNode() {
+        return content;
     }
 
     @FXML public void initialize() {

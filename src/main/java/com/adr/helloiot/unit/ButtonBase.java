@@ -98,7 +98,7 @@ public abstract class ButtonBase extends Tile implements Unit {
             SecurityKeyboard sec = new SecurityKeyboard();
             DialogView dialog = new DialogView();
             dialog.setTitle(getLabel());
-            dialog.setContent(sec);
+            dialog.setContent(sec.getNode());
             dialog.setActionOK((ActionEvent evok) -> {
                 if (CryptUtils.validatePassword(sec.getPassword(), app.loadSYSStatus(securitykey))) {
                     doRun(evok);
