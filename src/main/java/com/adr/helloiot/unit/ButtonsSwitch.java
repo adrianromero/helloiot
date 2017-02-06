@@ -16,7 +16,6 @@
 package com.adr.helloiot.unit;
 
 import com.adr.hellocommon.dialog.MessageUtils;
-import com.adr.hellocommon.utils.AbstractController;
 import com.adr.helloiot.HelloIoTAppPublic;
 import com.adr.helloiot.graphic.IconStatus;
 import com.adr.helloiot.device.StatusSwitch;
@@ -34,7 +33,7 @@ import javafx.scene.layout.VBox;
  *
  * @author adrian
  */
-public class ButtonsSwitch extends Tile implements Unit, AbstractController {
+public class ButtonsSwitch extends Tile implements Unit {
 
     protected ResourceBundle resources = ResourceBundle.getBundle("com/adr/helloiot/fxml/basic"); 
 

@@ -17,7 +17,6 @@ package com.adr.helloiot.unit;
 
 import com.adr.fonticon.FontAwesome;
 import com.adr.fonticon.IconBuilder;
-import com.adr.hellocommon.utils.AbstractController;
 import com.adr.helloiot.device.DeviceSimple;
 import com.adr.helloiot.EventMessage;
 import com.adr.helloiot.HelloIoTAppPublic;

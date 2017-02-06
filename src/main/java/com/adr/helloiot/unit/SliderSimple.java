@@ -15,7 +15,6 @@
 
 package com.adr.helloiot.unit;
 
-import com.adr.hellocommon.utils.AbstractController;
 import com.adr.helloiot.device.DeviceNumber;
 import com.adr.helloiot.EventMessage;
 import com.adr.helloiot.HelloIoTAppPublic;
