@@ -15,7 +15,6 @@
 
 package com.adr.helloiot.device;
 
-import com.adr.helloiot.device.format.StringFormat;
 import com.adr.helloiot.device.format.StringFormatDecimal;
 
 /**
@@ -27,7 +26,7 @@ public class Temperature extends TransmitterNumber {
     public Temperature() {
         setLevelMin(-40.0);
         setLevelMax(70.0);
-        setFormat(new StringFormatDecimal("0.0°"));
+        setFormat(StringFormatDecimal.DEGREES);
     } 
     
     @Override

@@ -14,7 +14,7 @@
 //    along with HelloIot.  If not, see <http://www.gnu.org/licenses/>.
 package com.adr.helloiot.device;
 
-import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
 /**
@@ -27,12 +27,8 @@ public final class StatusSwitch {
     public final static byte[] OFF;
 
     static {
-        try {
-            ON = "ON".getBytes("UTF-8");
-            OFF = "OFF".getBytes("UTF-8");
-        } catch (UnsupportedEncodingException ex) {
-            throw new RuntimeException(ex);
-        }
+        ON = "ON".getBytes(StandardCharsets.UTF_8);
+        OFF = "OFF".getBytes(StandardCharsets.UTF_8);
     }
 
     private StatusSwitch() {

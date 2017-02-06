@@ -28,7 +28,7 @@ public abstract class DeviceNumber extends DeviceSimple {
     private double levelmin = 0.0;
     
     public DeviceNumber() {
-        setFormat(new StringFormatDecimal("0.000"));
+        setFormat(StringFormatDecimal.DECIMAL);
     }     
     
     public String getUnit() {

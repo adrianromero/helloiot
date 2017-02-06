@@ -16,10 +16,11 @@
 package com.adr.helloiot.device.format;
 
 import com.google.common.base.Strings;
-import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
+import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.geometry.Pos;
@@ -28,12 +29,16 @@ import javafx.geometry.Pos;
  *
  * @author adrian
  */
-public class StringFormatDecimal implements StringFormat {
-    
-    public static StringFormat INTEGER = new StringFormatDecimal();   
+public class StringFormatDecimal extends StringFormatPath {
     
     private final static Logger logger = Logger.getLogger(StringFormatDecimal.class.getName());
-    private static NumberFormat GENERALFORMAT = NumberFormat.getNumberInstance();
+    
+    private static NumberFormat GENERALFORMAT = NumberFormat.getNumberInstance(Locale.US);
+    public static StringFormat INTEGER = new StringFormatDecimal();   
+    public static StringFormat DOUBLE = new StringFormatDecimal("0.00");   
+    public static StringFormat DECIMAL = new StringFormatDecimal("0.000");   
+    public static StringFormat DEGREES = new StringFormatDecimal("0.0°");   
+
     
     private NumberFormat format;
     private String pattern;
@@ -50,6 +55,12 @@ public class StringFormatDecimal implements StringFormat {
     public String toString() {
         if ("0".equals(pattern)) {
             return "INT";
+        } else if("0.00".equals(pattern)) {
+            return "DOUBLE";
+        } else if("0.000".equals(pattern)) {
+            return "DECIMAL";
+        } else if("0.0°".equals(pattern)) {
+            return "DEGREES";
         } else {
             return "DEC (" + pattern + ")";
         }
@@ -65,28 +76,16 @@ public class StringFormatDecimal implements StringFormat {
     }
     
     @Override
-    public String format(byte[] value) {        
-        if (value == null || value.length == 0) {
-            return "";
-        }       
-        try {
-            return format.format(Double.parseDouble(new String(value, "UTF-8")));
-        } catch (UnsupportedEncodingException ex) {
-            throw new RuntimeException(ex);
-        }
+    public String formatImpl(String value) {          
+        return format.format(Double.parseDouble(value));
     }
     
     @Override
-    public byte[] parse(String formattedvalue) {       
-        if (Strings.isNullOrEmpty(formattedvalue)) {
-            return new byte[0];
-        }        
+    public String parseImpl(String formattedvalue) {       
         try {
-            return format.parse(formattedvalue).toString().getBytes("UTF-8");
+            return format.parse(formattedvalue).toString();
         } catch (ParseException ex) {
             return parseGeneral(formattedvalue);
-        } catch (UnsupportedEncodingException ex) {
-            throw new RuntimeException(ex);
         }
     }  
     
@@ -95,16 +94,12 @@ public class StringFormatDecimal implements StringFormat {
         return Pos.CENTER_RIGHT;
     }
     
-    protected static byte[] parseGeneral(String formattedvalue) {
+    protected static String parseGeneral(String formattedvalue) {
         try {
-            try {
-                return GENERALFORMAT.parse(formattedvalue).toString().getBytes("UTF-8");
-            } catch (ParseException ex) {   
-                logger.log(Level.WARNING, null, ex);
-                throw new IllegalArgumentException(ex);
-            }
-        } catch (UnsupportedEncodingException ex) {
-            throw new RuntimeException(ex);
+            return GENERALFORMAT.parse(formattedvalue).toString();
+        } catch (ParseException ex) {   
+            logger.log(Level.WARNING, null, ex);
+            throw new IllegalArgumentException(ex);
         }        
     }    
 }

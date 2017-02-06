@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
@@ -78,7 +79,7 @@ public class CommandClip implements Clip {
             FileUtils.forceMkdir(CACHEFOLDER);
 
             MessageDigest md = MessageDigest.getInstance("SHA-256");
-            md.update(url.getBytes("UTF-8"));
+            md.update(url.getBytes(StandardCharsets.UTF_8));
             String cachefilename = Base64.getUrlEncoder().encodeToString(md.digest());
             int iext = url.lastIndexOf('.');
             String extension = iext >= 0 ? url.substring(iext) : "";

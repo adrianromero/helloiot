@@ -26,7 +26,7 @@ public interface StringFormat {
     public String format(byte[] value);
     public byte[] parse(String formattedvalue);
     public Pos alignment();
-    
+            
     public static StringFormat valueOf(String value) {
         if ("IDENTITY".equals(value)) {
             return StringFormatIdentity.INSTANCE;
@@ -36,8 +36,14 @@ public interface StringFormat {
             return StringFormatBase64.INSTANCE;
         } else if ("HEXADECIMAL".equals(value)) {
             return StringFormatHex.INSTANCE;
+        } else if ("INTEGER".equals(value)) {
+            return StringFormatDecimal.INTEGER;            
+        } else if ("DOUBLE".equals(value)) {
+            return StringFormatDecimal.DOUBLE;          
         } else if ("DECIMAL".equals(value)) {
-            return new StringFormatDecimal("#.00");            
+            return StringFormatDecimal.DECIMAL;   
+        } else if ("DEGREES".equals(value)) {
+            return StringFormatDecimal.DEGREES;             
         } else if (value.startsWith("DECIMAL/")) {
             return new StringFormatDecimal(value.substring(8));            
         } else {

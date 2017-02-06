@@ -131,7 +131,9 @@ public class ClientLoginNode extends BorderPane implements AbstractController {
         editformat.setItems(FXCollections.observableArrayList(
             StringFormatIdentity.INSTANCE,
             StringFormatDecimal.INTEGER,        
-            new StringFormatDecimal("#.00"), 
+            StringFormatDecimal.DOUBLE, 
+            StringFormatDecimal.DECIMAL, 
+            StringFormatDecimal.DEGREES, 
             StringFormatBase64.INSTANCE,
             StringFormatHex.INSTANCE));
         editformat.getSelectionModel().select(0);

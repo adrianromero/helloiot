@@ -141,22 +141,22 @@ public class MainManagerClient implements MainManager {
 
         TopicStatus ts;
         
-        ts = TopicStatus.buildTopicPublishRetained("hello/test1", 0, StringFormat.valueOf("INTEGER"), true);
+        ts = TopicStatus.buildTopicPublishRetained("hello/test1", 0, StringFormat.valueOf("DOUBLE"), true);
         helloiotapp.addDevicesUnits(ts.getDevices(), ts.getUnits());
         
         ts = TopicStatus.buildTopicPublishRetained("hello/test1", 0, StringFormat.valueOf("HEXADECIMAL"), false);
         helloiotapp.addDevicesUnits(ts.getDevices(), ts.getUnits());
         
-        ts = TopicStatus.buildTopicPublish("hello/test1", -1, StringFormat.valueOf("INTEGER"), true);
+        ts = TopicStatus.buildTopicPublish("hello/test1", -1, StringFormat.valueOf("DECIMAL"), true);
         helloiotapp.addDevicesUnits(ts.getDevices(), ts.getUnits());
         
         ts = TopicStatus.buildTopicPublish("hello/test1", -1, StringFormat.valueOf("BASE64"), false);
         helloiotapp.addDevicesUnits(ts.getDevices(), ts.getUnits());
         
-        ts = TopicStatus.buildTopicSubscription("hello/test1", 1, StringFormat.valueOf("INTEGER"), true);
+        ts = TopicStatus.buildTopicSubscription("hello/test1", 1, StringFormat.valueOf("DEGREES"), true);
         helloiotapp.addDevicesUnits(ts.getDevices(), ts.getUnits());
         
-        ts = TopicStatus.buildTopicSubscription("hello/test1", 1, StringFormat.valueOf("INTEGER"), false);
+        ts = TopicStatus.buildTopicSubscription("hello/test1", 1, StringFormat.valueOf("DECIMAL"), false);
         helloiotapp.addDevicesUnits(ts.getDevices(), ts.getUnits());
         
 //        ts = TopicStatus.buildTopicSubscription("$SYS/broker/uptime", -1, StringFormatIdentity.INSTANCE, false);

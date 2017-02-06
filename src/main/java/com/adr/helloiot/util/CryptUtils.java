@@ -16,7 +16,7 @@
 package com.adr.helloiot.util;
 
 import com.google.common.base.Strings;
-import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
@@ -52,9 +52,9 @@ public class CryptUtils {
             // generate hash
             MessageDigest digest = MessageDigest.getInstance("MD5");
             digest.reset();
-            byte[] hashedBytes = digest.digest(input.getBytes("UTF-8"));
+            byte[] hashedBytes = digest.digest(input.getBytes(StandardCharsets.UTF_8));
             return hexString(hashedBytes);
-        } catch (NoSuchAlgorithmException | UnsupportedEncodingException ex) {
+        } catch (NoSuchAlgorithmException ex) {
             throw new RuntimeException(ex);
         }        
     }
@@ -65,10 +65,10 @@ public class CryptUtils {
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
             digest.reset();
             digest.update(salt);
-            byte[] hashedBytes = digest.digest(input.getBytes("UTF-8"));
+            byte[] hashedBytes = digest.digest(input.getBytes(StandardCharsets.UTF_8));
 
             return "password:" + Base64.getEncoder().encodeToString(salt) + ":" + Base64.getEncoder().encodeToString(hashedBytes);
-        } catch (NoSuchAlgorithmException | UnsupportedEncodingException ex) {
+        } catch (NoSuchAlgorithmException ex) {
             throw new RuntimeException(ex);
         }
     }

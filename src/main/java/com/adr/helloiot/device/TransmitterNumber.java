@@ -15,23 +15,20 @@
 
 package com.adr.helloiot.device;
 
-import com.adr.helloiot.device.format.StringFormat;
 import com.adr.helloiot.device.format.StringFormatDecimal;
 
 /**
  *
  * @author adrian
  */
-public class TransmitterNumber extends TransmitterSimple {
-
-    public static final StringFormat NUMBERFORMAT = new StringFormatDecimal("0.000");    
+public class TransmitterNumber extends TransmitterSimple { 
     
     private double levelmax = 100.0;
     private double levelmin = 0.0;
     
     public TransmitterNumber() {
         super();
-        setFormat(new StringFormatDecimal("0.000"));
+        setFormat(StringFormatDecimal.DECIMAL);
     }
 
     @Override

@@ -27,7 +27,7 @@ public class Thermostat extends DeviceNumber {
         setLevelMin(15.0);
         setLevelMax(29.0);
         setIncrement(0.2);
-        setFormat(new StringFormatDecimal("0.0°"));
+        setFormat(StringFormatDecimal.DEGREES);
     } 
     
     @Override

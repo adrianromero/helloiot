@@ -16,14 +16,14 @@
 package com.adr.helloiot.device.format;
 
 import com.google.common.base.Strings;
-import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import javafx.geometry.Pos;
 
 /**
  *
  * @author adrian
  */
-public class StringFormatIdentity implements StringFormat {
+public class StringFormatIdentity extends StringFormatPath {
     
     public static final StringFormat INSTANCE = new StringFormatIdentity();
     
@@ -33,27 +33,13 @@ public class StringFormatIdentity implements StringFormat {
     }
     
     @Override
-    public String format(byte[] value) {
-        if (value == null || value.length == 0) {
-            return "";
-        }       
-        try {
-            return new String(value, "UTF-8");
-        } catch (UnsupportedEncodingException ex) {
-            throw new RuntimeException(ex);
-        }
+    public String formatImpl(String value) {
+        return value;
     }
 
     @Override
-    public byte[] parse(String formattedvalue) {
-        if (Strings.isNullOrEmpty(formattedvalue)) {
-            return new byte[0];
-        }  
-        try {
-            return formattedvalue.getBytes("UTF-8");
-        } catch (UnsupportedEncodingException ex) {
-            throw new RuntimeException(ex);
-        }
+    public String parseImpl(String formattedvalue) {
+        return formattedvalue;
     }
     
     @Override

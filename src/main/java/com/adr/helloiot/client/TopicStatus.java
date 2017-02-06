@@ -27,8 +27,8 @@ import java.util.List;
  */
 public class TopicStatus {
     
-    private final static String STYLEFORMAT = "{} {-fx-background-color: gray; -fx-background-radius: 10px; -fx-fill:white; -fx-padding: 0 5 0 5; -fx-pref-width: 60px; -fx-text-alignment: center;}";
-    private final static String STYLEFORMATSPACE = "{} {-fx-padding: 0 5 0 5; -fx-pref-width: 60px;}";
+    private final static String STYLEFORMAT = "{} {-fx-background-color: gray; -fx-background-radius: 10px; -fx-fill:white; -fx-padding: 0 5 0 5; -fx-pref-width: 70px; -fx-text-alignment: center;}";
+    private final static String STYLEFORMATSPACE = "{} {-fx-padding: 0 5 0 5; -fx-pref-width: 70px;}";
     private final static String STYLEQOS = "{} {-fx-background-color: darkblue; -fx-background-radius: 10px; -fx-fill:white; -fx-padding: 0 5 0 5; -fx-pref-width: 30px; -fx-text-alignment: center;}";
     private final static String STYLEQOSSPACE = "{} {-fx-padding: 0 5 0 5; -fx-pref-width: 30px;}";
     
