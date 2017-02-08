@@ -41,7 +41,7 @@ public class ButtonSimple extends ButtonBase implements Unit {
     }
     
     private void updateStatus(byte[] status) {
-        button.setGraphic(iconbuilder.buildIcon(status));
+        button.setGraphic(iconbuilder.buildIcon(device.getFormat().format(status)));
     }
     
     @Override

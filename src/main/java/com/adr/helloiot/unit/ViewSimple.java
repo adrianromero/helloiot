@@ -59,7 +59,7 @@ public class ViewSimple extends Tile implements Unit  {
     }
     
     private void updateStatus(byte[] status) {
-        content.setGraphic(iconbuilder.buildIcon(status));
+        content.setGraphic(iconbuilder.buildIcon(device.getFormat().format(status)));
     }
     
     @Override

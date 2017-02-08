@@ -23,8 +23,11 @@ import com.adr.helloiot.device.format.StringFormatBase64;
 import com.adr.helloiot.device.format.StringFormatDecimal;
 import com.adr.helloiot.device.format.StringFormatHex;
 import com.adr.helloiot.device.format.StringFormatIdentity;
+import java.util.ResourceBundle;
 import javafx.application.Platform;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -32,8 +35,10 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.RadioButton;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -45,13 +50,16 @@ import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
  * @author adrian
  */
 public class ClientLoginNode extends BorderPane implements AbstractController {
-
+    
+    @FXML private ResourceBundle resources;
+    
     @FXML
     private HBox headerbox;
     @FXML
     private Label headertitle;
     @FXML
     private Button nextbutton;
+
 
     @FXML
     private TextField url;
@@ -96,12 +104,20 @@ public class ClientLoginNode extends BorderPane implements AbstractController {
     
     @FXML Button adddeviceunit;
     @FXML Button removedeviceunit;
+    @FXML Button updeviceunit;
+    @FXML Button downdeviceunit;
+    @FXML ListView<TopicInfo> devicesunitslist;
+    @FXML ScrollPane deviceunitform;
     
     @FXML TextField edittopic;
+    @FXML TextField edittopicpub;
     @FXML ChoiceBox<String> edittype;
     @FXML ChoiceBox<StringFormat> editformat;
     @FXML ChoiceBox<Integer> editqos;
+    @FXML ChoiceBox<Boolean> editretained;
     @FXML CheckBox editmultiline;
+    
+    private boolean updating = false;
 
     ClientLoginNode() {
         load("/com/adr/helloiot/fxml/clientlogin.fxml", "com/adr/helloiot/fxml/clientlogin");
@@ -110,11 +126,23 @@ public class ClientLoginNode extends BorderPane implements AbstractController {
     @FXML
     public void initialize() {
         
+        adddeviceunit.setGraphic(IconBuilder.create(FontAwesome.FA_PLUS, 18.0).build());
+        removedeviceunit.setGraphic(IconBuilder.create(FontAwesome.FA_MINUS, 18.0).build());
+        updeviceunit.setGraphic(IconBuilder.create(FontAwesome.FA_CHEVRON_UP, 18.0).build());
+        downdeviceunit.setGraphic(IconBuilder.create(FontAwesome.FA_CHEVRON_DOWN, 18.0).build());
+        
+        edittopic.textProperty().addListener((ObservableValue<? extends String> ov, String old_val, String new_val) -> {
+            updateCurrentTopic();
+        });
+        edittopicpub.textProperty().addListener((ObservableValue<? extends String> ov, String old_val, String new_val) -> {
+            updateCurrentTopic();
+        });
+        
         editqos.setConverter(new StringConverter<Integer>() {
             @Override
             public String toString(Integer object) {
                 if (object < 0) { 
-                    return "Default";
+                    return resources.getString("label.default");
                 } else {
                     return object.toString();
                 }
@@ -138,13 +166,121 @@ public class ClientLoginNode extends BorderPane implements AbstractController {
             StringFormatHex.INSTANCE));
         editformat.getSelectionModel().select(0);
         
-        edittype.setItems(FXCollections.observableArrayList("Subscription", "Publication", "Retained Pub/Sub"));
-        edittype.getSelectionModel().select(0);
+        edittype.setItems(FXCollections.observableArrayList("Subscription", "Publication", "Publication/Subscription"));
+        edittype.getSelectionModel().clearSelection();
+        edittype.valueProperty().addListener((ObservableValue<? extends String> ov, String old_val, String new_val) -> {
+            updateCurrentTopic();
+        });
+        
+        editretained.setConverter(new StringConverter<Boolean>() {
+            @Override
+            public String toString(Boolean object) {
+                if (object == null) { 
+                    return resources.getString("label.default");
+                } else {
+                    return object.toString();
+                }
+            }
+
+            @Override
+            public Boolean fromString(String value) {
+                if (Boolean.TRUE.toString().equals(value)) {
+                    return Boolean.TRUE;
+                } else if (Boolean.FALSE.toString().equals(value)) {
+                    return Boolean.FALSE;
+                } else {
+                    return null;
+                }
+            }
+        });        
+        editretained.setItems(FXCollections.observableArrayList(null, Boolean.TRUE, Boolean.FALSE));
+        editretained.getSelectionModel().select(0);
+        
+        devicesunitslist.getSelectionModel().selectedItemProperty().addListener((ObservableValue<? extends TopicInfo> ov, TopicInfo old_val, TopicInfo new_val) -> {
+            updateDevicesUnitsList();
+        });
+        updateDevicesUnitsList();
         
         nextbutton.setGraphic(IconBuilder.create(FontAwesome.FA_PLAY, 18.0).build());
         Platform.runLater(url::requestFocus);
     }
+    
+    private void updateCurrentTopic() {
+        if (!updating) {
+            int  index = devicesunitslist.getSelectionModel().getSelectedIndex();
+            TopicInfo topic = devicesunitslist.getSelectionModel().getSelectedItem();
+            
+            topic.setTopic(edittopic.getText());
+            topic.setTopicpub(edittopicpub.getText() == null || edittopicpub.getText().isEmpty() ? null : edittopicpub.getText());
+            topic.setType(edittype.getValue());
+            
+            devicesunitslist.getItems().set(index, topic);
+            devicesunitslist.getSelectionModel().select(topic);
+        }
+        
+    }
 
+    private void updateDevicesUnitsList() {
+        TopicInfo topic = devicesunitslist.getSelectionModel().getSelectedItem();
+        int index = devicesunitslist.getSelectionModel().getSelectedIndex();
+        if (topic == null) {
+            removedeviceunit.setDisable(true);
+            deviceunitform.setDisable(true);
+            updeviceunit.setDisable(true);
+            downdeviceunit.setDisable(true);
+            
+            updating = true;
+            edittopic.setText(null);
+            edittopicpub.setText(null);
+            edittype.getSelectionModel().clearSelection();
+            updating = false;            
+            
+        } else {
+            removedeviceunit.setDisable(false);
+            deviceunitform.setDisable(false);
+            updeviceunit.setDisable(index <= 0);
+            downdeviceunit.setDisable(index >= devicesunitslist.getItems().size() - 1);
+            
+            updating = true;
+            edittopic.setText(topic.getTopic());
+            edittopicpub.setText(topic.getTopicpub());
+            edittype.getSelectionModel().select(topic.getType());            
+            updating = false;
+        }
+    }
+
+    @FXML
+    void onAddDeviceUnit(ActionEvent event) {
+        TopicInfo t = new TopicInfo();
+        devicesunitslist.getItems().add(t);
+        devicesunitslist.getSelectionModel().select(t); 
+    }
+
+    @FXML
+    void onRemoveDeviceUnit(ActionEvent event) {
+        TopicInfo t = devicesunitslist.getSelectionModel().getSelectedItem();
+        devicesunitslist.getItems().remove(t);
+
+    }
+
+    @FXML
+    void onUpDeviceUnit(ActionEvent event) {
+        TopicInfo topic = devicesunitslist.getSelectionModel().getSelectedItem();
+        int index = devicesunitslist.getSelectionModel().getSelectedIndex();
+        devicesunitslist.getItems().remove(index);
+        devicesunitslist.getItems().add(index - 1, topic);
+        devicesunitslist.getSelectionModel().select(index - 1);
+    }
+
+    @FXML
+    void onDownDeviceUnit(ActionEvent event) {
+        TopicInfo topic = devicesunitslist.getSelectionModel().getSelectedItem();
+        int index = devicesunitslist.getSelectionModel().getSelectedIndex();
+        devicesunitslist.getItems().remove(index);
+        devicesunitslist.getItems().add(index + 1, topic);
+        devicesunitslist.getSelectionModel().select(index + 1);
+    }
+    
     public void setOnNextAction(EventHandler<ActionEvent> exitevent) {
         nextbutton.setOnAction(exitevent);
     }
@@ -266,6 +402,17 @@ public class ClientLoginNode extends BorderPane implements AbstractController {
         }
     }
     
+    public ObservableList<TopicInfo> getTopicInfoList() {
+        return devicesunitslist.getItems();
+    }
+    
+    public void setTopicInfoList(ObservableList<TopicInfo> list) {
+        devicesunitslist.setItems(list);
+        if (list.size() > 0) {
+            devicesunitslist.getSelectionModel().select(0);
+        }
+    }
+    
     public boolean isCleanSession() {
         return cleansession.isSelected();
     }
@@ -289,6 +436,7 @@ public class ClientLoginNode extends BorderPane implements AbstractController {
     public void setGaugesPane(boolean value) {
         gaugespane.setSelected(value);
     }    
+    
     public boolean isMainPage() {
         return mainpage.isSelected();
     }

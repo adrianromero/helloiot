@@ -28,20 +28,9 @@ import javafx.scene.text.Text;
  * @author adrian
  */
 public class IconText implements IconStatus {
-    
-    private final StringFormat format;
-    
-    public IconText(StringFormat format) {
-        this.format = format;
-    }
-    
-    public IconText() {
-        this(new StringFormatIdentity());
-    }
-
     @Override
-    public Node buildIcon(byte[] status) {
-        Text t = new Text(format.format(status));
+    public Node buildIcon(String formattedStatus) {
+        Text t = new Text(formattedStatus);
         t.setFont(Font.font(ExternalFonts.ROBOTOBOLD, FontWeight.NORMAL, 11.0));
         return t;
     } 

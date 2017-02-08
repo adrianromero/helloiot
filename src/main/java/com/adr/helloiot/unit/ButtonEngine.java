@@ -100,7 +100,7 @@ public class ButtonEngine extends Tile implements Unit {
     }
     
     private void updateStatus(byte[] status) {
-        button.setGraphic(iconbuilder.buildIcon(status));
+        button.setGraphic(iconbuilder.buildIcon(device.getFormat().format(status)));
     }
     
     public void setDevice(DeviceSwitch device) {

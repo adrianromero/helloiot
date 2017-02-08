@@ -71,6 +71,10 @@ public class ConfigProperties {
     }
     
     public void setProperty(String key, String value) {
-        config.setProperty(key, value);
+        if (value == null) {
+            config.remove(key);
+        } else {
+            config.setProperty(key, value);
+        }
     }    
 }

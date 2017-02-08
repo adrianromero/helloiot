@@ -33,7 +33,7 @@ public abstract class DeviceBase extends Device {
     private final EventBus statusbus = new EventBus();
     
     public IconStatus getIconStatus() {
-        return new IconText(getFormat());
+        return new IconText();
     }
     
     protected void consumeMessage(EventMessage message) {

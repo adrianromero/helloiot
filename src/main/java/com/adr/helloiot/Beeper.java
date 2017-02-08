@@ -15,7 +15,7 @@
 
 package com.adr.helloiot;
 
-import com.adr.helloiot.device.StatusSwitch;
+import com.adr.helloiot.device.DeviceSwitch;
 import com.adr.helloiot.media.Clip;
 import com.adr.helloiot.media.ClipFactory;
 import com.google.common.eventbus.Subscribe;
@@ -49,7 +49,7 @@ public class Beeper {
         alert.setVisible(false);
         beep.stop();           
 
-        if (Arrays.equals(StatusSwitch.ON, status)){
+        if (Arrays.equals(DeviceSwitch.ON, status)){
             alert.setVisible(true);
             beep.play();
         }          

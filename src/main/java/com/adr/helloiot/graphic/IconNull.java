@@ -24,7 +24,7 @@ import javafx.scene.Node;
 public class IconNull implements IconStatus {
 
     @Override
-    public Node buildIcon(byte[] status) {
+    public Node buildIcon(String formattedStatus) {
         return null;
     }
 }

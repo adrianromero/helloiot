@@ -28,7 +28,7 @@ public interface IconStatus {
     
     public static final ResourceBundle RESOURCES = ResourceBundle.getBundle("com/adr/helloiot/fxml/main");
     
-    public Node buildIcon(byte[] status); 
+    public Node buildIcon(String formattedStatus); 
 
     public static IconStatus valueOf(String value) {
         if ("NULL".equals(value)) {

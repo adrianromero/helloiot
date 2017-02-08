@@ -78,10 +78,11 @@ public class TopicStatus {
         }
     }
     
-    public static TopicStatus buildTopicPublish(String topic, int qos, StringFormat format,  boolean multiline) {
+    public static TopicStatus buildTopicPublish(String topic, String topicpub, int qos, StringFormat format,  boolean multiline) {
 
         TransmitterSimple d = new TransmitterSimple();
         d.setTopic(topic);
+        d.setTopicPublish(topicpub);
         d.setQos(qos);
         d.setFormat(format);
 
@@ -97,10 +98,11 @@ public class TopicStatus {
         return ts;                       
     }    
     
-    public static TopicStatus buildTopicPublishRetained(String topic, int qos, StringFormat format,  boolean multiline) {
+    public static TopicStatus buildTopicPublishSubscription(String topic, String topicpub, int qos, StringFormat format,  boolean multiline) {
 
         DeviceSimple d = new DeviceSimple();
         d.setTopic(topic);
+        d.setTopicPublish(topicpub);
         d.setQos(qos);
         d.setFormat(format);
 
@@ -116,10 +118,11 @@ public class TopicStatus {
         return ts;                       
     }
     
-    public static TopicStatus buildTopicSubscription(String topic, int qos, StringFormat format,  boolean multiline) {
+    public static TopicStatus buildTopicSubscription(String topic, String topicpub, int qos, StringFormat format,  boolean multiline) {
 
         DeviceBasic d = new DeviceBasic();
         d.setTopic(topic);
+        d.setTopicPublish(topicpub);
         d.setQos(qos);
         d.setFormat(format);
 

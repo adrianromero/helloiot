@@ -12,33 +12,42 @@
 //
 //    You should have received a copy of the GNU General Public License
 //    along with HelloIot.  If not, see <http://www.gnu.org/licenses/>.
-package com.adr.helloiot.device;
 
-import java.nio.charset.StandardCharsets;
+package com.adr.helloiot.device.format;
+
+import com.adr.helloiot.device.DeviceSwitch;
 import java.util.Arrays;
+import javafx.geometry.Pos;
 
 /**
  *
  * @author adrian
  */
-public final class StatusSwitch {
+public class StringFormatSwitch implements StringFormat {
 
-    public final static byte[] ON;
-    public final static byte[] OFF;
-
-    static {
-        ON = "ON".getBytes(StandardCharsets.UTF_8);
-        OFF = "OFF".getBytes(StandardCharsets.UTF_8);
+    private final DeviceSwitch device;
+    
+    public StringFormatSwitch(DeviceSwitch device) {
+        this.device = device;
+    }
+    
+    @Override
+    public String toString() {
+        return "SWITCH";
+    }
+    
+    @Override
+    public String format(byte[] value) {
+        return Arrays.equals(device.getOn(), value) ? "ON" : "OFF";
     }
 
-    private StatusSwitch() {
+    @Override
+    public byte[] parse(String formattedvalue) {
+        return "ON".equals(formattedvalue) ? device.getOn() : device.getOff();
     }
-
-    public static boolean getFromBytes(byte[] v) {
-        return Arrays.equals(ON, v);
-    }
-
-    public static byte[] getFromValue(boolean v) {
-        return v ? ON : OFF;
-    }
+    
+    @Override
+    public Pos alignment() {
+        return Pos.CENTER_LEFT;
+    }    
 }

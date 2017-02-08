@@ -19,15 +19,19 @@ import com.adr.fonticon.FontAwesome;
 import com.adr.fonticon.IconBuilder;
 import com.adr.helloiot.client.TopicStatus;
 import com.adr.helloiot.device.format.StringFormat;
+import com.adr.helloiot.device.format.StringFormatIdentity;
 import com.adr.helloiot.unit.StartFlow;
 import com.adr.helloiot.unit.UnitPage;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Application.Parameters;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.layout.StackPane;
@@ -61,6 +65,18 @@ public class MainManagerClient implements MainManager {
         clientlogin.setTopicApp(configprops.getProperty("mqtt.topicapp", "_LOCAL_/_sys_helloIoT/mainapp"));
 
         clientlogin.setBrokerPane(Integer.parseInt(configprops.getProperty("client.broker", "0"))); //none
+        
+        int i = 0;
+        List<TopicInfo> topicinfolist = new ArrayList<>();
+        int topicinfosize = Integer.parseInt(configprops.getProperty("topicinfo.size", "0"));
+        while (i++ < topicinfosize) {
+            TopicInfo topicinfo = new TopicInfo();
+            topicinfo.setTopic(configprops.getProperty("topicinfo" + Integer.toString(i) + ".topic", null));
+            topicinfo.setTopicpub(configprops.getProperty("topicinfo" + Integer.toString(i) + ".topicpub", null));
+            topicinfo.setType(configprops.getProperty("topicinfo" + Integer.toString(i) + ".type", "Publication/Subscription"));
+            topicinfolist.add(topicinfo);
+        }
+        clientlogin.setTopicInfoList(FXCollections.observableList(topicinfolist));
 
         clientlogin.setOnNextAction(e -> {                
             showApplication();
@@ -89,6 +105,15 @@ public class MainManagerClient implements MainManager {
         configprops.setProperty("mqtt.topicapp", clientlogin.getTopicApp());
         
         configprops.setProperty("client.broker", Integer.toString(clientlogin.getBrokerPane()));
+        
+        List<TopicInfo> topicinfolist = clientlogin.getTopicInfoList();
+        configprops.setProperty("topicinfo.size", Integer.toString(topicinfolist.size()));
+        int i = 0;
+        for (TopicInfo topicinfo : topicinfolist) {
+            configprops.setProperty("topicinfo" + Integer.toString(++i) + ".topic", topicinfo.getTopic());
+            configprops.setProperty("topicinfo" + Integer.toString(i) + ".topicpub", topicinfo.getTopicpub());
+            configprops.setProperty("topicinfo" + Integer.toString(i) + ".type", topicinfo.getType());
+        }
         
         try {
             configprops.save();
@@ -141,24 +166,35 @@ public class MainManagerClient implements MainManager {
 
         TopicStatus ts;
         
-        ts = TopicStatus.buildTopicPublishRetained("hello/test1", 0, StringFormat.valueOf("DOUBLE"), true);
-        helloiotapp.addDevicesUnits(ts.getDevices(), ts.getUnits());
+        for (TopicInfo topicinfo: topicinfolist) {
+            if ("Subscription".equals(topicinfo.getType())) {
+                ts = TopicStatus.buildTopicSubscription(topicinfo.getTopic(), topicinfo.getTopicpub(), -1, StringFormatIdentity.INSTANCE, false);
+            } else if ("Publication".equals(topicinfo.getType())) {
+                ts = TopicStatus.buildTopicPublish(topicinfo.getTopic(), topicinfo.getTopicpub(), -1, StringFormatIdentity.INSTANCE, false);
+            } else { // "Publication/Subscription"
+                ts = TopicStatus.buildTopicPublishSubscription(topicinfo.getTopic(), topicinfo.getTopicpub(), -1, StringFormatIdentity.INSTANCE, false);
+            }
+            helloiotapp.addDevicesUnits(ts.getDevices(), ts.getUnits());            
+        }
         
-        ts = TopicStatus.buildTopicPublishRetained("hello/test1", 0, StringFormat.valueOf("HEXADECIMAL"), false);
-        helloiotapp.addDevicesUnits(ts.getDevices(), ts.getUnits());
-        
-        ts = TopicStatus.buildTopicPublish("hello/test1", -1, StringFormat.valueOf("DECIMAL"), true);
-        helloiotapp.addDevicesUnits(ts.getDevices(), ts.getUnits());
-        
-        ts = TopicStatus.buildTopicPublish("hello/test1", -1, StringFormat.valueOf("BASE64"), false);
-        helloiotapp.addDevicesUnits(ts.getDevices(), ts.getUnits());
-        
-        ts = TopicStatus.buildTopicSubscription("hello/test1", 1, StringFormat.valueOf("DEGREES"), true);
-        helloiotapp.addDevicesUnits(ts.getDevices(), ts.getUnits());
-        
-        ts = TopicStatus.buildTopicSubscription("hello/test1", 1, StringFormat.valueOf("DECIMAL"), false);
-        helloiotapp.addDevicesUnits(ts.getDevices(), ts.getUnits());
-        
+//        ts = TopicStatus.buildTopicPublishSubscription("hello/test1", 0, StringFormat.valueOf("DOUBLE"), true);
+//        helloiotapp.addDevicesUnits(ts.getDevices(), ts.getUnits());
+//        
+//        ts = TopicStatus.buildTopicPublishSubscription("hello/test1", 0, StringFormat.valueOf("HEXADECIMAL"), false);
+//        helloiotapp.addDevicesUnits(ts.getDevices(), ts.getUnits());
+//        
+//        ts = TopicStatus.buildTopicPublish("hello/test1", -1, StringFormat.valueOf("DECIMAL"), true);
+//        helloiotapp.addDevicesUnits(ts.getDevices(), ts.getUnits());
+//        
+//        ts = TopicStatus.buildTopicPublish("hello/test1", -1, StringFormat.valueOf("BASE64"), false);
+//        helloiotapp.addDevicesUnits(ts.getDevices(), ts.getUnits());
+//        
+//        ts = TopicStatus.buildTopicSubscription("hello/test1", 1, StringFormat.valueOf("DEGREES"), true);
+//        helloiotapp.addDevicesUnits(ts.getDevices(), ts.getUnits());
+//        
+//        ts = TopicStatus.buildTopicSubscription("hello/test1", 1, StringFormat.valueOf("DECIMAL"), false);
+//        helloiotapp.addDevicesUnits(ts.getDevices(), ts.getUnits());
+//        
 //        ts = TopicStatus.buildTopicSubscription("$SYS/broker/uptime", -1, StringFormatIdentity.INSTANCE, false);
 //        helloiotapp.addDevicesUnits(ts.getDevices(), ts.getUnits());
 

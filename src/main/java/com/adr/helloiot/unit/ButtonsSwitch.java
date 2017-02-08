@@ -18,7 +18,6 @@ package com.adr.helloiot.unit;
 import com.adr.hellocommon.dialog.MessageUtils;
 import com.adr.helloiot.HelloIoTAppPublic;
 import com.adr.helloiot.graphic.IconStatus;
-import com.adr.helloiot.device.StatusSwitch;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
@@ -56,7 +55,7 @@ public class ButtonsSwitch extends Tile implements Unit {
         goup.setMaxSize(Integer.MAX_VALUE, Integer.MAX_VALUE);
         goup.setFocusTraversable(false);        
         goup.setOnAction(event -> {
-            doRunSwitch(event, StatusSwitch.ON);
+            doRunSwitch(event, "ON");
         });
  
         godown = new Button();
@@ -67,7 +66,7 @@ public class ButtonsSwitch extends Tile implements Unit {
         godown.setMaxSize(Integer.MAX_VALUE, Integer.MAX_VALUE);
         godown.setFocusTraversable(false);             
         godown.setOnAction(event -> {
-                doRunSwitch(event, StatusSwitch.OFF);
+                doRunSwitch(event, "OFF");
         });
         
         setIconStatus(IconStatus.valueOf("TEXT/ON/OFF"));
@@ -98,15 +97,15 @@ public class ButtonsSwitch extends Tile implements Unit {
     
     public void setIconStatus(IconStatus iconbuilder) {
         this.iconbuilder = iconbuilder;
-        goup.setGraphic(iconbuilder.buildIcon(StatusSwitch.ON));
-        godown.setGraphic(iconbuilder.buildIcon(StatusSwitch.OFF));
+        goup.setGraphic(iconbuilder.buildIcon("ON"));
+        godown.setGraphic(iconbuilder.buildIcon("OFF"));
     }
     
     public IconStatus getIconStatus() {
         return iconbuilder;
     }     
     
-    private void doRunSwitch(ActionEvent event, byte[] status) {
+    private void doRunSwitch(ActionEvent event, String status) {
         if (code == null) {
             MessageUtils.showError(MessageUtils.getRoot(this), getLabel(), resources.getString("message.nocode"));        
         } else {

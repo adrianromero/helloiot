@@ -15,6 +15,8 @@
 
 package com.adr.helloiot.device;
 
+import com.adr.helloiot.device.format.StringFormatSwitch;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
 /**
@@ -22,16 +24,42 @@ import java.util.Arrays;
  * @author adrian
  */
 public class DeviceSwitch extends DeviceSimple {
+
+    public final static byte[] ON = "ON".getBytes(StandardCharsets.UTF_8);
+    public final static byte[] OFF = "OFF".getBytes(StandardCharsets.UTF_8);
     
+    private byte[] on = ON;
+    private byte[] off = OFF;
+    
+    public DeviceSwitch() {
+        setFormat(new StringFormatSwitch(this));
+    }
+ 
     @Override
     public String getDeviceName() {
         return resources.getString("devicename.deviceswitch");
     }
-    
+
+    public byte[] getOn() {
+        return on;
+    }
+
+    public void setOn(byte[] on) {
+        this.on = on;
+    }
+
+    public byte[] getOff() {
+        return off;
+    }
+
+    public void setOff(byte[] off) {
+        this.off = off;
+    }
+       
     @Override
     public byte[] nextStatus() {     
-        boolean current = StatusSwitch.getFromBytes(readStatus());
-        return StatusSwitch.getFromValue(!current);    
+        boolean current = Arrays.equals(on, readStatus());
+        return !current ? on : off;    
     }
 
     @Override
@@ -50,11 +78,11 @@ public class DeviceSwitch extends DeviceSimple {
     }    
     
     public void sendON() {
-        sendStatus(StatusSwitch.ON);
+        sendStatus(on);
     }
     
     public void sendOFF() {
-        sendStatus(StatusSwitch.OFF);               
+        sendStatus(off);               
     }
     
     public void sendSWITCH() {
@@ -63,12 +91,12 @@ public class DeviceSwitch extends DeviceSimple {
     
     public void sendON(long duration) {
         
-        if (Arrays.equals(StatusSwitch.ON, readStatus()) && !hasTimer()) {
+        if (Arrays.equals(on, readStatus()) && !hasTimer()) {
             // If  already on and not with a timer then do nothing
             return;
         }
         
-        sendStatus(StatusSwitch.ON);
-        sendStatus(StatusSwitch.OFF, duration);
+        sendStatus(on);
+        sendStatus(off, duration);
     }
 }
