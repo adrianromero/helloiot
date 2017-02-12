@@ -30,6 +30,7 @@ public class ApplicationConfig {
     public String mqtt_url = "tcp://localhost:1883";
     public String mqtt_username = "";
     public String mqtt_password = "";
+    public String mqtt_clientid = "";
     public int mqtt_connectiontimeout = MqttConnectOptions.CONNECTION_TIMEOUT_DEFAULT;
     public int mqtt_keepaliveinterval = MqttConnectOptions.KEEP_ALIVE_INTERVAL_DEFAULT;
     public int mqtt_defaultqos = 1;

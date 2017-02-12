@@ -59,6 +59,7 @@ public final class MQTTManager implements MqttCallback {
     private final String url;
     private final String username;
     private final String password;
+    private final String clientid;
     private final int timeout;
     private final int keepalive;
     private final Properties sslproperties;
@@ -73,16 +74,17 @@ public final class MQTTManager implements MqttCallback {
     private final Map<String, List<Subscription>> subscriptions;
     
     public MQTTManager(String url) {
-        this(url, null, null, MqttConnectOptions.CONNECTION_TIMEOUT_DEFAULT, MqttConnectOptions.KEEP_ALIVE_INTERVAL_DEFAULT, 1, MqttConnectOptions.MQTT_VERSION_DEFAULT, MqttConnectOptions.CLEAN_SESSION_DEFAULT, null, "");
+        this(url, null, null, null, MqttConnectOptions.CONNECTION_TIMEOUT_DEFAULT, MqttConnectOptions.KEEP_ALIVE_INTERVAL_DEFAULT, 1, MqttConnectOptions.MQTT_VERSION_DEFAULT, MqttConnectOptions.CLEAN_SESSION_DEFAULT, null, "");
     }
     
-    public MQTTManager(String url, String username, String password, int timeout, int keepalive, int defaultqos, int version, boolean cleansession, Properties sslproperties, String topicprefix) {
+    public MQTTManager(String url, String username, String password, String clientid, int timeout, int keepalive, int defaultqos, int version, boolean cleansession, Properties sslproperties, String topicprefix) {
         
         this.mqttClient = null;
         
         this.url = url;
         this.username = username;
         this.password = password;
+        this.clientid = clientid;
         this.timeout = timeout;
         this.keepalive = keepalive;
         this.defaultqos = defaultqos;     
@@ -116,7 +118,7 @@ public final class MQTTManager implements MqttCallback {
         return CompletableAsync.runAsync(() -> {
             if (mqttClient == null) {
                 try {
-                    mqttClient = new MqttAsyncClient(url, MqttAsyncClient.generateClientId()); 
+                    mqttClient = new MqttAsyncClient(url, clientid == null || clientid.isEmpty() ? MqttAsyncClient.generateClientId() : clientid); 
                     MqttConnectOptions options = new MqttConnectOptions();
                     options.setCleanSession(true);
                     if (!Strings.isNullOrEmpty(username)) {

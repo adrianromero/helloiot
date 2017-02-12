@@ -31,6 +31,7 @@
 }
 
 .maincontainer {
+    -fx-unit-fill: -fx-text-inner-color;
 }
 
 .header {
@@ -134,14 +135,16 @@
 
 .fieldtextbox {
     -fx-font-family: 'ROBOTO BOLD';
-    -fx-font-size: 14px;    
+    -fx-text-fill: -fx-unit-fill;
+    -fx-font-size: 14px;   
 }
 
 .noneditable {
     -fx-font-family: 'ROBOTO BOLD';
+    -fx-text-fill: -fx-unit-fill;
     -fx-font-size: 14px;    
     -fx-focus-color: transparent;
-    -fx-background-color: transparent;  
+    -fx-background-color: transparent;
 }
 .noneditable .scroll-pane {
     -fx-background-color: transparent;

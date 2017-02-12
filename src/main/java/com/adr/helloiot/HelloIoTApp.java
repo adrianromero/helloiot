@@ -101,6 +101,7 @@ public class HelloIoTApp {
                 config.mqtt_url,
                 config.mqtt_username, 
                 config.mqtt_password,
+                config.mqtt_clientid,
                 config.mqtt_connectiontimeout, 
                 config.mqtt_keepaliveinterval,
                 config.mqtt_defaultqos, 

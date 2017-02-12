@@ -5,11 +5,15 @@
  */
 package com.adr.helloiot.client;
 
+import com.adr.helloiot.TopicInfo;
 import com.adr.helloiot.device.Device;
 import com.adr.helloiot.device.DeviceBasic;
 import com.adr.helloiot.device.DeviceSimple;
 import com.adr.helloiot.device.TransmitterSimple;
 import com.adr.helloiot.device.format.StringFormat;
+import com.adr.helloiot.device.format.StringFormatBase64;
+import com.adr.helloiot.device.format.StringFormatDecimal;
+import com.adr.helloiot.device.format.StringFormatHex;
 import com.adr.helloiot.device.format.StringFormatIdentity;
 import com.adr.helloiot.unit.EditAreaEvent;
 import com.adr.helloiot.unit.EditAreaStatus;
@@ -34,35 +38,7 @@ public class TopicStatus {
     
     private List<Device> devices;
     private List<Unit> units;
-    
-    private static String capitalize(String s) {
 
-        final char[] buffer = s.toCharArray();
-        boolean capitalizeNext = true;
-        for (int i = 0; i < buffer.length; i++) {
-            final char ch = buffer[i];
-            if (ch == '_' || ch == ' ') {
-                buffer[i] = ' ';
-                capitalizeNext = true;
-            } else if (capitalizeNext) {
-                buffer[i] = Character.toTitleCase(ch);
-                capitalizeNext = false;
-            }
-        }
-        return new String(buffer);
-    }
-    
-    private static String leaf(String s) {
-        int i = s.lastIndexOf('/');
-        if (i < 0) {
-            return s;
-        } else if (i == s.length() - 1) {
-            return leaf(s.substring(0, s.length()- 1));
-        } else {
-            return s.substring(i + 1);
-        }
-    }
-    
     private static String getFormatBadge(StringFormat f) {
         if (f instanceof StringFormatIdentity) {
             return STYLEFORMATSPACE;
@@ -78,18 +54,41 @@ public class TopicStatus {
         }
     }
     
-    public static TopicStatus buildTopicPublish(String topic, String topicpub, int qos, StringFormat format,  boolean multiline) {
+    private static StringFormat createFormat(TopicInfo topicinfo) {
+        if ("STRING".equals(topicinfo.getFormat())) {
+            return new StringFormatIdentity(topicinfo.getJsonpath() == null || topicinfo.getJsonpath().isEmpty() ? null: topicinfo.getJsonpath());
+        } else if ("INT".equals(topicinfo.getFormat())) {
+            return new StringFormatDecimal(topicinfo.getJsonpath() == null || topicinfo.getJsonpath().isEmpty() ? null: topicinfo.getJsonpath(), "0");
+        } else if ("BASE64".equals(topicinfo.getFormat())) {
+            return new StringFormatBase64();
+        } else if ("HEX".equals(topicinfo.getFormat())) {
+            return new StringFormatHex();      
+        } else if ("DOUBLE".equals(topicinfo.getFormat())) {
+            return new StringFormatDecimal(topicinfo.getJsonpath() == null || topicinfo.getJsonpath().isEmpty() ? null: topicinfo.getJsonpath(), "0.00");
+        } else if ("DECIMAL".equals(topicinfo.getFormat())) {
+            return new StringFormatDecimal(topicinfo.getJsonpath() == null || topicinfo.getJsonpath().isEmpty() ? null: topicinfo.getJsonpath(), "0.000");
+        } else if ("DEGREES".equals(topicinfo.getFormat())) {
+            return new StringFormatDecimal(topicinfo.getJsonpath() == null || topicinfo.getJsonpath().isEmpty() ? null: topicinfo.getJsonpath(), "0.0°");
+        } else {
+            return StringFormatIdentity.INSTANCE;
+        }        
+    }
+    
+    public static TopicStatus buildTopicPublish(TopicInfo topicinfo) {
 
         TransmitterSimple d = new TransmitterSimple();
-        d.setTopic(topic);
-        d.setTopicPublish(topicpub);
-        d.setQos(qos);
-        d.setFormat(format);
+        d.setTopic(topicinfo.getTopic());
+        d.setTopicPublish(topicinfo.getTopicpub());
+        d.setQos(topicinfo.getQos());
+        if (topicinfo.getRetained() >= 0) {
+            d.setRetained(topicinfo.getRetained() != 0);
+        }
+        d.setFormat(createFormat(topicinfo));
 
-        EditEvent u = multiline ? new EditAreaEvent() : new EditEvent();
+        EditEvent u = topicinfo.isMultiline() ? new EditAreaEvent() : new EditEvent();
         u.setPrefWidth(320.0);
-        u.setLabel(capitalize(leaf(topic)));
-        u.setFooter(topic + getFormatBadge(format) + getQOSBadge(qos));
+        u.setLabel(topicinfo.getLabel());
+        u.setFooter(topicinfo.getTopic() + getQOSBadge(topicinfo.getQos()) + getFormatBadge(d.getFormat()));
         u.setDevice(d);
         
         TopicStatus ts = new TopicStatus();
@@ -98,39 +97,45 @@ public class TopicStatus {
         return ts;                       
     }    
     
-    public static TopicStatus buildTopicPublishSubscription(String topic, String topicpub, int qos, StringFormat format,  boolean multiline) {
+    public static TopicStatus buildTopicPublishSubscription(TopicInfo topicinfo) {
 
         DeviceSimple d = new DeviceSimple();
-        d.setTopic(topic);
-        d.setTopicPublish(topicpub);
-        d.setQos(qos);
-        d.setFormat(format);
+        d.setTopic(topicinfo.getTopic());
+        d.setTopicPublish(topicinfo.getTopicpub());
+        d.setQos(topicinfo.getQos());
+        if (topicinfo.getRetained() >= 0) {
+            d.setRetained(topicinfo.getRetained() != 0);
+        }
+        d.setFormat(createFormat(topicinfo));
 
-        EditStatus u = multiline ? new EditAreaStatus() : new EditStatus();
+        EditStatus u = topicinfo.isMultiline() ? new EditAreaStatus() : new EditStatus();
         u.setPrefWidth(320.0);
-        u.setLabel(capitalize(leaf(topic)));
-        u.setFooter(topic + getFormatBadge(format) + getQOSBadge(qos));
-        u.setDevice(d);
-        
+        u.setLabel(topicinfo.getLabel());
+        u.setFooter(topicinfo.getTopic() + getQOSBadge(topicinfo.getQos()) + getFormatBadge(d.getFormat()));
+        u.setDevice(d);        
+
         TopicStatus ts = new TopicStatus();
         ts.devices = Arrays.asList(d);
         ts.units = Arrays.asList(u);
         return ts;                       
     }
     
-    public static TopicStatus buildTopicSubscription(String topic, String topicpub, int qos, StringFormat format,  boolean multiline) {
+    public static TopicStatus buildTopicSubscription(TopicInfo topicinfo) {
 
         DeviceBasic d = new DeviceBasic();
-        d.setTopic(topic);
-        d.setTopicPublish(topicpub);
-        d.setQos(qos);
-        d.setFormat(format);
+        d.setTopic(topicinfo.getTopic());
+        d.setTopicPublish(topicinfo.getTopicpub());
+        d.setQos(topicinfo.getQos());
+        if (topicinfo.getRetained() >= 0) {
+            d.setRetained(topicinfo.getRetained() != 0);
+        }
+        d.setFormat(createFormat(topicinfo));
 
-        EditView u = multiline ? new EditAreaView() : new EditView();
+        EditView u = topicinfo.isMultiline() ? new EditAreaView() : new EditView();
         u.setPrefWidth(320.0);
-        u.setLabel(capitalize(leaf(topic)));
-        u.setFooter(topic + getFormatBadge(format) + getQOSBadge(qos));
-        u.setDevice(d);
+        u.setLabel(topicinfo.getLabel());
+        u.setFooter(topicinfo.getTopic() + getQOSBadge(topicinfo.getQos()) + getFormatBadge(d.getFormat()));
+        u.setDevice(d);   
         
         TopicStatus ts = new TopicStatus();
         ts.devices = Arrays.asList(d);
@@ -146,5 +151,5 @@ public class TopicStatus {
     
     public List<Unit> getUnits() {
         return units;
-    }
+    }    
 }

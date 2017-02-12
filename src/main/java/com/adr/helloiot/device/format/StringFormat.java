@@ -22,22 +22,20 @@ import javafx.geometry.Pos;
  * @author adrian
  */
 public interface StringFormat {
-    // public String getName();
+
     public String format(byte[] value);
     public byte[] parse(String formattedvalue);
     public Pos alignment();
             
     public static StringFormat valueOf(String value) {
-        if ("IDENTITY".equals(value)) {
+        if ("STRING".equals(value) || "IDENTITY".equals(value)) {
             return StringFormatIdentity.INSTANCE;
-        } else if ("INTEGER".equals(value)) {
+        } else if ("INT".equals(value) || "INTEGER".equals(value)) {
             return StringFormatDecimal.INTEGER;
         } else if ("BASE64".equals(value)) {
             return StringFormatBase64.INSTANCE;
-        } else if ("HEXADECIMAL".equals(value)) {
-            return StringFormatHex.INSTANCE;
-        } else if ("INTEGER".equals(value)) {
-            return StringFormatDecimal.INTEGER;            
+        } else if ("HEX".equals(value)) {
+            return StringFormatHex.INSTANCE;        
         } else if ("DOUBLE".equals(value)) {
             return StringFormatDecimal.DOUBLE;          
         } else if ("DECIMAL".equals(value)) {
@@ -45,7 +43,7 @@ public interface StringFormat {
         } else if ("DEGREES".equals(value)) {
             return StringFormatDecimal.DEGREES;             
         } else if (value.startsWith("DECIMAL/")) {
-            return new StringFormatDecimal(value.substring(8));            
+            return new StringFormatDecimal(null, value.substring(8));            
         } else {
             throw new IllegalArgumentException("Cannot create StringFormat: " + value);
         }    

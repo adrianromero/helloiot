@@ -24,7 +24,15 @@ import java.nio.charset.StandardCharsets;
  */
 public abstract class StringFormatPath implements StringFormat {
 
-    private String path = null;
+    private String path;
+    
+    public StringFormatPath() {
+        this(null);
+    }
+
+    public StringFormatPath(String jsonpath) {
+        path = jsonpath;
+    }
 
     public final void setPath(String path) {
         this.path = path;

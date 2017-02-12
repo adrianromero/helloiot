@@ -18,8 +18,6 @@ package com.adr.helloiot;
 import com.adr.fonticon.FontAwesome;
 import com.adr.fonticon.IconBuilder;
 import com.adr.helloiot.client.TopicStatus;
-import com.adr.helloiot.device.format.StringFormat;
-import com.adr.helloiot.device.format.StringFormatIdentity;
 import com.adr.helloiot.unit.StartFlow;
 import com.adr.helloiot.unit.UnitPage;
 import java.io.IOException;
@@ -35,6 +33,7 @@ import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 
 /**
@@ -56,6 +55,7 @@ public class MainManagerClient implements MainManager {
         clientlogin = new ClientLoginNode();
         clientlogin.setURL(configprops.getProperty("mqtt.url", "tcp://localhost:1883"));
         clientlogin.setUserName(configprops.getProperty("mqtt.username", ""));
+        clientlogin.setClientID(configprops.getProperty("mqtt.clientid", ""));
         clientlogin.setConnectionTimeout(Integer.parseInt(configprops.getProperty("mqtt.connectiontimeout", Integer.toString(MqttConnectOptions.CONNECTION_TIMEOUT_DEFAULT))));
         clientlogin.setKeepAliveInterval(Integer.parseInt(configprops.getProperty("mqtt.keepaliveinterval", Integer.toString(MqttConnectOptions.KEEP_ALIVE_INTERVAL_DEFAULT))));
         clientlogin.setDefaultQoS(Integer.parseInt(configprops.getProperty("mqtt.defaultqos", "1")));
@@ -74,6 +74,15 @@ public class MainManagerClient implements MainManager {
             topicinfo.setTopic(configprops.getProperty("topicinfo" + Integer.toString(i) + ".topic", null));
             topicinfo.setTopicpub(configprops.getProperty("topicinfo" + Integer.toString(i) + ".topicpub", null));
             topicinfo.setType(configprops.getProperty("topicinfo" + Integer.toString(i) + ".type", "Publication/Subscription"));
+            topicinfo.setFormat(configprops.getProperty("topicinfo" + Integer.toString(i) + ".format", "STRING"));
+            topicinfo.setJsonpath(configprops.getProperty("topicinfo" + Integer.toString(i) + ".jsonpath", null));
+            topicinfo.setMultiline(Boolean.parseBoolean(configprops.getProperty("topicinfo" + Integer.toString(i) + ".multiline", "false")));
+            topicinfo.setQos(Integer.parseInt(configprops.getProperty("topicinfo" + Integer.toString(i) + ".qos", "-1")));
+            topicinfo.setRetained(Integer.parseInt(configprops.getProperty("topicinfo" + Integer.toString(i) + ".retained", "-1")));
+            String c = configprops.getProperty("topicinfo" + Integer.toString(i) + ".color", null);
+            topicinfo.setColor(c == null ? null : Color.valueOf(c));
+            c = configprops.getProperty("topicinfo" + Integer.toString(i) + ".background", null);
+            topicinfo.setBackground(c == null ? null : Color.valueOf(c));
             topicinfolist.add(topicinfo);
         }
         clientlogin.setTopicInfoList(FXCollections.observableList(topicinfolist));
@@ -96,6 +105,7 @@ public class MainManagerClient implements MainManager {
         
         configprops.setProperty("mqtt.url", clientlogin.getURL());
         configprops.setProperty("mqtt.username", clientlogin.getUserName());
+        configprops.setProperty("mqtt.clientid", clientlogin.getClientID());
         configprops.setProperty("mqtt.connectiontimeout", Integer.toString(clientlogin.getConnectionTimeout()));
         configprops.setProperty("mqtt.keepaliveinterval", Integer.toString(clientlogin.getKeepAliveInterval()));
         configprops.setProperty("mqtt.defaultqos", Integer.toString(clientlogin.getDefaultQoS()));
@@ -113,6 +123,13 @@ public class MainManagerClient implements MainManager {
             configprops.setProperty("topicinfo" + Integer.toString(++i) + ".topic", topicinfo.getTopic());
             configprops.setProperty("topicinfo" + Integer.toString(i) + ".topicpub", topicinfo.getTopicpub());
             configprops.setProperty("topicinfo" + Integer.toString(i) + ".type", topicinfo.getType());
+            configprops.setProperty("topicinfo" + Integer.toString(i) + ".format", topicinfo.getFormat());
+            configprops.setProperty("topicinfo" + Integer.toString(i) + ".jsonpath", topicinfo.getJsonpath());
+            configprops.setProperty("topicinfo" + Integer.toString(i) + ".multiline", Boolean.toString(topicinfo.isMultiline()));
+            configprops.setProperty("topicinfo" + Integer.toString(i) + ".color", topicinfo.getColor() == null ? null : topicinfo.getColor().toString());
+            configprops.setProperty("topicinfo" + Integer.toString(i) + ".background", topicinfo.getBackground() == null ? null : topicinfo.getBackground().toString());
+            configprops.setProperty("topicinfo" + Integer.toString(i) + ".qos", Integer.toString(topicinfo.getQos()));
+            configprops.setProperty("topicinfo" + Integer.toString(i) + ".retained", Integer.toString(topicinfo.getRetained()));
         }
         
         try {
@@ -125,6 +142,7 @@ public class MainManagerClient implements MainManager {
         config.mqtt_url = clientlogin.getURL();
         config.mqtt_username = clientlogin.getUserName();
         config.mqtt_password = clientlogin.getPassword();
+        config.mqtt_clientid = clientlogin.getClientID();
         config.mqtt_connectiontimeout = clientlogin.getConnectionTimeout();
         config.mqtt_keepaliveinterval = clientlogin.getKeepAliveInterval();
         config.mqtt_defaultqos = clientlogin.getDefaultQoS();
@@ -148,19 +166,19 @@ public class MainManagerClient implements MainManager {
             helloiotapp.addFXMLFileDevicesUnits("local:com/adr/helloiot/panes/mosquitto");
         }
   
-        if (clientlogin.isLightsPane()) {
-            helloiotapp.addUnitPages(Arrays.asList(
-                new UnitPage("light", IconBuilder.create(FontAwesome.FA_LIGHTBULB_O, 24.0).build(), resources.getString("page.light")))
-            );
-            helloiotapp.addFXMLFileDevicesUnits("local:com/adr/helloiot/panes/samplelights");
-        }
-        
-        if (clientlogin.isGaugesPane()) {
-            helloiotapp.addUnitPages(Arrays.asList(
-                new UnitPage("temperature", IconBuilder.create(FontAwesome.FA_DASHBOARD, 24.0).build(), resources.getString("page.temperature")))
-            );
-            helloiotapp.addFXMLFileDevicesUnits("local:com/adr/helloiot/panes/sampletemperature");
-        }
+//        if (clientlogin.isLightsPane()) {
+//            helloiotapp.addUnitPages(Arrays.asList(
+//                new UnitPage("light", IconBuilder.create(FontAwesome.FA_LIGHTBULB_O, 24.0).build(), resources.getString("page.light")))
+//            );
+//            helloiotapp.addFXMLFileDevicesUnits("local:com/adr/helloiot/panes/samplelights");
+//        }
+//        
+//        if (clientlogin.isGaugesPane()) {
+//            helloiotapp.addUnitPages(Arrays.asList(
+//                new UnitPage("temperature", IconBuilder.create(FontAwesome.FA_DASHBOARD, 24.0).build(), resources.getString("page.temperature")))
+//            );
+//            helloiotapp.addFXMLFileDevicesUnits("local:com/adr/helloiot/panes/sampletemperature");
+//        }
         
         helloiotapp.addDevicesUnits(Collections.emptyList(), Collections.singletonList(new StartFlow()));
 
@@ -168,12 +186,21 @@ public class MainManagerClient implements MainManager {
         
         for (TopicInfo topicinfo: topicinfolist) {
             if ("Subscription".equals(topicinfo.getType())) {
-                ts = TopicStatus.buildTopicSubscription(topicinfo.getTopic(), topicinfo.getTopicpub(), -1, StringFormatIdentity.INSTANCE, false);
+                ts = TopicStatus.buildTopicSubscription(topicinfo);
             } else if ("Publication".equals(topicinfo.getType())) {
-                ts = TopicStatus.buildTopicPublish(topicinfo.getTopic(), topicinfo.getTopicpub(), -1, StringFormatIdentity.INSTANCE, false);
+                ts = TopicStatus.buildTopicPublish(topicinfo);
             } else { // "Publication/Subscription"
-                ts = TopicStatus.buildTopicPublishSubscription(topicinfo.getTopic(), topicinfo.getTopicpub(), -1, StringFormatIdentity.INSTANCE, false);
+                ts = TopicStatus.buildTopicPublishSubscription(topicinfo);
             }
+            StringBuilder style = new StringBuilder();
+            if (topicinfo.getColor() != null) {
+                style.append("-fx-unit-fill: ").append(webColor(topicinfo.getColor())).append(";");
+            }
+            if (topicinfo.getBackground() != null) {
+                style.append("-fx-background-color: ").append(webColor(topicinfo.getBackground())).append(";");
+            }
+            ts.getUnits().get(0).getNode().setStyle(style.toString());
+            
             helloiotapp.addDevicesUnits(ts.getDevices(), ts.getUnits());            
         }
         
@@ -208,6 +235,13 @@ public class MainManagerClient implements MainManager {
 
         root.getChildren().add(helloiotapp.getMQTTNode());
         helloiotapp.startAndConstruct();        
+    }
+    private String webColor(Color color) {
+        return String.format( "#%02X%02X%02X%02X",
+            (int)(color.getRed() * 255),
+            (int)(color.getGreen() * 255),
+            (int)(color.getBlue() * 255),
+            (int)(color.getOpacity() * 255));        
     }
     
     private void hideApplication() {

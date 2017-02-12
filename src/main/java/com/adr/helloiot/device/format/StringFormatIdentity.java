@@ -15,8 +15,6 @@
 
 package com.adr.helloiot.device.format;
 
-import com.google.common.base.Strings;
-import java.nio.charset.StandardCharsets;
 import javafx.geometry.Pos;
 
 /**
@@ -26,6 +24,14 @@ import javafx.geometry.Pos;
 public class StringFormatIdentity extends StringFormatPath {
     
     public static final StringFormat INSTANCE = new StringFormatIdentity();
+    
+    public StringFormatIdentity() {
+        super();
+    }
+
+    public StringFormatIdentity(String jsonpath) {
+        super(jsonpath);
+    }
     
     @Override
     public String toString() {

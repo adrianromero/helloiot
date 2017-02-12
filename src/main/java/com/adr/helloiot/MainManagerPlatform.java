@@ -43,6 +43,7 @@ public class MainManagerPlatform implements MainManager {
         config.mqtt_url = configprops.getProperty("mqtt.url", "tcp://localhost:1883");
         config.mqtt_username = configprops.getProperty("mqtt.username", "");
         config.mqtt_password = configprops.getProperty("mqtt.password", "");
+        config.mqtt_clientid = configprops.getProperty("mqtt.clientid", "");
         config.mqtt_connectiontimeout = Integer.parseInt(configprops.getProperty("mqtt.connectiontimeout", Integer.toString(MqttConnectOptions.CONNECTION_TIMEOUT_DEFAULT)));
         config.mqtt_keepaliveinterval = Integer.parseInt(configprops.getProperty("mqtt.keepaliveinterval", Integer.toString(MqttConnectOptions.KEEP_ALIVE_INTERVAL_DEFAULT)));
         config.mqtt_defaultqos =  Integer.parseInt(configprops.getProperty("mqtt.defaultqos", "1"));

@@ -15,8 +15,6 @@
 
 package com.adr.helloiot.device.format;
 
-import com.google.common.base.Strings;
-import java.nio.charset.StandardCharsets;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
@@ -35,20 +33,25 @@ public class StringFormatDecimal extends StringFormatPath {
     
     private static NumberFormat GENERALFORMAT = NumberFormat.getNumberInstance(Locale.US);
     public static StringFormat INTEGER = new StringFormatDecimal();   
-    public static StringFormat DOUBLE = new StringFormatDecimal("0.00");   
-    public static StringFormat DECIMAL = new StringFormatDecimal("0.000");   
-    public static StringFormat DEGREES = new StringFormatDecimal("0.0°");   
+    public static StringFormat DOUBLE = new StringFormatDecimal(null, "0.00");   
+    public static StringFormat DECIMAL = new StringFormatDecimal(null, "0.000");   
+    public static StringFormat DEGREES = new StringFormatDecimal(null, "0.0°");   
 
     
     private NumberFormat format;
     private String pattern;
     
-    public StringFormatDecimal(String pattern) {
+    public StringFormatDecimal(String jsonpath, String pattern) {
+        super(jsonpath);
         setPattern(pattern);
+    }
+    
+    public StringFormatDecimal(String jsonpath) {
+        this(jsonpath, "0");
     }
    
     public StringFormatDecimal() {
-        setPattern("0");
+        this(null, "0");
     }
     
     @Override
@@ -76,7 +79,7 @@ public class StringFormatDecimal extends StringFormatPath {
     }
     
     @Override
-    public String formatImpl(String value) {          
+    public String formatImpl(String value) {         
         return format.format(Double.parseDouble(value));
     }
     

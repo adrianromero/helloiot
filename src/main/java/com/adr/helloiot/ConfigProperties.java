@@ -21,8 +21,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Collections;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.Properties;
+import java.util.TreeSet;
 import javafx.application.Application;
 
 /**
@@ -60,10 +63,19 @@ public class ConfigProperties {
         config.putAll(params.getNamed());   
     }
     
-    public void save() throws IOException {       
+    public void save() throws IOException {   
+        
+        // Hack to save properties ordered.
+        Properties tmp = new Properties() {
+            @Override
+            public synchronized Enumeration<Object> keys() {
+                return Collections.enumeration(new TreeSet<>(super.keySet()));
+            }
+        };
+        tmp.putAll(config);
         try (OutputStream out = new FileOutputStream(configfile)) {
-            config.store(out, "HelloIoT");
-        }
+            tmp.store(out, "HelloIoT");
+        }    
     }
     
     public String getProperty(String key, String defaultValue) {
