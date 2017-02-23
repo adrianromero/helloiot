@@ -93,10 +93,6 @@ public class ClientLoginNode extends BorderPane implements AbstractController {
     @FXML
     private RadioButton qos2;
     @FXML
-    private TextField topicprefix;
-    @FXML
-    private TextField topicapp;
-    @FXML
     private RadioButton brokernone;
     @FXML
     private RadioButton brokermosquitto;
@@ -142,6 +138,8 @@ public class ClientLoginNode extends BorderPane implements AbstractController {
     @FXML
     CheckBox editmultiline;
 
+    private String topicapp;
+    private String topicprefix;
     private boolean updating = false;
 
     ClientLoginNode() {
@@ -252,10 +250,13 @@ public class ClientLoginNode extends BorderPane implements AbstractController {
             @Override
             public void updateItem(TopicInfo item, boolean empty) {
                 super.updateItem(item, empty);
-                if (item != null) {
+                if (item == null) {
+                    setGraphic(null);
+                    setText(null);
+                } else {
                     Text t = new Text();
                     t.setFill(Color.WHITE);
-                    t.setFont(Font.font(ExternalFonts.ROBOTOREGULAR, FontWeight.NORMAL, 14.0));
+                    t.setFont(Font.font(ExternalFonts.ROBOTOBOLD, FontWeight.BOLD, 10.0));
                     TextFlow tf = new TextFlow(t);
                     tf.setPrefWidth(55);
                     tf.setTextAlignment(TextAlignment.CENTER);
@@ -273,7 +274,8 @@ public class ClientLoginNode extends BorderPane implements AbstractController {
                     }                    
 
                     setGraphic(tf);
-                    setText(item.getLabel());
+                    String label = item.getLabel();
+                    setText(label == null || label.isEmpty() ? resources.getString("label.empty"): label);
                 }
             }
         });
@@ -481,19 +483,19 @@ public class ClientLoginNode extends BorderPane implements AbstractController {
     }
 
     public String getTopicPrefix() {
-        return topicprefix.getText();
+        return topicprefix;
     }
 
     public void setTopicPrefix(String value) {
-        topicprefix.setText(value);
+        topicprefix = value;
     }
 
     public String getTopicApp() {
-        return topicapp.getText();
+        return topicapp;
     }
 
     public void setTopicApp(String value) {
-        topicapp.setText(value);
+        topicapp = value;
     }
 
     public int getBrokerPane() {

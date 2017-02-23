@@ -57,8 +57,6 @@
                               <RowConstraints minHeight="10.0" prefHeight="30.0" />
                               <RowConstraints minHeight="10.0" prefHeight="30.0" />
                               <RowConstraints minHeight="10.0" prefHeight="30.0" />
-                              <RowConstraints minHeight="10.0" prefHeight="30.0" />
-                              <RowConstraints minHeight="10.0" prefHeight="30.0" />
                           </rowConstraints>
                            <children>
                               <Label maxWidth="1.7976931348623157E308" styleClass="labelsection" text="%label.connection" GridPane.columnSpan="2147483647" />
@@ -82,20 +80,16 @@
                               </HBox>
                               <Label styleClass="fieldlabel" text="%label.username" GridPane.rowIndex="4" />
                               <TextField fx:id="username" prefWidth="171.0" styleClass="fieldtextbox" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                              <CheckBox fx:id="cleansession" mnemonicParsing="false" selected="true" styleClass="fieldlabel" text="%label.cleansession" GridPane.columnIndex="1" GridPane.rowIndex="13" />
+                              <CheckBox fx:id="cleansession" mnemonicParsing="false" selected="true" styleClass="fieldlabel" text="%label.cleansession" GridPane.columnIndex="1" GridPane.rowIndex="11" />
                               <Label styleClass="fieldlabel" text="%label.password" GridPane.rowIndex="5" />
                               <PasswordField fx:id="password" prefWidth="171.0" styleClass="fieldtextbox" GridPane.columnIndex="1" GridPane.rowIndex="5" />
                               <Label maxWidth="1.7976931348623157E308" styleClass="labelsection" text="%label.extendedproperties" GridPane.columnSpan="2147483647" GridPane.rowIndex="6" />
                               <Label styleClass="fieldlabel" text="%label.timeout" GridPane.rowIndex="7" />
                               <TextField fx:id="timeout" prefWidth="171.0" styleClass="fieldtextbox" GridPane.columnIndex="1" GridPane.rowIndex="7" />
-                              <Label styleClass="fieldlabel" text="%label.topicprefix" GridPane.rowIndex="9" />
-                              <TextField fx:id="topicprefix" prefWidth="171.0" styleClass="fieldtextbox" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="9" />
                               <Label styleClass="fieldlabel" text="%label.keepalive" GridPane.rowIndex="8" />
                               <TextField fx:id="keepalive" prefWidth="171.0" styleClass="fieldtextbox" GridPane.columnIndex="1" GridPane.rowIndex="8" />
-                              <Label styleClass="fieldlabel" text="%label.topicapp" GridPane.rowIndex="10" />
-                              <TextField fx:id="topicapp" prefWidth="171.0" styleClass="fieldtextbox" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="10" />
-                              <Label styleClass="fieldlabel" text="%label.defaultqos" GridPane.rowIndex="11" />
-                              <HBox alignment="CENTER_LEFT" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="11">
+                              <Label styleClass="fieldlabel" text="%label.defaultqos" GridPane.rowIndex="9" />
+                              <HBox alignment="CENTER_LEFT" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="9">
                                  <children>
                                     <RadioButton fx:id="qos0" mnemonicParsing="false" selected="true" styleClass="fieldtextbox" text="0">
                                        <toggleGroup>
@@ -106,8 +100,8 @@
                                     <RadioButton fx:id="qos2" mnemonicParsing="false" styleClass="fieldtextbox" text="2" toggleGroup="$qos" />
                                  </children>
                               </HBox>
-                              <Label styleClass="fieldlabel" text="%label.brokerpane" GridPane.rowIndex="12" />
-                              <HBox alignment="CENTER_LEFT" spacing="10.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="12" GridPane.valignment="BASELINE">
+                              <Label styleClass="fieldlabel" text="%label.brokerpane" GridPane.rowIndex="10" />
+                              <HBox alignment="CENTER_LEFT" spacing="10.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="10" GridPane.valignment="BASELINE">
                                  <children>
                                     <RadioButton fx:id="brokernone" mnemonicParsing="false" selected="true" styleClass="fieldtextbox" text="%label.brokernone">
                                        <toggleGroup>

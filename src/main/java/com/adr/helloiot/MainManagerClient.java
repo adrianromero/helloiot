@@ -103,6 +103,8 @@ public class MainManagerClient implements MainManager {
     
     private void showApplication() {
         
+        configprops.clear();
+        
         configprops.setProperty("mqtt.url", clientlogin.getURL());
         configprops.setProperty("mqtt.username", clientlogin.getUserName());
         configprops.setProperty("mqtt.clientid", clientlogin.getClientID());
@@ -148,8 +150,8 @@ public class MainManagerClient implements MainManager {
         config.mqtt_defaultqos = clientlogin.getDefaultQoS();
         config.mqtt_version = clientlogin.getVersion();
         config.mqtt_cleansession = clientlogin.isCleanSession();
-        config.mqtt_topicprefix = clientlogin.getTopicPrefix();
-        config.mqtt_topicapp = clientlogin.getTopicApp();
+        config.mqtt_topicprefix = configprops.getProperty("mqtt.topicprefix", "");
+        config.mqtt_topicapp = configprops.getProperty("mqtt.topicapp", "_LOCAL_/_sys_helloIoT/mainapp");
         
         config.app_clock = true;
         config.app_exitbutton = false;

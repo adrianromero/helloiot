@@ -55,6 +55,10 @@ public class ConfigProperties {
         config = new Properties();     
     }
     
+    public void clear() {
+        config.clear();
+    }
+    
     public void load() throws IOException {
         config.clear();
         try (InputStream in = new FileInputStream(configfile)) {            
