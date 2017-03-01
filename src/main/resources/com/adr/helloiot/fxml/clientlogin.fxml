@@ -21,7 +21,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<fx:root prefHeight="730.0" prefWidth="969.0" styleClass="maincontainer" stylesheets="@../styles/main.css" type="BorderPane" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root prefHeight="730.0" prefWidth="969.0" styleClass="maincontainer" type="BorderPane" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
     <top>
        <HBox fx:id="headerbox" spacing="5.0" styleClass="header" BorderPane.alignment="CENTER">
           <children>

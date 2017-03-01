@@ -67,6 +67,7 @@ public abstract class MainApp extends Application {
         
         this.stage = stage;
         StackPane root = new StackPane();
+        root.getStylesheets().add(getClass().getResource("/com/adr/helloiot/styles/main.css").toExternalForm());
         MessageUtils.setDialogRoot(root, true);
         
         initializeApp();       
@@ -77,6 +78,7 @@ public abstract class MainApp extends Application {
         stage.setScene(scene);
          
         // injector.getInstance(Key.get(String.class, Names.named("annotation")));
+        
         if (isFullScreen()) {
             scene.setCursor(Cursor.NONE);
             Rectangle2D dimension = Screen.getPrimary().getBounds();
