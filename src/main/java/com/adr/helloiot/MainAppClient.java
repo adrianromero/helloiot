@@ -31,6 +31,9 @@ public class MainAppClient extends MainApp {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+        System.setProperty("com.sun.javafx.touch", "true");
+        System.setProperty("com.sun.javafx.isEmbedded", "true");
+        System.setProperty("com.sun.javafx.virtualKeyboard", "javafx");        
         launch(args);
     }     
 }

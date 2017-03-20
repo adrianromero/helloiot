@@ -87,13 +87,6 @@ public abstract class MainApp extends Application {
         stylename = "/com/adr/helloiot/styles/main";
 //        stylename = "/com/adr/helloiot/styles/main-dark";        
     }
-    
-    @Override
-    public void init() {
-        System.setProperty("com.sun.javafx.touch", "true");
-        System.setProperty("com.sun.javafx.isEmbedded", "true");
-        System.setProperty("com.sun.javafx.virtualKeyboard", "javafx");
-    }
 
     @Override
     public final void start(Stage stage) {
