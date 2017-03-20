@@ -32,7 +32,7 @@
 <fx:root prefHeight="400.0" prefWidth="800.0" type="AnchorPane" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
 <StackPane fx:id="stackparent" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
    <children>
-      <AnchorPane prefHeight="200.0" prefWidth="200.0" styleClass="maincontainer">
+      <AnchorPane prefHeight="200.0" prefWidth="200.0">
          <children>
             <BorderPane fx:id="appcontainer" layoutX="243.0" prefHeight="456.0" prefWidth="610.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <top>
@@ -47,14 +47,11 @@
                   </HBox>
                </top>
                   <center>
-                     <ScrollPane fitToWidth="true" focusTraversable="false" BorderPane.alignment="CENTER">
+                     <ScrollPane fitToWidth="true" focusTraversable="false" BorderPane.alignment="CENTER" styleClass="unitscontainer">
                         <content>
                            <StackPane>
                               <children>
-                                 <VBox fx:id="container" spacing="12.0">
-                                    <padding>
-                                       <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
-                                    </padding>
+                                 <VBox fx:id="container" styleClass="gridcontainer">
                                  </VBox>
                               </children>
                            </StackPane>

@@ -1,0 +1,216 @@
+/*
+    This file is part of HelloIot.
+
+    HelloIot is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    HelloIot is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with HelloIot.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
+@font-face {
+    src: url('Roboto-Bold.ttf');
+}
+
+@font-face {
+    src: url('Roboto-Regular.ttf');
+}
+
+@font-face {
+    src: url('Roboto-Light.ttf');
+} 
+
+.root {
+}
+
+.maincontainer {
+    -fx-unit-fill: #dddddd;
+    -fx-separator-fill: #909090;
+    -fx-background-title: #333333;
+    -fx-text-fill-title: #dddddd;    
+    -fx-effect-title: #444444;
+}
+
+.header {
+    -fx-background-insets: 0,1 0 1 0;
+    -fx-background-color: -fx-separator-fill, -fx-background-title;
+}
+
+.headertitle {
+    -fx-font-family: 'ROBOTO BOLD';
+    -fx-font-size: 18px;
+    -fx-text-fill: -fx-text-fill-title;
+    -fx-effect: dropshadow(one-pass-box, -fx-effect-title, 1.0, 0.0, 1.0, 1.0);        
+}
+
+.headerbutton {
+    /*-fx-background-color: transparent;
+    -fx-background-insets: 0;*/
+    -fx-background-insets: 0, 1;
+    -fx-background-color:  #909090, -fx-background-title;       
+    -fx-background-radius: 16px, 15px;
+    -fx-text-fill: #eeeeee;
+    -fx-alignment: center;
+    -fx-padding: 8px 12px 8px 12px; 
+}
+
+.headerbutton:hover {
+    -fx-background-color: #dddddd, #a4a4a4;
+}
+
+.headerbutton:armed {
+    -fx-background-color: #dddddd, #777777;
+}
+
+.currenttime {
+    -fx-font-family: 'ROBOTO LIGHT';
+    -fx-font-size: 16px;
+    -fx-text-fill: #dddddd;   
+}
+
+.list-cell {
+   -fx-font-family: 'ROBOTO REGULAR';
+   -fx-font-size: 18px; 
+}
+/*
+.list-cell:filled:selected:focused, .list-cell:filled:selected {
+    -fx-background-color: -fx-focus-color;
+    -fx-text-fill: white;
+}
+*/
+.unitscontainer > .viewport {
+   -fx-background-color: transparent;
+}
+.unitscontainer {
+    -fx-background-color: #444444;    
+}
+
+.emptypanel {
+    -fx-font-size: 48px;
+    -fx-font-family: 'ROBOTO BOLD';
+    -fx-text-fill: #666666;
+    -fx-effect: dropshadow(one-pass-box, #cccccc, 1.0, 0.0, 1.0, 1.0);     
+}
+
+.labelsection {
+    -fx-font-family: 'ROBOTO BOLD';
+    -fx-font-size: 16px;
+    -fx-text-fill: #bbbbbb;
+    -fx-background-insets: 0, 0 5 4 5, 0 5 5 5;
+    -fx-background-color:  #444444, -fx-separator-fill, #444444;    
+    -fx-padding: 10px 10px 5px 10px;      
+}
+
+.keypadtext {
+    -fx-font-family: 'ROBOTO BOLD';
+    -fx-font-size: 42px;     
+    -fx-stroke: darkgray;
+    -fx-stroke-width: 1px;
+    -fx-fill: linear-gradient(to bottom, #0000dd 0%, #000088 50%, #0000dd 100%);
+
+}
+.keypadbuttonleft {
+    -fx-background-radius: 15 2 2 15;
+}
+.keypadbuttoncenter {
+    -fx-background-radius: 2;
+}
+.keypadbuttonright {
+    -fx-background-radius: 2 15 15 2;
+}
+.keypadbuttonall {
+    -fx-background-radius: 15;
+}
+
+.fieldlabel {
+    -fx-font-family: 'ROBOTO LIGHT';
+    -fx-font-size: 16px;
+    -fx-text-fill: #777777;       
+}
+
+.fieldtextbox {
+    -fx-font-family: 'ROBOTO BOLD';
+    -fx-text-fill: -fx-unit-fill;
+    -fx-font-size: 14px;   
+}
+
+.noneditable {
+    -fx-font-family: 'ROBOTO BOLD';
+    -fx-text-fill: -fx-unit-fill;
+    -fx-font-size: 14px;    
+}
+
+.buttonbase {
+    -fx-font-family: 'ROBOTO LIGHT';
+    -fx-font-size: 16px;
+    -fx-background-radius: 10;
+}
+
+.buttonup {
+    -fx-background-radius: 10 10 0 0;
+}
+
+.buttondown {
+    -fx-background-radius: 0 0 10 10;
+}
+
+.unitbase {
+    -fx-background-radius: 6,5;
+    -fx-background-insets: 0, 1;
+    -fx-background-color:  #777777, #333333;        
+    -fx-effect: dropshadow(three-pass-box, gray, 4, 0, 0, 0);
+}
+
+.labelbase {
+    -fx-font-family: 'ROBOTO LIGHT';
+    -fx-font-size: 16px;   
+    -fx-text-fill: #bbbbbb;   
+}
+
+.footerbase {
+    -fx-padding: 4px 0px 0px 0px;
+    -fx-alignment: top-right;
+}
+
+.footerbase .styledtext {
+    -fx-fill: #777777;
+    -fx-font-family: 'ROBOTO REGULAR';
+    -fx-font-size: 12px;       
+}
+
+.levelbase {
+    -fx-font-family: 'ROBOTO BOLD';
+    -fx-font-size: 36px;
+}
+
+.slider .thumb {
+    -fx-background-color:
+        linear-gradient(to bottom, derive(-fx-text-box-border, -20%), derive(-fx-text-box-border, -30%)),
+        -fx-inner-border,
+        #0000dd;
+    -fx-background-insets: 0, 1, 2;
+    -fx-background-radius: 2.0em; /* makes sure this remains circular */
+    -fx-padding: 2em /*1.583333em*/;    
+    /*-fx-effect: dropshadow(two-pass-box , rgba(0, 0, 0, 0.1), 5, 0.0 , 0, 2);*/
+}
+.slider .track {
+      -fx-background-color:
+          -fx-shadow-highlight-color,
+          linear-gradient(to bottom, derive(-fx-text-box-border, -10%), -fx-text-box-border),
+          linear-gradient(to bottom,
+            derive(-fx-control-inner-background, -9%),
+            derive(-fx-control-inner-background, 0%),
+            derive(-fx-control-inner-background, -5%),
+            derive(-fx-control-inner-background, -12%)
+          );
+    -fx-background-insets: 0 0 -1 0, 0, 1;
+    -fx-background-radius: 0.25em, 0.25em, 0.166667em;  
+    -fx-padding: 1.0em;   
+}

@@ -48,11 +48,11 @@ public class ButtonsSpinner extends Tile implements Unit {
     
     @FXML public void initialize() {
         goup.setGraphic(IconBuilder.create(FontAwesome.FA_CARET_UP, 24).build());
-        goup.getStyleClass().remove("buttonbase");
+        goup.getStyleClass().add("buttonbase");
         goup.getStyleClass().add("buttonup");
         AutoRepeatButtonUtils.install(goup);
         godown.setGraphic(IconBuilder.create(FontAwesome.FA_CARET_DOWN, 24).build());
-        godown.getStyleClass().remove("buttonbase");
+        godown.getStyleClass().add("buttonbase");
         godown.getStyleClass().add("buttondown");
         AutoRepeatButtonUtils.install(godown);
         level.setText(null);

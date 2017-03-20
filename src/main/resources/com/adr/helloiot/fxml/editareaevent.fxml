@@ -28,7 +28,7 @@
       <TextArea fx:id="payload" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="100.0" styleClass="fieldtextbox" />
    </center>
    <right>
-      <Button fx:id="fireaction" focusTraversable="false" mnemonicParsing="false" onAction="#onSendEvent" BorderPane.alignment="TOP_CENTER">
+      <Button fx:id="fireaction" styleClass="unitbutton" focusTraversable="false" mnemonicParsing="false" onAction="#onSendEvent" BorderPane.alignment="TOP_CENTER">
          <BorderPane.margin>
             <Insets left="6.0" />
          </BorderPane.margin>

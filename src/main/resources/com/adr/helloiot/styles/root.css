@@ -1,0 +1,84 @@
+/*
+    This file is part of HelloIot.
+
+    HelloIot is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    HelloIot is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with HelloIot.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
+.maincontainer {
+    -fx-separator-fill: -fx-box-border;
+}
+
+.header {
+    -fx-spacing: 10px;
+}
+
+.headertitle {
+    -fx-font-weight: bold;
+    -fx-font-size: 18px;
+}
+
+.unitscontainer {
+}
+.unitscontainer > .viewport {
+}
+.gridcontainer {
+    -fx-spacing: 6px;
+    -fx-padding: 6px;   
+}
+.linecontainer {
+    -fx-spacing: 6px;
+    -fx-vgap: 6px;
+    -fx-hgap: 6px
+}
+
+
+.labelsection, .formsection {
+    -fx-font-weight: bold;
+    -fx-background-insets: 0, 0 5 1 0, 0 5 2 0;
+    -fx-background-color:  -fx-background, -fx-separator-fill, -fx-background;      
+}
+
+.unitbase {
+    -fx-background-insets: 0, 1;
+    -fx-background-color: -fx-box-border, -fx-background;      
+    -fx-padding: 4px 6px 4px 6px;
+}
+.noneditable {
+    -fx-focus-color: transparent;
+    -fx-background-color: transparent;
+}
+.noneditable .scroll-pane {
+    -fx-background-color: transparent;
+}
+.noneditable .scroll-pane .viewport {
+    -fx-background-color: transparent;
+}
+.noneditable .scroll-pane .content {
+    -fx-background-color: transparent;
+}
+
+.footerbase {
+    -fx-padding: 4px 0px 0px 0px;
+    -fx-alignment: top-right;
+}
+
+.textinput-right *.text {
+    -fx-text-alignment: right;
+    -fx-alignment: center-right;
+}
+
+.textinput-right {
+    -fx-text-alignment: right;
+    -fx-alignment: center-right;
+}

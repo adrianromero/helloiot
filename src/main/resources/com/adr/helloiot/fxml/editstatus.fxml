@@ -27,14 +27,14 @@
       <HBox fx:id="boxview" spacing="6.0">
          <children>
             <TextField fx:id="statusview" editable="false" focusTraversable="false" styleClass="noneditable" HBox.hgrow="SOMETIMES" />
-            <Button fx:id="editaction" focusTraversable="false" mnemonicParsing="false" onAction="#onEditEvent" />
+            <Button fx:id="editaction" styleClass="unitbutton" focusTraversable="false" mnemonicParsing="false" onAction="#onEditEvent" />
          </children>
       </HBox>
       <HBox fx:id="boxedit" spacing="6.0" visible="false">
          <children>
             <TextField fx:id="statusedit" onAction="#onEnterEvent" styleClass="fieldtextbox" HBox.hgrow="SOMETIMES" />
-            <Button fx:id="okaction" focusTraversable="false" mnemonicParsing="false" onAction="#onOkEvent" />
-            <Button fx:id="cancelaction" focusTraversable="false" mnemonicParsing="false" onAction="#onCancelEvent" />
+            <Button fx:id="okaction" styleClass="unitbutton" focusTraversable="false" mnemonicParsing="false" onAction="#onOkEvent" />
+            <Button fx:id="cancelaction" styleClass="unitbutton" focusTraversable="false" mnemonicParsing="false" onAction="#onCancelEvent" />
          </children>
       </HBox>
    </children>

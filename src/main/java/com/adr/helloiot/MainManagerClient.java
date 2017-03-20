@@ -168,19 +168,14 @@ public class MainManagerClient implements MainManager {
             helloiotapp.addFXMLFileDevicesUnits("local:com/adr/helloiot/panes/mosquitto");
         }
   
-//        if (clientlogin.isLightsPane()) {
-//            helloiotapp.addUnitPages(Arrays.asList(
-//                new UnitPage("light", IconBuilder.create(FontAwesome.FA_LIGHTBULB_O, 24.0).build(), resources.getString("page.light")))
-//            );
-//            helloiotapp.addFXMLFileDevicesUnits("local:com/adr/helloiot/panes/samplelights");
-//        }
-//        
-//        if (clientlogin.isGaugesPane()) {
-//            helloiotapp.addUnitPages(Arrays.asList(
-//                new UnitPage("temperature", IconBuilder.create(FontAwesome.FA_DASHBOARD, 24.0).build(), resources.getString("page.temperature")))
-//            );
-//            helloiotapp.addFXMLFileDevicesUnits("local:com/adr/helloiot/panes/sampletemperature");
-//        }
+            helloiotapp.addUnitPages(Arrays.asList(
+                new UnitPage("light", IconBuilder.create(FontAwesome.FA_LIGHTBULB_O, 24.0).build(), resources.getString("page.light")))
+            );
+            helloiotapp.addFXMLFileDevicesUnits("local:com/adr/helloiot/panes/samplelights");
+            helloiotapp.addUnitPages(Arrays.asList(
+                new UnitPage("temperature", IconBuilder.create(FontAwesome.FA_DASHBOARD, 24.0).build(), resources.getString("page.temperature")))
+            );
+            helloiotapp.addFXMLFileDevicesUnits("local:com/adr/helloiot/panes/sampletemperature");
         
         helloiotapp.addDevicesUnits(Collections.emptyList(), Collections.singletonList(new StartFlow()));
 
@@ -233,7 +228,7 @@ public class MainManagerClient implements MainManager {
             hideApplication();            
         });
         helloiotapp.setOnDisconnectAction(showloginevent);
-        helloiotapp.getMQTTNode().setToolbarButton(showloginevent, IconBuilder.create(FontAwesome.FA_SIGN_OUT, 18.0).build(), resources.getString("label.disconnect"));
+        helloiotapp.getMQTTNode().setToolbarButton(showloginevent, IconBuilder.create(FontAwesome.FA_SIGN_OUT, 18.0).color(Color.valueOf(MainApp.getStyle("buttons-color", "black"))).build(), resources.getString("label.disconnect"));
 
         root.getChildren().add(helloiotapp.getMQTTNode());
         helloiotapp.startAndConstruct();        

@@ -25,6 +25,6 @@
 <HBox spacing="6.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <TextField fx:id="payload" onAction="#onEnterEvent" styleClass="fieldtextbox" HBox.hgrow="SOMETIMES" />
-      <Button fx:id="fireaction" focusTraversable="false" mnemonicParsing="false" onAction="#onSendEvent" />
+      <Button fx:id="fireaction" styleClass="unitbutton" focusTraversable="false" mnemonicParsing="false" onAction="#onSendEvent" />
    </children>
 </HBox>

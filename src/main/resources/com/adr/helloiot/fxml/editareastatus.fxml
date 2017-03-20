@@ -29,7 +29,7 @@
    <children>
       <BorderPane fx:id="boxview">
          <right>
-            <Button fx:id="editaction" focusTraversable="false" mnemonicParsing="false" onAction="#onEditEvent">
+            <Button fx:id="editaction" styleClass="unitbutton" focusTraversable="false" mnemonicParsing="false" onAction="#onEditEvent">
                <BorderPane.margin>
                   <Insets left="6.0" />
                </BorderPane.margin>
@@ -43,8 +43,8 @@
          <right>
             <HBox spacing="6.0" BorderPane.alignment="CENTER">
                <children>
-                  <Button fx:id="okaction" focusTraversable="false" mnemonicParsing="false" onAction="#onOkEvent" />
-                  <Button fx:id="cancelaction" focusTraversable="false" mnemonicParsing="false" onAction="#onCancelEvent" />
+                  <Button fx:id="okaction" styleClass="unitbutton" focusTraversable="false" mnemonicParsing="false" onAction="#onOkEvent" />
+                  <Button fx:id="cancelaction" styleClass="unitbutton" focusTraversable="false" mnemonicParsing="false" onAction="#onCancelEvent" />
                </children>
                <BorderPane.margin>
                   <Insets left="6.0" />

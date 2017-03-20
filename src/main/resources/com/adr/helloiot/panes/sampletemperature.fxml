@@ -43,7 +43,10 @@
         </Thermostat>        
         <Thermostat fx:id="home_thermostat5" topic="home/thermostat5">
             <properties label="%label.thermostat5"/>
-        </Thermostat>                    
+        </Thermostat>  
+        <Light fx:id="beeper" topic="_LOCAL_/_sys_helloIoT/mainapp/beeper">
+            <properties label="Beeper"/>
+        </Light>                           
     </devices>
     
     <units>
@@ -74,6 +77,13 @@
         <SliderSimple UnitPage.page="temperature" device="$home_thermostat2"/> 
         <SliderSimple UnitPage.page="temperature" device="$home_thermostat3"/> 
         <SliderSimple UnitPage.page="temperature" device="$home_thermostat4"/> 
-        <SliderSimple UnitPage.page="temperature" device="$home_thermostat5"/>                    
+        <SliderSimple UnitPage.page="temperature" device="$home_thermostat5"/>          
+        
+        <ButtonPassword UnitPage.page="Testing" label="Change password"  securityKey="mainsecuritykey">
+            <graphic><Icon iconAwesome="FA_KEY" size="48" color="WHITE" shine="WHITE"/></graphic>
+        </ButtonPassword>       
+        <ButtonSimple UnitPage.page="Testing" device="$beeper" iconStatus="TOGGLE"/>
+        
+                              
     </units>
 </DevicesUnits>

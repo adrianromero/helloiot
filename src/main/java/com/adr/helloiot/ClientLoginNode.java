@@ -149,13 +149,16 @@ public class ClientLoginNode extends BorderPane implements AbstractController {
     @FXML
     public void initialize() {
         
+        headerbox.setPadding(new Insets(Double.valueOf(MainApp.getStyle("panels-padding", "5"))));         
+        
+        nextbutton.setGraphic(IconBuilder.create(FontAwesome.FA_PLAY, 18.0).color(Color.valueOf(MainApp.getStyle("buttons-color", "black"))).build());
+        
+        adddeviceunit.setGraphic(IconBuilder.create(FontAwesome.FA_PLUS, 18.0).color(Color.valueOf(MainApp.getStyle("buttons-color", "black"))).build());
+        removedeviceunit.setGraphic(IconBuilder.create(FontAwesome.FA_MINUS, 18.0).color(Color.valueOf(MainApp.getStyle("buttons-color", "black"))).build());
+        updeviceunit.setGraphic(IconBuilder.create(FontAwesome.FA_CHEVRON_UP, 18.0).color(Color.valueOf(MainApp.getStyle("buttons-color", "black"))).build());
+        downdeviceunit.setGraphic(IconBuilder.create(FontAwesome.FA_CHEVRON_DOWN, 18.0).color(Color.valueOf(MainApp.getStyle("buttons-color", "black"))).build());
+
         edittopicpub.promptTextProperty().bind(edittopic.textProperty());
-
-        adddeviceunit.setGraphic(IconBuilder.create(FontAwesome.FA_PLUS, 18.0).build());
-        removedeviceunit.setGraphic(IconBuilder.create(FontAwesome.FA_MINUS, 18.0).build());
-        updeviceunit.setGraphic(IconBuilder.create(FontAwesome.FA_CHEVRON_UP, 18.0).build());
-        downdeviceunit.setGraphic(IconBuilder.create(FontAwesome.FA_CHEVRON_DOWN, 18.0).build());
-
         edittopic.textProperty().addListener((ObservableValue<? extends String> ov, String old_val, String new_val) -> {
             updateCurrentTopic();
         });
@@ -190,13 +193,13 @@ public class ClientLoginNode extends BorderPane implements AbstractController {
             updateCurrentTopic();
         });
 
-        clearcolor.setGraphic(IconBuilder.create(FontAwesome.FA_TRASH, 14.0).build());
+        clearcolor.setGraphic(IconBuilder.create(FontAwesome.FA_TRASH, 14.0).color(Color.valueOf(MainApp.getStyle("buttons-color", "black"))).build());
         editcolor.setValue(null);
         editcolor.valueProperty().addListener((ObservableValue<? extends Color> observable, Color oldValue, Color newValue) -> {
             updateCurrentTopic();
         });
 
-        clearbackground.setGraphic(IconBuilder.create(FontAwesome.FA_TRASH, 14.0).build());
+        clearbackground.setGraphic(IconBuilder.create(FontAwesome.FA_TRASH, 14.0).color(Color.valueOf(MainApp.getStyle("buttons-color", "black"))).build());
         editbackground.setValue(null);
         editbackground.valueProperty().addListener((ObservableValue<? extends Color> observable, Color oldValue, Color newValue) -> {
             updateCurrentTopic();
@@ -284,7 +287,6 @@ public class ClientLoginNode extends BorderPane implements AbstractController {
         });
         updateDevicesUnitsList();
 
-        nextbutton.setGraphic(IconBuilder.create(FontAwesome.FA_PLAY, 18.0).build());
         Platform.runLater(url::requestFocus);
     }
 

@@ -164,13 +164,15 @@ public final class MQTTMainNode extends AnchorPane implements AbstractController
     }
 
     @FXML public void initialize() {
-        
+
+        headerbox.setPadding(new Insets(Double.valueOf(MainApp.getStyle("panels-padding", "5"))));         
+             
         alert.setGraphic(IconBuilder.create(FontAwesome.FA_VOLUME_UP, 72.0).fill(Color.WHITE).shine(Color.RED).build());
 
         
         if (appexitbutton) {
             exitbutton.setVisible(true);
-            exitbutton.setGraphic(IconBuilder.create(FontAwesome.FA_POWER_OFF, 18.0).build());
+            exitbutton.setGraphic(IconBuilder.create(FontAwesome.FA_POWER_OFF, 18.0).color(Color.valueOf(MainApp.getStyle("buttons-color", "black"))).build());
             exitbutton.setOnAction(ev -> {
                 getScene().getWindow().hide();
             });         
@@ -179,7 +181,7 @@ public final class MQTTMainNode extends AnchorPane implements AbstractController
             headerbox.getChildren().remove(exitbutton);
             exitbutton = null;
         }
-        menubutton.setGraphic(IconBuilder.create(FontAwesome.FA_NAVICON, 18.0).build());
+        menubutton.setGraphic(IconBuilder.create(FontAwesome.FA_NAVICON, 18.0).color(Color.valueOf(MainApp.getStyle("buttons-color", "black"))).build());
         menubutton.setDisable(true);
         
         if (appclock) {

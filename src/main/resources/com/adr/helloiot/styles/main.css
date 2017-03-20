@@ -27,110 +27,80 @@
     src: url('Roboto-Light.ttf');
 } 
 
-.root {
-}
-
 .maincontainer {
+    -fx-separator-fill: -fx-box-border;
+    
     -fx-unit-fill: -fx-text-inner-color;
+    -fx-background-title: white;    
+    -fx-text-fill-title: #353535;
+    -fx-effect-title: #e0e0e0; 
+    
+    -fx-border-fill: #909090;
+    
+    -fx-button-fill: #f2f2f2;
+    -fx-hover-fill:  derive(-fx-button-fill, -12%); /*#d0d0d0; */
+    -fx-armed-fill: derive(-fx-button-fill, -30%);/*#a4a4a4; */
+    
+    -fx-info-fill: #707070;
+    
+    -fx-border-unit: #d0d0d0;
+    -fx-background-unit: #fafafa;
 }
 
 .header {
-    -fx-background-insets: 0,1 0 1 0;
-    -fx-background-color: -fx-box-border, white;
-    -fx-padding: 5px;
-    -fx-spacing: 5px;
+    -fx-background-insets: 0, 1 0 1 0;
+    -fx-background-color: -fx-separator-fill, -fx-background-title;
 }
 
 .headertitle {
     -fx-font-family: 'ROBOTO BOLD';
     -fx-font-size: 18px;
-    -fx-text-fill: #333333;
-    -fx-effect: dropshadow(one-pass-box, #cccccc, 1.0, 0.0, 1.0, 1.0);        
+    -fx-text-fill: -fx-text-fill-title;
+    -fx-effect: dropshadow(one-pass-box, -fx-effect-title, 1.0, 0.0, 1.0, 1.0);        
 }
 
 .headerbutton {
-    -fx-background-color: transparent;
-    -fx-background-insets: 0;
+    -fx-background-color:  -fx-border-fill, derive(-fx-background-title, -3%);      
+    -fx-background-insets: 0, 1;
     -fx-background-radius: 16px;
+    -fx-text-fill: -fx-text-fill-title;    
     -fx-alignment: center;
     -fx-padding: 8px 12px 8px 12px; 
 }
 .headerbutton:hover {
-    -fx-background-color: #dddddd;
+    -fx-background-color:  -fx-border-fill,  -fx-hover-fill;         
 }
 
 .headerbutton:armed {
-    -fx-background-color: #a4a4a4;
+    -fx-background-color: -fx-border-fill,  -fx-armed-fill;             
 }
 
 .currenttime {
     -fx-font-family: 'ROBOTO LIGHT';
     -fx-font-size: 16px;
-    -fx-text-fill: #666666;   
-}
-
-.list-cell {
-   -fx-font-family: 'ROBOTO REGULAR';
-   -fx-font-size: 18px; 
-}
-/*
-.list-cell:filled:selected:focused, .list-cell:filled:selected {
-    -fx-background-color: -fx-focus-color;
-    -fx-text-fill: white;
-}
-*/
-
-.alertlabel {
-    -fx-font-family: 'ROBOTO BOLD';
-    -fx-font-size: 36;
-    -fx-stroke: darkgray;
-    -fx-stroke-width: 1px;
-    -fx-fill: white;
-    -fx-scale-x: 2.0;
-    -fx-effect: dropshadow(one-pass-box, #FF8888, 10.0, 0.7, 0.0, 0.0);            
-}
-
-.emptypanel {
-    -fx-font-size: 48px;
-    -fx-font-family: 'ROBOTO BOLD';
-    -fx-text-fill: #666666;
-    -fx-effect: dropshadow(one-pass-box, #cccccc, 1.0, 0.0, 1.0, 1.0);     
+    -fx-text-fill: -fx-info-fill;   
 }
 
 .labelsection {
     -fx-font-family: 'ROBOTO BOLD';
     -fx-font-size: 16px;
-    -fx-text-fill: #777777;
-    -fx-background-insets: 0, 0 5 4 5, 0 5 5 5;
-    -fx-background-color:  -fx-background, -fx-box-border, -fx-background;    
+    -fx-text-fill: -fx-info-fill;
+    -fx-background-insets: 0, 0 5 4 0, 0 5 5 0;
+    -fx-background-color:  -fx-background, -fx-separator-fill, -fx-background;    
     -fx-padding: 10px 10px 5px 10px;      
 }
 
-.keypadtext {
-    -fx-font-family: 'ROBOTO BOLD';
-    -fx-font-size: 42px;     
-    -fx-stroke: darkgray;
-    -fx-stroke-width: 1px;
-    -fx-fill: linear-gradient(to bottom, #0000dd 0%, #000088 50%, #0000dd 100%);
-
-}
-.keypadbuttonleft {
-    -fx-background-radius: 15 2 2 15;
-}
-.keypadbuttoncenter {
-    -fx-background-radius: 2;
-}
-.keypadbuttonright {
-    -fx-background-radius: 2 15 15 2;
-}
-.keypadbuttonall {
-    -fx-background-radius: 15;
+.unitbase {
+    -fx-background-radius: 6, 5;
+    -fx-background-insets: 0, 1;
+    -fx-background-color:  -fx-border-unit, -fx-background-unit;        
+    -fx-effect: dropshadow(three-pass-box, derive(-fx-border-unit, 20%), 4, 0, 0, 0);
 }
 
 .fieldlabel {
     -fx-font-family: 'ROBOTO LIGHT';
     -fx-font-size: 16px;
-    -fx-text-fill: #777777;       
+    -fx-text-fill: -fx-info-fill;       
 }
 
 .fieldtextbox {
@@ -143,45 +113,12 @@
     -fx-font-family: 'ROBOTO BOLD';
     -fx-text-fill: -fx-unit-fill;
     -fx-font-size: 14px;    
-    -fx-focus-color: transparent;
-    -fx-background-color: transparent;
-}
-.noneditable .scroll-pane {
-    -fx-background-color: transparent;
-}
-.noneditable .scroll-pane .viewport {
-    -fx-background-color: transparent;
-}
-.noneditable .scroll-pane .content {
-    -fx-background-color: transparent;
-}
-
-.buttonbase {
-    -fx-font-family: 'ROBOTO LIGHT';
-    -fx-font-size: 16px;
-    -fx-background-radius: 10;
-}
-
-.buttonup {
-    -fx-background-radius: 10 10 0 0;
-}
-
-.buttondown {
-    -fx-background-radius: 0 0 10 10;
-}
-
-.unitbase {
-    -fx-background-radius: 6, 5;
-    -fx-background-insets: 0, 1;
-    -fx-background-color:  #9f9f9f, #fafafa;        
-    -fx-effect: dropshadow(three-pass-box, gray, 4, 0, 0, 0);
-    -fx-padding: 4px 6px 4px 6px;
 }
 
 .labelbase {
     -fx-font-family: 'ROBOTO LIGHT';
     -fx-font-size: 16px;   
-    -fx-text-fill: #777777;   
+    -fx-text-fill: -fx-info-fill;   
 }
 
 .footerbase {
@@ -190,7 +127,7 @@
 }
 
 .footerbase .styledtext {
-    -fx-fill: #777777;
+    -fx-fill: -fx-info-fill;
     -fx-font-family: 'ROBOTO REGULAR';
     -fx-font-size: 12px;       
 }
@@ -200,6 +137,129 @@
     -fx-font-size: 36px;
 }
 
+/*
+.list-cell {
+   -fx-font-family: 'ROBOTO REGULAR';
+   -fx-font-size: 18px; 
+}
+.list-cell:filled:selected:focused, .list-cell:filled:selected {
+    -fx-background-color: -fx-focus-color;
+    -fx-text-fill: white;
+}
+*/
+
+.emptypanel {
+    -fx-font-size: 48px;
+    -fx-font-family: 'ROBOTO BOLD';
+    -fx-text-fill: -fx-info-fill;
+    -fx-effect: dropshadow(one-pass-box, derive(-fx-info-fill, 20%), 1.0, 0.0, 1.0, 1.0);     
+}
+
+.keypadtext {
+    -fx-font-family: 'ROBOTO BOLD';
+    -fx-font-size: 42px;     
+    -fx-stroke: darkgray;
+    -fx-stroke-width: 1px;
+    -fx-fill: linear-gradient(to bottom, #0000dd 0%, #000088 50%, #0000dd 100%);
+}
+
+.keypadbutton {
+    -fx-background-radius: 15;
+    -fx-background-color:  -fx-border-fill, -fx-button-fill;  
+    -fx-background-insets: 0, 1;
+    -fx-alignment: center; 
+}
+.keypadbutton:hover {
+    -fx-background-color: -fx-border-fill,  -fx-hover-fill;         
+}
+.keypadbutton:armed {
+    -fx-background-color: -fx-border-fill,  -fx-armed-fill;             
+}
+.keypadbuttonleft {
+    -fx-background-radius: 15 2 2 15;
+}
+.keypadbuttoncenter {
+    -fx-background-radius: 2;
+}
+.keypadbuttonright {
+    -fx-background-radius: 2 15 15 2;
+}
+.keypadinput {
+    -fx-background-radius: 15 2 2 15;
+    -fx-background-color:  -fx-border-fill, derive(-fx-background-unit, 20%);  
+    -fx-background-insets: 0, 1;
+    -fx-alignment: center; 
+}
+
+.unitbutton {
+    -fx-background-color:  -fx-border-fill, -fx-button-fill;  
+    -fx-background-insets: 0, 1;
+    -fx-alignment: center;
+}
+.unitbutton:hover {
+    -fx-background-color: -fx-border-fill,  -fx-hover-fill;         
+}
+.unitbutton:armed {
+    -fx-background-color: -fx-border-fill,  -fx-armed-fill;             
+}
+
+.buttonbase {
+    -fx-font-family: 'ROBOTO LIGHT';
+    -fx-font-size: 16px;
+    -fx-background-radius: 20;
+    -fx-background-color:  -fx-border-fill, -fx-button-fill;  
+    -fx-background-insets: 0, 1;
+    -fx-alignment: center;    
+}
+.buttonbase:hover {
+    -fx-background-color: -fx-border-fill, -fx-hover-fill;         
+}
+.buttonbase:armed {
+    -fx-background-color: -fx-border-fill, -fx-armed-fill;             
+}
+
+.buttonup {
+    -fx-background-radius: 20 20 0 0;
+}
+
+.buttondown {
+    -fx-background-radius: 0 0 20 20;
+}
+/* Dialog styles */
+.buttonlist .button {
+    -fx-font-family: 'ROBOTO LIGHT';
+    -fx-font-size: 18px;
+    -fx-background-radius: 20;
+    -fx-background-color:  -fx-border-fill, -fx-button-fill;  
+    -fx-background-insets: 0, 1;
+    -fx-alignment: center;        
+}
+.buttonlist .button:hover {
+    -fx-background-color: -fx-border-fill, -fx-hover-fill;         
+}
+.buttonlist .button:armed {
+    -fx-background-color: -fx-border-fill, -fx-armed-fill;             
+}
+.buttonlist .button:default {
+    -fx-background-color: -fx-border-fill, #b9f2fa;    
+}
+
+.buttonlist .button:default:hover {
+    -fx-background-color: -fx-border-fill, derive(#b9f2fa, -12%);         
+}
+
+.buttonlist .button:default:armed {
+    -fx-background-color: -fx-border-fill, derive(#b9f2fa, -30%);         
+}
+.titletext { 
+}
+.title {
+}
+.content .label {
+    -fx-font-family: 'ROBOTO LIGHT';
+    -fx-font-size: 20px;    
+}
+/* Slider styles */
 .slider .thumb {
     -fx-background-color:
         linear-gradient(to bottom, derive(-fx-text-box-border, -20%), derive(-fx-text-box-border, -30%)),
@@ -225,12 +285,3 @@
     -fx-padding: 1.0em;   
 }
 
-.textinput-right *.text {
-    -fx-text-alignment: right;
-    -fx-alignment: center-right;
-}
-
-.textinput-right {
-    -fx-text-alignment: right;
-    -fx-alignment: center-right;
-}

@@ -27,8 +27,7 @@ import javafx.scene.layout.VBox;
 public class StartFlow extends FlowPane implements UnitLine {
     
     public StartFlow() {
-        setVgap(12);
-        setHgap(12);
+        getStyleClass().add("linecontainer");
         VBox.setVgrow(this, Priority.NEVER);
     }
 

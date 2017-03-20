@@ -27,7 +27,7 @@ import javafx.scene.layout.VBox;
 public class StartLine extends HBox implements UnitLine {
     
     public StartLine() {
-        setSpacing(12.0);
+        getStyleClass().add("linecontainer");
         VBox.setVgrow(this, Priority.NEVER);
     }
 
