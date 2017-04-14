@@ -82,13 +82,13 @@
             ]]></scriptCode>
         </ButtonsSwitch>   
         <ButtonScript UnitPage.page="light" label="%label.timerlight1">
-            <graphic><Icon iconAwesome="FA_CLOCK_O" size="48" color="WHITE" shine="WHITE"/></graphic>
+            <graphic><Icon iconAwesome="FA_CLOCK_O" size="48" color="WHITE" shine="darkgray"/></graphic>
             <scriptCode><![CDATA[
                 _allDevices().getByName('living_light1').sendON(2000);
             ]]></scriptCode>
         </ButtonScript>                        
         <ButtonScript UnitPage.page="light" label="%label.switchalloff" confirm="true">
-            <graphic><Icon iconAwesome="FA_POWER_OFF" size="48" color="RED" shine="WHITE"/></graphic>
+            <graphic><Icon iconAwesome="FA_POWER_OFF" size="48" color="RED" shine="darkgray"/></graphic>
             <scriptCode><![CDATA[
                 _allDevices().tagged('lamp').forEach(function (d) {
                     d.sendOFF();
@@ -96,7 +96,7 @@
             ]]></scriptCode>
         </ButtonScript>                                   
         <ButtonScript UnitPage.page="light" label="%label.dance">
-            <graphic><Icon iconAwesome="FA_STAR_O" size="48" color="GREEN" shine="WHITE"/></graphic>
+            <graphic><Icon iconAwesome="FA_STAR_O" size="48" color="GREEN" shine="darkgray"/></graphic>
             <parameters light1="$living_light1" light2="$living_light2" light3="$living_light3" light4="$living_light4" light5="$living_light5"/>
             <scriptCode><![CDATA[
                 

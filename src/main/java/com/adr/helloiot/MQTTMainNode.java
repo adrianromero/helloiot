@@ -20,7 +20,7 @@ import com.adr.fonticon.FontAwesome;
 import com.adr.fonticon.IconBuilder;
 import com.adr.hellocommon.dialog.DialogView;
 import com.adr.hellocommon.dialog.MessageUtils;
-import com.adr.hellocommon.utils.AbstractController;
+import com.adr.hellocommon.utils.FXMLUtil;
 import com.adr.helloiot.device.format.StringFormatIdentity;
 import com.adr.helloiot.unit.Unit;
 import com.adr.helloiot.media.ClipFactory;
@@ -63,11 +63,11 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
 
-public final class MQTTMainNode extends AnchorPane implements AbstractController {
+public final class MQTTMainNode {
     
 //    @FXML private URL url;
     @FXML private ResourceBundle resources;
-//    @FXML private StackPane stackparent;
+    @FXML private AnchorPane rootpane;
     @FXML private BorderPane appcontainer;
     @FXML private VBox container;
     @FXML private ListView<UnitPage> listpages;
@@ -102,9 +102,13 @@ public final class MQTTMainNode extends AnchorPane implements AbstractController
         this.app = app;
         this.appclock = appclock;
         this.appexitbutton = appexitbutton;
-        load("/com/adr/helloiot/fxml/main.fxml", "com/adr/helloiot/fxml/main");
+        FXMLUtil.load(this, "/com/adr/helloiot/fxml/main.fxml", "com/adr/helloiot/fxml/main");
         beeper = new Beeper(factory, alert);
         buzzer = new Buzzer(factory);
+    }
+    
+    public Node getNode() {
+        return rootpane;
     }
     
     public void construct(List<UnitPage> appunitpages) {
@@ -163,25 +167,23 @@ public final class MQTTMainNode extends AnchorPane implements AbstractController
         backbutton.setVisible(backevent != null);
     }
 
-    @FXML public void initialize() {
-
-        headerbox.setPadding(new Insets(Double.valueOf(MainApp.getStyle("panels-padding", "5"))));         
+    @FXML public void initialize() {   
              
         alert.setGraphic(IconBuilder.create(FontAwesome.FA_VOLUME_UP, 72.0).fill(Color.WHITE).shine(Color.RED).build());
 
         
         if (appexitbutton) {
             exitbutton.setVisible(true);
-            exitbutton.setGraphic(IconBuilder.create(FontAwesome.FA_POWER_OFF, 18.0).color(Color.valueOf(MainApp.getStyle("buttons-color", "black"))).build());
+            exitbutton.setGraphic(IconBuilder.create(FontAwesome.FA_POWER_OFF, 18.0).styleClass("icon-fill").build());
             exitbutton.setOnAction(ev -> {
-                getScene().getWindow().hide();
+                rootpane.getScene().getWindow().hide();
             });         
         } else {
             exitbutton.setVisible(false);
             headerbox.getChildren().remove(exitbutton);
             exitbutton = null;
         }
-        menubutton.setGraphic(IconBuilder.create(FontAwesome.FA_NAVICON, 18.0).color(Color.valueOf(MainApp.getStyle("buttons-color", "black"))).build());
+        menubutton.setGraphic(IconBuilder.create(FontAwesome.FA_NAVICON, 18.0).styleClass("icon-fill").build());
         menubutton.setDisable(true);
         
         if (appclock) {
@@ -263,7 +265,7 @@ public final class MQTTMainNode extends AnchorPane implements AbstractController
     private void gotoPage(String status) {
             
         listpages.getSelectionModel().select(-1);
-        StackPane messagesroot = MessageUtils.getRoot(this);
+        StackPane messagesroot = MessageUtils.getRoot(rootpane);
         if (messagesroot != null) {
             // If it is not already added to the scene, there is no need to dispose dialogs.
             MessageUtils.disposeAllDialogs(messagesroot);
@@ -331,7 +333,7 @@ public final class MQTTMainNode extends AnchorPane implements AbstractController
             connectingdialog = new DialogView();
             connectingdialog.setMaster(true);
             connectingdialog.setContent(box);
-            connectingdialog.show(MessageUtils.getRoot(this));
+            connectingdialog.show(MessageUtils.getRoot(rootpane));
         }
     }
     

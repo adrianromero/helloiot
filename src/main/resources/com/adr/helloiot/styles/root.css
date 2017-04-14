@@ -21,6 +21,7 @@
 
 .header {
     -fx-spacing: 10px;
+    -fx-padding: 10px;
 }
 
 .headertitle {
@@ -32,6 +33,7 @@
 }
 .unitscontainer > .viewport {
 }
+
 .gridcontainer {
     -fx-spacing: 6px;
     -fx-padding: 6px;   
@@ -42,17 +44,22 @@
     -fx-hgap: 6px
 }
 
-
 .labelsection, .formsection {
     -fx-font-weight: bold;
     -fx-background-insets: 0, 0 5 1 0, 0 5 2 0;
     -fx-background-color:  -fx-background, -fx-separator-fill, -fx-background;      
 }
 
+.icon-fill {
+    -fx-fill: black;
+}
+
 .unitbase {
     -fx-background-insets: 0, 1;
-    -fx-background-color: -fx-box-border, -fx-background;      
+    -fx-background-color: derive(-fx-box-border, 25%), -fx-background;      
     -fx-padding: 4px 6px 4px 6px;
+    
+    -fx-value-color: -fx-text-base-color;;    
 }
 .noneditable {
     -fx-focus-color: transparent;
@@ -72,7 +79,8 @@
     -fx-padding: 4px 0px 0px 0px;
     -fx-alignment: top-right;
 }
-
+.buttonbase {   
+}
 .textinput-right *.text {
     -fx-text-alignment: right;
     -fx-alignment: center-right;
@@ -81,4 +89,51 @@
 .textinput-right {
     -fx-text-alignment: right;
     -fx-alignment: center-right;
+}
+
+.dialog-body {
+    -fx-background-color: -fx-background;  
+    -fx-effect: dropshadow(one-pass-box, #555555, 20, 0.5, 3, 3);
+}
+
+.dialog-close-button {
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+    -fx-background-radius: 16px;
+    -fx-alignment: center;
+    -fx-padding: 8px 12px 8px 12px; 
+    -fx-fill: white;
+}
+.dialog-close-button:hover {
+    -fx-background-color: #dddddd;
+}
+
+.dialog-close-button:armed {
+    -fx-background-color: #a4a4a4;
+}
+.dialog-close-icon {
+    -fx-fill: black;
+}
+.dialog-title-text {
+    -fx-font-size: 14;
+    -fx-font-weight: bold;
+    -fx-text-fill:#333333;
+    -fx-effect: dropshadow(one-pass-box, #cccccc, 1.0, 0.0, 1.0, 1.0);           
+}
+.dialog-title {
+    -fx-background-color: -fx-box-border, white;
+    -fx-background-insets: 0, 0 0 1 0;
+    -fx-padding: 5 10 5 10;
+}
+
+.dialog-content {
+    -fx-padding: 15 15 15 15;    
+}
+
+.dialog-indicator {
+    -fx-padding: 15 0 15 15;        
+}
+
+.dialog-buttonlist {
+    -fx-padding: 10 10 10 10;    
 }

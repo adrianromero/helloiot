@@ -53,7 +53,10 @@ public class MainManagerClient implements MainManager {
     private void showLogin() {     
 
         clientlogin = new ClientLoginNode();
-        clientlogin.setURL(configprops.getProperty("mqtt.url", "tcp://localhost:1883"));
+        clientlogin.setHost(configprops.getProperty("mqtt.host", "localhost"));
+        clientlogin.setPort(configprops.getProperty("mqtt.port", "1883"));
+        clientlogin.setSSL(Boolean.parseBoolean(configprops.getProperty("mqtt.ssl", "false")));
+        clientlogin.setWebSockets(Boolean.parseBoolean(configprops.getProperty("mqtt.websockets", "false")));
         clientlogin.setUserName(configprops.getProperty("mqtt.username", ""));
         clientlogin.setClientID(configprops.getProperty("mqtt.clientid", ""));
         clientlogin.setConnectionTimeout(Integer.parseInt(configprops.getProperty("mqtt.connectiontimeout", Integer.toString(MqttConnectOptions.CONNECTION_TIMEOUT_DEFAULT))));
@@ -91,12 +94,12 @@ public class MainManagerClient implements MainManager {
             showApplication();
             hideLogin(); 
         });
-        root.getChildren().add(clientlogin);        
+        root.getChildren().add(clientlogin.getNode());        
     }
     
     private void hideLogin() {
         if (clientlogin != null) {
-            root.getChildren().remove(clientlogin);
+            root.getChildren().remove(clientlogin.getNode());
             clientlogin = null;
         }        
     }
@@ -105,7 +108,10 @@ public class MainManagerClient implements MainManager {
         
         configprops.clear();
         
-        configprops.setProperty("mqtt.url", clientlogin.getURL());
+        configprops.setProperty("mqtt.host", clientlogin.getHost());
+        configprops.setProperty("mqtt.port", clientlogin.getPort());
+        configprops.setProperty("mqtt.ssl", Boolean.toString(clientlogin.isSSL()));
+        configprops.setProperty("mqtt.websockets", Boolean.toString(clientlogin.isWebSockets()));
         configprops.setProperty("mqtt.username", clientlogin.getUserName());
         configprops.setProperty("mqtt.clientid", clientlogin.getClientID());
         configprops.setProperty("mqtt.connectiontimeout", Integer.toString(clientlogin.getConnectionTimeout()));
@@ -228,9 +234,9 @@ public class MainManagerClient implements MainManager {
             hideApplication();            
         });
         helloiotapp.setOnDisconnectAction(showloginevent);
-        helloiotapp.getMQTTNode().setToolbarButton(showloginevent, IconBuilder.create(FontAwesome.FA_SIGN_OUT, 18.0).color(Color.valueOf(MainApp.getStyle("buttons-color", "black"))).build(), resources.getString("label.disconnect"));
+        helloiotapp.getMQTTNode().setToolbarButton(showloginevent, IconBuilder.create(FontAwesome.FA_SIGN_OUT, 18.0).styleClass("icon-fill").build(), resources.getString("label.disconnect"));
 
-        root.getChildren().add(helloiotapp.getMQTTNode());
+        root.getChildren().add(helloiotapp.getMQTTNode().getNode());
         helloiotapp.startAndConstruct();        
     }
     private String webColor(Color color) {
@@ -244,7 +250,7 @@ public class MainManagerClient implements MainManager {
     private void hideApplication() {
         if (helloiotapp != null) {
             helloiotapp.stopAndDestroy();
-            root.getChildren().remove(helloiotapp.getMQTTNode());
+            root.getChildren().remove(helloiotapp.getMQTTNode().getNode());
             helloiotapp = null;     
         }        
     }

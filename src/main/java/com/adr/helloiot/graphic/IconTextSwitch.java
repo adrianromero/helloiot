@@ -42,7 +42,7 @@ public class IconTextSwitch implements IconSwitch {
         Text t = new Text(iconon);
         t.setFont(Font.font(ExternalFonts.ROBOTOBOLD, FontWeight.BOLD, 22.0));
         t.setFill(Color.WHITE);
-        new Shine(Color.WHITE).decorate(t);
+        new Shine(Color.DARKGRAY).decorate(t);
         return t;
     }
     
@@ -51,7 +51,7 @@ public class IconTextSwitch implements IconSwitch {
         Text t = new Text(iconoff);
         t.setFont(Font.font(ExternalFonts.ROBOTOBOLD, FontWeight.BOLD, 22.0));
         t.setFill(Color.DARKGREY);
-        new Shine(Color.WHITE).decorate(t);
+        new Shine(Color.DARKGREY).decorate(t);
         return t;        
     }    
 }

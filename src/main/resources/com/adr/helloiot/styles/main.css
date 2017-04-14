@@ -28,22 +28,25 @@
 } 
 
 .maincontainer {
-    -fx-separator-fill: -fx-box-border;
+    -fx-background-container: -fx-background;
     
-    -fx-unit-fill: -fx-text-inner-color;
+    -fx-unit-fill: -fx-text-inner-color;      
+    -fx-separator-fill: -fx-box-border;
     -fx-background-title: white;    
     -fx-text-fill-title: #353535;
     -fx-effect-title: #e0e0e0; 
     
     -fx-border-fill: #909090;
-    
+
     -fx-button-fill: #f2f2f2;
     -fx-hover-fill:  derive(-fx-button-fill, -12%); /*#d0d0d0; */
     -fx-armed-fill: derive(-fx-button-fill, -30%);/*#a4a4a4; */
+    -fx-selected-fill: #b9f2fa;
     
     -fx-info-fill: #707070;
+    -fx-main-fill: black;    
     
-    -fx-border-unit: #d0d0d0;
+    -fx-border-unit: #e0e0e0;
     -fx-background-unit: #fafafa;
 }
 
@@ -60,9 +63,9 @@
 }
 
 .headerbutton {
-    -fx-background-color:  -fx-border-fill, derive(-fx-background-title, -3%);      
+    -fx-background-color:  -fx-border-fill, -fx-button-fill;      
     -fx-background-insets: 0, 1;
-    -fx-background-radius: 16px;
+    -fx-background-radius: 16px, 15px;
     -fx-text-fill: -fx-text-fill-title;    
     -fx-alignment: center;
     -fx-padding: 8px 12px 8px 12px; 
@@ -81,13 +84,11 @@
     -fx-text-fill: -fx-info-fill;   
 }
 
-.labelsection {
-    -fx-font-family: 'ROBOTO BOLD';
-    -fx-font-size: 16px;
-    -fx-text-fill: -fx-info-fill;
-    -fx-background-insets: 0, 0 5 4 0, 0 5 5 0;
-    -fx-background-color:  -fx-background, -fx-separator-fill, -fx-background;    
-    -fx-padding: 10px 10px 5px 10px;      
+.unitscontainer > .viewport {
+   -fx-background-color: transparent;
+}
+.unitscontainer {
+    -fx-background-color: -fx-background-container;    
 }
 
 .unitbase {
@@ -95,6 +96,21 @@
     -fx-background-insets: 0, 1;
     -fx-background-color:  -fx-border-unit, -fx-background-unit;        
     -fx-effect: dropshadow(three-pass-box, derive(-fx-border-unit, 20%), 4, 0, 0, 0);
+    
+    -fx-value-color: -fx-main-fill;    
+}
+
+.labelsection {
+    -fx-font-family: 'ROBOTO BOLD';
+    -fx-font-size: 16px;
+    -fx-text-fill: -fx-info-fill;
+    -fx-background-insets: 0, 0 5 4 0, 0 5 5 0;
+    -fx-background-color: -fx-background-container, -fx-separator-fill, -fx-background-container;    
+    -fx-padding: 10px 10px 5px 10px;      
+}
+
+.icon-fill {
+    -fx-fill: -fx-main-fill;
 }
 
 .fieldlabel {
@@ -105,7 +121,6 @@
 
 .fieldtextbox {
     -fx-font-family: 'ROBOTO BOLD';
-    -fx-text-fill: -fx-unit-fill;
     -fx-font-size: 14px;   
 }
 
@@ -135,6 +150,7 @@
 .levelbase {
     -fx-font-family: 'ROBOTO BOLD';
     -fx-font-size: 36px;
+    -fx-text-fill: -fx-main-fill;   
 }
 
 /*
@@ -164,6 +180,8 @@
 }
 
 .keypadbutton {
+    -fx-text-fill: -fx-text-fill-title;
+    -fx-pref-width: 100px;
     -fx-background-radius: 15;
     -fx-background-color:  -fx-border-fill, -fx-button-fill;  
     -fx-background-insets: 0, 1;
@@ -184,14 +202,19 @@
 .keypadbuttonright {
     -fx-background-radius: 2 15 15 2;
 }
+.keypadbuttondelete {
+    -fx-background-radius: 2 2 2 2;
+    -fx-padding: 12px;    
+}
 .keypadinput {
-    -fx-background-radius: 15 2 2 15;
-    -fx-background-color:  -fx-border-fill, derive(-fx-background-unit, 20%);  
+    -fx-background-radius: 2 2 2 2;
+    -fx-background-color:  -fx-border-fill, #fafafa;  
     -fx-background-insets: 0, 1;
     -fx-alignment: center; 
 }
 
 .unitbutton {
+    -fx-text-fill: -fx-text-fill-title;    
     -fx-background-color:  -fx-border-fill, -fx-button-fill;  
     -fx-background-insets: 0, 1;
     -fx-alignment: center;
@@ -206,7 +229,8 @@
 .buttonbase {
     -fx-font-family: 'ROBOTO LIGHT';
     -fx-font-size: 16px;
-    -fx-background-radius: 20;
+    -fx-text-fill: -fx-text-fill-title;
+    -fx-background-radius: 10;
     -fx-background-color:  -fx-border-fill, -fx-button-fill;  
     -fx-background-insets: 0, 1;
     -fx-alignment: center;    
@@ -217,71 +241,104 @@
 .buttonbase:armed {
     -fx-background-color: -fx-border-fill, -fx-armed-fill;             
 }
-
 .buttonup {
-    -fx-background-radius: 20 20 0 0;
+}
+.buttondown {
 }
 
-.buttondown {
-    -fx-background-radius: 0 0 20 20;
-}
 /* Dialog styles */
-.buttonlist .button {
+.dialog-body {
+    -fx-background-color: -fx-background-container;  
+    -fx-effect: dropshadow(one-pass-box, #555555, 20, 0.5, 3, 3);
+}
+.dialog-close-button:hover {
+    -fx-background-color: -fx-hover-fill;
+}
+
+.dialog-close-button:armed {
+    -fx-background-color: -fx-armed-fill;
+}
+.dialog-close-icon {
+    -fx-fill: -fx-main-fill;
+}
+.dialog-button-icon {
+    -fx-fill: -fx-main-fill;    
+}
+.dialog-title-text {
+    -fx-font-size: 14;
+    -fx-font-weight: bold;
+    -fx-text-fill: -fx-text-fill-title;
+    -fx-effect: dropshadow(one-pass-box, -fx-effect-title, 1.0, 0.0, 1.0, 1.0);                
+}
+.dialog-title {
+    -fx-background-color: -fx-separator-fill, -fx-background-title;
+    -fx-background-insets: 0, 0 0 1 0;
+    -fx-padding: 5 10 5 10;
+}
+.dialog-buttonlist .button {
     -fx-font-family: 'ROBOTO LIGHT';
     -fx-font-size: 18px;
+    -fx-text-fill: -fx-text-fill-title;
     -fx-background-radius: 20;
     -fx-background-color:  -fx-border-fill, -fx-button-fill;  
     -fx-background-insets: 0, 1;
     -fx-alignment: center;        
 }
-.buttonlist .button:hover {
+.dialog-buttonlist .button:hover {
     -fx-background-color: -fx-border-fill, -fx-hover-fill;         
 }
-.buttonlist .button:armed {
+.dialog-buttonlist .button:armed {
     -fx-background-color: -fx-border-fill, -fx-armed-fill;             
 }
-.buttonlist .button:default {
-    -fx-background-color: -fx-border-fill, #b9f2fa;    
+.dialog-buttonlist .button:default {
+    -fx-background-color: -fx-border-fill, -fx-selected-fill;    
 }
 
-.buttonlist .button:default:hover {
-    -fx-background-color: -fx-border-fill, derive(#b9f2fa, -12%);         
+.dialog-buttonlist .button:default:hover {
+    -fx-background-color: -fx-border-fill, derive(-fx-selected-fill, -12%);         
 }
 
-.buttonlist .button:default:armed {
-    -fx-background-color: -fx-border-fill, derive(#b9f2fa, -30%);         
+.dialog-buttonlist .button:default:armed {
+    -fx-background-color: -fx-border-fill, derive(-fx-selected-fill, -30%);         
 }
-.titletext { 
-}
-.title {
-}
-.content .label {
+.dialog-content .label {
     -fx-font-family: 'ROBOTO LIGHT';
+    -fx-text-fill: -fx-info-fill;
     -fx-font-size: 20px;    
 }
+
 /* Slider styles */
 .slider .thumb {
-    -fx-background-color:
-        linear-gradient(to bottom, derive(-fx-text-box-border, -20%), derive(-fx-text-box-border, -30%)),
-        -fx-inner-border,
-        #0000dd;
-    -fx-background-insets: 0, 1, 2;
-    -fx-background-radius: 2.0em; /* makes sure this remains circular */
-    -fx-padding: 2em /*1.583333em*/;    
+    -fx-background-color: -fx-border-fill, -fx-button-fill;
+    -fx-background-insets: 0, 1;
+    -fx-background-radius: 1.5em; /* makes sure this remains circular */
+    -fx-padding: 1.5em /*1.583333em*/;    
     /*-fx-effect: dropshadow(two-pass-box , rgba(0, 0, 0, 0.1), 5, 0.0 , 0, 2);*/
 }
+.slider .thumb:hover {
+    -fx-background-color: -fx-border-fill, -fx-hover-fill;
+}
+.slider .thumb:pressed {
+    -fx-background-color: -fx-border-fill, -fx-armed-fill;
+}
 .slider .track {
-      -fx-background-color:
-          -fx-shadow-highlight-color,
-          linear-gradient(to bottom, derive(-fx-text-box-border, -10%), -fx-text-box-border),
-          linear-gradient(to bottom,
-            derive(-fx-control-inner-background, -9%),
-            derive(-fx-control-inner-background, 0%),
-            derive(-fx-control-inner-background, -5%),
-            derive(-fx-control-inner-background, -12%)
-          );
-    -fx-background-insets: 0 0 -1 0, 0, 1;
+    -fx-background-color: -fx-border-fill, derive(-fx-button-fill, -10%);
+    -fx-background-insets: 0, 1;
     -fx-background-radius: 0.25em, 0.25em, 0.166667em;  
     -fx-padding: 1.0em;   
 }
 
+/* Progresss style */
+.progress-bar > .bar {
+    -fx-background-insets: 1;    
+    -fx-background-radius: 2;
+    -fx-padding: 0.75em;
+}
+.progress-bar:indeterminate > .bar {
+    -fx-background-color: linear-gradient(to left, transparent, -fx-accent);
+}
+.progress-bar > .track {
+    -fx-background-color: -fx-border-fill,  derive(-fx-button-fill, 20%);
+    -fx-background-insets: 0, 1;    
+    -fx-background-radius: 2;    
+}

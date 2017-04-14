@@ -239,7 +239,7 @@ public class HelloIoTApp {
             startUnits();
         }).exceptionallyFX(ex -> {
             mqttnode.hideConnecting();
-            MessageUtils.showError(MessageUtils.getRoot(mqttnode), resources.getString("title.errorconnection"), ex.getLocalizedMessage(), ev -> {
+            MessageUtils.showError(MessageUtils.getRoot(mqttnode.getNode()), resources.getString("title.errorconnection"), ex.getLocalizedMessage(), ev -> {
                 exitevent.handle(new ActionEvent());
             });
             return null;

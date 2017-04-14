@@ -72,6 +72,7 @@ public class ButtonsSwitch extends Tile implements Unit {
         setIconStatus(IconStatus.valueOf("TEXT/ON/OFF"));
         
         VBox content = new VBox(goup, godown);
+        content.setSpacing(2);
         VBox.setVgrow(content, Priority.SOMETIMES);   
         content.setMaxSize(Integer.MAX_VALUE, Integer.MAX_VALUE);        
         return content;       

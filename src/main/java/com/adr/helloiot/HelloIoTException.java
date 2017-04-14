@@ -28,4 +28,9 @@ public class HelloIoTException extends Exception {
     public HelloIoTException(String message, Throwable t) {
         super(message, t);
     }
+    
+    @Override
+    public String toString() {
+        return getLocalizedMessage();
+    }
 }

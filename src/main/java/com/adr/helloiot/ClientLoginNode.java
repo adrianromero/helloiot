@@ -1,3 +1,6 @@
+//    HelloIoT is a dashboard creator for MQTT
+//    Copyright (C) 2017 Adrián Romero Corchado.
+//
 //    This file is part of HelloIot.
 //
 //    HelloIot is free software: you can redistribute it and/or modify
@@ -16,7 +19,7 @@ package com.adr.helloiot;
 
 import com.adr.fonticon.FontAwesome;
 import com.adr.fonticon.IconBuilder;
-import com.adr.hellocommon.utils.AbstractController;
+import com.adr.hellocommon.utils.FXMLUtil;
 import com.adr.helloiot.util.ExternalFonts;
 import java.util.ResourceBundle;
 import javafx.application.Platform;
@@ -27,6 +30,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
@@ -53,11 +57,13 @@ import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
  *
  * @author adrian
  */
-public class ClientLoginNode extends BorderPane implements AbstractController {
+public class ClientLoginNode {
 
     @FXML
     private ResourceBundle resources;
 
+    @FXML
+    private BorderPane rootpane;
     @FXML
     private HBox headerbox;
     @FXML
@@ -66,7 +72,14 @@ public class ClientLoginNode extends BorderPane implements AbstractController {
     private Button nextbutton;
 
     @FXML
-    private TextField url;
+    private TextField host;
+    @FXML
+    private TextField port;
+    @FXML
+    private CheckBox ssl;
+    @FXML
+    private CheckBox websockets;
+
     @FXML
     private TextField username;
     @FXML
@@ -143,20 +156,18 @@ public class ClientLoginNode extends BorderPane implements AbstractController {
     private boolean updating = false;
 
     ClientLoginNode() {
-        load("/com/adr/helloiot/fxml/clientlogin.fxml", "com/adr/helloiot/fxml/clientlogin");
+        FXMLUtil.load(this, "/com/adr/helloiot/fxml/clientlogin.fxml", "com/adr/helloiot/fxml/clientlogin");
     }
 
     @FXML
     public void initialize() {
-        
-        headerbox.setPadding(new Insets(Double.valueOf(MainApp.getStyle("panels-padding", "5"))));         
-        
-        nextbutton.setGraphic(IconBuilder.create(FontAwesome.FA_PLAY, 18.0).color(Color.valueOf(MainApp.getStyle("buttons-color", "black"))).build());
-        
-        adddeviceunit.setGraphic(IconBuilder.create(FontAwesome.FA_PLUS, 18.0).color(Color.valueOf(MainApp.getStyle("buttons-color", "black"))).build());
-        removedeviceunit.setGraphic(IconBuilder.create(FontAwesome.FA_MINUS, 18.0).color(Color.valueOf(MainApp.getStyle("buttons-color", "black"))).build());
-        updeviceunit.setGraphic(IconBuilder.create(FontAwesome.FA_CHEVRON_UP, 18.0).color(Color.valueOf(MainApp.getStyle("buttons-color", "black"))).build());
-        downdeviceunit.setGraphic(IconBuilder.create(FontAwesome.FA_CHEVRON_DOWN, 18.0).color(Color.valueOf(MainApp.getStyle("buttons-color", "black"))).build());
+
+        nextbutton.setGraphic(IconBuilder.create(FontAwesome.FA_PLAY, 18.0).styleClass("icon-fill").build());
+
+        adddeviceunit.setGraphic(IconBuilder.create(FontAwesome.FA_PLUS, 18.0).build());
+        removedeviceunit.setGraphic(IconBuilder.create(FontAwesome.FA_MINUS, 18.0).build());
+        updeviceunit.setGraphic(IconBuilder.create(FontAwesome.FA_CHEVRON_UP, 18.0).build());
+        downdeviceunit.setGraphic(IconBuilder.create(FontAwesome.FA_CHEVRON_DOWN, 18.0).build());
 
         edittopicpub.promptTextProperty().bind(edittopic.textProperty());
         edittopic.textProperty().addListener((ObservableValue<? extends String> ov, String old_val, String new_val) -> {
@@ -193,13 +204,13 @@ public class ClientLoginNode extends BorderPane implements AbstractController {
             updateCurrentTopic();
         });
 
-        clearcolor.setGraphic(IconBuilder.create(FontAwesome.FA_TRASH, 14.0).color(Color.valueOf(MainApp.getStyle("buttons-color", "black"))).build());
+        clearcolor.setGraphic(IconBuilder.create(FontAwesome.FA_TRASH, 14.0).build());
         editcolor.setValue(null);
         editcolor.valueProperty().addListener((ObservableValue<? extends Color> observable, Color oldValue, Color newValue) -> {
             updateCurrentTopic();
         });
 
-        clearbackground.setGraphic(IconBuilder.create(FontAwesome.FA_TRASH, 14.0).color(Color.valueOf(MainApp.getStyle("buttons-color", "black"))).build());
+        clearbackground.setGraphic(IconBuilder.create(FontAwesome.FA_TRASH, 14.0).build());
         editbackground.setValue(null);
         editbackground.valueProperty().addListener((ObservableValue<? extends Color> observable, Color oldValue, Color newValue) -> {
             updateCurrentTopic();
@@ -264,7 +275,7 @@ public class ClientLoginNode extends BorderPane implements AbstractController {
                     tf.setPrefWidth(55);
                     tf.setTextAlignment(TextAlignment.CENTER);
                     tf.setPadding(new Insets(2, 5, 2, 5));
-                    
+
                     if ("Subscription".equals(item.getType())) {
                         t.setText("SUB");
                         tf.setStyle("-fx-background-color: #001A80; -fx-background-radius: 12px;");
@@ -274,11 +285,11 @@ public class ClientLoginNode extends BorderPane implements AbstractController {
                     } else { // "Publication/Subscription"
                         t.setText("P/SUB");
                         tf.setStyle("-fx-background-color: #003300; -fx-background-radius: 12px;");
-                    }                    
+                    }
 
                     setGraphic(tf);
                     String label = item.getLabel();
-                    setText(label == null || label.isEmpty() ? resources.getString("label.empty"): label);
+                    setText(label == null || label.isEmpty() ? resources.getString("label.empty") : label);
                 }
             }
         });
@@ -287,7 +298,11 @@ public class ClientLoginNode extends BorderPane implements AbstractController {
         });
         updateDevicesUnitsList();
 
-        Platform.runLater(url::requestFocus);
+        Platform.runLater(host::requestFocus);
+    }
+
+    public Node getNode() {
+        return rootpane;
     }
 
     private void updateCurrentTopic() {
@@ -416,16 +431,47 @@ public class ClientLoginNode extends BorderPane implements AbstractController {
         nextbutton.setOnAction(exitevent);
     }
 
-    public String getURL() {
-        return url.getText();
+    public String getHost() {
+        return host.getText();
     }
 
-    public void setURL(String value) {
-        url.setText(value);
+    public void setHost(String value) {
+        host.setText(value);
+    }
+
+    public String getPort() {
+        return port.getText();
+    }
+
+    public void setPort(String value) {
+        port.setText(value);
+    }
+
+    public boolean isSSL() {
+        return ssl.isSelected();
+    }
+
+    public void setSSL(boolean value) {
+        ssl.setSelected(value);
+    }
+
+    public boolean isWebSockets() {
+        return websockets.isSelected();
+    }
+
+    public void setWebSockets(boolean value) {
+        websockets.setSelected(value);
     }
 
     public String getUserName() {
         return username.getText();
+    }
+
+    public String getURL() {
+        String protocol = websockets.isSelected()
+                ? (ssl.isSelected() ? "wss" : "ws")
+                : (ssl.isSelected() ? "ssl" : "tcp");
+        return protocol + "://" + host.getText() + ":" + port.getText();
     }
 
     public void setUserName(String value) {

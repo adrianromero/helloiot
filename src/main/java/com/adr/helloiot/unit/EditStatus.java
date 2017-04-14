@@ -57,9 +57,9 @@ public class EditStatus extends Tile implements Unit {
     } 
     
     @FXML public void initialize() {
-        editaction.setGraphic(IconBuilder.create(FontAwesome.FA_EDIT, 16).build());
-        okaction.setGraphic(IconBuilder.create(FontAwesome.FA_CHECK, 16).build());
-        cancelaction.setGraphic(IconBuilder.create(FontAwesome.FA_REMOVE, 16).build());
+        editaction.setGraphic(IconBuilder.create(FontAwesome.FA_EDIT, 16).styleClass("icon-fill").build());
+        okaction.setGraphic(IconBuilder.create(FontAwesome.FA_CHECK, 16).styleClass("icon-fill").build());
+        cancelaction.setGraphic(IconBuilder.create(FontAwesome.FA_REMOVE, 16).styleClass("icon-fill").build());
         setDisable(true);
     }
     

@@ -25,6 +25,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.concurrent.CompletionException;
 import java.util.concurrent.ConcurrentMap;
@@ -55,6 +56,7 @@ public final class MQTTManager implements MqttCallback {
     private MqttAsyncClient mqttClient;
     private DB dbClient;
     private ConcurrentMap<String, byte[]> mapClient;
+    private final ResourceBundle resources;
 
     private final String url;
     private final String username;
@@ -80,6 +82,7 @@ public final class MQTTManager implements MqttCallback {
     public MQTTManager(String url, String username, String password, String clientid, int timeout, int keepalive, int defaultqos, int version, boolean cleansession, Properties sslproperties, String topicprefix) {
         
         this.mqttClient = null;
+        this.resources = ResourceBundle.getBundle("com/adr/helloiot/resources/helloiot");      
         
         this.url = url;
         this.username = username;
@@ -101,15 +104,22 @@ public final class MQTTManager implements MqttCallback {
         
         List<String> worktopics = new ArrayList<>();
         List<Integer> workqos = new ArrayList<>();
-        topicsubscriptions.stream()
-                .filter(tq -> !tq.getTopic().startsWith(LOCAL_PREFIX))
-                .map(tq -> new TopicQos(tq.getTopic().startsWith(SYS_PREFIX) ? tq.getTopic() : topicprefix + tq.getTopic(), tq.getQos()))
-                .forEach(tq -> {
+        for (TopicQos tq: topicsubscriptions) {
+            if (tq.getTopic() == null || tq.getTopic().isEmpty()) {
+                return CompletableAsync.runAsync(() -> {throw new CompletionException(new HelloIoTException(resources.getString("exception.topicscannotbeempty")));});
+            }
+            
+            if (!tq.getTopic().startsWith(LOCAL_PREFIX)) {
+                if (tq.getTopic().startsWith(SYS_PREFIX)) {
                     worktopics.add(tq.getTopic());
-                    workqos.add(tq.getQos());
-                });
-        
-        String[] listtopics = worktopics.stream().toArray(String[]::new);       
+                } else {
+                    worktopics.add(topicprefix + tq.getTopic());
+                }
+                workqos.add(tq.getQos());
+            }
+        }
+
+        String[] listtopics = worktopics.stream().toArray(String[]::new);
         int[] listqos = new int[workqos.size()];
         for (int i = 0; i < workqos.size(); i++) {
             listqos[i] = workqos.get(i);
@@ -197,7 +207,7 @@ public final class MQTTManager implements MqttCallback {
         if (mqttClient != null) {
             throw new RuntimeException("Status incorrect. All subscriptions must be done before connection.");
         }
-        
+
         // To be subscribed in MQTT
         topicsubscriptions.add(new TopicQos(topic, qos < 0 ? defaultqos : qos));
         

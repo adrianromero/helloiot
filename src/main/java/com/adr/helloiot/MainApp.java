@@ -27,7 +27,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Application;
 import javafx.beans.value.ObservableValue;
-import javafx.geometry.Insets;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
@@ -44,31 +43,8 @@ public abstract class MainApp extends Application {
     private MainManager manager;
     private Stage stage;
 
-    private String stylename;
     private Properties appproperties;
     private File fileproperties;
-
-    private static final Properties styling = new Properties();
-
-    protected static void clearStyle() {
-        styling.clear();
-    }
-
-    protected static void loadStyle(String stylename) {
-        try {
-            styling.load(MainApp.class.getResourceAsStream(stylename + ".properties"));
-        } catch (IOException ex) {
-            Logger.getLogger(MainApp.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
-    public static String getStyle(String key) {
-        return styling.getProperty(key);
-    }
-
-    public static String getStyle(String key, String defaultValue) {
-        return styling.getProperty(key, defaultValue);
-    }
 
     protected abstract MainManager createManager();
 
@@ -80,31 +56,27 @@ public abstract class MainApp extends Application {
         return "Hello IoT";
     }
 
-    protected void initializeApp() {
+    protected String getStyleName() {
         // Locale.setDefault(Locale.forLanguageTag("en-US"));     
         // Main, dark or standard
-//        stylename = "/com/adr/helloiot/styles/empty";
-        stylename = "/com/adr/helloiot/styles/main";
-//        stylename = "/com/adr/helloiot/styles/main-dark";        
+//        return "/com/adr/helloiot/styles/empty";
+        return "/com/adr/helloiot/styles/main";
+//        return "/com/adr/helloiot/styles/main-dark";        
     }
 
     @Override
     public final void start(Stage stage) {
 
-        initializeApp();
         loadAppProperties();
         
         String styleroot = "/com/adr/helloiot/styles/root";
-
+        String stylename = getStyleName();
+        
         this.stage = stage;
         StackPane root = new StackPane();
         root.getStyleClass().add("maincontainer");
         root.getStylesheets().add(getClass().getResource(styleroot + ".css").toExternalForm());
         root.getStylesheets().add(getClass().getResource(stylename + ".css").toExternalForm());
-
-        clearStyle();
-        loadStyle(styleroot);
-        loadStyle(stylename);
 
         MessageUtils.setDialogRoot(root, true);
 
@@ -112,7 +84,6 @@ public abstract class MainApp extends Application {
         Scene scene = new Scene(root);
         stage.setScene(scene);
 
-        // injector.getInstance(Key.get(String.class, Names.named("annotation")));
         if (isFullScreen()) {
             scene.setCursor(Cursor.NONE);
             Rectangle2D dimension = Screen.getPrimary().getBounds();

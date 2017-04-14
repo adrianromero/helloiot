@@ -1,3 +1,6 @@
+//    HelloIoT is a dashboard creator for MQTT
+//    Copyright (C) 2017 Adrián Romero Corchado.
+//
 //    This file is part of HelloIot.
 //
 //    HelloIot is free software: you can redistribute it and/or modify
@@ -12,7 +15,7 @@
 //
 //    You should have received a copy of the GNU General Public License
 //    along with HelloIot.  If not, see <http://www.gnu.org/licenses/>.
-
+//
 package com.adr.helloiot;
 
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
@@ -26,7 +29,7 @@ public class ApplicationConfig {
     public boolean app_exitbutton = false;
     public boolean app_clock = true;
     public boolean app_retryconnection = false;
-    
+
     public String mqtt_url = "tcp://localhost:1883";
     public String mqtt_username = "";
     public String mqtt_password = "";
@@ -37,5 +40,5 @@ public class ApplicationConfig {
     public int mqtt_version = MqttConnectOptions.MQTT_VERSION_DEFAULT; // 0
     public boolean mqtt_cleansession = MqttConnectOptions.CLEAN_SESSION_DEFAULT;
     public String mqtt_topicprefix = "";
-    public String mqtt_topicapp = "_LOCAL_/_sys_helloIoT/mainapp";  
+    public String mqtt_topicapp = "_LOCAL_/_sys_helloIoT/mainapp";
 }

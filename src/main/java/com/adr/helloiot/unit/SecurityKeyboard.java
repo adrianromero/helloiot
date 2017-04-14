@@ -61,7 +61,7 @@ public class SecurityKeyboard {
     }
 
     @FXML public void initialize() {
-        btndelete.setGraphic(IconBuilder.create(FontAwesome.FA_TIMES_CIRCLE_O, 32.0).build());   
+        btndelete.setGraphic(IconBuilder.create(FontAwesome.FA_TIMES_CIRCLE_O, 22.0).styleClass("icon-fill").build());   
         password.setText("");
     }
     

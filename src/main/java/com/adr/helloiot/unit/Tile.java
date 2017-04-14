@@ -38,7 +38,6 @@ public abstract class Tile extends BorderPane implements Unit {
     private FlowPane footerpane = null;
 
     public Tile() {
-
         title = new Label(null);
         title.getStyleClass().add("labelbase");
         title.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);

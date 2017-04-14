@@ -133,13 +133,14 @@
       </GridPane>
       <BorderPane>
          <right>
-            <Button fx:id="btndelete" focusTraversable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onDelete" prefWidth="80.0" BorderPane.alignment="CENTER">
+            <Button fx:id="btndelete" focusTraversable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onDelete" BorderPane.alignment="CENTER">
                <BorderPane.margin>
                   <Insets left="5.0" />
                </BorderPane.margin>
                <styleClass>
                   <String fx:value="keypadbutton" />
                   <String fx:value="keypadbuttonright" />
+                  <String fx:value="keypadbuttondelete" />
                </styleClass></Button>
          </right>
          <padding>
