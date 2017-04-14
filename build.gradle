@@ -40,11 +40,11 @@ dependencies {
     compile group: 'com.github.adrianromero', name: 'fonticon', version:'1.2.2'
     compile group: 'com.github.adrianromero', name: 'hellocommon', version:'1.2.9'
     compile group: 'com.github.adrianromero', name: 'textflowbuilder', version: '1.0.3'
-    compile group: 'org.eclipse.paho', name: 'org.eclipse.paho.client.mqttv3', version:'1.1.0'
+    compile group: 'org.eclipse.paho', name: 'org.eclipse.paho.client.mqttv3', version:'1.1.1'
     compile group: 'com.jidesoft', name: 'jidefx-common', version:'0.9.1'
     compile group: 'eu.hansolo', name: 'Medusa', version:'7.7'
     compile group: 'commons-io', name: 'commons-io', version:'2.5'
-    compile group: 'org.mapdb', name: 'mapdb', version: '3.0.2'
+    compile group: 'org.mapdb', name: 'mapdb', version: '3.0.3'
     compile group: 'com.jayway.jsonpath', name: 'json-path', version: '2.2.0'
 }
 
