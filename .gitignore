@@ -1,5 +1,5 @@
 # build application files
-helloiot.properties
+/helloiot.properties
 target/
 /nbproject/
 /.gradle/
