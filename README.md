@@ -1,8 +1,9 @@
-HelloIot [![Release](https://jitpack.io/v/adrianromero/helloiot.svg)](https://jitpack.io/#adrianromero/helloiot)
+HelloIoT [![Release](https://jitpack.io/v/adrianromero/helloiot.svg)](https://jitpack.io/#adrianromero/helloiot)
 ========
 
-HelloIot is a different [MQTT](https://en.wikipedia.org/wiki/MQTT) JavaFX application. 
-With HelloIot you can publish and subscribe to topics using a collection of widgets available to create your own dashboard. 
+HelloIoT is a [MQTT](https://en.wikipedia.org/wiki/MQTT) client and dashboard application. 
+You can use HelloIot as a MQTT client application to publish and subscribe to topics or you can use HelloIoT as a client platform to create your own dashboard. 
+HelloIot is a Java multiplatform application and it can run on Windows, MacOS or Linux.
 
 ![Screenshot](http://i.imgur.com/Uv3mF63.gif)
 
@@ -11,6 +12,8 @@ Getting started
 
 Install a MQTT Broker
 ----------------------
+
+To run HelloIoT you need to install a MQTT broker or you can use a public MQTT broker. Public MQTT brokers can be good for testing or prototyping purposes.
 
 HelloIot is developed and tested using [Mosquitto](http://mosquitto.org/) but it will also work 
 with other MQTT Brokers like [HiveMQ](http://www.hivemq.com/), [EMQTT](http://emqtt.io/), 
@@ -27,25 +30,20 @@ Execute HelloIot
 ----------------
 
 Download the latests binaries from [Releases](releases), uncompress to a folder and execute. By default HelloIot is configured to be connected to a MQTT broker installed locally, listening on port 1883, with no security configured. 
-The standard installation of the Mosquitto broker will work.
+The standard installation of the Mosquitto broker will work. In the 'bin' folder there is 'helloiot' script for MacOS and Linux and a 'helloiot.bat' script for Windows.
 
 ```
 cd bin
-helloiot
+./helloiot
 ```
 
-If you prefer to run HelloIot from sources clone the repository, build and execute.
+If you prefer to run HelloIoT from sources clone the repository, build and execute.
  
 ```
 git clone https://github.com/adrianromero/helloiot
 cd ./helloiot
 ./gradlew run
 ```
-
-Configure HelloIot
-------------------
-
-If you want to connect to a different MQTT broker or create your own MQTT dashboard ou need to edit the file *helloiot.properties*.
 
 Other MQTT tools
 ================
