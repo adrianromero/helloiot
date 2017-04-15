@@ -29,7 +29,7 @@ or the [OpenJDK 8](http://openjdk.java.net/install/) or later.
 Execute HelloIoT
 ----------------
 
-Download the latests binaries from [Releases](releases), uncompress to a folder and execute. By default HelloIoT is configured to be connected to a MQTT broker installed locally, listening on port 1883, with no security configured. 
+Download the latests binaries from [Releases](https://github.com/adrianromero/helloiot/releases), uncompress to a folder and execute. By default HelloIoT is configured to be connected to a MQTT broker installed locally, listening on port 1883, with no security configured. 
 The standard installation of the Mosquitto broker will work. In the 'bin' folder there is 'helloiot' script for MacOS and Linux and a 'helloiot.bat' script for Windows.
 
 ```
@@ -51,7 +51,7 @@ Other MQTT tools
 In the [MQTT Community Wiki](https://github.com/mqtt/mqtt.github.io/wiki/tools), you can find a list of client applications and tools. 
 My favorites are:
 
-* [MQTT.fx](http://mqttfx.jfx4ee.org/) by Jens Deters and created with JavaFX.
+* [MQTT.fx](http://mqttfx.org/) by Jens Deters and created with JavaFX.
 * [mqtt-spy](http://kamilfb.github.io/mqtt-spy/) by Kamil Baczkowicz and also created with JavaFX.
 
 Acknowledgments
