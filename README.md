@@ -2,8 +2,8 @@ HelloIoT [![Release](https://jitpack.io/v/adrianromero/helloiot.svg)](https://ji
 ========
 
 HelloIoT is a [MQTT](https://en.wikipedia.org/wiki/MQTT) client and dashboard application. 
-You can use HelloIot as a MQTT client application to publish and subscribe to topics or you can use HelloIoT as a client platform to create your own dashboard. 
-HelloIot is a Java multiplatform application and it can run on Windows, MacOS or Linux.
+You can use HelloIoT as a MQTT client application to publish and subscribe to topics or you can use HelloIoT as a client platform to create your own dashboard. 
+HelloIoT is a Java multiplatform application and it can run on Windows, MacOS or Linux.
 
 ![Screenshot](http://i.imgur.com/Uv3mF63.gif)
 
@@ -15,7 +15,7 @@ Install a MQTT Broker
 
 To run HelloIoT you need to install a MQTT broker or you can use a public MQTT broker. Public MQTT brokers can be good for testing or prototyping purposes.
 
-HelloIot is developed and tested using [Mosquitto](http://mosquitto.org/) but it will also work 
+HelloIoT is developed and tested using [Mosquitto](http://mosquitto.org/) but it will also work 
 with other MQTT Brokers like [HiveMQ](http://www.hivemq.com/), [EMQTT](http://emqtt.io/), 
 [Moquette](https://github.com/andsel/moquette)...
 There is a list of MQTT brokers in the [MQTT Community Wiki](https://github.com/mqtt/mqtt.github.io/wiki/servers), you can choose the broker that better fits your needs.
@@ -26,10 +26,10 @@ Install Java
 You need to install the [Java SE 8 JDK](http://www.oracle.com/technetwork/es/java/javase/downloads/index.html) or later version, not the JRE, 
 or the [OpenJDK 8](http://openjdk.java.net/install/) or later.
 
-Execute HelloIot
+Execute HelloIoT
 ----------------
 
-Download the latests binaries from [Releases](releases), uncompress to a folder and execute. By default HelloIot is configured to be connected to a MQTT broker installed locally, listening on port 1883, with no security configured. 
+Download the latests binaries from [Releases](releases), uncompress to a folder and execute. By default HelloIoT is configured to be connected to a MQTT broker installed locally, listening on port 1883, with no security configured. 
 The standard installation of the Mosquitto broker will work. In the 'bin' folder there is 'helloiot' script for MacOS and Linux and a 'helloiot.bat' script for Windows.
 
 ```
@@ -70,4 +70,4 @@ Acknowledgments
 License
 =======
 
-HelloIot is licensed under the GNU General Public License, Version 3, 29 June 2007
+HelloIoT is licensed under the GNU General Public License, Version 3, 29 June 2007
