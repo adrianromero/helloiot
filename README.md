@@ -5,7 +5,7 @@ HelloIoT is a [MQTT](https://en.wikipedia.org/wiki/MQTT) client and dashboard ap
 You can use HelloIoT as a MQTT client application to publish and subscribe to topics or you can use HelloIoT as a client platform to create your own dashboard. 
 HelloIoT is a Java multiplatform application and it can run on Windows, MacOS or Linux.
 
-![Screenshot](http://i.imgur.com/Uv3mF63.gif)
+![Screenshot](http://i.imgur.com/vHWLTYc.gif)
 
 Getting started
 ===============
