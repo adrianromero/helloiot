@@ -177,14 +177,14 @@ public class MainManagerClient implements MainManager {
             helloiotapp.addFXMLFileDevicesUnits("local:com/adr/helloiot/panes/mosquitto");
         }
 
-        helloiotapp.addUnitPages(Arrays.asList(
-                new UnitPage("light", IconBuilder.create(FontAwesome.FA_LIGHTBULB_O, 24.0).build(), resources.getString("page.light")))
-        );
-        helloiotapp.addFXMLFileDevicesUnits("local:com/adr/helloiot/panes/samplelights");
-        helloiotapp.addUnitPages(Arrays.asList(
-                new UnitPage("temperature", IconBuilder.create(FontAwesome.FA_DASHBOARD, 24.0).build(), resources.getString("page.temperature")))
-        );
-        helloiotapp.addFXMLFileDevicesUnits("local:com/adr/helloiot/panes/sampletemperature");
+//        helloiotapp.addUnitPages(Arrays.asList(
+//                new UnitPage("light", IconBuilder.create(FontAwesome.FA_LIGHTBULB_O, 24.0).build(), resources.getString("page.light")))
+//        );
+//        helloiotapp.addFXMLFileDevicesUnits("local:com/adr/helloiot/panes/samplelights");
+//        helloiotapp.addUnitPages(Arrays.asList(
+//                new UnitPage("temperature", IconBuilder.create(FontAwesome.FA_DASHBOARD, 24.0).build(), resources.getString("page.temperature")))
+//        );
+//        helloiotapp.addFXMLFileDevicesUnits("local:com/adr/helloiot/panes/sampletemperature");
 
         helloiotapp.addDevicesUnits(Collections.emptyList(), Collections.singletonList(new StartFlow()));
 
