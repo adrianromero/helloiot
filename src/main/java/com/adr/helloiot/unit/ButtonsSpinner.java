@@ -1,3 +1,6 @@
+//    HelloIoT is a dashboard creator for MQTT
+//    Copyright (C) 2017 Adrián Romero Corchado.
+//
 //    This file is part of HelloIot.
 //
 //    HelloIot is free software: you can redistribute it and/or modify
@@ -12,7 +15,7 @@
 //
 //    You should have received a copy of the GNU General Public License
 //    along with HelloIot.  If not, see <http://www.gnu.org/licenses/>.
-
+//
 package com.adr.helloiot.unit;
 
 import com.adr.fonticon.FontAwesome;
@@ -34,19 +37,23 @@ import jidefx.utils.AutoRepeatButtonUtils;
  * @author adrian
  */
 public class ButtonsSpinner extends Tile implements Unit {
-    
-    @FXML private Button goup;
-    @FXML private Button godown;
-    @FXML private Label level;
-    
+
+    @FXML
+    private Button goup;
+    @FXML
+    private Button godown;
+    @FXML
+    private Label level;
+
     private DeviceSimple device = null;
 
     @Override
-    public Node constructContent() {   
-        return loadFXML("/com/adr/helloiot/fxml/buttonsspinner.fxml");   
+    public Node constructContent() {
+        return loadFXML("/com/adr/helloiot/fxml/buttonsspinner.fxml");
     }
-    
-    @FXML public void initialize() {
+
+    @FXML
+    public void initialize() {
         goup.setGraphic(IconBuilder.create(FontAwesome.FA_PLUS, 22.0).styleClass("icon-fill").build());
         goup.getStyleClass().add("buttonbase");
         goup.getStyleClass().add("buttonup");
@@ -57,42 +64,42 @@ public class ButtonsSpinner extends Tile implements Unit {
         AutoRepeatButtonUtils.install(godown);
         level.setText(null);
     }
-    
+
     @Subscribe
     public void receivedStatus(EventMessage message) {
-        Platform.runLater(() -> updateStatus(message.getMessage()));  
+        Platform.runLater(() -> updateStatus(message.getMessage()));
     }
 
     private void updateStatus(byte[] status) {
         level.setText(device.getFormat().format(status));
         goup.setDisable(!device.hasNextStatus());
         godown.setDisable(!device.hasPrevStatus());
-    }  
-    
+    }
+
     @Override
     public void construct(HelloIoTAppPublic app) {
         Unit.super.construct(app);
         device.subscribeStatus(this);
-        updateStatus(null);        
+        updateStatus(null);
     }
 
     @Override
     public void destroy() {
         Unit.super.destroy();
-        device.unsubscribeStatus(this);    
+        device.unsubscribeStatus(this);
     }
-    
+
     public void setDevice(DeviceSimple device) {
         this.device = device;
         if (getLabel() == null) {
             setLabel(device.getProperties().getProperty("label"));
-        }     
+        }
     }
-    
+
     public DeviceSimple getDevice() {
         return device;
     }
-    
+
     @FXML
     void onGoDown(ActionEvent event) {
         device.sendStatus(device.prevStatus());

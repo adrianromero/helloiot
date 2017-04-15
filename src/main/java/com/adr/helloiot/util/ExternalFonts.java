@@ -1,3 +1,6 @@
+//    HelloIoT is a dashboard creator for MQTT
+//    Copyright (C) 2017 Adrián Romero Corchado.
+//
 //    This file is part of HelloIot.
 //
 //    HelloIot is free software: you can redistribute it and/or modify
@@ -12,7 +15,7 @@
 //
 //    You should have received a copy of the GNU General Public License
 //    along with HelloIot.  If not, see <http://www.gnu.org/licenses/>.
-
+//
 package com.adr.helloiot.util;
 
 import javafx.scene.text.Font;
@@ -22,18 +25,18 @@ import javafx.scene.text.Font;
  * @author adrian
  */
 public class ExternalFonts {
-    
+
     public static final String ROBOTOBOLD;
     public static final String ROBOTOLIGHT;
     public static final String ROBOTOREGULAR;
-    
+
     static {
         try {
-            ROBOTOBOLD = Font.loadFont(ExternalFonts.class.getResourceAsStream("/com/adr/helloiot/styles/Roboto-Bold.ttf"), 10.0).getName();    
-            ROBOTOLIGHT = Font.loadFont(ExternalFonts.class.getResourceAsStream("/com/adr/helloiot/styles/Roboto-Light.ttf"), 10.0).getName();    
-            ROBOTOREGULAR = Font.loadFont(ExternalFonts.class.getResourceAsStream("/com/adr/helloiot/styles/Roboto-Regular.ttf"), 10.0).getName();    
+            ROBOTOBOLD = Font.loadFont(ExternalFonts.class.getResourceAsStream("/com/adr/helloiot/styles/Roboto-Bold.ttf"), 10.0).getName();
+            ROBOTOLIGHT = Font.loadFont(ExternalFonts.class.getResourceAsStream("/com/adr/helloiot/styles/Roboto-Light.ttf"), 10.0).getName();
+            ROBOTOREGULAR = Font.loadFont(ExternalFonts.class.getResourceAsStream("/com/adr/helloiot/styles/Roboto-Regular.ttf"), 10.0).getName();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-    }    
+    }
 }

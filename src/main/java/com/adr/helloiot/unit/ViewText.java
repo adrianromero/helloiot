@@ -1,3 +1,6 @@
+//    HelloIoT is a dashboard creator for MQTT
+//    Copyright (C) 2017 Adrián Romero Corchado.
+//
 //    This file is part of HelloIot.
 //
 //    HelloIot is free software: you can redistribute it and/or modify
@@ -12,7 +15,7 @@
 //
 //    You should have received a copy of the GNU General Public License
 //    along with HelloIot.  If not, see <http://www.gnu.org/licenses/>.
-
+//
 package com.adr.helloiot.unit;
 
 import com.adr.helloiot.device.DeviceBase;
@@ -29,29 +32,31 @@ import javafx.scene.control.Label;
  * @author adrian
  */
 public class ViewText extends Tile implements Unit {
-    
-    @FXML private Label level;
-    
+
+    @FXML
+    private Label level;
+
     private DeviceBase device = null;
-    
+
     @Override
     protected Node constructContent() {
-        return loadFXML("/com/adr/helloiot/fxml/viewtext.fxml");  
+        return loadFXML("/com/adr/helloiot/fxml/viewtext.fxml");
     }
-    
-    @FXML public void initialize() {
+
+    @FXML
+    public void initialize() {
         level.setText(null);
     }
-    
+
     @Subscribe
     public void receivedStatus(EventMessage message) {
-        Platform.runLater(() -> updateStatus(message.getMessage()));  
-    } 
-    
+        Platform.runLater(() -> updateStatus(message.getMessage()));
+    }
+
     private void updateStatus(byte[] newstatus) {
         level.setText(device.getFormat().format(newstatus));
-    }  
-    
+    }
+
     @Override
     public void construct(HelloIoTAppPublic app) {
         Unit.super.construct(app);
@@ -62,17 +67,17 @@ public class ViewText extends Tile implements Unit {
     @Override
     public void destroy() {
         Unit.super.destroy();
-        device.unsubscribeStatus(this);    
+        device.unsubscribeStatus(this);
     }
 
     public void setDevice(DeviceBase device) {
         this.device = device;
         if (getLabel() == null) {
             setLabel(device.getProperties().getProperty("label"));
-        }     
+        }
     }
-    
+
     public DeviceBase getDevice() {
         return device;
-    }  
+    }
 }

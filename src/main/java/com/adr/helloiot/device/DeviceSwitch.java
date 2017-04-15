@@ -1,3 +1,6 @@
+//    HelloIoT is a dashboard creator for MQTT
+//    Copyright (C) 2017 Adrián Romero Corchado.
+//
 //    This file is part of HelloIot.
 //
 //    HelloIot is free software: you can redistribute it and/or modify
@@ -12,7 +15,7 @@
 //
 //    You should have received a copy of the GNU General Public License
 //    along with HelloIot.  If not, see <http://www.gnu.org/licenses/>.
-
+//
 package com.adr.helloiot.device;
 
 import com.adr.helloiot.device.format.StringFormatSwitch;
@@ -27,14 +30,14 @@ public class DeviceSwitch extends DeviceSimple {
 
     public final static byte[] ON = "ON".getBytes(StandardCharsets.UTF_8);
     public final static byte[] OFF = "OFF".getBytes(StandardCharsets.UTF_8);
-    
+
     private byte[] on = ON;
     private byte[] off = OFF;
-    
+
     public DeviceSwitch() {
         setFormat(new StringFormatSwitch(this));
     }
- 
+
     @Override
     public String getDeviceName() {
         return resources.getString("devicename.deviceswitch");
@@ -55,11 +58,11 @@ public class DeviceSwitch extends DeviceSimple {
     public void setOff(byte[] off) {
         this.off = off;
     }
-       
+
     @Override
-    public byte[] nextStatus() {     
+    public byte[] nextStatus() {
         boolean current = Arrays.equals(on, readStatus());
-        return !current ? on : off;    
+        return !current ? on : off;
     }
 
     @Override
@@ -75,27 +78,27 @@ public class DeviceSwitch extends DeviceSimple {
     @Override
     public boolean hasNextStatus() {
         return true;
-    }    
-    
+    }
+
     public void sendON() {
         sendStatus(on);
     }
-    
+
     public void sendOFF() {
-        sendStatus(off);               
+        sendStatus(off);
     }
-    
+
     public void sendSWITCH() {
-        sendStatus(nextStatus());               
-    }    
-    
+        sendStatus(nextStatus());
+    }
+
     public void sendON(long duration) {
-        
+
         if (Arrays.equals(on, readStatus()) && !hasTimer()) {
             // If  already on and not with a timer then do nothing
             return;
         }
-        
+
         sendStatus(on);
         sendStatus(off, duration);
     }

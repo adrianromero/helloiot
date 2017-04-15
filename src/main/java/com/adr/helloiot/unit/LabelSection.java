@@ -1,3 +1,6 @@
+//    HelloIoT is a dashboard creator for MQTT
+//    Copyright (C) 2017 Adrián Romero Corchado.
+//
 //    This file is part of HelloIot.
 //
 //    HelloIot is free software: you can redistribute it and/or modify
@@ -12,7 +15,7 @@
 //
 //    You should have received a copy of the GNU General Public License
 //    along with HelloIot.  If not, see <http://www.gnu.org/licenses/>.
-
+//
 package com.adr.helloiot.unit;
 
 import java.util.ResourceBundle;
@@ -28,17 +31,17 @@ import javafx.scene.layout.Priority;
 public class LabelSection extends Label implements Unit {
 
     protected boolean confirm = false;
-    protected ResourceBundle resources = ResourceBundle.getBundle("com/adr/helloiot/fxml/basic"); 
-            
-    public LabelSection() {   
-        
+    protected ResourceBundle resources = ResourceBundle.getBundle("com/adr/helloiot/fxml/basic");
+
+    public LabelSection() {
+
         this.getStyleClass().add("labelsection");
         HBox.setHgrow(this, Priority.SOMETIMES);
         setMaxSize(Integer.MAX_VALUE, Integer.MAX_VALUE);
         setFocusTraversable(false);
         setDisable(true);
     }
-    
+
     @Override
     public void start() {
         setDisable(false);

@@ -1,3 +1,6 @@
+//    HelloIoT is a dashboard creator for MQTT
+//    Copyright (C) 2017 Adrián Romero Corchado.
+//
 //    This file is part of HelloIot.
 //
 //    HelloIot is free software: you can redistribute it and/or modify
@@ -12,7 +15,7 @@
 //
 //    You should have received a copy of the GNU General Public License
 //    along with HelloIot.  If not, see <http://www.gnu.org/licenses/>.
-
+//
 package com.adr.helloiot;
 
 import com.adr.fonticon.FontAwesome;
@@ -41,16 +44,16 @@ import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
  * @author adrian
  */
 public class MainManagerClient implements MainManager {
-    
+
     private static final Logger LOGGER = Logger.getLogger(MainManagerClient.class.getName());
 
     private HelloIoTApp helloiotapp = null;
     private ClientLoginNode clientlogin = null;
-    
+
     private ConfigProperties configprops = null;
     private StackPane root = null;
-    
-    private void showLogin() {     
+
+    private void showLogin() {
 
         clientlogin = new ClientLoginNode();
         clientlogin.setHost(configprops.getProperty("mqtt.host", "localhost"));
@@ -68,7 +71,7 @@ public class MainManagerClient implements MainManager {
         clientlogin.setTopicApp(configprops.getProperty("mqtt.topicapp", "_LOCAL_/_sys_helloIoT/mainapp"));
 
         clientlogin.setBrokerPane(Integer.parseInt(configprops.getProperty("client.broker", "0"))); //none
-        
+
         int i = 0;
         List<TopicInfo> topicinfolist = new ArrayList<>();
         int topicinfosize = Integer.parseInt(configprops.getProperty("topicinfo.size", "0"));
@@ -90,24 +93,24 @@ public class MainManagerClient implements MainManager {
         }
         clientlogin.setTopicInfoList(FXCollections.observableList(topicinfolist));
 
-        clientlogin.setOnNextAction(e -> {                
+        clientlogin.setOnNextAction(e -> {
             showApplication();
-            hideLogin(); 
+            hideLogin();
         });
-        root.getChildren().add(clientlogin.getNode());        
+        root.getChildren().add(clientlogin.getNode());
     }
-    
+
     private void hideLogin() {
         if (clientlogin != null) {
             root.getChildren().remove(clientlogin.getNode());
             clientlogin = null;
-        }        
+        }
     }
-    
+
     private void showApplication() {
-        
+
         configprops.clear();
-        
+
         configprops.setProperty("mqtt.host", clientlogin.getHost());
         configprops.setProperty("mqtt.port", clientlogin.getPort());
         configprops.setProperty("mqtt.ssl", Boolean.toString(clientlogin.isSSL()));
@@ -121,9 +124,9 @@ public class MainManagerClient implements MainManager {
         configprops.setProperty("mqtt.cleansession", Boolean.toString(clientlogin.isCleanSession()));
         configprops.setProperty("mqtt.topicprefix", clientlogin.getTopicPrefix());
         configprops.setProperty("mqtt.topicapp", clientlogin.getTopicApp());
-        
+
         configprops.setProperty("client.broker", Integer.toString(clientlogin.getBrokerPane()));
-        
+
         List<TopicInfo> topicinfolist = clientlogin.getTopicInfoList();
         configprops.setProperty("topicinfo.size", Integer.toString(topicinfolist.size()));
         int i = 0;
@@ -139,7 +142,7 @@ public class MainManagerClient implements MainManager {
             configprops.setProperty("topicinfo" + Integer.toString(i) + ".qos", Integer.toString(topicinfo.getQos()));
             configprops.setProperty("topicinfo" + Integer.toString(i) + ".retained", Integer.toString(topicinfo.getRetained()));
         }
-        
+
         try {
             configprops.save();
         } catch (IOException ex) {
@@ -158,36 +161,36 @@ public class MainManagerClient implements MainManager {
         config.mqtt_cleansession = clientlogin.isCleanSession();
         config.mqtt_topicprefix = configprops.getProperty("mqtt.topicprefix", "");
         config.mqtt_topicapp = configprops.getProperty("mqtt.topicapp", "_LOCAL_/_sys_helloIoT/mainapp");
-        
+
         config.app_clock = true;
         config.app_exitbutton = false;
         config.app_retryconnection = false;
-        
+
         helloiotapp = new HelloIoTApp(config);
-                
+
         // add sample panes
-        ResourceBundle resources = ResourceBundle.getBundle("com/adr/helloiot/fxml/main");   
-        
+        ResourceBundle resources = ResourceBundle.getBundle("com/adr/helloiot/fxml/main");
+
         if (clientlogin.getBrokerPane() == 1) {
             UnitPage info = new UnitPage("info", IconBuilder.create(FontAwesome.FA_INFO, 24.0).build(), resources.getString("page.info"));
-            helloiotapp.addUnitPages(Arrays.asList(info));            
+            helloiotapp.addUnitPages(Arrays.asList(info));
             helloiotapp.addFXMLFileDevicesUnits("local:com/adr/helloiot/panes/mosquitto");
         }
-  
-            helloiotapp.addUnitPages(Arrays.asList(
+
+        helloiotapp.addUnitPages(Arrays.asList(
                 new UnitPage("light", IconBuilder.create(FontAwesome.FA_LIGHTBULB_O, 24.0).build(), resources.getString("page.light")))
-            );
-            helloiotapp.addFXMLFileDevicesUnits("local:com/adr/helloiot/panes/samplelights");
-            helloiotapp.addUnitPages(Arrays.asList(
+        );
+        helloiotapp.addFXMLFileDevicesUnits("local:com/adr/helloiot/panes/samplelights");
+        helloiotapp.addUnitPages(Arrays.asList(
                 new UnitPage("temperature", IconBuilder.create(FontAwesome.FA_DASHBOARD, 24.0).build(), resources.getString("page.temperature")))
-            );
-            helloiotapp.addFXMLFileDevicesUnits("local:com/adr/helloiot/panes/sampletemperature");
-        
+        );
+        helloiotapp.addFXMLFileDevicesUnits("local:com/adr/helloiot/panes/sampletemperature");
+
         helloiotapp.addDevicesUnits(Collections.emptyList(), Collections.singletonList(new StartFlow()));
 
         TopicStatus ts;
-        
-        for (TopicInfo topicinfo: topicinfolist) {
+
+        for (TopicInfo topicinfo : topicinfolist) {
             if ("Subscription".equals(topicinfo.getType())) {
                 ts = TopicStatus.buildTopicSubscription(topicinfo);
             } else if ("Publication".equals(topicinfo.getType())) {
@@ -203,10 +206,10 @@ public class MainManagerClient implements MainManager {
                 style.append("-fx-background-color: ").append(webColor(topicinfo.getBackground())).append(";");
             }
             ts.getUnits().get(0).getNode().setStyle(style.toString());
-            
-            helloiotapp.addDevicesUnits(ts.getDevices(), ts.getUnits());            
+
+            helloiotapp.addDevicesUnits(ts.getDevices(), ts.getUnits());
         }
-        
+
 //        ts = TopicStatus.buildTopicPublishSubscription("hello/test1", 0, StringFormat.valueOf("DOUBLE"), true);
 //        helloiotapp.addDevicesUnits(ts.getDevices(), ts.getUnits());
 //        
@@ -227,36 +230,35 @@ public class MainManagerClient implements MainManager {
 //        
 //        ts = TopicStatus.buildTopicSubscription("$SYS/broker/uptime", -1, StringFormatIdentity.INSTANCE, false);
 //        helloiotapp.addDevicesUnits(ts.getDevices(), ts.getUnits());
-
-        
         EventHandler<ActionEvent> showloginevent = (event -> {
-            showLogin();            
-            hideApplication();            
+            showLogin();
+            hideApplication();
         });
         helloiotapp.setOnDisconnectAction(showloginevent);
         helloiotapp.getMQTTNode().setToolbarButton(showloginevent, IconBuilder.create(FontAwesome.FA_SIGN_OUT, 18.0).styleClass("icon-fill").build(), resources.getString("label.disconnect"));
 
         root.getChildren().add(helloiotapp.getMQTTNode().getNode());
-        helloiotapp.startAndConstruct();        
+        helloiotapp.startAndConstruct();
     }
+
     private String webColor(Color color) {
-        return String.format( "#%02X%02X%02X%02X",
-            (int)(color.getRed() * 255),
-            (int)(color.getGreen() * 255),
-            (int)(color.getBlue() * 255),
-            (int)(color.getOpacity() * 255));        
+        return String.format("#%02X%02X%02X%02X",
+                (int) (color.getRed() * 255),
+                (int) (color.getGreen() * 255),
+                (int) (color.getBlue() * 255),
+                (int) (color.getOpacity() * 255));
     }
-    
+
     private void hideApplication() {
         if (helloiotapp != null) {
             helloiotapp.stopAndDestroy();
             root.getChildren().remove(helloiotapp.getMQTTNode().getNode());
-            helloiotapp = null;     
-        }        
+            helloiotapp = null;
+        }
     }
-    
+
     @Override
-    public void construct(StackPane root, Parameters params) {        
+    public void construct(StackPane root, Parameters params) {
         this.configprops = new ConfigProperties(params);
         this.root = root;
         try {
@@ -267,7 +269,7 @@ public class MainManagerClient implements MainManager {
 
         showLogin();
     }
-    
+
     @Override
     public void destroy() {
         hideLogin();

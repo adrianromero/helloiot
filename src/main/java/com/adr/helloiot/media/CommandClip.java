@@ -1,3 +1,6 @@
+//    HelloIoT is a dashboard creator for MQTT
+//    Copyright (C) 2017 Adrián Romero Corchado.
+//
 //    This file is part of HelloIot.
 //
 //    HelloIot is free software: you can redistribute it and/or modify
@@ -12,7 +15,7 @@
 //
 //    You should have received a copy of the GNU General Public License
 //    along with HelloIot.  If not, see <http://www.gnu.org/licenses/>.
-
+//
 package com.adr.helloiot.media;
 
 import java.io.File;
@@ -34,18 +37,18 @@ import org.apache.commons.io.FileUtils;
  * @author adrian
  */
 public class CommandClip implements Clip {
-    
-    private final static Logger logger = Logger.getLogger(CommandClip.class.getName());    
+
+    private final static Logger logger = Logger.getLogger(CommandClip.class.getName());
     private final static File CACHEFOLDER = new File(System.getProperty("java.io.tmpdir"), "CLIPCACHE");
-    
+
     private String[] clipcommand;
-    
+
     CommandClip(String[] mpgcommand, String url) {
 
         try {
             clipcommand = new String[mpgcommand.length + 1];
-            System.arraycopy(mpgcommand, 0, clipcommand, 0, mpgcommand.length);   
-            clipcommand[clipcommand.length -1] = getCachedMp3File(url);
+            System.arraycopy(mpgcommand, 0, clipcommand, 0, mpgcommand.length);
+            clipcommand[clipcommand.length - 1] = getCachedMp3File(url);
         } catch (IOException | NoSuchAlgorithmException ex) {
             logger.log(Level.SEVERE, null, ex);
             clipcommand = null;
@@ -60,17 +63,18 @@ public class CommandClip implements Clip {
             logger.log(Level.SEVERE, null, ex);
         }
     }
+
     @Override
     public void stop() {
     }
-    
+
     private static String getCachedMp3File(String url) throws IOException, NoSuchAlgorithmException {
 
         if (url == null) {
             throw new IOException("Null url");
-        } else if (!"http:".equalsIgnoreCase(url.substring(0, 5)) 
-                && !"https:".equalsIgnoreCase(url.substring(0, 6)) 
-                && !"ftp:".equalsIgnoreCase(url.substring(0, 4)) 
+        } else if (!"http:".equalsIgnoreCase(url.substring(0, 5))
+                && !"https:".equalsIgnoreCase(url.substring(0, 6))
+                && !"ftp:".equalsIgnoreCase(url.substring(0, 4))
                 && !"jar:".equalsIgnoreCase(url.substring(0, 4))) {
             // a local file
             return url;
@@ -83,7 +87,7 @@ public class CommandClip implements Clip {
             String cachefilename = Base64.getUrlEncoder().encodeToString(md.digest());
             int iext = url.lastIndexOf('.');
             String extension = iext >= 0 ? url.substring(iext) : "";
-                    
+
             File cachefile = new File(CACHEFOLDER, cachefilename + extension);
 
             if (cachefile.exists()) {

@@ -1,3 +1,6 @@
+//    HelloIoT is a dashboard creator for MQTT
+//    Copyright (C) 2017 Adrián Romero Corchado.
+//
 //    This file is part of HelloIot.
 //
 //    HelloIot is free software: you can redistribute it and/or modify
@@ -12,7 +15,7 @@
 //
 //    You should have received a copy of the GNU General Public License
 //    along with HelloIot.  If not, see <http://www.gnu.org/licenses/>.
-
+//
 package com.adr.helloiot.media;
 
 /**
@@ -20,6 +23,7 @@ package com.adr.helloiot.media;
  * @author adrian
  */
 public class StandardClipFactory implements ClipFactory {
+
     @Override
     public Clip createClip(String url, int cyclecount) {
         return new StandardClip(url, cyclecount);

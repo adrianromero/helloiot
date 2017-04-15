@@ -1,3 +1,6 @@
+//    HelloIoT is a dashboard creator for MQTT
+//    Copyright (C) 2017 Adrián Romero Corchado.
+//
 //    This file is part of HelloIot.
 //
 //    HelloIot is free software: you can redistribute it and/or modify
@@ -12,7 +15,7 @@
 //
 //    You should have received a copy of the GNU General Public License
 //    along with HelloIot.  If not, see <http://www.gnu.org/licenses/>.
-
+//
 package com.adr.helloiot.unit;
 
 import com.adr.hellocommon.dialog.DialogView;
@@ -36,41 +39,41 @@ public abstract class ButtonBase extends Tile implements Unit {
     protected Button button;
     protected boolean confirm = false;
     protected String securitykey = null;
-    protected ResourceBundle resources = ResourceBundle.getBundle("com/adr/helloiot/fxml/basic"); 
-            
+    protected ResourceBundle resources = ResourceBundle.getBundle("com/adr/helloiot/fxml/basic");
+
     protected HelloIoTAppPublic app;
-           
+
     @Override
     public Node constructContent() {
-        
+
         button = new Button();
         button.setContentDisplay(ContentDisplay.TOP);
         button.getStyleClass().add("buttonbase");
-        VBox.setVgrow(button, Priority.SOMETIMES);   
+        VBox.setVgrow(button, Priority.SOMETIMES);
         button.setMaxSize(Integer.MAX_VALUE, Integer.MAX_VALUE);
         button.setFocusTraversable(false);
         button.setOnAction(this::onScriptAction);
         return button;
     }
-    
+
     @Override
     public void construct(HelloIoTAppPublic app) {
         Unit.super.construct(app);
         this.app = app;
-    }   
-    
+    }
+
     public void setConfirm(boolean value) {
         confirm = value;
     }
-    
+
     public boolean getConfirm() {
         return confirm;
     }
-    
+
     public void setSecurityKey(String value) {
         securitykey = value;
     }
-    
+
     public String getSecurityKey() {
         return securitykey;
     }
@@ -82,15 +85,15 @@ public abstract class ButtonBase extends Tile implements Unit {
     public Node getGraphic() {
         return button.getGraphic();
     }
-    
+
     void onScriptAction(ActionEvent event) {
         if (confirm) {
-            MessageUtils.showConfirm(MessageUtils.getRoot(this), getLabel(), resources.getString("message.confirm"), this::doSecurityAction);    
+            MessageUtils.showConfirm(MessageUtils.getRoot(this), getLabel(), resources.getString("message.confirm"), this::doSecurityAction);
         } else {
             doSecurityAction(event);
         }
     }
-    
+
     void doSecurityAction(ActionEvent event) {
         if (securitykey == null) {
             doRun(event);
@@ -109,10 +112,10 @@ public abstract class ButtonBase extends Tile implements Unit {
                 }
             });
             dialog.addButtons(dialog.createCancelButton(), dialog.createOKButton());
-            dialog.show(MessageUtils.getRoot(this));               
+            dialog.show(MessageUtils.getRoot(this));
         }
-        
+
     }
-    
+
     protected abstract void doRun(ActionEvent event);
 }

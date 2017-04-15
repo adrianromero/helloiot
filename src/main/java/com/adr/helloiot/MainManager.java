@@ -1,3 +1,6 @@
+//    HelloIoT is a dashboard creator for MQTT
+//    Copyright (C) 2017 Adrián Romero Corchado.
+//
 //    This file is part of HelloIot.
 //
 //    HelloIot is free software: you can redistribute it and/or modify
@@ -12,7 +15,7 @@
 //
 //    You should have received a copy of the GNU General Public License
 //    along with HelloIot.  If not, see <http://www.gnu.org/licenses/>.
-
+//
 package com.adr.helloiot;
 
 import javafx.application.Application.Parameters;
@@ -23,6 +26,8 @@ import javafx.scene.layout.StackPane;
  * @author adrian
  */
 public interface MainManager {
+
     public void construct(StackPane root, Parameters params);
+
     public void destroy();
 }

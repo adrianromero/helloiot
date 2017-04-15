@@ -1,3 +1,6 @@
+//    HelloIoT is a dashboard creator for MQTT
+//    Copyright (C) 2017 Adrián Romero Corchado.
+//
 //    This file is part of HelloIot.
 //
 //    HelloIot is free software: you can redistribute it and/or modify
@@ -12,7 +15,7 @@
 //
 //    You should have received a copy of the GNU General Public License
 //    along with HelloIot.  If not, see <http://www.gnu.org/licenses/>.
-
+//
 package com.adr.helloiot;
 
 import com.adr.helloiot.device.Device;
@@ -26,9 +29,9 @@ import com.adr.helloiot.device.TransmitterSimple;
  * @author adrian
  */
 public class HelloIoTAppPublic {
-    
+
     private final HelloIoTApp app;
-    
+
     public HelloIoTAppPublic(HelloIoTApp app) {
         this.app = app;
     }
@@ -36,47 +39,60 @@ public class HelloIoTAppPublic {
     public StreamDevice getAllDevices() {
         return new StreamDevice(app.getDevices().stream());
     }
+
     public Device getDevice(String id) {
         return app.getDevice(id);
     }
-    
+
     public byte[] readSYSStatus(String branch) {
         return app.readSYSStatus(branch);
-    }  
+    }
+
     public String loadSYSStatus(String branch) {
         return app.loadSYSStatus(branch);
-    }  
+    }
+
     public void sendSYSStatus(String branch, String message) {
         app.sendSYSStatus(branch, message);
-    }  
+    }
+
     public void sendSYSStatus(String branch, byte[] message) {
         app.sendSYSStatus(branch, message);
-    }  
+    }
+
     public final void sendSYSEvent(String branch, String message) {
         app.sendSYSEvent(branch, message);
     }
+
     public final void sendSYSEvent(String branch, byte[] message) {
         app.sendSYSEvent(branch, message);
     }
-    public void sendSYSEvent(String branch, String message, long delay) {            
+
+    public void sendSYSEvent(String branch, String message, long delay) {
         app.sendSYSEvent(branch, message, delay);
-    }   
-    public void sendSYSEvent(String branch, byte[] message, long delay) {            
+    }
+
+    public void sendSYSEvent(String branch, byte[] message, long delay) {
         app.sendSYSEvent(branch, message, delay);
-    }    
+    }
+
     public final void sendSYSEvent(String branch) {
         app.sendSYSEvent(branch);
-    }   
+    }
+
     public void cancelSYSEventTimer() {
         app.cancelSYSEventTimer();
-    }    
+    }
+
     public DeviceSimple unitPage() {
         return app.getUnitPage();
-    }                
+    }
+
     public DeviceSwitch beeper() {
         return app.getBeeper();
-    }   
+    }
+
     public TransmitterSimple buzzer() {
         return app.getBuzzer();
-    }   
+    }
 }

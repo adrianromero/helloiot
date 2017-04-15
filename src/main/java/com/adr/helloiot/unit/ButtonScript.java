@@ -1,3 +1,6 @@
+//    HelloIoT is a dashboard creator for MQTT
+//    Copyright (C) 2017 Adrián Romero Corchado.
+//
 //    This file is part of HelloIot.
 //
 //    HelloIot is free software: you can redistribute it and/or modify
@@ -12,7 +15,7 @@
 //
 //    You should have received a copy of the GNU General Public License
 //    along with HelloIot.  If not, see <http://www.gnu.org/licenses/>.
-
+//
 package com.adr.helloiot.unit;
 
 import com.adr.hellocommon.dialog.MessageUtils;
@@ -35,7 +38,7 @@ public class ButtonScript extends ButtonBase implements Unit {
         super.construct(app);
         code.construct(app);
     }
-    
+
     public Map<String, Object> getParameters() {
         return params;
     }
@@ -43,7 +46,7 @@ public class ButtonScript extends ButtonBase implements Unit {
     public void setScriptCode(ScriptCode code) {
         this.code = code;
     }
-    
+
     public ScriptCode getScriptCode() {
         return code;
     }
@@ -51,12 +54,12 @@ public class ButtonScript extends ButtonBase implements Unit {
     @Override
     protected void doRun(ActionEvent event) {
         if (code == null) {
-            MessageUtils.showError(MessageUtils.getRoot(this), getLabel(), resources.getString("message.nocode"));        
+            MessageUtils.showError(MessageUtils.getRoot(this), getLabel(), resources.getString("message.nocode"));
         } else {
             code.run(params).exceptionallyFX((ex) -> {
                 MessageUtils.showException(MessageUtils.getRoot(this), getLabel(), resources.getString("message.erroraction"), ex);
                 return null;
-            }); 
+            });
         }
     }
 }

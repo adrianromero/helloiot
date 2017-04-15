@@ -1,3 +1,6 @@
+//    HelloIoT is a dashboard creator for MQTT
+//    Copyright (C) 2017 Adrián Romero Corchado.
+//
 //    This file is part of HelloIot.
 //
 //    HelloIot is free software: you can redistribute it and/or modify
@@ -12,7 +15,7 @@
 //
 //    You should have received a copy of the GNU General Public License
 //    along with HelloIot.  If not, see <http://www.gnu.org/licenses/>.
-
+//
 package com.adr.helloiot.unit;
 
 import javafx.scene.Node;
@@ -25,7 +28,7 @@ import javafx.scene.layout.VBox;
  * @author adrian
  */
 public class StartFlow extends FlowPane implements UnitLine {
-    
+
     public StartFlow() {
         getStyleClass().add("linecontainer");
         VBox.setVgrow(this, Priority.NEVER);
@@ -42,5 +45,5 @@ public class StartFlow extends FlowPane implements UnitLine {
     @Override
     public Node getNode() {
         return this;
-    }   
+    }
 }

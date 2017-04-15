@@ -1,3 +1,6 @@
+//    HelloIoT is a dashboard creator for MQTT
+//    Copyright (C) 2017 Adrián Romero Corchado.
+//
 //    This file is part of HelloIot.
 //
 //    HelloIot is free software: you can redistribute it and/or modify
@@ -12,7 +15,7 @@
 //
 //    You should have received a copy of the GNU General Public License
 //    along with HelloIot.  If not, see <http://www.gnu.org/licenses/>.
-
+//
 package com.adr.helloiot;
 
 import com.adr.helloiot.device.format.StringFormatIdentity;
@@ -27,15 +30,15 @@ import javafx.application.Platform;
  */
 public class Buzzer {
 
-    private final Clip buzzer01;  
-    private final Clip buzzer04;  
-    private final Clip buzzer09;  
-    private final Clip buzzer25;  
-    private final Clip buzzer28;  
-    private final Clip buzzerb04;  
-    private final Clip buzzerb41;  
-    private final Clip buzzerr03;  
-    
+    private final Clip buzzer01;
+    private final Clip buzzer04;
+    private final Clip buzzer09;
+    private final Clip buzzer25;
+    private final Clip buzzer28;
+    private final Clip buzzerb04;
+    private final Clip buzzerb41;
+    private final Clip buzzerr03;
+
     public Buzzer(ClipFactory factory) {
         // http://www.soundjay.com/tos.html
         buzzer01 = factory.createClip(getClass().getResource("/com/adr/helloiot/sounds/beep-01a.wav").toExternalForm());
@@ -47,16 +50,16 @@ public class Buzzer {
         buzzerb41 = factory.createClip(getClass().getResource("/com/adr/helloiot/sounds/button-41.wav").toExternalForm());
         buzzerr03 = factory.createClip(getClass().getResource("/com/adr/helloiot/sounds/telephone-ring-03a.wav").toExternalForm());
     }
-    
+
     @Subscribe
     public void selectUnitPage(EventMessage message) {
         Platform.runLater(() -> updateStatus(message.getMessage()));
-    } 
-    
+    }
+
     private void updateStatus(byte[] status) {
-        
+
         String statusvalue = StringFormatIdentity.INSTANCE.format(status);
-        
+
         if ("ERROR".equals(statusvalue)) {
             buzzer01.play();
         } else if ("BEEP1".equals(statusvalue)) {
@@ -75,6 +78,6 @@ public class Buzzer {
             buzzerr03.play();
         } else {
             buzzer01.play();
-        }        
+        }
     }
 }

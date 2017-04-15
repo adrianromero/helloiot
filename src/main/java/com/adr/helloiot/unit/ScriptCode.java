@@ -1,3 +1,6 @@
+//    HelloIoT is a dashboard creator for MQTT
+//    Copyright (C) 2017 Adrián Romero Corchado.
+//
 //    This file is part of HelloIot.
 //
 //    HelloIot is free software: you can redistribute it and/or modify
@@ -12,7 +15,7 @@
 //
 //    You should have received a copy of the GNU General Public License
 //    along with HelloIot.  If not, see <http://www.gnu.org/licenses/>.
-
+//
 package com.adr.helloiot.unit;
 
 import com.adr.helloiot.HelloIoTAppPublic;
@@ -33,40 +36,40 @@ import javax.script.ScriptException;
  */
 @DefaultProperty("text")
 public class ScriptCode {
-    
+
     private static final ScriptEngineManager SCRIPTMANAGER = new ScriptEngineManager();
-    
+
     private String engine = "nashorn";
     private String text = null;
-    
+
     private HelloIoTAppPublic app;
 
     public String getText() {
         return text;
     }
-    
+
     public void setText(String text) {
         this.text = text;
     }
-    
+
     public String getEngine() {
         return engine;
     }
-    
+
     public void setEngine(String engine) {
         this.engine = engine;
     }
-    
+
     public void construct(HelloIoTAppPublic app) {
-        this.app = app;       
+        this.app = app;
     }
-    
+
     public CompletableAsync<Object> run() throws ScriptException {
         return run(null);
     }
-    
+
     public CompletableAsync<Object> run(Map<String, Object> params) {
-        
+
         return CompletableAsync.supplyAsync(() -> {
             try {
                 ScriptEngine scriptengine = SCRIPTMANAGER.getEngineByName(engine);
@@ -75,17 +78,17 @@ public class ScriptCode {
                 }
                 scriptengine.put("_app", (Supplier) () -> app);
                 scriptengine.put("_allDevices", (Supplier) () -> app.getAllDevices());
-                scriptengine.put("_device", (Function<String,?>) (id) -> app.getDevice(id));
+                scriptengine.put("_device", (Function<String, ?>) (id) -> app.getDevice(id));
                 return scriptengine.eval(text);
             } catch (ScriptException ex) {
                 throw new CompletionException(ex);
             }
         });
     }
-    
+
     public static ScriptCode valueOf(String value) {
         ScriptCode sc = new ScriptCode();
         sc.setText(value);
         return sc;
-    }    
+    }
 }

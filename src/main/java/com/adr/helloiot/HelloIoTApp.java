@@ -1,3 +1,6 @@
+//    HelloIoT is a dashboard creator for MQTT
+//    Copyright (C) 2017 Adrián Romero Corchado.
+//
 //    This file is part of HelloIot.
 //
 //    HelloIot is free software: you can redistribute it and/or modify
@@ -12,7 +15,7 @@
 //
 //    You should have received a copy of the GNU General Public License
 //    along with HelloIot.  If not, see <http://www.gnu.org/licenses/>.
-
+//
 package com.adr.helloiot;
 
 import com.adr.fonticon.FontAwesome;
@@ -56,118 +59,118 @@ import javafx.util.Duration;
  * @author adrian
  */
 public class HelloIoTApp {
-        
+
     private final static Logger LOGGER = Logger.getLogger(HelloIoTApp.class.getName());
-    
+
     public final static String SYS_HELLOIOT = "_sys_helloIoT/";
-    public final static String SYS_VALUE_TOPIC = SYS_HELLOIOT + "sysvalue" ;
-    public final static String SYS_VALUE_ID = "SYSVALUESID" ;   
-    public final static String SYS_EVENT_TOPIC = SYS_HELLOIOT + "sysevent" ;   
-    public final static String SYS_EVENT_ID = "SYSEVENTSID" ;  
-      
+    public final static String SYS_VALUE_TOPIC = SYS_HELLOIOT + "sysvalue";
+    public final static String SYS_VALUE_ID = "SYSVALUESID";
+    public final static String SYS_EVENT_TOPIC = SYS_HELLOIOT + "sysevent";
+    public final static String SYS_EVENT_ID = "SYSEVENTSID";
+
     public final static String SYS_UNITPAGE_ID = "SYSUNITPAGEID";
     public final static String SYS_BEEPER_ID = "SYSBEEPERID";
-    public final static String SYS_BUZZER_ID = "SYSBUZZERID";    
-    
+    public final static String SYS_BUZZER_ID = "SYSBUZZERID";
+
     private final List<UnitPage> appunitpages = new ArrayList<>();
-    private final List<Unit> appunits = new ArrayList<>();    
-    private final List<Device> appdevices = new ArrayList<>();    
-    
+    private final List<Unit> appunits = new ArrayList<>();
+    private final List<Device> appdevices = new ArrayList<>();
+
     private final ApplicationConfig config;
     private final MQTTManager mqttmanager;
     private final MQTTMainNode mqttnode;
     private final ResourceBundle resources;
-    
+
     private HelloIoTAppPublic apppublic = null;
     private DeviceSimple appunitpage;
     private DeviceSwitch appbeeper;
     private TransmitterSimple appbuzzer;
-    
+
     private EventHandler<ActionEvent> exitevent = null;
     private final Runnable styleConnection;
-    
+
     public HelloIoTApp(ApplicationConfig config) {
-        
+
         this.config = config;
 
         // Load resources
-        resources = ResourceBundle.getBundle("com/adr/helloiot/fxml/main");      
-        
+        resources = ResourceBundle.getBundle("com/adr/helloiot/fxml/main");
+
         // System devices units
         addSystemDevicesUnits(config.mqtt_topicapp);
-        
+
         // MQTT Manager   
         mqttmanager = new MQTTManager(
                 config.mqtt_url,
-                config.mqtt_username, 
+                config.mqtt_username,
                 config.mqtt_password,
                 config.mqtt_clientid,
-                config.mqtt_connectiontimeout, 
+                config.mqtt_connectiontimeout,
                 config.mqtt_keepaliveinterval,
-                config.mqtt_defaultqos, 
+                config.mqtt_defaultqos,
                 config.mqtt_version,
                 config.mqtt_cleansession,
-                null, 
+                null,
                 config.mqtt_topicprefix);
         mqttmanager.setOnConnectionLost(t -> {
             LOGGER.log(Level.WARNING, "Connection lost to broker.", t);
             Platform.runLater(() -> {
                 stopUnits();
-                connection();             
-            });                
-        });      
-        
+                connection();
+            });
+        });
+
         styleConnection = config.app_retryconnection ? this::tryConnection : this::oneConnection;
 
         mqttnode = new MQTTMainNode(
-                this, 
-                Platform.isSupported(ConditionalFeature.MEDIA) ? new StandardClipFactory(): new SilentClipFactory(),
+                this,
+                Platform.isSupported(ConditionalFeature.MEDIA) ? new StandardClipFactory() : new SilentClipFactory(),
                 config.app_clock,
                 config.app_exitbutton);
     }
-    
+
     public void addUnitPages(List<UnitPage> unitpages) {
         appunitpages.addAll(unitpages);
     }
-    
+
     public void addDevicesUnits(List<Device> devices, List<Unit> units) {
         appdevices.addAll(devices);
-        appunits.addAll(units);         
+        appunits.addAll(units);
     }
-    
+
     public void addServiceDevicesUnits() {
         ServiceLoader<ApplicationDevicesUnits> devicesunitsloader = ServiceLoader.load(ApplicationDevicesUnits.class);
         devicesunitsloader.forEach(c -> {
-            addDevicesUnits(c.getDevices(), c.getUnits());              
-        });        
+            addDevicesUnits(c.getDevices(), c.getUnits());
+        });
     }
-    
+
     private void addSystemDevicesUnits(String topicapp) {
         TreePublish sysevents = new TreePublish();
         sysevents.setTopic(SYS_EVENT_TOPIC);
         sysevents.setId(SYS_EVENT_ID);
-        
+
         TreePublishSubscribe sysstatus = new TreePublishSubscribe();
         sysstatus.setTopic(SYS_VALUE_TOPIC);
         sysstatus.setId(SYS_VALUE_ID);
-     
+
         DeviceSimple unitpage = new DeviceSimple();
         unitpage.setTopic(topicapp + "/unitpage");
         unitpage.setId(SYS_UNITPAGE_ID);
-         
+
         DeviceSwitch beeper = new DeviceSwitch();
         beeper.setTopic(topicapp + "/beeper");
         beeper.setId(SYS_BEEPER_ID);
-        
+
         TransmitterSimple buzzer = new TransmitterSimple();
         buzzer.setTopic(topicapp + "/buzzer");
         buzzer.setId(SYS_BUZZER_ID);
-    
-        addDevicesUnits(Arrays.asList(sysevents, sysstatus, unitpage, beeper, buzzer), Collections.emptyList());        
+
+        addDevicesUnits(Arrays.asList(sysevents, sysstatus, unitpage, beeper, buzzer), Collections.emptyList());
     }
-    
+
     public void addFXMLFileDevicesUnits(String filedescriptor) {
-        
+
         try {
             URL fxmlurl;
             ResourceBundle fxmlresources;
@@ -181,27 +184,27 @@ public class HelloIoTApp {
                 File file = new File(filedescriptor);
                 URL[] urls = {file.getAbsoluteFile().getParentFile().toURI().toURL()};
                 ClassLoader loader = new URLClassLoader(urls);
-                fxmlresources = ResourceBundle.getBundle(file.getName(), Locale.getDefault(), loader);  
+                fxmlresources = ResourceBundle.getBundle(file.getName(), Locale.getDefault(), loader);
             }
 
             FXMLLoader fxmlloader;
             fxmlloader = new FXMLLoader(fxmlurl);
             if (fxmlresources != null) {
                 fxmlloader.setResources(fxmlresources);
-            } 
+            }
             DevicesUnits du = fxmlloader.load();
             addDevicesUnits(du.getDevices(), du.getUnits());
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }
     }
-    
+
     public void setOnDisconnectAction(EventHandler<ActionEvent> exitevent) {
         this.exitevent = exitevent;
     }
-    
+
     public void startAndConstruct() {
-        
+
         // External services
         ServiceLoader<ApplicationUnitPages> unitpagesloader = ServiceLoader.load(ApplicationUnitPages.class);
         unitpagesloader.forEach(c -> {
@@ -210,28 +213,28 @@ public class HelloIoTApp {
         // Add "main" unit page if needed
         if (!appunitpages.stream().anyMatch(p -> "main".equals(p.getName()))) {
             UnitPage main = new UnitPage("main", IconBuilder.create(FontAwesome.FA_HOME, 24.0).build(), resources.getString("page.main"));
-            main.setOrder(0);     
+            main.setOrder(0);
             appunitpages.add(main);
-        }        
+        }
         mqttnode.construct(appunitpages);
-        
+
         // Construct All
-        for (Unit s: appunits) {
+        for (Unit s : appunits) {
             s.construct(this.getAppPublic());
         }
-        for (Device d: appdevices) {
+        for (Device d : appdevices) {
             d.construct(mqttmanager);
-        }  
-        
+        }
+
         connection();
     }
-    
+
     private void connection() {
-         // connect !!!
+        // connect !!!
         mqttnode.showConnecting();
-        styleConnection.run();       
+        styleConnection.run();
     }
-    
+
     private void oneConnection() {
         mqttmanager.open().thenAcceptFX((v) -> {
             // success
@@ -243,9 +246,9 @@ public class HelloIoTApp {
                 exitevent.handle(new ActionEvent());
             });
             return null;
-        });         
+        });
     }
-    
+
     private void tryConnection() {
         mqttmanager.open().thenAcceptFX((v) -> {
             // success
@@ -254,69 +257,74 @@ public class HelloIoTApp {
         }).exceptionallyFX(ex -> {
             new Timeline(new KeyFrame(Duration.millis(2500), ev -> {
                 tryConnection();
-            })).play();  
+            })).play();
             return null;
-        }); 
-    }    
-    
+        });
+    }
+
     public void stopAndDestroy() {
         stopUnits();
         mqttmanager.close();
-                
+
         // Destroy all units
-        for (Unit s: appunits) {
+        for (Unit s : appunits) {
             s.destroy();
-        }         
-        for (Device d: appdevices) {
+        }
+        for (Device d : appdevices) {
             d.destroy();
-        }  
-        
+        }
+
         mqttnode.destroy();
     }
-    
+
     private void startUnits() {
-        
-        initFirstTime();          
-   
-        for (Unit s: appunits) {
+
+        initFirstTime();
+
+        for (Unit s : appunits) {
             s.start();
-        }               
+        }
     }
-    
+
     private void stopUnits() {
-        for (Unit s: appunits) {
+        for (Unit s : appunits) {
             s.stop();
-        }        
+        }
     }
 
     public MQTTMainNode getMQTTNode() {
         return mqttnode;
     }
-    
+
     public DeviceSimple getUnitPage() {
         if (appunitpage == null) {
             appunitpage = ((DeviceSimple) getDevice(SYS_UNITPAGE_ID));
         }
         return appunitpage;
     }
+
     public DeviceSwitch getBeeper() {
         if (appbeeper == null) {
             appbeeper = ((DeviceSwitch) getDevice(SYS_BEEPER_ID));
         }
         return appbeeper;
     }
+
     public TransmitterSimple getBuzzer() {
         if (appbuzzer == null) {
             appbuzzer = ((TransmitterSimple) getDevice(SYS_BUZZER_ID));
         }
         return appbuzzer;
     }
+
     public List<Unit> getUnits() {
         return appunits;
     }
+
     public List<Device> getDevices() {
         return appdevices;
     }
+
     public Device getDevice(String id) {
         for (Device d : appdevices) {
             if (id.equals(d.getId())) {
@@ -324,35 +332,44 @@ public class HelloIoTApp {
             }
         }
         return null;
-    } 
-    
+    }
+
     public byte[] readSYSStatus(String branch) {
         return ((TreePublishSubscribe) getDevice(SYS_VALUE_ID)).readMessage(branch);
     }
+
     public String loadSYSStatus(String branch) {
         return ((TreePublishSubscribe) getDevice(SYS_VALUE_ID)).loadMessage(branch);
     }
+
     public void sendSYSStatus(String branch, String message) {
         ((TreePublishSubscribe) getDevice(SYS_VALUE_ID)).sendMessage(branch, message);
-    }  
+    }
+
     public void sendSYSStatus(String branch, byte[] message) {
         ((TreePublishSubscribe) getDevice(SYS_VALUE_ID)).sendMessage(branch, message);
-    }  
-   public final void sendSYSEvent(String branch, String message) {
+    }
+
+    public final void sendSYSEvent(String branch, String message) {
         ((TreePublish) getDevice(SYS_EVENT_ID)).sendMessage(branch, message);
     }
-   public final void sendSYSEvent(String branch, byte[] message) {
+
+    public final void sendSYSEvent(String branch, byte[] message) {
         ((TreePublish) getDevice(SYS_EVENT_ID)).sendMessage(branch, message);
     }
-    public void sendSYSEvent(String branch, String message, long delay) {            
-        ((TreePublish) getDevice(SYS_EVENT_ID)).sendMessage(branch, message, delay);
-    }   
-    public void sendSYSEvent(String branch, byte[] message, long delay) {            
+
+    public void sendSYSEvent(String branch, String message, long delay) {
         ((TreePublish) getDevice(SYS_EVENT_ID)).sendMessage(branch, message, delay);
     }
+
+    public void sendSYSEvent(String branch, byte[] message, long delay) {
+        ((TreePublish) getDevice(SYS_EVENT_ID)).sendMessage(branch, message, delay);
+    }
+
     public final void sendSYSEvent(String branch) {
         ((TreePublish) getDevice(SYS_EVENT_ID)).sendMessage(branch);
-    }   
+    }
+
     public void cancelSYSEventTimer() {
         ((TreePublish) getDevice(SYS_EVENT_ID)).cancelTimer();
     }
@@ -363,8 +380,8 @@ public class HelloIoTApp {
         }
         return apppublic;
     }
-    
-    private void initFirstTime() {   
+
+    private void initFirstTime() {
 
         // Check if it is first time  
         File freshfile = new File(System.getProperty("user.home"), ".helloiot-" + CryptUtils.hashMD5(config.mqtt_url + config.mqtt_topicapp));
@@ -372,13 +389,13 @@ public class HelloIoTApp {
             // This is the first time initialization
             LOGGER.log(Level.INFO, "Executing unit page initialization.");
             getUnitPage().sendStatus("main");
-            LOGGER.log(Level.INFO, "Finished unitpage initialization.");   
+            LOGGER.log(Level.INFO, "Finished unitpage initialization.");
         }
-        
+
         try {
             freshfile.createNewFile();
         } catch (IOException ex) {
             LOGGER.log(Level.WARNING, "Cannot create configuration file.", ex);
-        }        
-    }    
+        }
+    }
 }

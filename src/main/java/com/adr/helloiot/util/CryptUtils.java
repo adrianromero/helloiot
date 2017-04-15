@@ -1,3 +1,6 @@
+//    HelloIoT is a dashboard creator for MQTT
+//    Copyright (C) 2017 Adrián Romero Corchado.
+//
 //    This file is part of HelloIot.
 //
 //    HelloIot is free software: you can redistribute it and/or modify
@@ -12,7 +15,7 @@
 //
 //    You should have received a copy of the GNU General Public License
 //    along with HelloIot.  If not, see <http://www.gnu.org/licenses/>.
-
+//
 package com.adr.helloiot.util;
 
 import com.google.common.base.Strings;
@@ -27,16 +30,16 @@ import java.util.Base64;
  * @author adrian
  */
 public class CryptUtils {
-    
-    final protected static char[] HEXARRAY=  {'0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F'};
-    
+
+    final protected static char[] HEXARRAY = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
+
     public static byte[] generateSalt() {
         SecureRandom random = new SecureRandom();
         byte salt[] = new byte[32];
-        random.nextBytes(salt);     
+        random.nextBytes(salt);
         return salt;
     }
-    
+
     public static String hexString(byte[] bytes) {
         char[] hexChars = new char[bytes.length * 2];
         for (int i = 0; i < bytes.length; i++) {
@@ -45,8 +48,8 @@ public class CryptUtils {
             hexChars[i * 2 + 1] = HEXARRAY[v & 0x0F];
         }
         return new String(hexChars);
-    }    
-    
+    }
+
     public static String hashMD5(String input) {
         try {
             // generate hash
@@ -56,9 +59,9 @@ public class CryptUtils {
             return hexString(hashedBytes);
         } catch (NoSuchAlgorithmException ex) {
             throw new RuntimeException(ex);
-        }        
+        }
     }
-    
+
     public static String hashsaltPassword(String input, byte[] salt) {
         try {
             // generate hash
@@ -72,22 +75,22 @@ public class CryptUtils {
             throw new RuntimeException(ex);
         }
     }
-    
+
     public static boolean validatePassword(String password, String hashsalt) {
-        
+
         if (Strings.isNullOrEmpty(password) && Strings.isNullOrEmpty(hashsalt)) {
             return true; // empty password. 
         } else if (Strings.isNullOrEmpty(password) || Strings.isNullOrEmpty(hashsalt)) {
             return false; // password not empty but hashsalt empty or vice
         } else {
-            String [] splitted = hashsalt.split(":");
-            
+            String[] splitted = hashsalt.split(":");
+
             if (splitted.length != 3 || !"password".equals(splitted[0])) {
                 return false;
             }
-            
+
             byte[] salt = Base64.getDecoder().decode(splitted[1]);
-                
+
             return hashsaltPassword(password, salt).equals(hashsalt);
         }
     }

@@ -1,3 +1,6 @@
+//    HelloIoT is a dashboard creator for MQTT
+//    Copyright (C) 2017 Adrián Romero Corchado.
+//
 //    This file is part of HelloIot.
 //
 //    HelloIot is free software: you can redistribute it and/or modify
@@ -12,7 +15,7 @@
 //
 //    You should have received a copy of the GNU General Public License
 //    along with HelloIot.  If not, see <http://www.gnu.org/licenses/>.
-
+//
 package com.adr.helloiot.device;
 
 import com.adr.helloiot.device.format.StringFormatDecimal;
@@ -21,11 +24,11 @@ import com.adr.helloiot.device.format.StringFormatDecimal;
  *
  * @author adrian
  */
-public class TransmitterNumber extends TransmitterSimple { 
-    
+public class TransmitterNumber extends TransmitterSimple {
+
     private double levelmax = 100.0;
     private double levelmin = 0.0;
-    
+
     public TransmitterNumber() {
         super();
         setFormat(StringFormatDecimal.DECIMAL);
@@ -42,17 +45,17 @@ public class TransmitterNumber extends TransmitterSimple {
 
     public final void setLevelMax(double levelmax) {
         this.levelmax = levelmax;
-    }   
-    
+    }
+
     public final double getLevelMax() {
         return levelmax;
     }
-    
+
     public final void setLevelMin(double levelmin) {
         this.levelmin = levelmin;
     }
-    
+
     public final double getLevelMin() {
         return levelmin;
-    }    
+    }
 }

@@ -1,3 +1,6 @@
+//    HelloIoT is a dashboard creator for MQTT
+//    Copyright (C) 2017 Adrián Romero Corchado.
+//
 //    This file is part of HelloIot.
 //
 //    HelloIot is free software: you can redistribute it and/or modify
@@ -12,7 +15,7 @@
 //
 //    You should have received a copy of the GNU General Public License
 //    along with HelloIot.  If not, see <http://www.gnu.org/licenses/>.
-
+//
 package com.adr.helloiot;
 
 import com.google.common.base.Strings;
@@ -27,18 +30,18 @@ import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
  */
 public class MainManagerPlatform implements MainManager {
 
-    private HelloIoTApp helloiotapp = null; 
+    private HelloIoTApp helloiotapp = null;
 
     @Override
     public void construct(StackPane root, Parameters params) {
-        
+
         ConfigProperties configprops = new ConfigProperties(params);
         try {
             configprops.load();
         } catch (IOException ex) {
             throw new RuntimeException("Configuration file cannot be loaded.", ex);
         }
-        
+
         ApplicationConfig config = new ApplicationConfig();
         config.mqtt_url = configprops.getProperty("mqtt.url", "tcp://localhost:1883");
         config.mqtt_username = configprops.getProperty("mqtt.username", "");
@@ -46,37 +49,37 @@ public class MainManagerPlatform implements MainManager {
         config.mqtt_clientid = configprops.getProperty("mqtt.clientid", "");
         config.mqtt_connectiontimeout = Integer.parseInt(configprops.getProperty("mqtt.connectiontimeout", Integer.toString(MqttConnectOptions.CONNECTION_TIMEOUT_DEFAULT)));
         config.mqtt_keepaliveinterval = Integer.parseInt(configprops.getProperty("mqtt.keepaliveinterval", Integer.toString(MqttConnectOptions.KEEP_ALIVE_INTERVAL_DEFAULT)));
-        config.mqtt_defaultqos =  Integer.parseInt(configprops.getProperty("mqtt.defaultqos", "1"));
+        config.mqtt_defaultqos = Integer.parseInt(configprops.getProperty("mqtt.defaultqos", "1"));
         config.mqtt_version = Integer.parseInt(configprops.getProperty("mqtt.version", Integer.toString(MqttConnectOptions.MQTT_VERSION_DEFAULT))); // MQTT_VERSION_DEFAULT = 0; MQTT_VERSION_3_1 = 3; MQTT_VERSION_3_1_1 = 4;
         config.mqtt_cleansession = Boolean.parseBoolean(configprops.getProperty("mqtt.cleansession", Boolean.toString(MqttConnectOptions.CLEAN_SESSION_DEFAULT)));
-        config.mqtt_topicprefix =  configprops.getProperty("mqtt.topicprefix", "");;
-        config.mqtt_topicapp =  configprops.getProperty("mqtt.topicapp", "_LOCAL_/_sys_helloIoT/mainapp");
-        
+        config.mqtt_topicprefix = configprops.getProperty("mqtt.topicprefix", "");;
+        config.mqtt_topicapp = configprops.getProperty("mqtt.topicapp", "_LOCAL_/_sys_helloIoT/mainapp");
+
         config.app_clock = Boolean.parseBoolean(configprops.getProperty("app.clock", "true"));
         config.app_exitbutton = Boolean.parseBoolean(configprops.getProperty("app.exitbutton", "true"));
         config.app_retryconnection = true;
-        
+
         helloiotapp = new HelloIoTApp(config);
-        
+
         // Add all devices and units
         helloiotapp.addServiceDevicesUnits();
         String devproperty = configprops.getProperty("devicesunits", null);
         if (!Strings.isNullOrEmpty(devproperty)) {
-            for (String s: devproperty.split(",")) {
+            for (String s : devproperty.split(",")) {
                 helloiotapp.addFXMLFileDevicesUnits(s);
             }
         }
-    
+
         helloiotapp.setOnDisconnectAction(event -> {
-            root.getScene().getWindow().hide();            
+            root.getScene().getWindow().hide();
         });
-        
+
         root.getChildren().add(helloiotapp.getMQTTNode().getNode());
-        helloiotapp.startAndConstruct();        
+        helloiotapp.startAndConstruct();
     }
-    
+
     @Override
-    public void destroy() {  
+    public void destroy() {
         helloiotapp.stopAndDestroy();
         helloiotapp = null;
     }

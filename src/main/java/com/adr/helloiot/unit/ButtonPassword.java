@@ -1,3 +1,6 @@
+//    HelloIoT is a dashboard creator for MQTT
+//    Copyright (C) 2017 Adrián Romero Corchado.
+//
 //    This file is part of HelloIot.
 //
 //    HelloIot is free software: you can redistribute it and/or modify
@@ -12,7 +15,7 @@
 //
 //    You should have received a copy of the GNU General Public License
 //    along with HelloIot.  If not, see <http://www.gnu.org/licenses/>.
-
+//
 package com.adr.helloiot.unit;
 
 import com.adr.hellocommon.dialog.DialogView;
@@ -30,10 +33,10 @@ import javafx.event.ActionEvent;
 public class ButtonPassword extends ButtonBase implements Unit {
 
     private final Map<String, Object> params = new HashMap<>();
-    
+
     @Override
     protected void doRun(ActionEvent event) {
-        
+
         displayPasswordDialog(resources.getString("label.newpassword"), (String p1) -> {
             displayPasswordDialog(resources.getString("label.repeatpassword"), (String p2) -> {
                 if (p1.equals(p2)) {
@@ -42,10 +45,10 @@ public class ButtonPassword extends ButtonBase implements Unit {
                 } else {
                     MessageUtils.showWarning(MessageUtils.getRoot(this), getLabel(), resources.getString("message.passworchangeerror"));
                 }
-            });            
+            });
         });
     }
-    
+
     void displayPasswordDialog(String title, Consumer<String> password) {
         SecurityKeyboard sec = new SecurityKeyboard();
         DialogView dialog = new DialogView();
@@ -55,6 +58,6 @@ public class ButtonPassword extends ButtonBase implements Unit {
             password.accept(sec.getPassword());
         });
         dialog.addButtons(dialog.createCancelButton(), dialog.createOKButton());
-        dialog.show(MessageUtils.getRoot(this));              
+        dialog.show(MessageUtils.getRoot(this));
     }
 }

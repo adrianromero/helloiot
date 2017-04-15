@@ -1,3 +1,6 @@
+//    HelloIoT is a dashboard creator for MQTT
+//    Copyright (C) 2017 Adrián Romero Corchado.
+//
 //    This file is part of HelloIot.
 //
 //    HelloIot is free software: you can redistribute it and/or modify
@@ -12,7 +15,7 @@
 //
 //    You should have received a copy of the GNU General Public License
 //    along with HelloIot.  If not, see <http://www.gnu.org/licenses/>.
-
+//
 package com.adr.helloiot.unit;
 
 import com.adr.fonticon.FontAwesome;
@@ -38,53 +41,61 @@ import javafx.scene.layout.Pane;
  * @author adrian
  */
 public class EditStatus extends Tile implements Unit {
-    
+
     protected ResourceBundle resources = ResourceBundle.getBundle("com/adr/helloiot/fxml/basic");
-    
-    @FXML private TextInputControl statusview;
-    @FXML private Button editaction;
-    @FXML private TextInputControl statusedit;
-    @FXML private Button okaction;
-    @FXML private Button cancelaction;  
-    @FXML private Pane boxview;
-    @FXML private Pane boxedit;
-    
+
+    @FXML
+    private TextInputControl statusview;
+    @FXML
+    private Button editaction;
+    @FXML
+    private TextInputControl statusedit;
+    @FXML
+    private Button okaction;
+    @FXML
+    private Button cancelaction;
+    @FXML
+    private Pane boxview;
+    @FXML
+    private Pane boxedit;
+
     private DeviceSimple device = null;
-      
+
     @Override
-    public Node constructContent() {   
-        return loadFXML("/com/adr/helloiot/fxml/editstatus.fxml");       
-    } 
-    
-    @FXML public void initialize() {
+    public Node constructContent() {
+        return loadFXML("/com/adr/helloiot/fxml/editstatus.fxml");
+    }
+
+    @FXML
+    public void initialize() {
         editaction.setGraphic(IconBuilder.create(FontAwesome.FA_EDIT, 16).styleClass("icon-fill").build());
         okaction.setGraphic(IconBuilder.create(FontAwesome.FA_CHECK, 16).styleClass("icon-fill").build());
         cancelaction.setGraphic(IconBuilder.create(FontAwesome.FA_REMOVE, 16).styleClass("icon-fill").build());
         setDisable(true);
     }
-    
+
     @Subscribe
     public void receivedStatus(EventMessage message) {
-        Platform.runLater(() -> updateStatus(message.getMessage()));  
+        Platform.runLater(() -> updateStatus(message.getMessage()));
     }
 
     private void updateStatus(byte[] status) {
         statusview.setText(device.getFormat().format(status));
-    }  
-    
+    }
+
     @Override
     public void construct(HelloIoTAppPublic app) {
         Unit.super.construct(app);
         device.subscribeStatus(this);
-        updateStatus(null);        
+        updateStatus(null);
     }
 
     @Override
     public void destroy() {
         Unit.super.destroy();
-        device.unsubscribeStatus(this);    
-    }    
-    
+        device.unsubscribeStatus(this);
+    }
+
     public void setDevice(DeviceSimple device) {
         this.device = device;
         if (Strings.isNullOrEmpty(getLabel())) {
@@ -96,27 +107,29 @@ public class EditStatus extends Tile implements Unit {
         } else {
             statusview.getStyleClass().remove("textinput-right");
             statusedit.getStyleClass().remove("textinput-right");
-        }        
+        }
     }
-    
+
     public DeviceSimple getDevice() {
         return device;
     }
-    
+
     public void setReadOnly(boolean value) {
         editaction.setVisible(!value);
     }
-    
+
     public boolean isReadOnly() {
         return !editaction.isVisible();
     }
-    
-    @FXML void onCancelEvent(ActionEvent event) {
+
+    @FXML
+    void onCancelEvent(ActionEvent event) {
         boxedit.setVisible(false);
         boxview.setVisible(true);
     }
 
-    @FXML void onEditEvent(ActionEvent event) {
+    @FXML
+    void onEditEvent(ActionEvent event) {
         boxview.setVisible(false);
         boxedit.setVisible(true);
         statusedit.setText(device.getFormat().format(device.readStatus()));
@@ -124,17 +137,19 @@ public class EditStatus extends Tile implements Unit {
         statusedit.requestFocus();
     }
 
-    @FXML void onOkEvent(ActionEvent event) {
-        try{
+    @FXML
+    void onOkEvent(ActionEvent event) {
+        try {
             boxedit.setVisible(false);
             boxview.setVisible(true);
             device.sendStatus(device.getFormat().parse(statusedit.getText()));
         } catch (IllegalArgumentException ex) {
-            MessageUtils.showException(MessageUtils.getRoot(this), resources.getString("label.sendstatus"), resources.getString("message.valueerror"), ex);    
-        }    }
-    
+            MessageUtils.showException(MessageUtils.getRoot(this), resources.getString("label.sendstatus"), resources.getString("message.valueerror"), ex);
+        }
+    }
+
     @FXML
     void onEnterEvent(ActionEvent event) {
         onOkEvent(event);
-    }    
+    }
 }

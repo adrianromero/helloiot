@@ -1,3 +1,6 @@
+//    HelloIoT is a dashboard creator for MQTT
+//    Copyright (C) 2017 Adrián Romero Corchado.
+//
 //    This file is part of HelloIot.
 //
 //    HelloIot is free software: you can redistribute it and/or modify
@@ -12,7 +15,7 @@
 //
 //    You should have received a copy of the GNU General Public License
 //    along with HelloIot.  If not, see <http://www.gnu.org/licenses/>.
-
+//
 package com.adr.helloiot.unit;
 
 import com.adr.helloiot.graphic.IconStatus;
@@ -32,55 +35,55 @@ public class ButtonSimple extends ButtonBase implements Unit {
 
     private final static IconStatus ICONNULL = new IconNull();
     private IconStatus iconbuilder = ICONNULL;
-    
+
     private DeviceSimple device = null;
 
     @Subscribe
     public void receivedStatus(EventMessage message) {
-        Platform.runLater(() -> updateStatus(message.getMessage()));  
+        Platform.runLater(() -> updateStatus(message.getMessage()));
     }
-    
+
     private void updateStatus(byte[] status) {
         button.setGraphic(iconbuilder.buildIcon(device.getFormat().format(status)));
     }
-    
+
     @Override
     public void construct(HelloIoTAppPublic app) {
         super.construct(app);
         device.subscribeStatus(this);
-        updateStatus(null);        
+        updateStatus(null);
     }
 
     @Override
     public void destroy() {
         super.destroy();
-        device.unsubscribeStatus(this);    
+        device.unsubscribeStatus(this);
     }
-    
+
     public void setDevice(DeviceSimple device) {
         this.device = device;
         if (getLabel() == null) {
             setLabel(device.getProperties().getProperty("label"));
-        }     
+        }
         if (getIconStatus() == ICONNULL) {
             setIconStatus(device.getIconStatus());
         }
     }
-    
+
     public DeviceSimple getDevice() {
         return device;
     }
-    
+
     public void setIconStatus(IconStatus iconbuilder) {
         this.iconbuilder = iconbuilder;
     }
-    
+
     public IconStatus getIconStatus() {
         return iconbuilder;
-    } 
+    }
 
     @Override
     protected void doRun(ActionEvent event) {
         device.sendStatus(device.nextStatus());
-    }    
+    }
 }

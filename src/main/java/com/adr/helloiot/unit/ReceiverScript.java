@@ -1,3 +1,6 @@
+//    HelloIoT is a dashboard creator for MQTT
+//    Copyright (C) 2017 Adrián Romero Corchado.
+//
 //    This file is part of HelloIot.
 //
 //    HelloIot is free software: you can redistribute it and/or modify
@@ -12,7 +15,7 @@
 //
 //    You should have received a copy of the GNU General Public License
 //    along with HelloIot.  If not, see <http://www.gnu.org/licenses/>.
-
+//
 package com.adr.helloiot.unit;
 
 import com.adr.helloiot.EventMessage;
@@ -28,40 +31,40 @@ import java.util.logging.Logger;
  * @author adrian
  */
 public class ReceiverScript extends ReceiverBase {
-           
+
     private final static Logger logger = Logger.getLogger(ReceiverScript.class.getName());
-           
+
     private final Map<String, Object> params = new HashMap<>();
     private ScriptCode code = null;
     private String condition = null;
-    
+
     @Subscribe
     public void receivedStatus(EventMessage message) {
-         if (code == null) {
+        if (code == null) {
             logger.warning("There is no action code to execute.");
         } else {
             String topic = message.getTopic();
             byte[] status = message.getMessage();
-            if (condition == null || (this.getDevice().getFormat().format(status).matches(condition))) {           
+            if (condition == null || (this.getDevice().getFormat().format(status).matches(condition))) {
                 Map<String, Object> mergedParams = new HashMap<>();
                 mergedParams.putAll(params);
                 mergedParams.put("_device", getDevice());
                 mergedParams.put("_topic", topic);
                 mergedParams.put("_status", status);
                 code.run(mergedParams).exceptionally((ex) -> {
-                    logger.log(Level.WARNING, "There has been an error running this action", ex );
+                    logger.log(Level.WARNING, "There has been an error running this action", ex);
                     return null;
                 });
             }
-        }  
-    } 
-    
+        }
+    }
+
     @Override
     public void construct(HelloIoTAppPublic app) {
         super.construct(app);
         code.construct(app);
     }
-    
+
     public Map<String, Object> getParameters() {
         return params;
     }
@@ -69,7 +72,7 @@ public class ReceiverScript extends ReceiverBase {
     public void setScriptCode(ScriptCode code) {
         this.code = code;
     }
-    
+
     public ScriptCode getScriptCode() {
         return code;
     }
@@ -77,8 +80,8 @@ public class ReceiverScript extends ReceiverBase {
     public void setCondition(String condition) {
         this.condition = condition;
     }
-    
+
     public String getCondition() {
         return condition;
-    }    
+    }
 }

@@ -1,3 +1,6 @@
+//    HelloIoT is a dashboard creator for MQTT
+//    Copyright (C) 2017 Adrián Romero Corchado.
+//
 //    This file is part of HelloIot.
 //
 //    HelloIot is free software: you can redistribute it and/or modify
@@ -12,7 +15,7 @@
 //
 //    You should have received a copy of the GNU General Public License
 //    along with HelloIot.  If not, see <http://www.gnu.org/licenses/>.
-
+//
 package com.adr.helloiot.device;
 
 import com.adr.helloiot.EventMessage;
@@ -26,40 +29,40 @@ import com.google.common.eventbus.EventBus;
  * @author adrian
  */
 public abstract class DeviceBase extends Device {
-    
+
     protected MQTTManager mqttHelper;
     private MQTTManager.Subscription mqttstatus = null;
-    
+
     private final EventBus statusbus = new EventBus();
-    
+
     public IconStatus getIconStatus() {
         return new IconText();
     }
-    
+
     protected void consumeMessage(EventMessage message) {
     }
-    
+
     @Override
     public final void construct(MQTTManager mqttHelper) {
         this.mqttHelper = mqttHelper;
         mqttstatus = mqttHelper.subscribe(getTopic(), getQos());
         mqttstatus.setConsumer((message) -> {
-            consumeMessage(message); 
+            consumeMessage(message);
             statusbus.post(message);
         });
     }
-    
+
     @Override
     public void destroy() {
         mqttHelper.unsubscribe(mqttstatus);
         mqttstatus = null;
-    }   
-    
+    }
+
     public void subscribeStatus(Object observer) {
         statusbus.register(observer);
     }
-    
+
     public void unsubscribeStatus(Object observer) {
-        statusbus.unregister(observer);   
-    } 
+        statusbus.unregister(observer);
+    }
 }

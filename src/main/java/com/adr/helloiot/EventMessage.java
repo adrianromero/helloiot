@@ -1,3 +1,6 @@
+//    HelloIoT is a dashboard creator for MQTT
+//    Copyright (C) 2017 Adrián Romero Corchado.
+//
 //    This file is part of HelloIot.
 //
 //    HelloIot is free software: you can redistribute it and/or modify
@@ -12,7 +15,7 @@
 //
 //    You should have received a copy of the GNU General Public License
 //    along with HelloIot.  If not, see <http://www.gnu.org/licenses/>.
-
+//
 package com.adr.helloiot;
 
 /**
@@ -20,19 +23,19 @@ package com.adr.helloiot;
  * @author adrian
  */
 public class EventMessage {
-    
+
     private final String topic;
-    private final byte[] message;       
-    
+    private final byte[] message;
+
     public EventMessage(String topic, byte[] message) {
         this.topic = topic;
         this.message = message;
     }
-    
+
     public String getTopic() {
         return topic;
     }
-    
+
     public byte[] getMessage() {
         return message;
     }

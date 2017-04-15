@@ -1,3 +1,6 @@
+//    HelloIoT is a dashboard creator for MQTT
+//    Copyright (C) 2017 Adrián Romero Corchado.
+//
 //    This file is part of HelloIot.
 //
 //    HelloIot is free software: you can redistribute it and/or modify
@@ -12,7 +15,7 @@
 //
 //    You should have received a copy of the GNU General Public License
 //    along with HelloIot.  If not, see <http://www.gnu.org/licenses/>.
-
+//
 package com.adr.helloiot.device;
 
 import java.nio.charset.StandardCharsets;
@@ -22,12 +25,14 @@ import java.nio.charset.StandardCharsets;
  * @author adrian
  */
 public final class StatusNumber {
-    private StatusNumber() {}
-    
+
+    private StatusNumber() {
+    }
+
     public static byte[] getFromValue(double value) {
         return Double.toString(value).getBytes(StandardCharsets.UTF_8);
     }
-    
+
     public static double getFromBytes(byte[] status) {
         if (status == null) {
             return 0.0;
@@ -37,5 +42,5 @@ public final class StatusNumber {
         } catch (NumberFormatException e) {
             return 0.0;
         }
-    }    
+    }
 }

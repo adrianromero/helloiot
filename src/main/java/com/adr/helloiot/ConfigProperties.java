@@ -1,3 +1,6 @@
+//    HelloIoT is a dashboard creator for MQTT
+//    Copyright (C) 2017 Adrián Romero Corchado.
+//
 //    This file is part of HelloIot.
 //
 //    HelloIot is free software: you can redistribute it and/or modify
@@ -12,6 +15,7 @@
 //
 //    You should have received a copy of the GNU General Public License
 //    along with HelloIot.  If not, see <http://www.gnu.org/licenses/>.
+//
 package com.adr.helloiot;
 
 import com.google.common.base.Strings;
@@ -33,14 +37,14 @@ import javafx.application.Application;
  * @author adrian
  */
 public class ConfigProperties {
-    
+
     private final File configfile;
     private final Properties config;
     private final Application.Parameters params;
-    
+
     public ConfigProperties(Application.Parameters params) {
         // read the configuration properties 
-        List<String> unnamed = params.getUnnamed();    
+        List<String> unnamed = params.getUnnamed();
         if (unnamed.isEmpty()) {
             configfile = new File("helloiot.properties");
         } else {
@@ -48,27 +52,27 @@ public class ConfigProperties {
             if (Strings.isNullOrEmpty(param)) {
                 configfile = new File("helloiot.properties");
             } else {
-                configfile = new File(param); 
+                configfile = new File(param);
             }
-        } 
+        }
         this.params = params;
-        config = new Properties();     
+        config = new Properties();
     }
-    
+
     public void clear() {
         config.clear();
     }
-    
+
     public void load() throws IOException {
         config.clear();
-        try (InputStream in = new FileInputStream(configfile)) {            
+        try (InputStream in = new FileInputStream(configfile)) {
             config.load(in);
         }
-        config.putAll(params.getNamed());   
+        config.putAll(params.getNamed());
     }
-    
-    public void save() throws IOException {   
-        
+
+    public void save() throws IOException {
+
         // Hack to save properties ordered.
         Properties tmp = new Properties() {
             @Override
@@ -79,18 +83,18 @@ public class ConfigProperties {
         tmp.putAll(config);
         try (OutputStream out = new FileOutputStream(configfile)) {
             tmp.store(out, "HelloIoT");
-        }    
+        }
     }
-    
+
     public String getProperty(String key, String defaultValue) {
         return config.getProperty(key, defaultValue);
     }
-    
+
     public void setProperty(String key, String value) {
         if (value == null) {
             config.remove(key);
         } else {
             config.setProperty(key, value);
         }
-    }    
+    }
 }

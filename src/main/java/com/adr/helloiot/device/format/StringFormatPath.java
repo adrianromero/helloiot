@@ -1,3 +1,6 @@
+//    HelloIoT is a dashboard creator for MQTT
+//    Copyright (C) 2017 Adrián Romero Corchado.
+//
 //    This file is part of HelloIot.
 //
 //    HelloIot is free software: you can redistribute it and/or modify
@@ -12,6 +15,7 @@
 //
 //    You should have received a copy of the GNU General Public License
 //    along with HelloIot.  If not, see <http://www.gnu.org/licenses/>.
+//
 package com.adr.helloiot.device.format;
 
 import com.google.common.base.Strings;
@@ -25,7 +29,7 @@ import java.nio.charset.StandardCharsets;
 public abstract class StringFormatPath implements StringFormat {
 
     private String path;
-    
+
     public StringFormatPath() {
         this(null);
     }
@@ -43,6 +47,7 @@ public abstract class StringFormatPath implements StringFormat {
     }
 
     protected abstract String formatImpl(String value);
+
     protected abstract String parseImpl(String value);
 
     @Override

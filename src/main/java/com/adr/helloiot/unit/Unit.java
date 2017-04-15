@@ -1,3 +1,6 @@
+//    HelloIoT is a dashboard creator for MQTT
+//    Copyright (C) 2017 Adrián Romero Corchado.
+//
 //    This file is part of HelloIot.
 //
 //    HelloIot is free software: you can redistribute it and/or modify
@@ -12,7 +15,7 @@
 //
 //    You should have received a copy of the GNU General Public License
 //    along with HelloIot.  If not, see <http://www.gnu.org/licenses/>.
-
+//
 package com.adr.helloiot.unit;
 
 import com.adr.helloiot.HelloIoTAppPublic;
@@ -24,11 +27,15 @@ import javafx.scene.Node;
  */
 public interface Unit {
 
-    public default void construct(HelloIoTAppPublic app) {}
-    public default void destroy() {}    
-    
+    public default void construct(HelloIoTAppPublic app) {
+    }
+
+    public default void destroy() {
+    }
+
     public void start();
+
     public void stop();
 
-    public Node getNode(); 
+    public Node getNode();
 }

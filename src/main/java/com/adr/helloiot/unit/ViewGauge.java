@@ -1,3 +1,6 @@
+//    HelloIoT is a dashboard creator for MQTT
+//    Copyright (C) 2017 Adrián Romero Corchado.
+//
 //    This file is part of HelloIot.
 //
 //    HelloIot is free software: you can redistribute it and/or modify
@@ -12,6 +15,7 @@
 //
 //    You should have received a copy of the GNU General Public License
 //    along with HelloIot.  If not, see <http://www.gnu.org/licenses/>.
+//
 package com.adr.helloiot.unit;
 
 import com.adr.helloiot.EventMessage;
@@ -50,9 +54,11 @@ public class ViewGauge extends Tile implements Unit {
     public ObjectProperty<Color> valueColorProperty() {
         return valueColor;
     }
+
     public final Color getValueColor() {
         return valueColor.getValue();
     }
+
     public final void setSelected(Color color) {
         valueColor.setValue(color);
     }
@@ -128,7 +134,7 @@ public class ViewGauge extends Tile implements Unit {
             return;
         }
 
-        gauge = type.build(device.getLevelMin(), device.getLevelMax());        
+        gauge = type.build(device.getLevelMin(), device.getLevelMax());
         gauge.titleColorProperty().bind(valueColor);
         gauge.valueColorProperty().bind(valueColor);
         gauge.unitColorProperty().bind(valueColor);

@@ -1,3 +1,6 @@
+//    HelloIoT is a dashboard creator for MQTT
+//    Copyright (C) 2017 Adrián Romero Corchado.
+//
 //    This file is part of HelloIot.
 //
 //    HelloIot is free software: you can redistribute it and/or modify
@@ -12,7 +15,7 @@
 //
 //    You should have received a copy of the GNU General Public License
 //    along with HelloIot.  If not, see <http://www.gnu.org/licenses/>.
-
+//
 package com.adr.helloiot;
 
 import com.adr.helloiot.device.DeviceSwitch;
@@ -32,26 +35,26 @@ public class Beeper {
 
     private final Clip beep;
     private final Label alert;
-    
+
     public Beeper(ClipFactory factory, Label alert) {
-        
+
         this.alert = alert;
         // http://www.soundjay.com/tos.html
         beep = factory.createClip(getClass().getResource("/com/adr/helloiot/sounds/beep-01a.wav").toExternalForm(), AudioClip.INDEFINITE);
     }
-    
+
     @Subscribe
     public void selectUnitPage(EventMessage message) {
-        Platform.runLater(() -> updateStatus(message.getMessage()));               
+        Platform.runLater(() -> updateStatus(message.getMessage()));
     }
-    
+
     private void updateStatus(byte[] status) {
         alert.setVisible(false);
-        beep.stop();           
+        beep.stop();
 
-        if (Arrays.equals(DeviceSwitch.ON, status)){
+        if (Arrays.equals(DeviceSwitch.ON, status)) {
             alert.setVisible(true);
             beep.play();
-        }          
-    }      
+        }
+    }
 }

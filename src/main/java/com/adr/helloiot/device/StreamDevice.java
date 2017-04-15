@@ -1,3 +1,6 @@
+//    HelloIoT is a dashboard creator for MQTT
+//    Copyright (C) 2017 Adrián Romero Corchado.
+//
 //    This file is part of HelloIot.
 //
 //    HelloIot is free software: you can redistribute it and/or modify
@@ -12,7 +15,7 @@
 //
 //    You should have received a copy of the GNU General Public License
 //    along with HelloIot.  If not, see <http://www.gnu.org/licenses/>.
-
+//
 package com.adr.helloiot.device;
 
 import java.util.function.Consumer;
@@ -24,43 +27,43 @@ import java.util.stream.Stream;
  */
 public class StreamDevice {
 
-    private final Stream<Device> devices;    
-    
+    private final Stream<Device> devices;
+
     public StreamDevice(Stream<Device> devices) {
         this.devices = devices;
     }
-    
+
     public void forEach(Consumer<? super Device> action) {
         devices.forEach(action);
     }
-     
+
     public Device getByName(String name) {
         return property("name", name).devices.findAny().get();
     }
-            
+
     public StreamDevice type(String type) {
-        return new StreamDevice(devices.filter(device -> type.equals(device.getClass().getSimpleName())));        
-    }    
-    
-    public StreamDevice topic(String topic) {
-        return new StreamDevice(devices.filter(device -> topic.equals(device.getTopic())));        
+        return new StreamDevice(devices.filter(device -> type.equals(device.getClass().getSimpleName())));
     }
-    
+
+    public StreamDevice topic(String topic) {
+        return new StreamDevice(devices.filter(device -> topic.equals(device.getTopic())));
+    }
+
     public StreamDevice property(String property, String value) {
         return new StreamDevice(devices.filter(device -> value.equals(device.getProperties().get(property))));
     }
-    
+
     public StreamDevice name(String name) {
         return property("name", name);
     }
-    
+
     public StreamDevice tagged(String tag) {
         return new StreamDevice(devices.filter(device -> {
             String tags = device.getProperties().getProperty("tags");
             if (tags == null) {
                 return false;
             }
-            
+
             String[] tagsarray = tags.split("\\s+");
             for (int i = 0; i < tagsarray.length; i++) {
                 if (tag.equals(tagsarray[i])) {
@@ -69,5 +72,5 @@ public class StreamDevice {
             }
             return false;
         }));
-    }  
+    }
 }

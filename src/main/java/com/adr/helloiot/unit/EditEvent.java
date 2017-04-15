@@ -1,3 +1,6 @@
+//    HelloIoT is a dashboard creator for MQTT
+//    Copyright (C) 2017 Adrián Romero Corchado.
+//
 //    This file is part of HelloIot.
 //
 //    HelloIot is free software: you can redistribute it and/or modify
@@ -12,6 +15,7 @@
 //
 //    You should have received a copy of the GNU General Public License
 //    along with HelloIot.  If not, see <http://www.gnu.org/licenses/>.
+//
 package com.adr.helloiot.unit;
 
 import com.adr.fonticon.FontAwesome;
@@ -48,9 +52,9 @@ public class EditEvent extends Tile implements Unit {
     public Node constructContent() {
         return loadFXML("/com/adr/helloiot/fxml/editevent.fxml");
     }
-    
+
     @FXML
-    public void initialize() {       
+    public void initialize() {
         fireaction.setGraphic(IconBuilder.create(FontAwesome.FA_SEND, 16).styleClass("icon-fill").build());
 
         setDisable(true);

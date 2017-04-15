@@ -1,8 +1,21 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+//    HelloIoT is a dashboard creator for MQTT
+//    Copyright (C) 2017 Adrián Romero Corchado.
+//
+//    This file is part of HelloIot.
+//
+//    HelloIot is free software: you can redistribute it and/or modify
+//    it under the terms of the GNU General Public License as published by
+//    the Free Software Foundation, either version 3 of the License, or
+//    (at your option) any later version.
+//
+//    HelloIot is distributed in the hope that it will be useful,
+//    but WITHOUT ANY WARRANTY; without even the implied warranty of
+//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//    GNU General Public License for more details.
+//
+//    You should have received a copy of the GNU General Public License
+//    along with HelloIot.  If not, see <http://www.gnu.org/licenses/>.
+//
 package com.adr.helloiot.client;
 
 import com.adr.helloiot.TopicInfo;
@@ -30,12 +43,12 @@ import java.util.List;
  * @author adrian
  */
 public class TopicStatus {
-    
+
     private final static String STYLEFORMAT = "{} {-fx-background-color: gray; -fx-background-radius: 10px; -fx-fill:white; -fx-padding: 0 5 0 5; -fx-pref-width: 70px; -fx-text-alignment: center;}";
     private final static String STYLEFORMATSPACE = "{} {-fx-padding: 0 5 0 5; -fx-pref-width: 70px;}";
     private final static String STYLEQOS = "{} {-fx-background-color: darkblue; -fx-background-radius: 10px; -fx-fill:white; -fx-padding: 0 5 0 5; -fx-pref-width: 30px; -fx-text-alignment: center;}";
     private final static String STYLEQOSSPACE = "{} {-fx-padding: 0 5 0 5; -fx-pref-width: 30px;}";
-    
+
     private List<Device> devices;
     private List<Unit> units;
 
@@ -46,6 +59,7 @@ public class TopicStatus {
             return STYLEFORMAT + f.toString();
         }
     }
+
     private static String getQOSBadge(int i) {
         if (i < 0) {
             return STYLEQOSSPACE;
@@ -53,27 +67,27 @@ public class TopicStatus {
             return STYLEQOS + Integer.toString(i);
         }
     }
-    
+
     private static StringFormat createFormat(TopicInfo topicinfo) {
         if ("STRING".equals(topicinfo.getFormat())) {
-            return new StringFormatIdentity(topicinfo.getJsonpath() == null || topicinfo.getJsonpath().isEmpty() ? null: topicinfo.getJsonpath());
+            return new StringFormatIdentity(topicinfo.getJsonpath() == null || topicinfo.getJsonpath().isEmpty() ? null : topicinfo.getJsonpath());
         } else if ("INT".equals(topicinfo.getFormat())) {
-            return new StringFormatDecimal(topicinfo.getJsonpath() == null || topicinfo.getJsonpath().isEmpty() ? null: topicinfo.getJsonpath(), "0");
+            return new StringFormatDecimal(topicinfo.getJsonpath() == null || topicinfo.getJsonpath().isEmpty() ? null : topicinfo.getJsonpath(), "0");
         } else if ("BASE64".equals(topicinfo.getFormat())) {
             return new StringFormatBase64();
         } else if ("HEX".equals(topicinfo.getFormat())) {
-            return new StringFormatHex();      
+            return new StringFormatHex();
         } else if ("DOUBLE".equals(topicinfo.getFormat())) {
-            return new StringFormatDecimal(topicinfo.getJsonpath() == null || topicinfo.getJsonpath().isEmpty() ? null: topicinfo.getJsonpath(), "0.00");
+            return new StringFormatDecimal(topicinfo.getJsonpath() == null || topicinfo.getJsonpath().isEmpty() ? null : topicinfo.getJsonpath(), "0.00");
         } else if ("DECIMAL".equals(topicinfo.getFormat())) {
-            return new StringFormatDecimal(topicinfo.getJsonpath() == null || topicinfo.getJsonpath().isEmpty() ? null: topicinfo.getJsonpath(), "0.000");
+            return new StringFormatDecimal(topicinfo.getJsonpath() == null || topicinfo.getJsonpath().isEmpty() ? null : topicinfo.getJsonpath(), "0.000");
         } else if ("DEGREES".equals(topicinfo.getFormat())) {
-            return new StringFormatDecimal(topicinfo.getJsonpath() == null || topicinfo.getJsonpath().isEmpty() ? null: topicinfo.getJsonpath(), "0.0°");
+            return new StringFormatDecimal(topicinfo.getJsonpath() == null || topicinfo.getJsonpath().isEmpty() ? null : topicinfo.getJsonpath(), "0.0°");
         } else {
             return StringFormatIdentity.INSTANCE;
-        }        
+        }
     }
-    
+
     public static TopicStatus buildTopicPublish(TopicInfo topicinfo) {
 
         TransmitterSimple d = new TransmitterSimple();
@@ -90,13 +104,13 @@ public class TopicStatus {
         u.setLabel(topicinfo.getLabel());
         u.setFooter(topicinfo.getTopic() + getQOSBadge(topicinfo.getQos()) + getFormatBadge(d.getFormat()));
         u.setDevice(d);
-        
+
         TopicStatus ts = new TopicStatus();
         ts.devices = Arrays.asList(d);
         ts.units = Arrays.asList(u);
-        return ts;                       
-    }    
-    
+        return ts;
+    }
+
     public static TopicStatus buildTopicPublishSubscription(TopicInfo topicinfo) {
 
         DeviceSimple d = new DeviceSimple();
@@ -112,14 +126,14 @@ public class TopicStatus {
         u.setPrefWidth(320.0);
         u.setLabel(topicinfo.getLabel());
         u.setFooter(topicinfo.getTopic() + getQOSBadge(topicinfo.getQos()) + getFormatBadge(d.getFormat()));
-        u.setDevice(d);        
+        u.setDevice(d);
 
         TopicStatus ts = new TopicStatus();
         ts.devices = Arrays.asList(d);
         ts.units = Arrays.asList(u);
-        return ts;                       
+        return ts;
     }
-    
+
     public static TopicStatus buildTopicSubscription(TopicInfo topicinfo) {
 
         DeviceBasic d = new DeviceBasic();
@@ -135,21 +149,22 @@ public class TopicStatus {
         u.setPrefWidth(320.0);
         u.setLabel(topicinfo.getLabel());
         u.setFooter(topicinfo.getTopic() + getQOSBadge(topicinfo.getQos()) + getFormatBadge(d.getFormat()));
-        u.setDevice(d);   
-        
+        u.setDevice(d);
+
         TopicStatus ts = new TopicStatus();
         ts.devices = Arrays.asList(d);
         ts.units = Arrays.asList(u);
-        return ts;          
+        return ts;
     }
-    
-    private TopicStatus() {}
-    
+
+    private TopicStatus() {
+    }
+
     public List<Device> getDevices() {
         return devices;
     }
-    
+
     public List<Unit> getUnits() {
         return units;
-    }    
+    }
 }

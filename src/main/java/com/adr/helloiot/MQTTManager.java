@@ -1,3 +1,6 @@
+//    HelloIoT is a dashboard creator for MQTT
+//    Copyright (C) 2017 Adrián Romero Corchado.
+//
 //    This file is part of HelloIot.
 //
 //    HelloIot is free software: you can redistribute it and/or modify
@@ -12,7 +15,7 @@
 //
 //    You should have received a copy of the GNU General Public License
 //    along with HelloIot.  If not, see <http://www.gnu.org/licenses/>.
-
+//
 package com.adr.helloiot;
 
 import com.adr.helloiot.util.CompletableAsync;
@@ -50,9 +53,9 @@ public final class MQTTManager implements MqttCallback {
 
     public final static String SYS_PREFIX = "$SYS/";
     public final static String LOCAL_PREFIX = "_LOCAL_/";
-    
+
     private final static Logger logger = Logger.getLogger(MQTTManager.class.getName());
-       
+
     private MqttAsyncClient mqttClient;
     private DB dbClient;
     private ConcurrentMap<String, byte[]> mapClient;
@@ -66,49 +69,51 @@ public final class MQTTManager implements MqttCallback {
     private final int keepalive;
     private final Properties sslproperties;
     private final String topicprefix;
-    private final int defaultqos;  
+    private final int defaultqos;
     private final int version;
     private final boolean cleansession;
-    
+
     private Consumer<Throwable> connectionLost = null;
-    
+
     private final Set<TopicQos> topicsubscriptions;
     private final Map<String, List<Subscription>> subscriptions;
-    
+
     public MQTTManager(String url) {
         this(url, null, null, null, MqttConnectOptions.CONNECTION_TIMEOUT_DEFAULT, MqttConnectOptions.KEEP_ALIVE_INTERVAL_DEFAULT, 1, MqttConnectOptions.MQTT_VERSION_DEFAULT, MqttConnectOptions.CLEAN_SESSION_DEFAULT, null, "");
     }
-    
+
     public MQTTManager(String url, String username, String password, String clientid, int timeout, int keepalive, int defaultqos, int version, boolean cleansession, Properties sslproperties, String topicprefix) {
-        
+
         this.mqttClient = null;
-        this.resources = ResourceBundle.getBundle("com/adr/helloiot/resources/helloiot");      
-        
+        this.resources = ResourceBundle.getBundle("com/adr/helloiot/resources/helloiot");
+
         this.url = url;
         this.username = username;
         this.password = password;
         this.clientid = clientid;
         this.timeout = timeout;
         this.keepalive = keepalive;
-        this.defaultqos = defaultqos;     
+        this.defaultqos = defaultqos;
         this.version = version;
         this.cleansession = cleansession;
         this.sslproperties = sslproperties;
         this.topicprefix = topicprefix;
-        
+
         this.subscriptions = new HashMap<>();
         this.topicsubscriptions = new HashSet<>();
     }
 
     public CompletableAsync<Void> open() {
-        
+
         List<String> worktopics = new ArrayList<>();
         List<Integer> workqos = new ArrayList<>();
-        for (TopicQos tq: topicsubscriptions) {
+        for (TopicQos tq : topicsubscriptions) {
             if (tq.getTopic() == null || tq.getTopic().isEmpty()) {
-                return CompletableAsync.runAsync(() -> {throw new CompletionException(new HelloIoTException(resources.getString("exception.topicscannotbeempty")));});
+                return CompletableAsync.runAsync(() -> {
+                    throw new CompletionException(new HelloIoTException(resources.getString("exception.topicscannotbeempty")));
+                });
             }
-            
+
             if (!tq.getTopic().startsWith(LOCAL_PREFIX)) {
                 if (tq.getTopic().startsWith(SYS_PREFIX)) {
                     worktopics.add(tq.getTopic());
@@ -124,11 +129,11 @@ public final class MQTTManager implements MqttCallback {
         for (int i = 0; i < workqos.size(); i++) {
             listqos[i] = workqos.get(i);
         }
-             
+
         return CompletableAsync.runAsync(() -> {
             if (mqttClient == null) {
                 try {
-                    mqttClient = new MqttAsyncClient(url, clientid == null || clientid.isEmpty() ? MqttAsyncClient.generateClientId() : clientid); 
+                    mqttClient = new MqttAsyncClient(url, clientid == null || clientid.isEmpty() ? MqttAsyncClient.generateClientId() : clientid);
                     MqttConnectOptions options = new MqttConnectOptions();
                     options.setCleanSession(true);
                     if (!Strings.isNullOrEmpty(username)) {
@@ -140,14 +145,14 @@ public final class MQTTManager implements MqttCallback {
                     options.setMqttVersion(version);
                     options.setCleanSession(cleansession);
                     options.setSSLProperties(sslproperties);
-                    mqttClient.connect(options).waitForCompletion(1000);    
+                    mqttClient.connect(options).waitForCompletion(1000);
                     mqttClient.setCallback(this);
                     mqttClient.subscribe(listtopics, listqos);
-                    
+
                     File dbfile = new File(System.getProperty("user.home"), ".helloiot-" + CryptUtils.hashMD5(url) + ".mapdb"); // dbfile is function of url only
                     dbClient = DBMaker.fileDB(dbfile).make();
                     mapClient = dbClient.hashMap("map", Serializer.STRING, Serializer.BYTE_ARRAY).createOrOpen();
-                    
+
                     mapClient.forEach((topic, payload) -> {
                         try {
                             MqttMessage mm = new MqttMessage(payload);
@@ -158,7 +163,7 @@ public final class MQTTManager implements MqttCallback {
                         } catch (Exception ex) {
                             logger.log(Level.SEVERE, "Cannot publish locally.", ex);
                         }
-                    });       
+                    });
 
                 } catch (MqttException ex) {
                     closeinternal();
@@ -168,23 +173,23 @@ public final class MQTTManager implements MqttCallback {
             }
         });
     }
-    
+
     public CompletableAsync<Void> close() {
         return CompletableAsync.runAsync(() -> {
             closeinternal();
-        });     
-    }    
-    
+        });
+    }
+
     private void closeinternal() {
         // To be invoked by executor thread
         if (mqttClient != null) {
-            
+
             mapClient = null;
             if (dbClient != null) {
                 dbClient.close();
                 dbClient = null;
             }
-            
+
             if (mqttClient.isConnected()) {
                 try {
                     mqttClient.setCallback(null);
@@ -203,14 +208,14 @@ public final class MQTTManager implements MqttCallback {
     }
 
     public Subscription subscribe(String topic, int qos) {
-        
+
         if (mqttClient != null) {
             throw new RuntimeException("Status incorrect. All subscriptions must be done before connection.");
         }
 
         // To be subscribed in MQTT
         topicsubscriptions.add(new TopicQos(topic, qos < 0 ? defaultqos : qos));
-        
+
         // To be invoked in JavaFX Thread 
         List<Subscription> subs = subscriptions.get(topic);
         if (subs == null) {
@@ -218,11 +223,11 @@ public final class MQTTManager implements MqttCallback {
         }
         Subscription s = new Subscription(topic);
         subs.add(s);
-        subscriptions.put(topic, subs);   
+        subscriptions.put(topic, subs);
         return s;
     }
-    
-    public void unsubscribe(Subscription s) {        
+
+    public void unsubscribe(Subscription s) {
         // To be invoked in JavaFX Thread 
         List<Subscription> subs = subscriptions.get(s.getTopic());
         if (subs != null) {
@@ -230,16 +235,16 @@ public final class MQTTManager implements MqttCallback {
             if (subs.isEmpty()) {
                 subscriptions.remove(s.getTopic());
             }
-        }        
+        }
     }
-   
+
     public void publish(String topic, int qos, byte[] message, boolean isRetained) {
-        
+
         // To be executed in Executor thread
         if (mqttClient == null) {
             return;
         }
-        
+
         MqttMessage mm = new MqttMessage(message);
         mm.setQos(qos < 0 ? defaultqos : qos);
         mm.setRetained(isRetained);
@@ -256,45 +261,45 @@ public final class MQTTManager implements MqttCallback {
                     logger.log(Level.SEVERE, "Cannot publish locally.", ex);
                 }
             });
-            
+
         } else {
             logger.log(Level.INFO, "Publishing message to broker.");
             try {
                 mqttClient.publish(topicprefix + topic, mm);
             } catch (MqttException ex) {
                 throw new CompletionException(ex);
-            }            
+            }
         }
     }
-    
+
     private void distributeMessage(String topic, byte[] message) {
         distributeWilcardMessage(topic, topic, message);
-        distributeRecursiveMessage(topic, topic.length() - 1,  message);
+        distributeRecursiveMessage(topic, topic.length() - 1, message);
     }
-    
+
     private void distributeRecursiveMessage(String topic, int starting, byte[] message) {
         int i = topic.lastIndexOf('/', starting);
         if (i < 0) {
-            distributeWilcardMessage("#" , topic, message);
+            distributeWilcardMessage("#", topic, message);
         } else {
             distributeWilcardMessage(topic.substring(0, i) + "/#", topic, message);
             distributeRecursiveMessage(topic, i - 1, message);
-        }   
+        }
     }
-   
+
     private void distributeWilcardMessage(String subscriptiontopic, String topic, byte[] message) {
         List<Subscription> subs = subscriptions.get(subscriptiontopic);
         if (subs != null) {
-            for (Subscription s: subs) {
+            for (Subscription s : subs) {
                 s.consume(new EventMessage(topic, message));
-            }                    
-        }  
+            }
+        }
     }
-    
+
     @Override
     public void connectionLost(Throwable thrwbl) {
         closeinternal();
-        
+
         if (connectionLost != null) {
             connectionLost.accept(thrwbl);
         } else {
@@ -304,7 +309,7 @@ public final class MQTTManager implements MqttCallback {
 
     @Override
     public void messageArrived(String topic, MqttMessage mm) throws Exception {
-        if (topic.startsWith(topicprefix)){
+        if (topic.startsWith(topicprefix)) {
             distributeMessage(topic.substring(topicprefix.length()), mm.getPayload());
         } else if (topic.startsWith(SYS_PREFIX)) {
             distributeMessage(topic, mm.getPayload());
@@ -316,37 +321,46 @@ public final class MQTTManager implements MqttCallback {
     @Override
     public void deliveryComplete(IMqttDeliveryToken imdt) {
         //throw new UnsupportedOperationException("Not supported yet."); 
-    }   
-    
+    }
+
     public static class Subscription {
+
         private final String topic;
         private Consumer<EventMessage> consumer = null;
+
         private Subscription(String topic) {
             this.topic = topic;
         }
+
         public String getTopic() {
             return topic;
         }
+
         public void consume(EventMessage message) {
             if (consumer != null) {
                 consumer.accept(message);
             }
         }
+
         public void setConsumer(Consumer<EventMessage> consumer) {
             this.consumer = consumer;
         }
     }
-    
+
     private static class TopicQos {
+
         private final String topic;
         private final int qos;
+
         public TopicQos(String topic, int qos) {
             this.topic = topic;
             this.qos = qos;
         }
+
         public String getTopic() {
             return topic;
         }
+
         public int getQos() {
             return qos;
         }

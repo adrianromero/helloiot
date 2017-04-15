@@ -1,3 +1,6 @@
+//    HelloIoT is a dashboard creator for MQTT
+//    Copyright (C) 2017 Adrián Romero Corchado.
+//
 //    This file is part of HelloIot.
 //
 //    HelloIot is free software: you can redistribute it and/or modify
@@ -12,7 +15,7 @@
 //
 //    You should have received a copy of the GNU General Public License
 //    along with HelloIot.  If not, see <http://www.gnu.org/licenses/>.
-
+//
 package com.adr.helloiot.unit;
 
 import com.adr.fonticon.FontAwesome;
@@ -30,82 +33,96 @@ import javafx.scene.control.PasswordField;
  * @author adrian
  */
 public class SecurityKeyboard {
-    
+
     private Node content;
-    
-    @FXML private Button btndelete;
-    @FXML private PasswordField password;
-    
+
+    @FXML
+    private Button btndelete;
+    @FXML
+    private PasswordField password;
+
     public SecurityKeyboard() {
-        
+
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/adr/helloiot/fxml/securitykeyboard.fxml"));
         loader.setController(this);
-        
+
         try {
             content = loader.load();
         } catch (IOException exception) {
             throw new RuntimeException(exception);
-        } 
-    }  
-    
+        }
+    }
+
     public void setPassword(String value) {
         password.setText(value);
     }
-    
+
     public String getPassword() {
         return password.getText();
     }
-    
+
     public Node getNode() {
         return content;
     }
 
-    @FXML public void initialize() {
-        btndelete.setGraphic(IconBuilder.create(FontAwesome.FA_TIMES_CIRCLE_O, 22.0).styleClass("icon-fill").build());   
-        password.setText("");
-    }
-    
-    @FXML void onDelete(ActionEvent event) {
+    @FXML
+    public void initialize() {
+        btndelete.setGraphic(IconBuilder.create(FontAwesome.FA_TIMES_CIRCLE_O, 22.0).styleClass("icon-fill").build());
         password.setText("");
     }
 
-    @FXML void onOne(ActionEvent event) {
+    @FXML
+    void onDelete(ActionEvent event) {
+        password.setText("");
+    }
+
+    @FXML
+    void onOne(ActionEvent event) {
         password.setText(password.getText() + "1");
     }
-    
-    @FXML void onTwo(ActionEvent event) {
+
+    @FXML
+    void onTwo(ActionEvent event) {
         password.setText(password.getText() + "2");
     }
-    
-    @FXML void onThree(ActionEvent event) {
+
+    @FXML
+    void onThree(ActionEvent event) {
         password.setText(password.getText() + "3");
     }
-    
-    @FXML void onFour(ActionEvent event) {
+
+    @FXML
+    void onFour(ActionEvent event) {
         password.setText(password.getText() + "4");
     }
-    
-    @FXML void onFive(ActionEvent event) {
+
+    @FXML
+    void onFive(ActionEvent event) {
         password.setText(password.getText() + "5");
     }
-    
-    @FXML void onSix(ActionEvent event) {
+
+    @FXML
+    void onSix(ActionEvent event) {
         password.setText(password.getText() + "6");
     }
-    
-    @FXML void onSeven(ActionEvent event) {
+
+    @FXML
+    void onSeven(ActionEvent event) {
         password.setText(password.getText() + "7");
     }
-    
-    @FXML void onEight(ActionEvent event) {
+
+    @FXML
+    void onEight(ActionEvent event) {
         password.setText(password.getText() + "8");
     }
 
-    @FXML void onNine(ActionEvent event) {
+    @FXML
+    void onNine(ActionEvent event) {
         password.setText(password.getText() + "9");
     }
 
-    @FXML void onZero(ActionEvent event) {
+    @FXML
+    void onZero(ActionEvent event) {
         password.setText(password.getText() + "0");
-    }     
+    }
 }

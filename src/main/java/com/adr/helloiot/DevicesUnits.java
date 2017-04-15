@@ -1,3 +1,6 @@
+//    HelloIoT is a dashboard creator for MQTT
+//    Copyright (C) 2017 Adrián Romero Corchado.
+//
 //    This file is part of HelloIot.
 //
 //    HelloIot is free software: you can redistribute it and/or modify
@@ -12,7 +15,7 @@
 //
 //    You should have received a copy of the GNU General Public License
 //    along with HelloIot.  If not, see <http://www.gnu.org/licenses/>.
-
+//
 package com.adr.helloiot;
 
 import com.adr.helloiot.device.Device;
@@ -25,14 +28,15 @@ import java.util.List;
  * @author adrian
  */
 public class DevicesUnits {
-     
-    private final List<Unit> units = new ArrayList<>();    
-    private final List<Device> devices = new ArrayList<>();     
-    
-    public List<Unit>getUnits() {
+
+    private final List<Unit> units = new ArrayList<>();
+    private final List<Device> devices = new ArrayList<>();
+
+    public List<Unit> getUnits() {
         return units;
     }
+
     public List<Device> getDevices() {
         return devices;
-    }    
+    }
 }

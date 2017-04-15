@@ -1,3 +1,6 @@
+//    HelloIoT is a dashboard creator for MQTT
+//    Copyright (C) 2017 Adrián Romero Corchado.
+//
 //    This file is part of HelloIot.
 //
 //    HelloIot is free software: you can redistribute it and/or modify
@@ -12,7 +15,7 @@
 //
 //    You should have received a copy of the GNU General Public License
 //    along with HelloIot.  If not, see <http://www.gnu.org/licenses/>.
-
+//
 package com.adr.helloiot.device;
 
 import com.adr.helloiot.util.CompletableAsync;
@@ -31,36 +34,39 @@ public class DeviceSimple extends DeviceBasic {
     @Override
     public String getDeviceName() {
         return resources.getString("devicename.devicesimple");
-    } 
-   
+    }
+
     // Overwrite this method 
     public byte[] prevStatus() {
         return readStatus();
     }
+
     // Overwrite this  method
     public byte[] nextStatus() {
         return readStatus();
     }
+
     // Overwrite this  method
     public boolean hasPrevStatus() {
         return false;
     }
+
     // Overwrite this method
     public boolean hasNextStatus() {
         return false;
     }
-    
+
     @Override
     public void destroy() {
         cancelTimer();
         super.destroy();
     }
-    
+
     public void sendStatus(byte[] status) {
         cancelTimer();
         mqttHelper.publish(getTopicPublish(), getQos(), status, isRetained());
     }
-    
+
     public void sendStatus(String status) {
         sendStatus(getFormat().parse(status));
     }
@@ -68,23 +74,23 @@ public class DeviceSimple extends DeviceBasic {
     public void sendStatus(byte[] status, long delay) {
 
         synchronized (sflock) {
-            cancelTimer();       
+            cancelTimer();
             sf = CompletableAsync.scheduleTask(delay, () -> {
                 DeviceSimple.this.sendStatus(status);
             });
-        }        
+        }
     }
-    
+
     public void sendStatus(String status, long delay) {
         sendStatus(getFormat().parse(status), delay);
     }
-    
+
     public boolean hasTimer() {
         synchronized (sflock) {
             return sf != null;
         }
     }
-    
+
     private void cancelTimer() {
         synchronized (sflock) {
             if (sf != null) {

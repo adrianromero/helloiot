@@ -1,3 +1,6 @@
+//    HelloIoT is a dashboard creator for MQTT
+//    Copyright (C) 2017 Adrián Romero Corchado.
+//
 //    This file is part of HelloIot.
 //
 //    HelloIot is free software: you can redistribute it and/or modify
@@ -12,7 +15,7 @@
 //
 //    You should have received a copy of the GNU General Public License
 //    along with HelloIot.  If not, see <http://www.gnu.org/licenses/>.
-
+//
 package com.adr.helloiot.device.format;
 
 import com.google.common.base.Strings;
@@ -25,20 +28,20 @@ import javafx.geometry.Pos;
  * @author adrian
  */
 public class StringFormatHex implements StringFormat {
-    
-    private final static Logger logger = Logger.getLogger(StringFormatHex.class.getName());    
+
+    private final static Logger logger = Logger.getLogger(StringFormatHex.class.getName());
     public static final StringFormat INSTANCE = new StringFormatHex();
-    
+
     @Override
     public String toString() {
         return "HEX";
     }
-    
+
     @Override
     public String format(byte[] value) {
         if (value == null || value.length == 0) {
             return "";
-        }       
+        }
         return fixedSplit(formatHexString(value));
     }
 
@@ -46,17 +49,17 @@ public class StringFormatHex implements StringFormat {
     public byte[] parse(String formattedvalue) {
         if (Strings.isNullOrEmpty(formattedvalue)) {
             return new byte[0];
-        }  
-        return parseHexString(formattedvalue.replaceAll("\\s",""));
+        }
+        return parseHexString(formattedvalue.replaceAll("\\s", ""));
     }
-    
+
     @Override
     public Pos alignment() {
         return Pos.CENTER_LEFT;
-    }    
-    
+    }
+
     public static byte[] parseHexString(String formattedvalue) {
-        int lenght = formattedvalue.length();        
+        int lenght = formattedvalue.length();
         if (lenght % 2 != 0) {
             logger.log(Level.WARNING, "Hexadecimal string length needs to be even: {0}", formattedvalue);
             throw new IllegalArgumentException("Hexadecimal string length needs to be even: " + formattedvalue);
@@ -73,9 +76,9 @@ public class StringFormatHex implements StringFormat {
             value[i++] = (byte) ((h << 4) | l);
         }
         return value;
-    }  
-    
-    private static int parseHexChar(char c)  {
+    }
+
+    private static int parseHexChar(char c) {
         if (c >= '0' && c <= '9') {
             return c - '0';
         }
@@ -84,24 +87,24 @@ public class StringFormatHex implements StringFormat {
         }
         if (c >= 'a' && c <= 'f') {
             return c - 'a' + 10;
-        }     
+        }
         logger.log(Level.WARNING, "Illegal hexadecimal character: {0}", c);
         throw new IllegalArgumentException("Illegal hexadecimal character: " + c);
-    }  
-    
+    }
+
     private static final char[] HEXCHARS = "0123456789ABCDEF".toCharArray();
-     
-    public static String formatHexString(byte[] value) {       
+
+    public static String formatHexString(byte[] value) {
         char[] hex = new char[value.length * 2];
-        int i2 = 0;        
+        int i2 = 0;
         for (byte b : value) {
             hex[i2++] = HEXCHARS[(b >> 4) & 0x0f];
             hex[i2++] = HEXCHARS[b & 0x0f];
         }
         return new String(hex);
-    }      
-    
+    }
+
     public static String fixedSplit(String s) {
         return String.join("\n", s.split("(?<=\\G.{76})"));
-    }    
+    }
 }

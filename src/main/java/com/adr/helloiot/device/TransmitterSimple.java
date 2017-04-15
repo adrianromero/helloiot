@@ -1,3 +1,6 @@
+//    HelloIoT is a dashboard creator for MQTT
+//    Copyright (C) 2017 Adrián Romero Corchado.
+//
 //    This file is part of HelloIot.
 //
 //    HelloIot is free software: you can redistribute it and/or modify
@@ -12,7 +15,7 @@
 //
 //    You should have received a copy of the GNU General Public License
 //    along with HelloIot.  If not, see <http://www.gnu.org/licenses/>.
-
+//
 package com.adr.helloiot.device;
 
 /**
@@ -20,19 +23,19 @@ package com.adr.helloiot.device;
  * @author adrian
  */
 public class TransmitterSimple extends DeviceBase {
-    
+
     public TransmitterSimple() {
     }
-  
+
     @Override
     public String getDeviceName() {
         return resources.getString("devicename.transmittersimple");
     }
-    
+
     public void sendEvent(byte[] event) {
         mqttHelper.publish(getTopicPublish(), getQos(), event, isRetained());
     }
-    
+
     public void sendEvent(String event) {
         sendEvent(getFormat().parse(event));
     }

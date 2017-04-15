@@ -1,3 +1,6 @@
+//    HelloIoT is a dashboard creator for MQTT
+//    Copyright (C) 2017 Adrián Romero Corchado.
+//
 //    This file is part of HelloIot.
 //
 //    HelloIot is free software: you can redistribute it and/or modify
@@ -12,7 +15,7 @@
 //
 //    You should have received a copy of the GNU General Public License
 //    along with HelloIot.  If not, see <http://www.gnu.org/licenses/>.
-
+//
 package com.adr.helloiot.unit;
 
 import com.adr.helloiot.HelloIoTAppPublic;
@@ -24,35 +27,34 @@ import javafx.scene.Node;
  * @author adrian
  */
 public abstract class ReceiverBase implements Unit {
-    
+
     private DeviceBase device = null;
     protected HelloIoTAppPublic app;
-    
+
 // The Subscribe is the abstract method
 //    @Subscribe
 //    public void receivedStatus(EventStatus message) {
 //    }
-    
     @Override
     public void construct(HelloIoTAppPublic app) {
         Unit.super.construct(app);
         this.app = app;
-        device.subscribeStatus(this);     
+        device.subscribeStatus(this);
     }
 
     @Override
     public void destroy() {
         Unit.super.destroy();
-        device.unsubscribeStatus(this);    
+        device.unsubscribeStatus(this);
     }
-    
+
     public void setDevice(DeviceBase device) {
         this.device = device;
     }
-    
+
     public DeviceBase getDevice() {
         return device;
-    }    
+    }
 
     @Override
     public void start() {
@@ -65,5 +67,5 @@ public abstract class ReceiverBase implements Unit {
     @Override
     public Node getNode() {
         return null;
-    }  
+    }
 }

@@ -1,3 +1,6 @@
+//    HelloIoT is a dashboard creator for MQTT
+//    Copyright (C) 2017 Adrián Romero Corchado.
+//
 //    This file is part of HelloIot.
 //
 //    HelloIot is free software: you can redistribute it and/or modify
@@ -12,7 +15,7 @@
 //
 //    You should have received a copy of the GNU General Public License
 //    along with HelloIot.  If not, see <http://www.gnu.org/licenses/>.
-
+//
 package com.adr.helloiot.graphic;
 
 import com.adr.fonticon.FontAwesome;
@@ -25,10 +28,10 @@ import javafx.scene.Node;
  * @author adrian
  */
 public interface IconStatus {
-    
+
     public static final ResourceBundle RESOURCES = ResourceBundle.getBundle("com/adr/helloiot/fxml/main");
-    
-    public Node buildIcon(String formattedStatus); 
+
+    public Node buildIcon(String formattedStatus);
 
     public static IconStatus valueOf(String value) {
         if ("NULL".equals(value)) {
@@ -38,9 +41,9 @@ public interface IconStatus {
         } else if ("BULB".equals(value)) {
             return new Bulb();
         } else if (value.startsWith("BULB/")) {
-            return new Bulb(FontAwesome.valueOf(value.substring(5)));            
+            return new Bulb(FontAwesome.valueOf(value.substring(5)));
         } else if (value.startsWith("BULBTEXT/")) {
-            return new Bulb(new IconFontList(value.substring(9), "ROBOTO BOLD"));            
+            return new Bulb(new IconFontList(value.substring(9), "ROBOTO BOLD"));
         } else if ("PADLOCK".equals(value)) {
             return new Padlock();
         } else if ("TOGGLE".equals(value)) {
@@ -62,11 +65,11 @@ public interface IconStatus {
             } else if ("UP/DOWN".equals(param)) {
                 return new IconTextSwitch(RESOURCES.getString("icon.up"), RESOURCES.getString("icon.down"));
             } else {
-                return new IconTextSwitch(RESOURCES.getString("icon.open"), RESOURCES.getString("icon.closed"));   
+                return new IconTextSwitch(RESOURCES.getString("icon.open"), RESOURCES.getString("icon.closed"));
             }
         } else {
             throw new IllegalArgumentException("Cannot create IconStatus: " + value);
         }
-    }      
+    }
 
 }

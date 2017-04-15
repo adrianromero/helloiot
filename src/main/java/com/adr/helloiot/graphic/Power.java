@@ -1,3 +1,6 @@
+//    HelloIoT is a dashboard creator for MQTT
+//    Copyright (C) 2017 Adrián Romero Corchado.
+//
 //    This file is part of HelloIot.
 //
 //    HelloIot is free software: you can redistribute it and/or modify
@@ -12,7 +15,7 @@
 //
 //    You should have received a copy of the GNU General Public License
 //    along with HelloIot.  If not, see <http://www.gnu.org/licenses/>.
-
+//
 package com.adr.helloiot.graphic;
 
 import com.adr.fonticon.FontAwesome;
@@ -27,31 +30,30 @@ import javafx.scene.paint.Color;
  * @author adrian
  */
 public class Power implements IconSwitch {
-    
+
     private IconFont icon;
     private Color color;
-            
+
     public Power(IconFont icon, Color color) {
         this.icon = icon;
         this.color = color;
     }
-            
-            
+
     public Power(IconFont icon) {
         this(icon, Color.LIME);
     }
-            
+
     public Power() {
         this(FontAwesome.FA_POWER_OFF, Color.LIME);
     }
-    
+
     @Override
     public Node buildIconOn() {
         return IconBuilder.create(icon, 48.0).color(color).apply(new Shine(color)).build();
     }
-    
+
     @Override
     public Node buildIconOff() {
         return IconBuilder.create(icon, 48.0).color(Color.DARKGRAY).apply(new Shine(Color.DARKGRAY)).build();
-    }     
+    }
 }

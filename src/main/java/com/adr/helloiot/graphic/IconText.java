@@ -1,3 +1,6 @@
+//    HelloIoT is a dashboard creator for MQTT
+//    Copyright (C) 2017 Adrián Romero Corchado.
+//
 //    This file is part of HelloIot.
 //
 //    HelloIot is free software: you can redistribute it and/or modify
@@ -12,11 +15,9 @@
 //
 //    You should have received a copy of the GNU General Public License
 //    along with HelloIot.  If not, see <http://www.gnu.org/licenses/>.
-
+//
 package com.adr.helloiot.graphic;
 
-import com.adr.helloiot.device.format.StringFormat;
-import com.adr.helloiot.device.format.StringFormatIdentity;
 import com.adr.helloiot.util.ExternalFonts;
 import javafx.scene.Node;
 import javafx.scene.text.Font;
@@ -28,10 +29,11 @@ import javafx.scene.text.Text;
  * @author adrian
  */
 public class IconText implements IconStatus {
+
     @Override
     public Node buildIcon(String formattedStatus) {
         Text t = new Text(formattedStatus);
         t.setFont(Font.font(ExternalFonts.ROBOTOBOLD, FontWeight.NORMAL, 11.0));
         return t;
-    } 
+    }
 }

@@ -1,3 +1,6 @@
+//    HelloIoT is a dashboard creator for MQTT
+//    Copyright (C) 2017 Adrián Romero Corchado.
+//
 //    This file is part of HelloIot.
 //
 //    HelloIot is free software: you can redistribute it and/or modify
@@ -12,7 +15,7 @@
 //
 //    You should have received a copy of the GNU General Public License
 //    along with HelloIot.  If not, see <http://www.gnu.org/licenses/>.
-
+//
 package com.adr.helloiot.device;
 
 import com.adr.helloiot.EventMessage;
@@ -20,47 +23,47 @@ import com.adr.helloiot.MQTTManager;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-
 /**
  *
  * @author adrian
  */
 public class TreePublishSubscribe extends TreePublish {
-    
+
     private MQTTManager.Subscription mqttstatus = null;
     private final Map<String, byte[]> status = new ConcurrentHashMap<>();
-    
+
     public TreePublishSubscribe() {
         super();
         setRetained(true); // by default retained
     }
-    
+
     @Override
     public String getDeviceName() {
         return resources.getString("devicename.treepublishsubscribe");
-    }    
- 
+    }
+
     protected void consumeMessage(EventMessage message) {
         status.put(message.getTopic(), message.getMessage());
     }
-    
+
     @Override
     public void construct(MQTTManager mqttManager) {
         super.construct(mqttManager);
         mqttstatus = mqttManager.subscribe(getTopic() + "/#", getQos());
         mqttstatus.setConsumer(this::consumeMessage);
-    }    
+    }
+
     @Override
     public void destroy() {
         super.destroy();
         mqttManager.unsubscribe(mqttstatus);
         mqttstatus = null;
-    }   
-    
+    }
+
     public byte[] readMessage(String branch) {
         return status.get(getTopic() + "/" + branch);
     }
-    
+
     public String loadMessage(String branch) {
         return getFormat().format(readMessage(branch));
     }

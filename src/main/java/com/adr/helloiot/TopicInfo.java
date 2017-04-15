@@ -1,3 +1,6 @@
+//    HelloIoT is a dashboard creator for MQTT
+//    Copyright (C) 2017 Adrián Romero Corchado.
+//
 //    This file is part of HelloIot.
 //
 //    HelloIot is free software: you can redistribute it and/or modify
@@ -12,7 +15,7 @@
 //
 //    You should have received a copy of the GNU General Public License
 //    along with HelloIot.  If not, see <http://www.gnu.org/licenses/>.
-
+//
 package com.adr.helloiot;
 
 import javafx.scene.paint.Color;
@@ -22,7 +25,7 @@ import javafx.scene.paint.Color;
  * @author adrian
  */
 public class TopicInfo {
-    
+
     private String topic = null;
     private String topicpub = null;
     private String type = "Publication/Subscription";
@@ -33,7 +36,7 @@ public class TopicInfo {
     private Color background = null;
     private int qos = -1;
     private int retained = -1;
-    
+
     public String getTopic() {
         return topic;
     }
@@ -113,16 +116,16 @@ public class TopicInfo {
     public void setRetained(int retained) {
         this.retained = retained;
     }
-    
+
     @Override
     public String toString() {
         return topic == null || topic.isEmpty() ? "-" : topic;
     }
-    
+
     public String getLabel() {
         return (topic == null) ? null : capitalize(leaf(topic));
     }
-    
+
     private static String capitalize(String s) {
         final char[] buffer = s.toCharArray();
         boolean capitalizeNext = true;
@@ -138,16 +141,16 @@ public class TopicInfo {
         }
         return new String(buffer);
     }
-    
+
     private static String leaf(String s) {
         int i = s.lastIndexOf('/');
         if (i < 0) {
             return s;
         } else if (i == s.length() - 1) {
-            return leaf(s.substring(0, s.length()- 1));
+            return leaf(s.substring(0, s.length() - 1));
         } else {
             return s.substring(i + 1);
         }
     }
-        
+
 }

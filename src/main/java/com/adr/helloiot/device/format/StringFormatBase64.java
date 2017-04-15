@@ -1,3 +1,6 @@
+//    HelloIoT is a dashboard creator for MQTT
+//    Copyright (C) 2017 Adrián Romero Corchado.
+//
 //    This file is part of HelloIot.
 //
 //    HelloIot is free software: you can redistribute it and/or modify
@@ -12,7 +15,7 @@
 //
 //    You should have received a copy of the GNU General Public License
 //    along with HelloIot.  If not, see <http://www.gnu.org/licenses/>.
-
+//
 package com.adr.helloiot.device.format;
 
 import com.google.common.base.Strings;
@@ -24,9 +27,9 @@ import javafx.geometry.Pos;
  * @author adrian
  */
 public class StringFormatBase64 implements StringFormat {
-    
+
     public static final StringFormat INSTANCE = new StringFormatBase64();
-    
+
     @Override
     public String toString() {
         return "BASE64";
@@ -36,7 +39,7 @@ public class StringFormatBase64 implements StringFormat {
     public String format(byte[] value) {
         if (value == null || value.length == 0) {
             return "";
-        }          
+        }
         return Base64.getMimeEncoder().encodeToString(value);
     }
 
@@ -44,12 +47,12 @@ public class StringFormatBase64 implements StringFormat {
     public byte[] parse(String formattedvalue) {
         if (Strings.isNullOrEmpty(formattedvalue)) {
             return new byte[0];
-        }  
+        }
         return Base64.getMimeDecoder().decode(formattedvalue);
     }
-    
+
     @Override
     public Pos alignment() {
         return Pos.CENTER_LEFT;
-    }  
+    }
 }

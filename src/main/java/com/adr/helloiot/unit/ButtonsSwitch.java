@@ -1,3 +1,6 @@
+//    HelloIoT is a dashboard creator for MQTT
+//    Copyright (C) 2017 Adrián Romero Corchado.
+//
 //    This file is part of HelloIot.
 //
 //    HelloIot is free software: you can redistribute it and/or modify
@@ -12,7 +15,7 @@
 //
 //    You should have received a copy of the GNU General Public License
 //    along with HelloIot.  If not, see <http://www.gnu.org/licenses/>.
-
+//
 package com.adr.helloiot.unit;
 
 import com.adr.hellocommon.dialog.MessageUtils;
@@ -34,50 +37,50 @@ import javafx.scene.layout.VBox;
  */
 public class ButtonsSwitch extends Tile implements Unit {
 
-    protected ResourceBundle resources = ResourceBundle.getBundle("com/adr/helloiot/fxml/basic"); 
+    protected ResourceBundle resources = ResourceBundle.getBundle("com/adr/helloiot/fxml/basic");
 
     private IconStatus iconbuilder;
-    
+
     private Button goup;
     private Button godown;
 
     private final Map<String, Object> params = new HashMap<>();
     private ScriptCode code = null;
-    
+
     @Override
-    public Node constructContent() {   
+    public Node constructContent() {
 
         goup = new Button();
         goup.setContentDisplay(ContentDisplay.TOP);
         goup.getStyleClass().add("buttonbase");
         goup.getStyleClass().add("buttonup");
-        VBox.setVgrow(goup, Priority.SOMETIMES);   
+        VBox.setVgrow(goup, Priority.SOMETIMES);
         goup.setMaxSize(Integer.MAX_VALUE, Integer.MAX_VALUE);
-        goup.setFocusTraversable(false);        
+        goup.setFocusTraversable(false);
         goup.setOnAction(event -> {
             doRunSwitch(event, "ON");
         });
- 
+
         godown = new Button();
         godown.setContentDisplay(ContentDisplay.TOP);
         godown.getStyleClass().add("buttonbase");
         godown.getStyleClass().add("buttondown");
-        VBox.setVgrow(godown, Priority.SOMETIMES);   
+        VBox.setVgrow(godown, Priority.SOMETIMES);
         godown.setMaxSize(Integer.MAX_VALUE, Integer.MAX_VALUE);
-        godown.setFocusTraversable(false);             
+        godown.setFocusTraversable(false);
         godown.setOnAction(event -> {
-                doRunSwitch(event, "OFF");
+            doRunSwitch(event, "OFF");
         });
-        
+
         setIconStatus(IconStatus.valueOf("TEXT/ON/OFF"));
-        
+
         VBox content = new VBox(goup, godown);
         content.setSpacing(2);
-        VBox.setVgrow(content, Priority.SOMETIMES);   
-        content.setMaxSize(Integer.MAX_VALUE, Integer.MAX_VALUE);        
-        return content;       
+        VBox.setVgrow(content, Priority.SOMETIMES);
+        content.setMaxSize(Integer.MAX_VALUE, Integer.MAX_VALUE);
+        return content;
     }
-    
+
     @Override
     public void construct(HelloIoTAppPublic app) {
         Unit.super.construct(app);
@@ -91,24 +94,24 @@ public class ButtonsSwitch extends Tile implements Unit {
     public void setScriptCode(ScriptCode code) {
         this.code = code;
     }
-    
+
     public ScriptCode getScriptCode() {
         return code;
     }
-    
+
     public void setIconStatus(IconStatus iconbuilder) {
         this.iconbuilder = iconbuilder;
         goup.setGraphic(iconbuilder.buildIcon("ON"));
         godown.setGraphic(iconbuilder.buildIcon("OFF"));
     }
-    
+
     public IconStatus getIconStatus() {
         return iconbuilder;
-    }     
-    
+    }
+
     private void doRunSwitch(ActionEvent event, String status) {
         if (code == null) {
-            MessageUtils.showError(MessageUtils.getRoot(this), getLabel(), resources.getString("message.nocode"));        
+            MessageUtils.showError(MessageUtils.getRoot(this), getLabel(), resources.getString("message.nocode"));
         } else {
             Map<String, Object> newparams = new HashMap<>();
             newparams.putAll(params);
@@ -116,7 +119,7 @@ public class ButtonsSwitch extends Tile implements Unit {
             code.run(newparams).exceptionallyFX((ex) -> {
                 MessageUtils.showException(MessageUtils.getRoot(this), getLabel(), resources.getString("message.erroraction"), ex);
                 return null;
-            });  
-        }        
-    } 
+            });
+        }
+    }
 }

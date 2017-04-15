@@ -1,3 +1,6 @@
+//    HelloIoT is a dashboard creator for MQTT
+//    Copyright (C) 2017 Adrián Romero Corchado.
+//
 //    This file is part of HelloIot.
 //
 //    HelloIot is free software: you can redistribute it and/or modify
@@ -12,7 +15,7 @@
 //
 //    You should have received a copy of the GNU General Public License
 //    along with HelloIot.  If not, see <http://www.gnu.org/licenses/>.
-
+//
 package com.adr.helloiot.unitsensor;
 
 import com.adr.helloiot.unit.Unit;
@@ -26,24 +29,24 @@ import javafx.scene.Node;
  * @author adrian
  */
 public abstract class SensorTimer implements Unit {
-    
+
     private long millis = 10000L;
     private ScheduledFuture<?> sf = null;
     private final Object sflock = new Object();
-    
+
     private TransmitterSimple device = null;
-    
+
     protected abstract void execEvent(TransmitterSimple device);
-    
+
     @Override
-    public void start() {        
+    public void start() {
         synchronized (sflock) {
             if (sf == null) {
                 sf = CompletableAsync.scheduleTask(0, millis, () -> {
                     execEvent(device);
                 });
             }
-        }           
+        }
     }
 
     @Override
@@ -55,16 +58,16 @@ public abstract class SensorTimer implements Unit {
             }
         }
     }
-    
+
     @Override
     public Node getNode() {
         return null;
-    }    
-    
+    }
+
     public void setDevice(TransmitterSimple device) {
         this.device = device;
     }
-    
+
     public TransmitterSimple getDevice() {
         return device;
     }
@@ -72,8 +75,8 @@ public abstract class SensorTimer implements Unit {
     public void setInterval(long millis) {
         this.millis = millis;
     }
-    
+
     public long getInterval() {
         return millis;
-    }    
+    }
 }

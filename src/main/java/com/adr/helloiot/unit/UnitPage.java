@@ -1,3 +1,6 @@
+//    HelloIoT is a dashboard creator for MQTT
+//    Copyright (C) 2017 Adrián Romero Corchado.
+//
 //    This file is part of HelloIot.
 //
 //    HelloIot is free software: you can redistribute it and/or modify
@@ -12,7 +15,7 @@
 //
 //    You should have received a copy of the GNU General Public License
 //    along with HelloIot.  If not, see <http://www.gnu.org/licenses/>.
-
+//
 package com.adr.helloiot.unit;
 
 import java.util.ArrayList;
@@ -25,9 +28,9 @@ import javafx.scene.Node;
  * @author adrian
  */
 public class UnitPage implements Comparable<UnitPage> {
-    
+
     private static final ResourceBundle RESOURCES = ResourceBundle.getBundle("com/adr/helloiot/fxml/main");
-    
+
     private final String name;
     private final Node graphic;
     private final String text;
@@ -36,29 +39,28 @@ public class UnitPage implements Comparable<UnitPage> {
     private double maxwidth;
     private double maxheight;
     private int order = 10000;
-    
+
     private final List<UnitLine> unitlines = new ArrayList<>();
-    
+
     public UnitPage(String name, Node graphic, String text) {
         this.name = name;
         this.graphic = graphic;
         this.text = text;
-        
+
         this.emptylabel = RESOURCES.getString("label.empty");
         this.system = false; // System units have the Unit pages menu disabled and do not appear in the menu too
         this.maxwidth = Double.MAX_VALUE;
         this.maxheight = Double.MAX_VALUE;
     }
 
-    
     public String getName() {
         return name;
     }
-    
+
     public Node getGraphic() {
         return graphic;
     }
-    
+
     public String getText() {
         return text;
     }
@@ -66,14 +68,15 @@ public class UnitPage implements Comparable<UnitPage> {
     public void setSystem(boolean value) {
         system = value;
     }
-    
+
     public boolean isSystem() {
         return system;
     }
+
     public void setEmptyLabel(String value) {
         emptylabel = value;
     }
-    
+
     public String getEmptyLabel() {
         return emptylabel;
     }
@@ -106,11 +109,11 @@ public class UnitPage implements Comparable<UnitPage> {
     public void setOrder(int order) {
         this.order = order;
     }
-    
+
     public List<UnitLine> getUnitLines() {
         return unitlines;
     }
-    
+
     public void addUnitNode(Node n) {
         if (n instanceof UnitLine) {
             unitlines.add((UnitLine) n);
@@ -125,7 +128,7 @@ public class UnitPage implements Comparable<UnitPage> {
             lastPane.getChildren().add(n);
         }
     }
-    
+
     public static void setPage(Node node, String value) {
         if (value == null) {
             node.getProperties().remove("UnitPage");
@@ -138,7 +141,7 @@ public class UnitPage implements Comparable<UnitPage> {
     public int compareTo(UnitPage o) {
         return Integer.compare(order, o.order);
     }
-    
+
     public static String getPage(Node node) {
         if (node.hasProperties()) {
             String value = (String) node.getProperties().get("UnitPage");
@@ -147,5 +150,5 @@ public class UnitPage implements Comparable<UnitPage> {
             }
         }
         return null;
-    }    
+    }
 }

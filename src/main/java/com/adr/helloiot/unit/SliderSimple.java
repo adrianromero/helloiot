@@ -1,3 +1,6 @@
+//    HelloIoT is a dashboard creator for MQTT
+//    Copyright (C) 2017 Adrián Romero Corchado.
+//
 //    This file is part of HelloIot.
 //
 //    HelloIot is free software: you can redistribute it and/or modify
@@ -12,7 +15,7 @@
 //
 //    You should have received a copy of the GNU General Public License
 //    along with HelloIot.  If not, see <http://www.gnu.org/licenses/>.
-
+//
 package com.adr.helloiot.unit;
 
 import com.adr.helloiot.device.DeviceNumber;
@@ -32,19 +35,22 @@ import javafx.scene.control.Slider;
  * @author adrian
  */
 public class SliderSimple extends Tile implements Unit {
-    
-    @FXML private Slider slider;
-    @FXML private Label level;
-    
+
+    @FXML
+    private Slider slider;
+    @FXML
+    private Label level;
+
     private boolean levelupdating = false;
     private DeviceNumber device = null;
 
     @Override
-    public Node constructContent() {   
-        return loadFXML("/com/adr/helloiot/fxml/slidersimple.fxml");  
+    public Node constructContent() {
+        return loadFXML("/com/adr/helloiot/fxml/slidersimple.fxml");
     }
 
-    @FXML public void initialize() {
+    @FXML
+    public void initialize() {
         slider.valueProperty().addListener((ObservableValue<? extends Number> ov, Number old_val, Number new_val) -> {
             if (!levelupdating) {
                 device.sendStatus(StatusNumber.getFromValue(device.adjustLevel(new_val.doubleValue())));
@@ -52,10 +58,10 @@ public class SliderSimple extends Tile implements Unit {
         });
         level.setText(null);
     }
-    
+
     @Subscribe
     public void receivedStatus(EventMessage message) {
-        Platform.runLater(() -> updateStatus(message.getMessage()));  
+        Platform.runLater(() -> updateStatus(message.getMessage()));
     }
 
     private void updateStatus(byte[] status) {
@@ -63,33 +69,33 @@ public class SliderSimple extends Tile implements Unit {
         level.setText(device.getFormat().format(status));
         slider.setValue(StatusNumber.getFromBytes(status));
         levelupdating = false;
-    }  
-    
+    }
+
     @Override
     public void construct(HelloIoTAppPublic app) {
         Unit.super.construct(app);
         device.subscribeStatus(this);
-        updateStatus(null);        
+        updateStatus(null);
     }
 
     @Override
     public void destroy() {
         Unit.super.destroy();
-        device.unsubscribeStatus(this);    
+        device.unsubscribeStatus(this);
     }
-        
+
     public void setDevice(DeviceNumber device) {
         this.device = device;
         if (getLabel() == null) {
             setLabel(device.getProperties().getProperty("label"));
-        }  
+        }
         levelupdating = true;
         slider.setBlockIncrement(device.getIncrement());
         slider.setMax(device.getLevelMax());
-        slider.setMin(device.getLevelMin());   
+        slider.setMin(device.getLevelMin());
         levelupdating = false;
     }
-    
+
     public DeviceNumber getDevice() {
         return device;
     }

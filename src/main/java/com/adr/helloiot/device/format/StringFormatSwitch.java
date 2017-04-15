@@ -1,3 +1,6 @@
+//    HelloIoT is a dashboard creator for MQTT
+//    Copyright (C) 2017 Adrián Romero Corchado.
+//
 //    This file is part of HelloIot.
 //
 //    HelloIot is free software: you can redistribute it and/or modify
@@ -12,7 +15,7 @@
 //
 //    You should have received a copy of the GNU General Public License
 //    along with HelloIot.  If not, see <http://www.gnu.org/licenses/>.
-
+//
 package com.adr.helloiot.device.format;
 
 import com.adr.helloiot.device.DeviceSwitch;
@@ -26,16 +29,16 @@ import javafx.geometry.Pos;
 public class StringFormatSwitch implements StringFormat {
 
     private final DeviceSwitch device;
-    
+
     public StringFormatSwitch(DeviceSwitch device) {
         this.device = device;
     }
-    
+
     @Override
     public String toString() {
         return "SWITCH";
     }
-    
+
     @Override
     public String format(byte[] value) {
         return Arrays.equals(device.getOn(), value) ? "ON" : "OFF";
@@ -45,9 +48,9 @@ public class StringFormatSwitch implements StringFormat {
     public byte[] parse(String formattedvalue) {
         return "ON".equals(formattedvalue) ? device.getOn() : device.getOff();
     }
-    
+
     @Override
     public Pos alignment() {
         return Pos.CENTER_LEFT;
-    }    
+    }
 }

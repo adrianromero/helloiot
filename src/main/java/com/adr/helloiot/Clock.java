@@ -1,3 +1,6 @@
+//    HelloIoT is a dashboard creator for MQTT
+//    Copyright (C) 2017 Adrián Romero Corchado.
+//
 //    This file is part of HelloIot.
 //
 //    HelloIot is free software: you can redistribute it and/or modify
@@ -12,7 +15,7 @@
 //
 //    You should have received a copy of the GNU General Public License
 //    along with HelloIot.  If not, see <http://www.gnu.org/licenses/>.
-
+//
 package com.adr.helloiot;
 
 import java.time.LocalDateTime;
@@ -28,24 +31,23 @@ import javafx.util.Duration;
  * @author adrian
  */
 public class Clock {
-    
+
     private final Label l;
-    private final DateTimeFormatter formatter; 
-    
+    private final DateTimeFormatter formatter;
+
     private LocalDateTime datetime = null;
     private Timeline timeline = null;
-    
-    
+
     public Clock(Label l, String pattern) {
         this.l = l;
-        formatter = DateTimeFormatter.ofPattern(pattern);         
+        formatter = DateTimeFormatter.ofPattern(pattern);
     }
-    
+
     public void play() {
         if (timeline != null) {
             stop();
         }
-        
+
         datetime = LocalDateTime.now();
         int second = datetime.getSecond();
         datetime.minusSeconds(second);
@@ -56,14 +58,14 @@ public class Clock {
             l.setText(datetime.format(formatter));
         }));
         timeline.setCycleCount(Animation.INDEFINITE);
-        timeline.playFrom(Duration.seconds(second));        
+        timeline.playFrom(Duration.seconds(second));
     }
-    
+
     public void stop() {
         if (timeline != null) {
             timeline.stop();
             timeline = null;
             datetime = null;
-        }        
+        }
     }
 }

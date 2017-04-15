@@ -1,3 +1,6 @@
+//    HelloIoT is a dashboard creator for MQTT
+//    Copyright (C) 2017 Adrián Romero Corchado.
+//
 //    This file is part of HelloIot.
 //
 //    HelloIot is free software: you can redistribute it and/or modify
@@ -12,7 +15,7 @@
 //
 //    You should have received a copy of the GNU General Public License
 //    along with HelloIot.  If not, see <http://www.gnu.org/licenses/>.
-
+//
 package com.adr.helloiot;
 
 import com.adr.fonticon.FontAwesome;
@@ -30,18 +33,18 @@ public class ApplicationUnitPagesBasic implements ApplicationUnitPages {
 
     @Override
     public List<UnitPage> getUnitPages() {
-        
+
         ResourceBundle resources = ResourceBundle.getBundle("com/adr/helloiot/fxml/main");
-        
+
         UnitPage cfg = new UnitPage("config", IconBuilder.create(FontAwesome.FA_SLIDERS, 24.0).build(), resources.getString("page.config"));
-        
+
         UnitPage notfound = new UnitPage("notfound", IconBuilder.create(FontAwesome.FA_BAN, 24.0).build(), resources.getString("page.notfound"));
         notfound.setEmptyLabel(resources.getString("label.notfound"));
 
         UnitPage start = new UnitPage("start", IconBuilder.create(FontAwesome.FA_STAR_O, 24.0).build(), resources.getString("page.start"));
         start.setEmptyLabel(resources.getString("label.start"));
-        start.setSystem(true);   
-        
+        start.setSystem(true);
+
         return Arrays.asList(cfg, notfound, start);
     }
 }
