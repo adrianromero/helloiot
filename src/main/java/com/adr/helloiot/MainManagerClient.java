@@ -20,7 +20,6 @@ package com.adr.helloiot;
 
 import com.adr.fonticon.FontAwesome;
 import com.adr.fonticon.IconBuilder;
-import com.adr.helloiot.client.TopicStatus;
 import com.adr.helloiot.unit.StartFlow;
 import com.adr.helloiot.unit.UnitPage;
 import java.io.IOException;
@@ -36,7 +35,6 @@ import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 
 /**
@@ -74,24 +72,12 @@ public class MainManagerClient implements MainManager {
 
         int i = 0;
         List<TopicInfo> topicinfolist = new ArrayList<>();
+        TopicInfoBuilder topicinfobuilder = new TopicInfoBuilder();
         int topicinfosize = Integer.parseInt(configprops.getProperty("topicinfo.size", "0"));
         while (i++ < topicinfosize) {
-            TopicInfo topicinfo = new TopicInfo();
-            topicinfo.setTopic(configprops.getProperty("topicinfo" + Integer.toString(i) + ".topic", null));
-            topicinfo.setTopicpub(configprops.getProperty("topicinfo" + Integer.toString(i) + ".topicpub", null));
-            topicinfo.setType(configprops.getProperty("topicinfo" + Integer.toString(i) + ".type", "Publication/Subscription"));
-            topicinfo.setFormat(configprops.getProperty("topicinfo" + Integer.toString(i) + ".format", "STRING"));
-            topicinfo.setJsonpath(configprops.getProperty("topicinfo" + Integer.toString(i) + ".jsonpath", null));
-            topicinfo.setMultiline(Boolean.parseBoolean(configprops.getProperty("topicinfo" + Integer.toString(i) + ".multiline", "false")));
-            topicinfo.setQos(Integer.parseInt(configprops.getProperty("topicinfo" + Integer.toString(i) + ".qos", "-1")));
-            topicinfo.setRetained(Integer.parseInt(configprops.getProperty("topicinfo" + Integer.toString(i) + ".retained", "-1")));
-            String c = configprops.getProperty("topicinfo" + Integer.toString(i) + ".color", null);
-            topicinfo.setColor(c == null ? null : Color.valueOf(c));
-            c = configprops.getProperty("topicinfo" + Integer.toString(i) + ".background", null);
-            topicinfo.setBackground(c == null ? null : Color.valueOf(c));
-            topicinfolist.add(topicinfo);
+            topicinfolist.add(topicinfobuilder.fromProperties(new SubProperties(configprops, "topicinfo" + Integer.toString(i))));
         }
-        clientlogin.setTopicInfoList(FXCollections.observableList(topicinfolist));
+        clientlogin.setTopicInfoList(topicinfobuilder, FXCollections.observableList(topicinfolist));
 
         clientlogin.setOnNextAction(e -> {
             showApplication();
@@ -130,17 +116,10 @@ public class MainManagerClient implements MainManager {
         List<TopicInfo> topicinfolist = clientlogin.getTopicInfoList();
         configprops.setProperty("topicinfo.size", Integer.toString(topicinfolist.size()));
         int i = 0;
-        for (TopicInfo topicinfo : topicinfolist) {
-            configprops.setProperty("topicinfo" + Integer.toString(++i) + ".topic", topicinfo.getTopic());
-            configprops.setProperty("topicinfo" + Integer.toString(i) + ".topicpub", topicinfo.getTopicpub());
-            configprops.setProperty("topicinfo" + Integer.toString(i) + ".type", topicinfo.getType());
-            configprops.setProperty("topicinfo" + Integer.toString(i) + ".format", topicinfo.getFormat());
-            configprops.setProperty("topicinfo" + Integer.toString(i) + ".jsonpath", topicinfo.getJsonpath());
-            configprops.setProperty("topicinfo" + Integer.toString(i) + ".multiline", Boolean.toString(topicinfo.isMultiline()));
-            configprops.setProperty("topicinfo" + Integer.toString(i) + ".color", topicinfo.getColor() == null ? null : topicinfo.getColor().toString());
-            configprops.setProperty("topicinfo" + Integer.toString(i) + ".background", topicinfo.getBackground() == null ? null : topicinfo.getBackground().toString());
-            configprops.setProperty("topicinfo" + Integer.toString(i) + ".qos", Integer.toString(topicinfo.getQos()));
-            configprops.setProperty("topicinfo" + Integer.toString(i) + ".retained", Integer.toString(topicinfo.getRetained()));
+        for (TopicInfo topicinfo : topicinfolist) {       
+            SubProperties subproperties = new SubProperties(configprops, "topicinfo" + Integer.toString(++i));
+            subproperties.setProperty(".type", topicinfo.getType());
+            topicinfo.store(subproperties);
         }
 
         try {
@@ -189,24 +168,8 @@ public class MainManagerClient implements MainManager {
         helloiotapp.addDevicesUnits(Collections.emptyList(), Collections.singletonList(new StartFlow()));
 
         TopicStatus ts;
-
-        for (TopicInfo topicinfo : topicinfolist) {
-            if ("Subscription".equals(topicinfo.getType())) {
-                ts = TopicStatus.buildTopicSubscription(topicinfo);
-            } else if ("Publication".equals(topicinfo.getType())) {
-                ts = TopicStatus.buildTopicPublish(topicinfo);
-            } else { // "Publication/Subscription"
-                ts = TopicStatus.buildTopicPublishSubscription(topicinfo);
-            }
-            StringBuilder style = new StringBuilder();
-            if (topicinfo.getColor() != null) {
-                style.append("-fx-unit-fill: ").append(webColor(topicinfo.getColor())).append(";");
-            }
-            if (topicinfo.getBackground() != null) {
-                style.append("-fx-background-color: ").append(webColor(topicinfo.getBackground())).append(";");
-            }
-            ts.getUnits().get(0).getNode().setStyle(style.toString());
-
+        for (TopicInfo topicinfo : topicinfolist) {            
+            ts = topicinfo.getTopicStatus();
             helloiotapp.addDevicesUnits(ts.getDevices(), ts.getUnits());
         }
 
@@ -239,14 +202,6 @@ public class MainManagerClient implements MainManager {
 
         root.getChildren().add(helloiotapp.getMQTTNode().getNode());
         helloiotapp.startAndConstruct();
-    }
-
-    private String webColor(Color color) {
-        return String.format("#%02X%02X%02X%02X",
-                (int) (color.getRed() * 255),
-                (int) (color.getGreen() * 255),
-                (int) (color.getBlue() * 255),
-                (int) (color.getOpacity() * 255));
     }
 
     private void hideApplication() {

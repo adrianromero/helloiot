@@ -21,7 +21,6 @@ package com.adr.helloiot;
 import com.adr.fonticon.FontAwesome;
 import com.adr.fonticon.IconBuilder;
 import com.adr.hellocommon.utils.FXMLUtil;
-import com.adr.helloiot.util.ExternalFonts;
 import java.util.ResourceBundle;
 import javafx.application.Platform;
 import javafx.beans.value.ObservableValue;
@@ -30,13 +29,10 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.ColorPicker;
-import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.PasswordField;
@@ -44,14 +40,7 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
-import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
-import javafx.scene.text.TextFlow;
-import javafx.util.StringConverter;
+import javafx.scene.layout.StackPane;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 
 /**
@@ -65,10 +54,6 @@ public class ClientLoginNode {
 
     @FXML
     private BorderPane rootpane;
-    @FXML
-    private HBox headerbox;
-    @FXML
-    private Label headertitle;
     @FXML
     private Button nextbutton;
 
@@ -126,32 +111,15 @@ public class ClientLoginNode {
     ListView<TopicInfo> devicesunitslist;
     @FXML
     ScrollPane deviceunitform;
-
-    @FXML
-    TextField edittopic;
-    @FXML
-    TextField edittopicpub;
+    
     @FXML
     ChoiceBox<String> edittype;
     @FXML
-    ChoiceBox<String> editformat;
-    @FXML
-    ColorPicker editcolor;
-    @FXML
-    Button clearcolor;
-    @FXML
-    ColorPicker editbackground;
-    @FXML
-    Button clearbackground;
-    @FXML
-    ChoiceBox<Integer> editqos;
-    @FXML
-    ChoiceBox<Integer> editretained;
-    @FXML
-    TextField editjsonpath;
-    @FXML
-    CheckBox editmultiline;
-
+    StackPane topicinfocontainer;
+    TopicInfoNode editnode = null;
+ 
+    private TopicInfoBuilder topicinfobuilder;
+    
     private String topicapp;
     private String topicprefix;
     private boolean updating = false;
@@ -170,94 +138,9 @@ public class ClientLoginNode {
         updeviceunit.setGraphic(IconBuilder.create(FontAwesome.FA_CHEVRON_UP, 18.0).build());
         downdeviceunit.setGraphic(IconBuilder.create(FontAwesome.FA_CHEVRON_DOWN, 18.0).build());
 
-        edittopicpub.promptTextProperty().bind(edittopic.textProperty());
-        edittopic.textProperty().addListener((ObservableValue<? extends String> ov, String old_val, String new_val) -> {
-            updateCurrentTopic();
-        });
-        edittopicpub.textProperty().addListener((ObservableValue<? extends String> ov, String old_val, String new_val) -> {
-            updateCurrentTopic();
-        });
-
-        editformat.setItems(FXCollections.observableArrayList(
-                "STRING",
-                "INT",
-                "DOUBLE",
-                "DECIMAL",
-                "DEGREES",
-                "BASE64",
-                "HEX"));
-        editformat.getSelectionModel().clearSelection();
-        editformat.valueProperty().addListener((ObservableValue<? extends String> ov, String old_val, String new_val) -> {
-            updateCurrentTopic();
-        });
-
-        editjsonpath.textProperty().addListener((ObservableValue<? extends String> ov, String old_val, String new_val) -> {
-            updateCurrentTopic();
-        });
-
-        edittype.setItems(FXCollections.observableArrayList("Subscription", "Publication", "Publication/Subscription"));
+        edittype.setItems(FXCollections.observableArrayList("Publication/Subscription", "Subscription", "Publication", "Code"));
         edittype.getSelectionModel().clearSelection();
         edittype.valueProperty().addListener((ObservableValue<? extends String> ov, String old_val, String new_val) -> {
-            updateCurrentTopic();
-        });
-
-        editmultiline.selectedProperty().addListener((ObservableValue<? extends Boolean> ov, Boolean old_val, Boolean new_val) -> {
-            updateCurrentTopic();
-        });
-
-        clearcolor.setGraphic(IconBuilder.create(FontAwesome.FA_TRASH, 14.0).build());
-        editcolor.setValue(null);
-        editcolor.valueProperty().addListener((ObservableValue<? extends Color> observable, Color oldValue, Color newValue) -> {
-            updateCurrentTopic();
-        });
-
-        clearbackground.setGraphic(IconBuilder.create(FontAwesome.FA_TRASH, 14.0).build());
-        editbackground.setValue(null);
-        editbackground.valueProperty().addListener((ObservableValue<? extends Color> observable, Color oldValue, Color newValue) -> {
-            updateCurrentTopic();
-        });
-
-        editqos.setConverter(new StringConverter<Integer>() {
-            @Override
-            public String toString(Integer object) {
-                if (object < 0) {
-                    return resources.getString("label.default");
-                } else {
-                    return object.toString();
-                }
-            }
-
-            @Override
-            public Integer fromString(String string) {
-                return Integer.getInteger(string);
-            }
-        });
-        editqos.setItems(FXCollections.observableArrayList(-1, 0, 1, 2));
-        editqos.getSelectionModel().clearSelection();
-        editqos.valueProperty().addListener((ObservableValue<? extends Integer> ov, Integer old_val, Integer new_val) -> {
-            updateCurrentTopic();
-        });
-
-        editretained.setConverter(new StringConverter<Integer>() {
-            @Override
-            public String toString(Integer object) {
-                if (object < 0) {
-                    return resources.getString("label.default");
-                } else if (object == 0) {
-                    return resources.getString("label.no");
-                } else {
-                    return resources.getString("label.yes");
-                }
-            }
-
-            @Override
-            public Integer fromString(String value) {
-                return Integer.getInteger(value);
-            }
-        });
-        editretained.setItems(FXCollections.observableArrayList(-1, 0, 1));
-        editretained.getSelectionModel().clearSelection();
-        editretained.valueProperty().addListener((ObservableValue<? extends Integer> ov, Integer old_val, Integer new_val) -> {
             updateCurrentTopic();
         });
 
@@ -269,28 +152,9 @@ public class ClientLoginNode {
                     setGraphic(null);
                     setText(null);
                 } else {
-                    Text t = new Text();
-                    t.setFill(Color.WHITE);
-                    t.setFont(Font.font(ExternalFonts.ROBOTOBOLD, FontWeight.BOLD, 10.0));
-                    TextFlow tf = new TextFlow(t);
-                    tf.setPrefWidth(55);
-                    tf.setTextAlignment(TextAlignment.CENTER);
-                    tf.setPadding(new Insets(2, 5, 2, 5));
-
-                    if ("Subscription".equals(item.getType())) {
-                        t.setText("SUB");
-                        tf.setStyle("-fx-background-color: #001A80; -fx-background-radius: 12px;");
-                    } else if ("Publication".equals(item.getType())) {
-                        t.setText("PUB");
-                        tf.setStyle("-fx-background-color: #4D001A; -fx-background-radius: 12px;");
-                    } else { // "Publication/Subscription"
-                        t.setText("P/SUB");
-                        tf.setStyle("-fx-background-color: #003300; -fx-background-radius: 12px;");
-                    }
-
-                    setGraphic(tf);
+                    setGraphic(item.getGraphic());
                     String label = item.getLabel();
-                    setText(label == null || label.isEmpty() ? resources.getString("label.empty") : label);
+                    setText((label == null || label.isEmpty()) ? resources.getString("label.empty") : label);
                 }
             }
         });
@@ -308,36 +172,38 @@ public class ClientLoginNode {
 
     private void updateCurrentTopic() {
         if (!updating) {
-            int index = devicesunitslist.getSelectionModel().getSelectedIndex();
+            int index = devicesunitslist.getSelectionModel().getSelectedIndex();        
             TopicInfo topic = devicesunitslist.getSelectionModel().getSelectedItem();
-
-            topic.setTopic(edittopic.getText());
-            topic.setType(edittype.getValue());
-            if ("Subscription".equals(edittype.getValue())) {
-                topic.setTopicpub(null);
-                edittopicpub.setDisable(true);
-            } else {
-                edittopicpub.setDisable(false);
-                topic.setTopicpub(edittopicpub.getText() == null || edittopicpub.getText().isEmpty() ? null : edittopicpub.getText());
+            String type = edittype.getValue();
+            if (!topic.getType().equals(type)) {
+                // This is just an optimization. Most of the times we can reuse current TopicInfo
+                // Create a new TopicInfo, we cannot reuse current one
+                topic = topicinfobuilder.create(type);
+                
+                updating = true;
+                                
+                TopicInfoNode node = topic.getEditNode();
+                if (editnode != null && node != editnode) {
+                    editnode.useUpdateCurrent(null);
+                    topicinfocontainer.getChildren().remove(editnode.getNode());
+                    editnode = null;
+                }
+                if (editnode == null) {
+                    editnode = node;
+                    editnode.useUpdateCurrent(this::updateCurrentTopic);
+                    topicinfocontainer.getChildren().add(editnode.getNode());                
+                }           
+                // TopicInfo -> TopicInfoNode
+                topic.writeToEditNode(); 
+                updating = false;
+            } else {      
+                // TopicInfoNode -> TopicInfo
+                topic.readFromEditNode();
             }
-            topic.setFormat(editformat.getValue());
-            if ("BASE64".equals(editformat.getValue()) || "HEX".equals(editformat.getValue()) || "SWITCH".equals(editformat.getValue())) {
-                topic.setJsonpath(null);
-                editjsonpath.setDisable(true);
-            } else {
-                topic.setJsonpath(editjsonpath.getText());
-                editjsonpath.setDisable(false);
-            }
-            topic.setMultiline(editmultiline.isSelected());
-            topic.setColor(editcolor.getValue());
-            topic.setBackground(editbackground.getValue());
-            topic.setQos(editqos.getValue());
-            topic.setRetained(editretained.getValue());
 
             devicesunitslist.getItems().set(index, topic);
             devicesunitslist.getSelectionModel().select(topic);
         }
-
     }
 
     private void updateDevicesUnitsList() {
@@ -349,19 +215,13 @@ public class ClientLoginNode {
             updeviceunit.setDisable(true);
             downdeviceunit.setDisable(true);
 
-            updating = true;
-            edittopic.setText(null);
-            edittopicpub.setText(null);
+            updating = true;    
             edittype.getSelectionModel().clearSelection();
-            editformat.getSelectionModel().clearSelection();
-            editjsonpath.setText(null);
-            editmultiline.setSelected(false);
-            editcolor.setValue(null);
-            editbackground.setValue(null);
-            editcolor.setValue(null);
-            editbackground.setValue(null);
-            editqos.getSelectionModel().clearSelection();
-            editretained.getSelectionModel().clearSelection();
+            if (editnode != null) {
+                editnode.useUpdateCurrent(null);
+                topicinfocontainer.getChildren().remove(editnode.getNode());
+                editnode = null;
+            }            
             updating = false;
         } else {
             removedeviceunit.setDisable(false);
@@ -370,25 +230,28 @@ public class ClientLoginNode {
             downdeviceunit.setDisable(index >= devicesunitslist.getItems().size() - 1);
 
             updating = true;
-            edittopic.setText(topic.getTopic());
-            edittopicpub.setText(topic.getTopicpub());
-            edittopicpub.setDisable("Subscription".equals(topic.getType()));
             edittype.getSelectionModel().select(topic.getType());
-            editformat.getSelectionModel().select(topic.getFormat());
-            editjsonpath.setText(topic.getJsonpath());
-            editjsonpath.setDisable("BASE64".equals(editformat.getValue()) || "HEX".equals(editformat.getValue()) || "SWITCH".equals(editformat.getValue()));
-            editmultiline.setSelected(topic.isMultiline());
-            editcolor.setValue(topic.getColor());
-            editbackground.setValue(topic.getBackground());
-            editqos.setValue(topic.getQos());
-            editretained.setValue(topic.getRetained());
+            
+            TopicInfoNode node = topic.getEditNode();
+            if (editnode != null && node != editnode) {
+                editnode.useUpdateCurrent(null);
+                topicinfocontainer.getChildren().remove(editnode.getNode());
+                editnode = null;
+            }
+            if (editnode == null) {
+                editnode = node;
+                editnode.useUpdateCurrent(this::updateCurrentTopic);
+                topicinfocontainer.getChildren().add(editnode.getNode());                
+            }          
+            // TopicInfo -> TopicInfoNode
+            topic.writeToEditNode(); 
             updating = false;
         }
     }
 
     @FXML
     void onAddDeviceUnit(ActionEvent event) {
-        TopicInfo t = new TopicInfo();
+        TopicInfo t = topicinfobuilder.create();
         devicesunitslist.getItems().add(t);
         devicesunitslist.getSelectionModel().select(t);
     }
@@ -417,17 +280,7 @@ public class ClientLoginNode {
         devicesunitslist.getItems().add(index + 1, topic);
         devicesunitslist.getSelectionModel().select(index + 1);
     }
-
-    @FXML
-    void onClearColor(ActionEvent event) {
-        editcolor.setValue(null);
-    }
-
-    @FXML
-    void onClearBackground(ActionEvent event) {
-        editbackground.setValue(null);
-    }
-
+    
     public void setOnNextAction(EventHandler<ActionEvent> exitevent) {
         nextbutton.setOnAction(exitevent);
     }
@@ -592,7 +445,8 @@ public class ClientLoginNode {
         return devicesunitslist.getItems();
     }
 
-    public void setTopicInfoList(ObservableList<TopicInfo> list) {
+    public void setTopicInfoList(TopicInfoBuilder topicinfobuilder, ObservableList<TopicInfo> list) {
+        this.topicinfobuilder = topicinfobuilder;
         devicesunitslist.setItems(list);
         if (list.size() > 0) {
             devicesunitslist.getSelectionModel().select(0);

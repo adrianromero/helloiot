@@ -18,24 +18,29 @@
 //
 package com.adr.helloiot;
 
-import javafx.scene.Node;
+import com.adr.helloiot.device.Device;
+import com.adr.helloiot.unit.Unit;
+import java.util.List;
 
 /**
  *
  * @author adrian
  */
-public interface TopicInfo {
+public class TopicStatus {
 
-    public String getType();
-    public String getLabel();
-    public Node getGraphic();
+    private final List<Device> devices;
+    private final List<Unit> units;
+
+    public TopicStatus(List<Device> devices, List<Unit> units) {
+        this.devices = devices;
+        this.units = units;
+    }
     
-    public void load(SubProperties properties);
-    public void store(SubProperties properties);
-    
-    public TopicStatus getTopicStatus();
-    
-    public TopicInfoNode getEditNode();
-    public void writeToEditNode();
-    public void readFromEditNode();
+    public List<Device> getDevices() {
+        return devices;
+    }
+
+    public List<Unit> getUnits() {
+        return units;
+    }
 }

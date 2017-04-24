@@ -86,6 +86,10 @@ public class ConfigProperties {
         }
     }
 
+    public String getProperty(String key) {
+        return config.getProperty(key);
+    }
+
     public String getProperty(String key, String defaultValue) {
         return config.getProperty(key, defaultValue);
     }

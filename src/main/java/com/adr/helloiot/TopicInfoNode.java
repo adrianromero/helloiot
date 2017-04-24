@@ -24,18 +24,8 @@ import javafx.scene.Node;
  *
  * @author adrian
  */
-public interface TopicInfo {
-
-    public String getType();
-    public String getLabel();
-    public Node getGraphic();
+public interface TopicInfoNode {
     
-    public void load(SubProperties properties);
-    public void store(SubProperties properties);
-    
-    public TopicStatus getTopicStatus();
-    
-    public TopicInfoNode getEditNode();
-    public void writeToEditNode();
-    public void readFromEditNode();
+    public void useUpdateCurrent(Runnable updatecurrent);
+    public Node getNode();  
 }
