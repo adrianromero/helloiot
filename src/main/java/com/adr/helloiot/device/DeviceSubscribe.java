@@ -28,7 +28,7 @@ import com.google.common.eventbus.EventBus;
  *
  * @author adrian
  */
-public abstract class DeviceBase extends Device {
+public abstract class DeviceSubscribe extends Device {
 
     protected MQTTManager mqttHelper;
     private MQTTManager.Subscription mqttstatus = null;

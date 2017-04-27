@@ -18,13 +18,23 @@
 //
 package com.adr.helloiot.device;
 
+import com.adr.helloiot.MQTTManager;
+
 /**
  *
  * @author adrian
  */
-public class TransmitterSimple extends DeviceBase {
+public class TransmitterSimple extends Device {
+    
+    protected MQTTManager mqttHelper;
+    
+    @Override
+    public final void construct(MQTTManager mqttManager) {
+        this.mqttHelper = mqttManager;
+    }
 
-    public TransmitterSimple() {
+    @Override
+    public final void destroy() {
     }
 
     @Override

@@ -19,7 +19,7 @@
 package com.adr.helloiot.unit;
 
 import com.adr.helloiot.graphic.IconStatus;
-import com.adr.helloiot.device.DeviceBase;
+import com.adr.helloiot.device.DeviceSubscribe;
 import com.adr.helloiot.EventMessage;
 import com.adr.helloiot.HelloIoTAppPublic;
 import com.adr.helloiot.graphic.IconNull;
@@ -36,7 +36,7 @@ import javafx.scene.layout.VBox;
  *
  * @author adrian
  */
-public class ViewSimple extends Tile implements Unit {
+public class ViewSimple extends Tile {
 
 //    private final Label title;
     private Label content;
@@ -44,7 +44,7 @@ public class ViewSimple extends Tile implements Unit {
     private final static IconStatus ICONNULL = new IconNull();
     private IconStatus iconbuilder = ICONNULL;
 
-    private DeviceBase device = null;
+    private DeviceSubscribe device = null;
 
     @Override
     protected Node constructContent() {
@@ -67,18 +67,18 @@ public class ViewSimple extends Tile implements Unit {
 
     @Override
     public void construct(HelloIoTAppPublic app) {
-        Unit.super.construct(app);
+        super.construct(app);
         device.subscribeStatus(this);
         updateStatus(null);
     }
 
     @Override
     public void destroy() {
-        Unit.super.destroy();
+        super.destroy();
         device.unsubscribeStatus(this);
     }
 
-    public void setDevice(DeviceBase device) {
+    public void setDevice(DeviceSubscribe device) {
         this.device = device;
         if (getLabel() == null) {
             setLabel(device.getProperties().getProperty("label"));
@@ -88,7 +88,7 @@ public class ViewSimple extends Tile implements Unit {
         }
     }
 
-    public DeviceBase getDevice() {
+    public DeviceSubscribe getDevice() {
         return device;
     }
 

@@ -40,7 +40,7 @@ import javafx.scene.layout.Pane;
  *
  * @author adrian
  */
-public class EditStatus extends Tile implements Unit {
+public class EditStatus extends Tile {
 
     protected ResourceBundle resources = ResourceBundle.getBundle("com/adr/helloiot/fxml/basic");
 
@@ -85,14 +85,14 @@ public class EditStatus extends Tile implements Unit {
 
     @Override
     public void construct(HelloIoTAppPublic app) {
-        Unit.super.construct(app);
+        super.construct(app);
         device.subscribeStatus(this);
         updateStatus(null);
     }
 
     @Override
     public void destroy() {
-        Unit.super.destroy();
+        super.destroy();
         device.unsubscribeStatus(this);
     }
 

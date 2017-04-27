@@ -24,6 +24,7 @@ import com.adr.helloiot.device.DeviceNumber;
 import com.adr.helloiot.device.StatusNumber;
 import com.google.common.eventbus.Subscribe;
 import eu.hansolo.medusa.Gauge;
+import java.text.DecimalFormat;
 import java.util.List;
 import javafx.application.Platform;
 import javafx.beans.property.ObjectProperty;
@@ -40,7 +41,7 @@ import javafx.scene.paint.Color;
  *
  * @author adrian
  */
-public class ViewGauge extends Tile implements Unit {
+public class ViewGauge extends Tile {
 
     private static final StyleablePropertyFactory<ViewGauge> FACTORY = new StyleablePropertyFactory<>(Tile.getClassCssMetaData());
     private static final CssMetaData<ViewGauge, Color> VALUECOLOR = FACTORY.createColorCssMetaData("-fx-value-color", s -> s.valueColor, Color.BLACK, false);
@@ -93,14 +94,14 @@ public class ViewGauge extends Tile implements Unit {
 
     @Override
     public void construct(HelloIoTAppPublic app) {
-        Unit.super.construct(app);
+        super.construct(app);
         device.subscribeStatus(this);
         updateStatus(null);
     }
 
     @Override
     public void destroy() {
-        Unit.super.destroy();
+        super.destroy();
         device.unsubscribeStatus(this);
     }
 

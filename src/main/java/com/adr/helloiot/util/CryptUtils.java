@@ -50,10 +50,10 @@ public class CryptUtils {
         return new String(hexChars);
     }
 
-    public static String hashMD5(String input) {
+    public static String hashSHA512(String input) {
         try {
             // generate hash
-            MessageDigest digest = MessageDigest.getInstance("MD5");
+            MessageDigest digest = MessageDigest.getInstance("SHA-512");
             digest.reset();
             byte[] hashedBytes = digest.digest(input.getBytes(StandardCharsets.UTF_8));
             return hexString(hashedBytes);
@@ -65,7 +65,7 @@ public class CryptUtils {
     public static String hashsaltPassword(String input, byte[] salt) {
         try {
             // generate hash
-            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            MessageDigest digest = MessageDigest.getInstance("SHA-512");
             digest.reset();
             digest.update(salt);
             byte[] hashedBytes = digest.digest(input.getBytes(StandardCharsets.UTF_8));

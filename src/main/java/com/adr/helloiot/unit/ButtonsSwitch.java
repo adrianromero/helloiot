@@ -35,7 +35,7 @@ import javafx.scene.layout.VBox;
  *
  * @author adrian
  */
-public class ButtonsSwitch extends Tile implements Unit {
+public class ButtonsSwitch extends Tile {
 
     protected ResourceBundle resources = ResourceBundle.getBundle("com/adr/helloiot/fxml/basic");
 
@@ -83,7 +83,7 @@ public class ButtonsSwitch extends Tile implements Unit {
 
     @Override
     public void construct(HelloIoTAppPublic app) {
-        Unit.super.construct(app);
+        super.construct(app);
         code.construct(app);
     }
 

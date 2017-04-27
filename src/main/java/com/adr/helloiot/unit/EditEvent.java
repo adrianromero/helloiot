@@ -35,7 +35,7 @@ import javafx.scene.control.TextInputControl;
  *
  * @author adrian
  */
-public class EditEvent extends Tile implements Unit {
+public class EditEvent extends Tile {
 
     protected ResourceBundle resources = ResourceBundle.getBundle("com/adr/helloiot/fxml/basic");
 

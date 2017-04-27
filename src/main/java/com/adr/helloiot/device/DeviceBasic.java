@@ -25,7 +25,7 @@ import java.util.concurrent.atomic.AtomicReference;
  *
  * @author adrian
  */
-public class DeviceBasic extends DeviceBase {
+public class DeviceBasic extends DeviceSubscribe {
 
     private final AtomicReference<byte[]> status = new AtomicReference<>(null);
 

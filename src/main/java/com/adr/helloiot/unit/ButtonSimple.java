@@ -31,7 +31,7 @@ import javafx.event.ActionEvent;
  *
  * @author adrian
  */
-public class ButtonSimple extends ButtonBase implements Unit {
+public class ButtonSimple extends ButtonBase {
 
     private final static IconStatus ICONNULL = new IconNull();
     private IconStatus iconbuilder = ICONNULL;

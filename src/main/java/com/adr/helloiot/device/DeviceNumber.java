@@ -24,7 +24,7 @@ import com.adr.helloiot.device.format.StringFormatDecimal;
  *
  * @author adrian
  */
-public abstract class DeviceNumber extends DeviceSimple {
+public class DeviceNumber extends DeviceSimple {
 
     private double increment = 1.0;
     private double levelmax = 100.0;
@@ -33,7 +33,12 @@ public abstract class DeviceNumber extends DeviceSimple {
     public DeviceNumber() {
         setFormat(StringFormatDecimal.DECIMAL);
     }
-
+    
+    @Override
+    public String getDeviceName() {
+        return resources.getString("devicename.devicenumber");
+    }
+    
     public String getUnit() {
         return "";
     }

@@ -19,6 +19,7 @@
 package com.adr.helloiot;
 
 import com.adr.helloiot.device.Device;
+import com.adr.helloiot.device.DeviceBasic;
 import com.adr.helloiot.device.DeviceSimple;
 import com.adr.helloiot.device.DeviceSwitch;
 import com.adr.helloiot.device.StreamDevice;
@@ -92,7 +93,7 @@ public class HelloIoTAppPublic {
         return app.getBeeper();
     }
 
-    public TransmitterSimple buzzer() {
+    public DeviceBasic buzzer() {
         return app.getBuzzer();
     }
 }

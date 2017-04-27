@@ -23,6 +23,7 @@ import com.adr.fonticon.IconBuilder;
 import com.adr.hellocommon.dialog.MessageUtils;
 import com.adr.helloiot.unit.Unit;
 import com.adr.helloiot.device.Device;
+import com.adr.helloiot.device.DeviceBasic;
 import com.adr.helloiot.device.DeviceSimple;
 import com.adr.helloiot.device.DeviceSwitch;
 import com.adr.helloiot.device.TransmitterSimple;
@@ -84,7 +85,7 @@ public class HelloIoTApp {
     private HelloIoTAppPublic apppublic = null;
     private DeviceSimple appunitpage;
     private DeviceSwitch appbeeper;
-    private TransmitterSimple appbuzzer;
+    private DeviceBasic appbuzzer;
 
     private EventHandler<ActionEvent> exitevent = null;
     private final Runnable styleConnection;
@@ -162,7 +163,7 @@ public class HelloIoTApp {
         beeper.setTopic(topicapp + "/beeper");
         beeper.setId(SYS_BEEPER_ID);
 
-        TransmitterSimple buzzer = new TransmitterSimple();
+        DeviceBasic buzzer = new DeviceBasic();
         buzzer.setTopic(topicapp + "/buzzer");
         buzzer.setId(SYS_BUZZER_ID);
 
@@ -310,9 +311,9 @@ public class HelloIoTApp {
         return appbeeper;
     }
 
-    public TransmitterSimple getBuzzer() {
+    public DeviceBasic getBuzzer() {
         if (appbuzzer == null) {
-            appbuzzer = ((TransmitterSimple) getDevice(SYS_BUZZER_ID));
+            appbuzzer = ((DeviceBasic) getDevice(SYS_BUZZER_ID));
         }
         return appbuzzer;
     }
@@ -384,7 +385,7 @@ public class HelloIoTApp {
     private void initFirstTime() {
 
         // Check if it is first time  
-        File freshfile = new File(System.getProperty("user.home"), ".helloiot-" + CryptUtils.hashMD5(config.mqtt_url + config.mqtt_topicapp));
+        File freshfile = new File(System.getProperty("user.home"), ".helloiot-" + CryptUtils.hashSHA512(config.mqtt_url + config.mqtt_topicapp));
         if (!freshfile.exists()) {
             // This is the first time initialization
             LOGGER.log(Level.INFO, "Executing unit page initialization.");

@@ -28,7 +28,7 @@ import javafx.event.ActionEvent;
  *
  * @author adrian
  */
-public class ButtonScript extends ButtonBase implements Unit {
+public class ButtonScript extends ButtonBase {
 
     private final Map<String, Object> params = new HashMap<>();
     private ScriptCode code = null;

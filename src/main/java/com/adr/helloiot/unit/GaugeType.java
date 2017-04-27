@@ -69,7 +69,9 @@ public enum GaugeType {
                 .skinType(Gauge.SkinType.FLAT)
                 .minValue(min)
                 .maxValue(max)
-                .autoScale(false)
+                .prefSize(100.0, 100.0)
+                .autoScale(false) 
+                .barColor(Color.BLUE)
                 .decimals(1)
                 .build();
     }),
@@ -79,7 +81,7 @@ public enum GaugeType {
                 .minValue(min)
                 .maxValue(max)
                 .autoScale(false)
-                .decimals(1)//.numberFormat(new NumberFormat("#0.0"))
+                .decimals(1)
                 .barColor(Color.CRIMSON)
                 .valueColor(Color.BLACK)
                 .titleColor(Color.BLACK)

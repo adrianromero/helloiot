@@ -18,7 +18,7 @@
 //
 package com.adr.helloiot.unit;
 
-import com.adr.helloiot.device.DeviceBase;
+import com.adr.helloiot.device.DeviceSubscribe;
 import com.adr.helloiot.EventMessage;
 import com.adr.helloiot.HelloIoTAppPublic;
 import com.google.common.eventbus.Subscribe;
@@ -31,12 +31,12 @@ import javafx.scene.control.Label;
  *
  * @author adrian
  */
-public class ViewText extends Tile implements Unit {
+public class ViewText extends Tile {
 
     @FXML
     private Label level;
 
-    private DeviceBase device = null;
+    private DeviceSubscribe device = null;
 
     @Override
     protected Node constructContent() {
@@ -59,25 +59,25 @@ public class ViewText extends Tile implements Unit {
 
     @Override
     public void construct(HelloIoTAppPublic app) {
-        Unit.super.construct(app);
+        super.construct(app);
         device.subscribeStatus(this);
         updateStatus(null);
     }
 
     @Override
     public void destroy() {
-        Unit.super.destroy();
+        super.destroy();
         device.unsubscribeStatus(this);
     }
 
-    public void setDevice(DeviceBase device) {
+    public void setDevice(DeviceSubscribe device) {
         this.device = device;
         if (getLabel() == null) {
             setLabel(device.getProperties().getProperty("label"));
         }
     }
 
-    public DeviceBase getDevice() {
+    public DeviceSubscribe getDevice() {
         return device;
     }
 }

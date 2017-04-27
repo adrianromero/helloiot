@@ -34,7 +34,7 @@ import javafx.scene.layout.VBox;
  *
  * @author adrian
  */
-public abstract class ButtonBase extends Tile implements Unit {
+public abstract class ButtonBase extends Tile {
 
     protected Button button;
     protected boolean confirm = false;
@@ -58,7 +58,7 @@ public abstract class ButtonBase extends Tile implements Unit {
 
     @Override
     public void construct(HelloIoTAppPublic app) {
-        Unit.super.construct(app);
+        super.construct(app);
         this.app = app;
     }
 
@@ -84,6 +84,14 @@ public abstract class ButtonBase extends Tile implements Unit {
 
     public Node getGraphic() {
         return button.getGraphic();
+    }
+    
+    public void setText(String text) {
+        button.setText(text);
+    }
+    
+    public String getText() {
+        return button.getText();
     }
 
     void onScriptAction(ActionEvent event) {

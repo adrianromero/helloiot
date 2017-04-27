@@ -36,7 +36,7 @@ import jidefx.utils.AutoRepeatButtonUtils;
  *
  * @author adrian
  */
-public class ButtonsSpinner extends Tile implements Unit {
+public class ButtonsSpinner extends Tile {
 
     @FXML
     private Button goup;
@@ -78,14 +78,14 @@ public class ButtonsSpinner extends Tile implements Unit {
 
     @Override
     public void construct(HelloIoTAppPublic app) {
-        Unit.super.construct(app);
+        super.construct(app);
         device.subscribeStatus(this);
         updateStatus(null);
     }
 
     @Override
     public void destroy() {
-        Unit.super.destroy();
+        super.destroy();
         device.unsubscribeStatus(this);
     }
 

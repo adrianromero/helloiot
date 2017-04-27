@@ -34,7 +34,7 @@ import javafx.scene.control.Slider;
  *
  * @author adrian
  */
-public class SliderSimple extends Tile implements Unit {
+public class SliderSimple extends Tile {
 
     @FXML
     private Slider slider;
@@ -73,14 +73,14 @@ public class SliderSimple extends Tile implements Unit {
 
     @Override
     public void construct(HelloIoTAppPublic app) {
-        Unit.super.construct(app);
+        super.construct(app);
         device.subscribeStatus(this);
         updateStatus(null);
     }
 
     @Override
     public void destroy() {
-        Unit.super.destroy();
+        super.destroy();
         device.unsubscribeStatus(this);
     }
 

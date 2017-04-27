@@ -38,23 +38,19 @@ import javafx.scene.layout.Priority;
  */
 public abstract class Tile extends BorderPane implements Unit {
 
-    private final Label title;
+    private String title = null;
+    private Label titlelabel = null;
     private String footer = null;
     private FlowPane footerpane = null;
 
     public Tile() {
-        title = new Label(null);
-        title.getStyleClass().add("labelbase");
-        title.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-
         getStyleClass().add("unitbase");
         setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-        setMinSize(120.0, Control.USE_COMPUTED_SIZE);
-        setPrefSize(120.0, Control.USE_COMPUTED_SIZE);
+        setMinSize(160.0, Control.USE_COMPUTED_SIZE);
+        setPrefSize(160.0, Control.USE_COMPUTED_SIZE);
         HBox.setHgrow(this, Priority.SOMETIMES);
         setDisable(true);
 
-        setTop(title);
         setCenter(constructContent());  
     }
 
@@ -97,11 +93,21 @@ public abstract class Tile extends BorderPane implements Unit {
     }
 
     public void setLabel(String label) {
-        title.setText(label);
+        if (titlelabel != null) {
+            getChildren().remove(titlelabel);
+            titlelabel = null;
+        }     
+        title = label; 
+        if (title != null && !title.isEmpty()) {
+            titlelabel = new Label(label);
+            titlelabel.getStyleClass().add("labelbase");
+            titlelabel.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+            setTop(titlelabel);
+        }
     }
 
     public String getLabel() {
-        return title.getText();
+        return title;
     }
 
     public void setFooter(String label) {
@@ -110,12 +116,15 @@ public abstract class Tile extends BorderPane implements Unit {
             footerpane = null;
         }
         footer = label;
-        try {
-            footerpane = TextContainer.createFlowPane(label);
-            footerpane.getStyleClass().add("footerbase");            
-            setBottom(footerpane);
-        } catch (IOException ex) {
-            Logger.getLogger(Tile.class.getName()).log(Level.WARNING, null, ex);;
+        
+        if (footer != null && !footer.isEmpty()) {
+            try {
+                footerpane = TextContainer.createFlowPane(label);
+                footerpane.getStyleClass().add("footerbase");            
+                setBottom(footerpane);
+            } catch (IOException ex) {
+                Logger.getLogger(Tile.class.getName()).log(Level.WARNING, null, ex);;
+            }
         }
     }
 

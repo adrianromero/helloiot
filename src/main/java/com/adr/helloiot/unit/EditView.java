@@ -20,7 +20,7 @@ package com.adr.helloiot.unit;
 
 import com.adr.helloiot.EventMessage;
 import com.adr.helloiot.HelloIoTAppPublic;
-import com.adr.helloiot.device.DeviceBase;
+import com.adr.helloiot.device.DeviceSubscribe;
 import com.google.common.base.Strings;
 import com.google.common.eventbus.Subscribe;
 import javafx.application.Platform;
@@ -33,12 +33,12 @@ import javafx.scene.control.TextInputControl;
  *
  * @author adrian
  */
-public class EditView extends Tile implements Unit {
+public class EditView extends Tile {
 
     @FXML
     private TextInputControl statusview;
 
-    private DeviceBase device = null;
+    private DeviceSubscribe device = null;
 
     @Override
     public Node constructContent() {
@@ -61,18 +61,18 @@ public class EditView extends Tile implements Unit {
 
     @Override
     public void construct(HelloIoTAppPublic app) {
-        Unit.super.construct(app);
+        super.construct(app);
         device.subscribeStatus(this);
         updateStatus(null);
     }
 
     @Override
     public void destroy() {
-        Unit.super.destroy();
+        super.destroy();
         device.unsubscribeStatus(this);
     }
 
-    public void setDevice(DeviceBase device) {
+    public void setDevice(DeviceSubscribe device) {
         this.device = device;
         if (Strings.isNullOrEmpty(getLabel())) {
             setLabel(device.getProperties().getProperty("label"));
@@ -84,7 +84,7 @@ public class EditView extends Tile implements Unit {
         }
     }
 
-    public DeviceBase getDevice() {
+    public DeviceSubscribe getDevice() {
         return device;
     }
 }

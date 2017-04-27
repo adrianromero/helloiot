@@ -235,8 +235,8 @@
 }
 
 .buttonbase {
-    -fx-font-family: 'ROBOTO LIGHT';
-    -fx-font-size: 16px;
+    -fx-font-family: 'ROBOTO BOLD';
+    -fx-font-size: 18px;
     -fx-text-fill: -fx-text-fill-title;
     -fx-background-radius: 10;
     -fx-background-color:  -fx-border-fill, -fx-button-fill;  

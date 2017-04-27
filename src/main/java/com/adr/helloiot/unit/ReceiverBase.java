@@ -19,7 +19,7 @@
 package com.adr.helloiot.unit;
 
 import com.adr.helloiot.HelloIoTAppPublic;
-import com.adr.helloiot.device.DeviceBase;
+import com.adr.helloiot.device.DeviceSubscribe;
 import javafx.scene.Node;
 
 /**
@@ -28,7 +28,7 @@ import javafx.scene.Node;
  */
 public abstract class ReceiverBase implements Unit {
 
-    private DeviceBase device = null;
+    private DeviceSubscribe device = null;
     protected HelloIoTAppPublic app;
 
 // The Subscribe is the abstract method
@@ -48,11 +48,11 @@ public abstract class ReceiverBase implements Unit {
         device.unsubscribeStatus(this);
     }
 
-    public void setDevice(DeviceBase device) {
+    public void setDevice(DeviceSubscribe device) {
         this.device = device;
     }
 
-    public DeviceBase getDevice() {
+    public DeviceSubscribe getDevice() {
         return device;
     }
 
