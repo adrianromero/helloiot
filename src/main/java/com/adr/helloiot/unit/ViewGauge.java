@@ -24,7 +24,6 @@ import com.adr.helloiot.device.DeviceNumber;
 import com.adr.helloiot.device.StatusNumber;
 import com.google.common.eventbus.Subscribe;
 import eu.hansolo.medusa.Gauge;
-import java.text.DecimalFormat;
 import java.util.List;
 import javafx.application.Platform;
 import javafx.beans.property.ObjectProperty;
@@ -60,7 +59,7 @@ public class ViewGauge extends Tile {
         return valueColor.getValue();
     }
 
-    public final void setSelected(Color color) {
+    public final void setValueColor(Color color) {
         valueColor.setValue(color);
     }
     private final StyleableObjectProperty<Color> valueColor = new SimpleStyleableObjectProperty<>(VALUECOLOR, this, "value-color");

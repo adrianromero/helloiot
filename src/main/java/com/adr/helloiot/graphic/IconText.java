@@ -18,8 +18,10 @@
 //
 package com.adr.helloiot.graphic;
 
+import com.adr.fonticon.decorator.Shine;
 import com.adr.helloiot.util.ExternalFonts;
 import javafx.scene.Node;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
@@ -33,7 +35,9 @@ public class IconText implements IconStatus {
     @Override
     public Node buildIcon(String formattedStatus) {
         Text t = new Text(formattedStatus);
-        t.setFont(Font.font(ExternalFonts.ROBOTOBOLD, FontWeight.NORMAL, 11.0));
+        t.setFont(Font.font(ExternalFonts.ROBOTOBOLD, FontWeight.BOLD, 18.0));
+        t.setFill(Color.WHITE);
+        new Shine(Color.DARKGRAY).decorate(t);        
         return t;
     }
 }

@@ -61,23 +61,32 @@ public class DeviceSwitch extends DeviceSimple {
 
     @Override
     public byte[] nextStatus() {
-        boolean current = Arrays.equals(on, readStatus());
-        return !current ? on : off;
+        return on;
     }
-
+    
+    @Override
+    public byte[] rollNextStatus() {
+        return Arrays.equals(on, readStatus()) ? off : on;
+    }
+    
     @Override
     public byte[] prevStatus() {
-        return nextStatus();
+        return off;
     }
-
+    
+    @Override
+    public byte[] rollPrevStatus() {
+        return Arrays.equals(on, readStatus()) ? off : on;
+    }
+    
     @Override
     public boolean hasPrevStatus() {
-        return true;
+        return Arrays.equals(on, readStatus());
     }
 
     @Override
     public boolean hasNextStatus() {
-        return true;
+        return !Arrays.equals(on, readStatus());
     }
 
     public void sendON() {

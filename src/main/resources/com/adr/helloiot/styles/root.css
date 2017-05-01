@@ -139,3 +139,25 @@
 .dialog-buttonlist {
     -fx-padding: 10 10 10 10;    
 }
+
+
+/*.default-color0.chart-line-symbol {
+    -fx-background-color: transparent;
+    -fx-shape: "";
+}
+.default-color1.chart-line-symbol {
+    -fx-background-color: transparent;
+    -fx-shape: "";
+}
+.default-color2.chart-line-symbol {
+    -fx-background-color: transparent;
+    -fx-shape: "";
+}
+.default-color3.chart-line-symbol {
+    -fx-background-color: transparent;
+    -fx-shape: "";
+}
+.default-color4.chart-line-symbol {
+    -fx-background-color: transparent;
+    -fx-shape: "";
+}*/

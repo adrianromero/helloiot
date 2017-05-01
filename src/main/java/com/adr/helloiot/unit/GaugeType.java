@@ -23,6 +23,7 @@ import eu.hansolo.medusa.Gauge.ScaleDirection;
 import eu.hansolo.medusa.GaugeBuilder;
 import eu.hansolo.medusa.Section;
 import eu.hansolo.medusa.TickMarkType;
+import javafx.geometry.Orientation;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Stop;
 
@@ -70,7 +71,7 @@ public enum GaugeType {
                 .minValue(min)
                 .maxValue(max)
                 .prefSize(100.0, 100.0)
-                .autoScale(false) 
+                .autoScale(false)
                 .barColor(Color.BLUE)
                 .decimals(1)
                 .build();
@@ -112,6 +113,41 @@ public enum GaugeType {
                 .autoScale(false)
                 .titleColor(Color.LIGHTGRAY)
                 .borderPaint(Color.LIGHTGRAY)
+                .build();
+    }),
+    LINEAR((min, max) -> {
+        return GaugeBuilder.create()
+                .skinType(Gauge.SkinType.LINEAR)
+                .minValue(min)
+                .maxValue(max)
+                .prefSize(100.0, 100.0)
+                .autoScale(false)
+                .orientation(Orientation.HORIZONTAL)
+                .barColor(Color.BLUE)
+                .decimals(1)
+                .build();
+    }),
+    BAR((min, max) -> {
+        return GaugeBuilder.create()
+                .skinType(Gauge.SkinType.BAR)
+                .minValue(min)
+                .maxValue(max)
+                .prefSize(100.0, 100.0)
+                .autoScale(false)
+                .barColor(Color.BLUE)
+                .decimals(1)
+                .animated(false)                
+                .build();
+    }),
+    WHITE((min, max) -> {
+        return GaugeBuilder.create()
+                .skinType(Gauge.SkinType.WHITE)
+                .minValue(min)
+                .maxValue(max)
+                .prefSize(100.0, 100.0)
+                .autoScale(false)
+                .decimals(1)
+                .animated(false)
                 .build();
     });
 

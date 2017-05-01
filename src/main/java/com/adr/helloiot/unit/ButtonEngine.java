@@ -143,7 +143,7 @@ public class ButtonEngine extends Tile {
         }
 
         if (!timedarmed) {
-            device.sendStatus(device.nextStatus());
+            device.sendStatus(device.rollNextStatus());
         }
     }
 

@@ -80,16 +80,39 @@ public class DeviceNumber extends DeviceSimple {
         return newlevel;
     }
 
+    public double rollLevel(double newlevel) {
+
+        newlevel = Math.rint(newlevel / increment) * increment;
+
+        if (newlevel > levelmax) {
+            return levelmin;
+        }
+        if (newlevel < levelmin) {
+            return levelmax;
+        }
+        return newlevel;
+    }
+    
     @Override
     public byte[] prevStatus() {
         return StatusNumber.getFromValue(adjustLevel(StatusNumber.getFromBytes(readStatus()) - increment));
     }
-
+    
+    @Override
+    public byte[] rollPrevStatus() {
+        return StatusNumber.getFromValue(rollLevel(StatusNumber.getFromBytes(readStatus()) - increment));
+    }
+    
     @Override
     public byte[] nextStatus() {
         return StatusNumber.getFromValue(adjustLevel(StatusNumber.getFromBytes(readStatus()) + increment));
     }
-
+    
+    @Override
+    public byte[] rollNextStatus() {
+        return StatusNumber.getFromValue(rollLevel(StatusNumber.getFromBytes(readStatus()) + increment));
+    }
+    
     @Override
     public boolean hasPrevStatus() {
         return StatusNumber.getFromBytes(readStatus()) > levelmin;

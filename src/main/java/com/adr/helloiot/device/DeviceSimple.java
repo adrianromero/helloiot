@@ -40,12 +40,21 @@ public class DeviceSimple extends DeviceBasic {
     public byte[] prevStatus() {
         return readStatus();
     }
-
+    
+    // Overwrite this method 
+    public byte[] rollPrevStatus() {
+        return readStatus();
+    }
+    
     // Overwrite this  method
     public byte[] nextStatus() {
         return readStatus();
     }
 
+    // Overwrite this  method
+    public byte[] rollNextStatus() {
+        return readStatus();
+    }
     // Overwrite this  method
     public boolean hasPrevStatus() {
         return false;

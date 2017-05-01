@@ -84,6 +84,6 @@ public class ButtonSimple extends ButtonBase {
 
     @Override
     protected void doRun(ActionEvent event) {
-        device.sendStatus(device.nextStatus());
+        device.sendStatus(device.rollNextStatus());
     }
 }
