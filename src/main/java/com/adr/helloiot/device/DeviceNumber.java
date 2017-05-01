@@ -67,9 +67,9 @@ public class DeviceNumber extends DeviceSimple {
         return levelmin;
     }
 
-    public double adjustLevel(double newlevel) {
+    public double adjustLevel(double level) {
 
-        newlevel = Math.rint(newlevel / increment) * increment;
+        double newlevel = Math.rint(level / increment) * increment;
 
         if (newlevel > levelmax) {
             return levelmax;
@@ -80,9 +80,9 @@ public class DeviceNumber extends DeviceSimple {
         return newlevel;
     }
 
-    public double rollLevel(double newlevel) {
+    public double rollLevel(double level) {
 
-        newlevel = Math.rint(newlevel / increment) * increment;
+        double newlevel = Math.rint(level / increment) * increment;
 
         if (newlevel > levelmax) {
             return levelmin;
