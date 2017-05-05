@@ -62,7 +62,7 @@ public class ViewSimple extends Tile {
     }
 
     private void updateStatus(byte[] status) {
-        content.setGraphic(iconbuilder.buildIcon(device.getFormat().format(status)));
+        content.setGraphic(iconbuilder.buildIcon(device.getFormat().getValueFormat(status)));
     }
 
     @Override

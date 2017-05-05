@@ -18,13 +18,11 @@
 //
 package com.adr.helloiot;
 
-import com.adr.helloiot.device.DeviceSwitch;
 import com.adr.helloiot.device.format.StringFormat;
 import com.adr.helloiot.device.format.StringFormatSwitch;
 import com.adr.helloiot.media.Clip;
 import com.adr.helloiot.media.ClipFactory;
 import com.google.common.eventbus.Subscribe;
-import java.util.Arrays;
 import javafx.application.Platform;
 import javafx.scene.control.Label;
 import javafx.scene.media.AudioClip;

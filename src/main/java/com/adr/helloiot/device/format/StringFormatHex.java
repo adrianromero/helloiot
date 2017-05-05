@@ -49,7 +49,7 @@ public class StringFormatHex implements StringFormat {
     @Override
     public MiniVar value(byte[] value) {
         if (value == null) {
-            return new MiniVarString(null);
+            return MiniVarString.NULL;
         } else {
             return new MiniVarString(fixedSplit(formatHexString(value)));
         }

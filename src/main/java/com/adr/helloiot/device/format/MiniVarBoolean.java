@@ -24,6 +24,10 @@ package com.adr.helloiot.device.format;
  */
 public class MiniVarBoolean implements MiniVar {
     
+    public final static MiniVar NULL = new MiniVarBoolean(null);
+    public final static MiniVar TRUE = new MiniVarBoolean(true);
+    public final static MiniVar FALSE = new MiniVarBoolean(false);
+    
     public final Boolean value;
     
     public MiniVarBoolean(Boolean value) {

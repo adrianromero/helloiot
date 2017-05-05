@@ -47,7 +47,7 @@ public class StringFormatBase64 implements StringFormat {
     @Override
     public MiniVar value(byte[] value) {
         if (value == null) {
-            return new MiniVarString(null);
+            return MiniVarString.NULL;
         } else {
             return new MiniVarString(Base64.getMimeEncoder().encodeToString(value));
         }

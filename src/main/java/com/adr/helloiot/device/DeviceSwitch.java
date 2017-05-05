@@ -39,7 +39,7 @@ public class DeviceSwitch extends DeviceSimple {
 
     @Override
     public byte[] nextStatus() {
-        return getFormat().devalue(new MiniVarBoolean(true));
+        return getFormat().devalue(MiniVarBoolean.TRUE);
     }
     
     @Override
@@ -49,7 +49,7 @@ public class DeviceSwitch extends DeviceSimple {
     
     @Override
     public byte[] prevStatus() {
-        return getFormat().devalue(new MiniVarBoolean(false));
+        return getFormat().devalue(MiniVarBoolean.FALSE);
     }
     
     @Override
@@ -68,11 +68,11 @@ public class DeviceSwitch extends DeviceSimple {
     }
 
     public void sendON() {
-        sendStatus(getFormat().devalue(new MiniVarBoolean(true)));
+        sendStatus(getFormat().devalue(MiniVarBoolean.TRUE));
     }
 
     public void sendOFF() {
-        sendStatus(getFormat().devalue(new MiniVarBoolean(false)));
+        sendStatus(getFormat().devalue(MiniVarBoolean.FALSE));
     }
 
     public void sendSWITCH() {
@@ -86,7 +86,7 @@ public class DeviceSwitch extends DeviceSimple {
             return;
         }
 
-        sendStatus(getFormat().devalue(new MiniVarBoolean(true)));
-        sendStatus(getFormat().devalue(new MiniVarBoolean(false)), duration);
+        sendStatus(getFormat().devalue(MiniVarBoolean.TRUE));
+        sendStatus(getFormat().devalue(MiniVarBoolean.FALSE), duration);
     }
 }

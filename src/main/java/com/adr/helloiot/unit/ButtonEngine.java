@@ -102,7 +102,7 @@ public class ButtonEngine extends Tile {
     }
 
     private void updateStatus(byte[] status) {
-        button.setGraphic(iconbuilder.buildIcon(device.getFormat().format(status)));
+        button.setGraphic(iconbuilder.buildIcon(device.getFormat().getValueFormat(status)));
     }
 
     public void setDevice(DeviceSwitch device) {

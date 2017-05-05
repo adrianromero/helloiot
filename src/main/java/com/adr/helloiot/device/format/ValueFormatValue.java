@@ -16,19 +16,26 @@
 //    You should have received a copy of the GNU General Public License
 //    along with HelloIot.  If not, see <http://www.gnu.org/licenses/>.
 //
-package com.adr.helloiot.graphic;
-
-import com.adr.helloiot.device.format.ValueFormatValue;
-import javafx.scene.Node;
+package com.adr.helloiot.device.format;
 
 /**
  *
  * @author adrian
  */
-public class IconNull implements IconStatus {
+public class ValueFormatValue {
+    private final MiniVar value;
+    private final String formatValue;
 
-    @Override
-    public Node buildIcon(ValueFormatValue value) {
-        return null;
+    public ValueFormatValue(MiniVar value, String formatValue) {
+        this.value = value;
+        this.formatValue = formatValue;
     }
+
+    public MiniVar getValue() {
+        return value;
+    }
+
+    public String getFormatValue() {
+        return formatValue;
+    }  
 }

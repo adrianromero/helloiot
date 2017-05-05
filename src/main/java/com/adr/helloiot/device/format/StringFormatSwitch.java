@@ -67,7 +67,7 @@ public class StringFormatSwitch extends StringFormatPath {
     @Override
     protected MiniVar valueImpl(String value) {
         if (value == null || value.isEmpty()) {
-            return new MiniVarBoolean(null);
+            return MiniVarBoolean.NULL;
         } else {
             return new MiniVarBoolean(values[1].equals(value));
         }
@@ -86,7 +86,7 @@ public class StringFormatSwitch extends StringFormatPath {
     @Override
     public byte[] parse(String formattedvalue) {
         if (formattedvalue == null || formattedvalue.isEmpty()) {
-            return devalue(new MiniVarBoolean(null));
+            return devalue(MiniVarBoolean.NULL);
         } else {
             return devalue(new MiniVarBoolean(pattern[1].equals(formattedvalue)));
         }

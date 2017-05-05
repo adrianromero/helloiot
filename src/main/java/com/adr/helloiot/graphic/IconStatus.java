@@ -20,6 +20,7 @@ package com.adr.helloiot.graphic;
 
 import com.adr.fonticon.FontAwesome;
 import com.adr.fonticon.IconFontList;
+import com.adr.helloiot.device.format.ValueFormatValue;
 import java.util.ResourceBundle;
 import javafx.scene.Node;
 
@@ -31,7 +32,7 @@ public interface IconStatus {
 
     public static final ResourceBundle RESOURCES = ResourceBundle.getBundle("com/adr/helloiot/fxml/main");
 
-    public Node buildIcon(String formattedStatus);
+    public Node buildIcon(ValueFormatValue value);
 
     public static IconStatus valueOf(String value) {
         if ("NULL".equals(value)) {
@@ -54,19 +55,6 @@ public interface IconStatus {
             return new Power(FontAwesome.valueOf(value.substring(6)));
         } else if (value.startsWith("POWERTEXT/")) {
             return new Power(new IconFontList(value.substring(10), "ROBOTO BOLD"));
-        } else if ("TEXT".equals(value)) {
-            return new IconTextSwitch(RESOURCES.getString("icon.open"), RESOURCES.getString("icon.closed"));
-        } else if (value.startsWith("TEXT/")) {
-            String param = value.substring(5);
-            if ("OPEN/CLOSED".equals(param)) {
-                return new IconTextSwitch(RESOURCES.getString("icon.open"), RESOURCES.getString("icon.closed"));
-            } else if ("ON/OFF".equals(param)) {
-                return new IconTextSwitch(RESOURCES.getString("icon.on"), RESOURCES.getString("icon.off"));
-            } else if ("UP/DOWN".equals(param)) {
-                return new IconTextSwitch(RESOURCES.getString("icon.up"), RESOURCES.getString("icon.down"));
-            } else {
-                return new IconTextSwitch(RESOURCES.getString("icon.open"), RESOURCES.getString("icon.closed"));
-            }
         } else {
             throw new IllegalArgumentException("Cannot create IconStatus: " + value);
         }

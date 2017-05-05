@@ -44,7 +44,7 @@ public class ButtonSimple extends ButtonBase {
     }
 
     private void updateStatus(byte[] status) {
-        button.setGraphic(iconbuilder.buildIcon(device.getFormat().format(status)));
+        button.setGraphic(iconbuilder.buildIcon(device.getFormat().getValueFormat(status)));
     }
 
     @Override

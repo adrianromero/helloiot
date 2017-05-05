@@ -89,7 +89,7 @@ public class StringFormatDecimal extends StringFormatPath {
     @Override
     protected MiniVar valueImpl(String value) {
         if (value == null || value.isEmpty()) {
-            return new MiniVarDouble(null);
+            return MiniVarDouble.NULL;
         } else {
             return new MiniVarDouble(Double.parseDouble(value));
         }
@@ -108,7 +108,7 @@ public class StringFormatDecimal extends StringFormatPath {
     @Override
     public byte[] parse(String formattedvalue) {
         if (formattedvalue == null || formattedvalue.isEmpty()) {
-            return devalue(new MiniVarDouble(null));
+            return devalue(MiniVarDouble.NULL);
         } else {
             double d;
             try {

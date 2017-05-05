@@ -23,6 +23,8 @@ package com.adr.helloiot.device.format;
  * @author adrian
  */
 public class MiniVarDouble implements MiniVar {
+
+    public final static MiniVar NULL = new MiniVarDouble(null);
     
     public final Double value;
     

@@ -18,6 +18,7 @@
 //
 package com.adr.helloiot.graphic;
 
+import com.adr.helloiot.device.format.ValueFormatValue;
 import javafx.scene.Node;
 
 /**
@@ -27,8 +28,8 @@ import javafx.scene.Node;
 public interface IconSwitch extends IconStatus {
 
     @Override
-    public default Node buildIcon(String formattedStatus) {
-        if ("ON".equals(formattedStatus)) {
+    public default Node buildIcon(ValueFormatValue value) {
+        if (value.getValue().asBoolean()) {
             return buildIconOn();
         } else {
             return buildIconOff();
