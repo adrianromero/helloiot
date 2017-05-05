@@ -18,6 +18,7 @@
 //
 package com.adr.helloiot.device;
 
+import com.adr.helloiot.device.format.MiniVarDouble;
 import com.adr.helloiot.device.format.StringFormatDecimal;
 
 /**
@@ -95,31 +96,31 @@ public class DeviceNumber extends DeviceSimple {
     
     @Override
     public byte[] prevStatus() {
-        return StatusNumber.getFromValue(adjustLevel(StatusNumber.getFromBytes(readStatus()) - increment));
+        return getFormat().devalue(new MiniVarDouble(adjustLevel(readStatus().asDouble() - increment)));
     }
     
     @Override
     public byte[] rollPrevStatus() {
-        return StatusNumber.getFromValue(rollLevel(StatusNumber.getFromBytes(readStatus()) - increment));
+        return getFormat().devalue(new MiniVarDouble(rollLevel(readStatus().asDouble() - increment)));
     }
     
     @Override
     public byte[] nextStatus() {
-        return StatusNumber.getFromValue(adjustLevel(StatusNumber.getFromBytes(readStatus()) + increment));
+        return getFormat().devalue(new MiniVarDouble(adjustLevel(readStatus().asDouble() + increment)));
     }
     
     @Override
     public byte[] rollNextStatus() {
-        return StatusNumber.getFromValue(rollLevel(StatusNumber.getFromBytes(readStatus()) + increment));
+        return getFormat().devalue(new MiniVarDouble(rollLevel(readStatus().asDouble() + increment)));
     }
     
     @Override
     public boolean hasPrevStatus() {
-        return StatusNumber.getFromBytes(readStatus()) > levelmin;
+        return readStatus().asDouble() > levelmin;
     }
 
     @Override
     public boolean hasNextStatus() {
-        return StatusNumber.getFromBytes(readStatus()) < levelmax;
+        return readStatus().asDouble() < levelmax;
     }
 }

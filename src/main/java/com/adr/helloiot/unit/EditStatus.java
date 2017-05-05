@@ -132,7 +132,7 @@ public class EditStatus extends Tile {
     void onEditEvent(ActionEvent event) {
         boxview.setVisible(false);
         boxedit.setVisible(true);
-        statusedit.setText(device.getFormat().format(device.readStatus()));
+        statusedit.setText(device.loadStatus());
         statusedit.selectAll();
         statusedit.requestFocus();
     }

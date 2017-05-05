@@ -16,40 +16,15 @@
 //    You should have received a copy of the GNU General Public License
 //    along with HelloIot.  If not, see <http://www.gnu.org/licenses/>.
 //
-package com.adr.helloiot.device;
-
-import com.adr.helloiot.EventMessage;
-import com.adr.helloiot.device.format.MiniVar;
-import java.util.concurrent.atomic.AtomicReference;
+package com.adr.helloiot.device.format;
 
 /**
  *
  * @author adrian
  */
-public class DeviceBasic extends DeviceSubscribe {
-
-    private final AtomicReference<byte[]> status = new AtomicReference<>(null);
-
-    public DeviceBasic() {
-        setRetained(true);
-    }
-
-    // Overwrite this  method
-    @Override
-    public String getDeviceName() {
-        return resources.getString("devicename.devicebasic");
-    }
-
-    @Override
-    protected void consumeMessage(EventMessage message) {
-        status.set(message.getMessage());
-    }
-
-    public MiniVar readStatus() {
-        return getFormat().value(status.get());
-    }
-
-    public String loadStatus() {
-        return getFormat().format(status.get());
-    }
+public interface MiniVar {
+    public boolean isEmpty();
+    public String asString();
+    public double asDouble();
+    public boolean asBoolean();
 }

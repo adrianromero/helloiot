@@ -21,7 +21,6 @@ package com.adr.helloiot.unit;
 import com.adr.helloiot.EventMessage;
 import com.adr.helloiot.HelloIoTAppPublic;
 import com.adr.helloiot.device.DeviceNumber;
-import com.adr.helloiot.device.StatusNumber;
 import com.google.common.eventbus.Subscribe;
 import eu.hansolo.medusa.Gauge;
 import java.util.List;
@@ -81,7 +80,7 @@ public class ViewGauge extends Tile {
             return;
         }
 
-        double newvalue = StatusNumber.getFromBytes(status);
+        double newvalue = device.getFormat().value(status).asDouble();
         if (newvalue < gauge.getMinValue()) {
             newvalue = gauge.getMinValue();
         }

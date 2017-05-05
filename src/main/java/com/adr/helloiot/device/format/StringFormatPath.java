@@ -18,7 +18,6 @@
 //
 package com.adr.helloiot.device.format;
 
-import com.google.common.base.Strings;
 import com.jayway.jsonpath.JsonPath;
 import java.nio.charset.StandardCharsets;
 
@@ -46,35 +45,24 @@ public abstract class StringFormatPath implements StringFormat {
         return path;
     }
 
-    protected abstract String formatImpl(String value);
-
-    protected abstract String parseImpl(String value);
-
+    protected abstract MiniVar valueImpl(String value);
+   
     @Override
-    public final String format(byte[] value) {
+    public final MiniVar value(byte[] value) {
         if (path == null || path.isEmpty()) {
             // No JSON path -> Normal payload processing
             if (value == null || value.length == 0) {
-                return "";
+                return valueImpl(null);
             }
-            return formatImpl(new String(value, StandardCharsets.UTF_8));
+            return valueImpl(new String(value, StandardCharsets.UTF_8));
         } else {
             // if value null or empty this will throw an exception
             // Note that this is a different behavior when path is null because here we expect a valid JSON.
-            return formatImpl(JsonPath.<String>read(new String(value, StandardCharsets.UTF_8), path));
+            String v = JsonPath.<String>read(new String(value, StandardCharsets.UTF_8), path);
+            if (v == null || v.isEmpty()) {
+                return valueImpl(null);
+            }
+            return valueImpl(v);
         }
-    }
-
-    @Override
-    public final byte[] parse(String formattedvalue) {
-        if (path != null && !path.isEmpty()) {
-            throw new UnsupportedOperationException("Cannot create a full message if there is a valid JSON path.");
-        }
-
-        if (Strings.isNullOrEmpty(formattedvalue)) {
-            return new byte[0];
-        }
-
-        return parseImpl(formattedvalue).getBytes(StandardCharsets.UTF_8);
     }
 }

@@ -38,22 +38,22 @@ public class DeviceSimple extends DeviceBasic {
 
     // Overwrite this method 
     public byte[] prevStatus() {
-        return readStatus();
+        throw new UnsupportedOperationException("Not supported.");
     }
     
     // Overwrite this method 
     public byte[] rollPrevStatus() {
-        return readStatus();
+        throw new UnsupportedOperationException("Not supported.");
     }
     
     // Overwrite this  method
     public byte[] nextStatus() {
-        return readStatus();
+        throw new UnsupportedOperationException("Not supported.");
     }
 
     // Overwrite this  method
     public byte[] rollNextStatus() {
-        return readStatus();
+        throw new UnsupportedOperationException("Not supported.");
     }
     // Overwrite this  method
     public boolean hasPrevStatus() {

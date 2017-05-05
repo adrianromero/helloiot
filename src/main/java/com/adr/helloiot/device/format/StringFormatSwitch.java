@@ -18,20 +18,40 @@
 //
 package com.adr.helloiot.device.format;
 
-import com.adr.helloiot.device.DeviceSwitch;
-import java.util.Arrays;
+import java.nio.charset.StandardCharsets;
 import javafx.geometry.Pos;
 
 /**
  *
  * @author adrian
  */
-public class StringFormatSwitch implements StringFormat {
+public class StringFormatSwitch extends StringFormatPath {
 
-    private final DeviceSwitch device;
+    private String[] values = {"OFF", "ON"};
+    private String[] pattern = {"OFF", "ON"};
 
-    public StringFormatSwitch(DeviceSwitch device) {
-        this.device = device;
+    public StringFormatSwitch() {
+        this(null);
+    }
+
+    public StringFormatSwitch(String jsonpath) {
+        super(jsonpath);
+    }
+
+    public String getValues() {
+        return String.join(",", values);
+    }
+
+    public void setValues(String value) {
+        values = value.split(",");
+    }
+
+    public String getPattern() {
+        return String.join(",", pattern);
+    }
+
+    public void setPattern(String value) {
+        pattern = value.split(",");
     }
 
     @Override
@@ -40,17 +60,41 @@ public class StringFormatSwitch implements StringFormat {
     }
 
     @Override
+    public Pos alignment() {
+        return Pos.CENTER_LEFT;
+    }
+
+    @Override
+    protected MiniVar valueImpl(String value) {
+        if (value == null || value.isEmpty()) {
+            return new MiniVarBoolean(null);
+        } else {
+            return new MiniVarBoolean(values[1].equals(value));
+        }
+    }
+
+    @Override
     public String format(byte[] value) {
-        return Arrays.equals(device.getOn(), value) ? "ON" : "OFF";
+        MiniVar v = value(value);
+        if (v.isEmpty()) {
+            return "";
+        } else {
+            return pattern[v.asBoolean() ? 1 : 0];
+        }
     }
 
     @Override
     public byte[] parse(String formattedvalue) {
-        return "ON".equals(formattedvalue) ? device.getOn() : device.getOff();
+        if (formattedvalue == null || formattedvalue.isEmpty()) {
+            return devalue(new MiniVarBoolean(null));
+        } else {
+            return devalue(new MiniVarBoolean(pattern[1].equals(formattedvalue)));
+        }
     }
 
     @Override
-    public Pos alignment() {
-        return Pos.CENTER_LEFT;
+    public byte[] devalue(MiniVar formattedvalue) {
+        String s = formattedvalue.asBoolean() ? values[1] : values[0];
+        return s.getBytes(StandardCharsets.UTF_8);
     }
 }

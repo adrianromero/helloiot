@@ -21,7 +21,7 @@ package com.adr.helloiot.unit;
 import com.adr.helloiot.device.DeviceNumber;
 import com.adr.helloiot.EventMessage;
 import com.adr.helloiot.HelloIoTAppPublic;
-import com.adr.helloiot.device.StatusNumber;
+import com.adr.helloiot.device.format.MiniVarDouble;
 import com.google.common.eventbus.Subscribe;
 import javafx.application.Platform;
 import javafx.beans.value.ObservableValue;
@@ -53,7 +53,7 @@ public class SliderSimple extends Tile {
     public void initialize() {
         slider.valueProperty().addListener((ObservableValue<? extends Number> ov, Number old_val, Number new_val) -> {
             if (!levelupdating) {
-                device.sendStatus(StatusNumber.getFromValue(device.adjustLevel(new_val.doubleValue())));
+                device.sendStatus(device.getFormat().devalue(new MiniVarDouble(device.adjustLevel(new_val.doubleValue()))));
             }
         });
         level.setText(null);
@@ -67,7 +67,7 @@ public class SliderSimple extends Tile {
     private void updateStatus(byte[] status) {
         levelupdating = true;
         level.setText(device.getFormat().format(status));
-        slider.setValue(StatusNumber.getFromBytes(status));
+        slider.setValue(device.getFormat().value(status).asDouble());
         levelupdating = false;
     }
 

@@ -27,8 +27,10 @@ import javafx.geometry.Pos;
 public interface StringFormat {
 
     public String format(byte[] value);
+    public MiniVar value(byte[] value);
 
     public byte[] parse(String formattedvalue);
+    public byte[] devalue(MiniVar formattedvalue);
 
     public Pos alignment();
 

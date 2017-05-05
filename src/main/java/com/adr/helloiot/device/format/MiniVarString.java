@@ -16,31 +16,37 @@
 //    You should have received a copy of the GNU General Public License
 //    along with HelloIot.  If not, see <http://www.gnu.org/licenses/>.
 //
-package com.adr.helloiot.device;
-
-import java.nio.charset.StandardCharsets;
+package com.adr.helloiot.device.format;
 
 /**
  *
  * @author adrian
  */
-public final class StatusNumber {
-
-    private StatusNumber() {
+public class MiniVarString implements MiniVar {
+    
+    public final String value;
+    
+    public MiniVarString(String value) {
+        this.value = value;
     }
 
-    public static byte[] getFromValue(double value) {
-        return Double.toString(value).getBytes(StandardCharsets.UTF_8);
+    @Override
+    public String asString() {
+        return value == null ? "" : value;
     }
 
-    public static double getFromBytes(byte[] status) {
-        if (status == null) {
-            return 0.0;
-        }
-        try {
-            return Double.parseDouble(new String(status, StandardCharsets.UTF_8));
-        } catch (NumberFormatException e) {
-            return 0.0;
-        }
+    @Override
+    public double asDouble() {
+        throw new UnsupportedOperationException("Not supported.");
     }
+
+    @Override
+    public boolean asBoolean() {
+        throw new UnsupportedOperationException("Not supported.");
+    }
+    
+    @Override
+    public boolean isEmpty() {
+        return value == null;
+    }        
 }

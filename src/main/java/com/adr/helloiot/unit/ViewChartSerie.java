@@ -22,7 +22,7 @@ package com.adr.helloiot.unit;
 import com.adr.helloiot.EventMessage;
 import com.adr.helloiot.device.DeviceNumber;
 import com.google.common.eventbus.Subscribe;
-import com.google.common.util.concurrent.AtomicDouble;
+import java.util.concurrent.atomic.AtomicReference;
 import java.nio.charset.StandardCharsets;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -41,7 +41,7 @@ public class ViewChartSerie {
     private DeviceNumber device = null;
     private final ObservableList<XYChart.Data<Number, Number>> data = FXCollections.observableArrayList();
     
-    private final AtomicDouble current = new AtomicDouble(0);
+    private final AtomicReference<Double> current = new AtomicReference<>(0.0);
     
     public DeviceNumber getDevice() {
         return device;
@@ -86,9 +86,7 @@ public class ViewChartSerie {
             return;
         }
         
-        double d = Double.parseDouble(new String(status, StandardCharsets.UTF_8));
-        
-        current.set(d); 
+        current.set(device.getFormat().value(status).asDouble()); 
     }   
     
     public void tick() {

@@ -59,11 +59,13 @@ public class ViewChart extends Tile {
         // Get all data
         double min = Double.MAX_VALUE;
         double max = Double.MIN_VALUE;
+        double inc = 0.0;
         List<XYChart.Series<Number, Number>> chartdata = new ArrayList<>();
         for (ViewChartSerie serie: series) {
             serie.construct();
             min = Math.min(min, serie.getDevice().getLevelMin());
             max = Math.max(max, serie.getDevice().getLevelMax());
+            inc = Math.max(inc, serie.getDevice().getIncrement());
             chartdata.add(serie.createSerie());
         }
         ObservableList<XYChart.Series<Number, Number>> areaChartData = FXCollections.observableArrayList(chartdata);       
@@ -76,7 +78,7 @@ public class ViewChart extends Tile {
         xAxis.setTickMarkVisible(false);
         xAxis.setMinorTickVisible(false);
         xAxis.setTickLabelsVisible(false);
-        yAxis = new NumberAxis(min, max, (max - min) / 10.0);
+        yAxis = new NumberAxis(min, max, inc * 10.0);
         yAxis.setSide(Side.RIGHT);
         yAxis.setMinorTickVisible(false);        
         
@@ -85,8 +87,6 @@ public class ViewChart extends Tile {
         chart.setLegendSide(Side.RIGHT);
         chart.setAnimated(false);
         chart.setCreateSymbols(false);
-
-              
 
         chartcontainer.getChildren().add(chart); 
         

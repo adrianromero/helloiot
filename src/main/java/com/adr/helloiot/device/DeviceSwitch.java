@@ -18,9 +18,8 @@
 //
 package com.adr.helloiot.device;
 
+import com.adr.helloiot.device.format.MiniVarBoolean;
 import com.adr.helloiot.device.format.StringFormatSwitch;
-import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
 
 /**
  *
@@ -28,14 +27,8 @@ import java.util.Arrays;
  */
 public class DeviceSwitch extends DeviceSimple {
 
-    public final static byte[] ON = "ON".getBytes(StandardCharsets.UTF_8);
-    public final static byte[] OFF = "OFF".getBytes(StandardCharsets.UTF_8);
-
-    private byte[] on = ON;
-    private byte[] off = OFF;
-
     public DeviceSwitch() {
-        setFormat(new StringFormatSwitch(this));
+        setFormat(new StringFormatSwitch());
     }
 
     @Override
@@ -43,72 +36,57 @@ public class DeviceSwitch extends DeviceSimple {
         return resources.getString("devicename.deviceswitch");
     }
 
-    public byte[] getOn() {
-        return on;
-    }
-
-    public void setOn(byte[] on) {
-        this.on = on;
-    }
-
-    public byte[] getOff() {
-        return off;
-    }
-
-    public void setOff(byte[] off) {
-        this.off = off;
-    }
 
     @Override
     public byte[] nextStatus() {
-        return on;
+        return getFormat().devalue(new MiniVarBoolean(true));
     }
     
     @Override
     public byte[] rollNextStatus() {
-        return Arrays.equals(on, readStatus()) ? off : on;
+        return getFormat().devalue(new MiniVarBoolean(!readStatus().asBoolean()));
     }
     
     @Override
     public byte[] prevStatus() {
-        return off;
+        return getFormat().devalue(new MiniVarBoolean(false));
     }
     
     @Override
     public byte[] rollPrevStatus() {
-        return Arrays.equals(on, readStatus()) ? off : on;
+        return getFormat().devalue(new MiniVarBoolean(!readStatus().asBoolean()));
     }
     
     @Override
     public boolean hasPrevStatus() {
-        return Arrays.equals(on, readStatus());
+        return readStatus().asBoolean();
     }
 
     @Override
     public boolean hasNextStatus() {
-        return !Arrays.equals(on, readStatus());
+        return !readStatus().asBoolean();
     }
 
     public void sendON() {
-        sendStatus(on);
+        sendStatus(getFormat().devalue(new MiniVarBoolean(true)));
     }
 
     public void sendOFF() {
-        sendStatus(off);
+        sendStatus(getFormat().devalue(new MiniVarBoolean(false)));
     }
 
     public void sendSWITCH() {
-        sendStatus(nextStatus());
+        sendStatus(rollNextStatus());
     }
 
     public void sendON(long duration) {
 
-        if (Arrays.equals(on, readStatus()) && !hasTimer()) {
+        if (readStatus().asBoolean() && !hasTimer()) {
             // If  already on and not with a timer then do nothing
             return;
         }
 
-        sendStatus(on);
-        sendStatus(off, duration);
+        sendStatus(getFormat().devalue(new MiniVarBoolean(true)));
+        sendStatus(getFormat().devalue(new MiniVarBoolean(false)), duration);
     }
 }

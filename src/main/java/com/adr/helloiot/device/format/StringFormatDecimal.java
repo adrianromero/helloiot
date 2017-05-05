@@ -18,6 +18,7 @@
 //
 package com.adr.helloiot.device.format;
 
+import java.nio.charset.StandardCharsets;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
@@ -81,30 +82,51 @@ public class StringFormatDecimal extends StringFormatPath {
     }
 
     @Override
-    public String formatImpl(String value) {
-        return format.format(Double.parseDouble(value));
-    }
-
-    @Override
-    public String parseImpl(String formattedvalue) {
-        try {
-            return format.parse(formattedvalue).toString();
-        } catch (ParseException ex) {
-            return parseGeneral(formattedvalue);
-        }
-    }
-
-    @Override
     public Pos alignment() {
         return Pos.CENTER_RIGHT;
     }
 
-    protected static String parseGeneral(String formattedvalue) {
-        try {
-            return GENERALFORMAT.parse(formattedvalue).toString();
-        } catch (ParseException ex) {
-            logger.log(Level.WARNING, null, ex);
-            throw new IllegalArgumentException(ex);
+    @Override
+    protected MiniVar valueImpl(String value) {
+        if (value == null || value.isEmpty()) {
+            return new MiniVarDouble(null);
+        } else {
+            return new MiniVarDouble(Double.parseDouble(value));
         }
+    }
+
+    @Override
+    public String format(byte[] value) {
+        MiniVar v = value(value);
+        if (v.isEmpty()) {
+            return "";
+        } else {
+            return format.format(v.asDouble());
+        }
+    }
+    
+    @Override
+    public byte[] parse(String formattedvalue) {
+        if (formattedvalue == null || formattedvalue.isEmpty()) {
+            return devalue(new MiniVarDouble(null));
+        } else {
+            double d;
+            try {
+                d = format.parse(formattedvalue).doubleValue();
+            } catch (ParseException ex) {
+                try {                
+                    d = GENERALFORMAT.parse(formattedvalue).doubleValue();
+                } catch (ParseException ex2) {
+                    logger.log(Level.WARNING, null, ex2);
+                    throw new IllegalArgumentException(ex2);
+                }
+            }
+            return devalue(new MiniVarDouble(d));
+        }
+    }
+    
+    @Override
+    public byte[] devalue(MiniVar formattedvalue) {
+        return formattedvalue.asString().getBytes(StandardCharsets.UTF_8);
     }
 }

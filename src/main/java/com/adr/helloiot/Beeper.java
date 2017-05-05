@@ -19,6 +19,8 @@
 package com.adr.helloiot;
 
 import com.adr.helloiot.device.DeviceSwitch;
+import com.adr.helloiot.device.format.StringFormat;
+import com.adr.helloiot.device.format.StringFormatSwitch;
 import com.adr.helloiot.media.Clip;
 import com.adr.helloiot.media.ClipFactory;
 import com.google.common.eventbus.Subscribe;
@@ -35,6 +37,8 @@ public class Beeper {
 
     private final Clip beep;
     private final Label alert;
+    
+    private final StringFormat format = new StringFormatSwitch();
 
     public Beeper(ClipFactory factory, Label alert) {
 
@@ -52,7 +56,7 @@ public class Beeper {
         alert.setVisible(false);
         beep.stop();
 
-        if (Arrays.equals(DeviceSwitch.ON, status)) {
+        if (format.value(status).asBoolean()) {
             alert.setVisible(true);
             beep.play();
         }

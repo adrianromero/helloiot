@@ -18,6 +18,7 @@
 //
 package com.adr.helloiot.device.format;
 
+import java.nio.charset.StandardCharsets;
 import javafx.geometry.Pos;
 
 /**
@@ -40,15 +41,30 @@ public class StringFormatIdentity extends StringFormatPath {
     public String toString() {
         return "STRING";
     }
-
+    
     @Override
-    public String formatImpl(String value) {
-        return value;
+    protected MiniVar valueImpl(String value) {
+        return new MiniVarString(value);
     }
 
     @Override
-    public String parseImpl(String formattedvalue) {
-        return formattedvalue;
+    public String format(byte[] value) {
+        MiniVar v = value(value);
+        if (v.isEmpty()) {
+            return "";
+        } else {
+            return v.asString();
+        }
+    }
+    
+    @Override
+    public byte[] parse(String formattedvalue) {
+        return devalue(new MiniVarString(formattedvalue));
+    }
+    
+    @Override
+    public byte[] devalue(MiniVar formattedvalue) {
+        return formattedvalue.asString().getBytes(StandardCharsets.UTF_8);
     }
 
     @Override
