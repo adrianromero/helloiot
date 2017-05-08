@@ -23,7 +23,6 @@ import com.adr.helloiot.device.DeviceBasic;
 import com.adr.helloiot.device.DeviceSimple;
 import com.adr.helloiot.device.DeviceSwitch;
 import com.adr.helloiot.device.StreamDevice;
-import com.adr.helloiot.device.TransmitterSimple;
 
 /**
  *
