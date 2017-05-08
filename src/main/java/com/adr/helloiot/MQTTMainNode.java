@@ -30,6 +30,8 @@ import com.adr.helloiot.media.ClipFactory;
 import com.adr.helloiot.unit.UnitLine;
 import com.google.common.base.Strings;
 import com.google.common.eventbus.Subscribe;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -95,25 +97,25 @@ public final class MQTTMainNode {
     private Label currenttime;
     @FXML
     private Label alert;
-
+    
     private DialogView connectingdialog = null;
-
+    
     private Clock clock = null;
     private Transition listpagestransition;
-
+    
     private final Map<String, UnitPage> unitpages = new LinkedHashMap<>();
     private final Beeper beeper;
     private final Buzzer buzzer;
     private final HelloIoTApp app;
     private final boolean appclock;
     private final boolean appexitbutton;
-
+    
     public MQTTMainNode(
             HelloIoTApp app,
             ClipFactory factory,
             boolean appclock,
             boolean appexitbutton) {
-
+        
         this.app = app;
         this.appclock = appclock;
         this.appexitbutton = appexitbutton;
@@ -121,13 +123,13 @@ public final class MQTTMainNode {
         beeper = new Beeper(factory, alert);
         buzzer = new Buzzer(factory);
     }
-
+    
     public Node getNode() {
         return rootpane;
     }
-
+    
     public void construct(List<UnitPage> appunitpages) {
-
+        
         app.getUnitPage().subscribeStatus(this);
         app.getBeeper().subscribeStatus(beeper);
         app.getBuzzer().subscribeStatus(buzzer);
@@ -138,21 +140,24 @@ public final class MQTTMainNode {
         }
 
         //Init unit nodes
-        app.getUnits().forEach((Unit u) -> {
+        for (Unit u : app.getUnits()) {
             Node n = u.getNode();
             if (n != null) {
                 UnitPage unitpage = buildUnitPage(UnitPage.getPage(n));
                 unitpage.addUnitNode(n);
             }
-        });
+        }
 
         // Build listpages based on unitpages
-        unitpages.values().stream().sorted().forEach(value -> {
+        List<UnitPage> sortedunitpages = new ArrayList<>();
+        sortedunitpages.addAll(unitpages.values());
+        Collections.sort(sortedunitpages);
+        for (UnitPage value : sortedunitpages) {
             if (!value.isSystem() && value.getUnitLines().size() > 0 && (value.getName() == null || !value.getName().startsWith("."))) {
                 listpages.getItems().add(value);
             }
-        });
-
+        }
+        
         gotoPage("start");
 
         // Remove menubutton if 0 or 1 visible page.
@@ -167,26 +172,26 @@ public final class MQTTMainNode {
             appcontainer.getChildren().remove(headerbox);
         }
     }
-
+    
     public void destroy() {
         app.getUnitPage().unsubscribeStatus(this);
         app.getBeeper().unsubscribeStatus(beeper);
         app.getBuzzer().unsubscribeStatus(buzzer);
         unitpages.clear();
     }
-
+    
     public void setToolbarButton(EventHandler<ActionEvent> backevent, Node graphic, String text) {
         backbutton.setOnAction(backevent);
         backbutton.setText(text);
         backbutton.setGraphic(graphic);
         backbutton.setVisible(backevent != null);
     }
-
+    
     @FXML
     public void initialize() {
-
+        
         alert.setGraphic(IconBuilder.create(FontAwesome.FA_VOLUME_UP, 72.0).fill(Color.WHITE).shine(Color.RED).build());
-
+        
         if (appexitbutton) {
             exitbutton.setVisible(true);
             exitbutton.setGraphic(IconBuilder.create(FontAwesome.FA_POWER_OFF, 18.0).styleClass("icon-fill").build());
@@ -200,14 +205,14 @@ public final class MQTTMainNode {
         }
         menubutton.setGraphic(IconBuilder.create(FontAwesome.FA_NAVICON, 18.0).styleClass("icon-fill").build());
         menubutton.setDisable(true);
-
+        
         if (appclock) {
             clock = new Clock(currenttime, resources.getString("clock.pattern"));
             clock.play();
         }
-
+        
         listpages.setCellFactory((ListView<UnitPage> list) -> new UnitPageCell());
-
+        
         listpagesgray.setBackground(new Background(new BackgroundFill(Color.gray(0.5, 0.75), CornerRadii.EMPTY, Insets.EMPTY)));
         FadeTransition ft = new FadeTransition(Duration.millis(300), listpages);
         ft.setFromValue(0.0);
@@ -225,7 +230,7 @@ public final class MQTTMainNode {
         tt2.setFromX(0.0);
         tt2.setToX(listpages.prefWidth(0));
         tt2.setInterpolator(Interpolator.EASE_BOTH);
-
+        
         listpagestransition = new ParallelTransition(ft, ft2, tt, tt2);
         listpagestransition.setRate(-1.0);
         listpagestransition.setOnFinished((ActionEvent actionEvent) -> {
@@ -235,69 +240,69 @@ public final class MQTTMainNode {
             }
         });
     }
-
+    
     @FXML
     void onMenuAction(ActionEvent e) {
         animateListPages(-listpagestransition.getRate());
     }
-
+    
     @FXML
     void onMenuHide(MouseEvent event) {
         animateListPages(-1.0);
     }
-
+    
     @FXML
     void onSelectedItem(MouseEvent event) {
-
+        
         UnitPage selectedpage = listpages.getSelectionModel().getSelectedItem();
         if (selectedpage != null) {
             // clicked on an item not empty space
             app.getUnitPage().sendStatus(selectedpage.getName());
         }
     }
-
+    
     private void animateListPages(double newrate) {
-
+        
         if (newrate > 0.0) {
             listpages.setVisible(true);
             listpagesgray.setVisible(true);
         }
-
+        
         if (newrate > 0.0 || !listpagestransition.getCurrentTime().equals(Duration.ZERO)) {
             listpagestransition.setRate(newrate);
             listpagestransition.play();
         }
     }
-
+    
     @Subscribe
     public void selectUnitPage(EventMessage message) {
         Platform.runLater(() -> {
             updateStatus(message.getMessage());
         });
     }
-
+    
     private void updateStatus(byte[] status) {
         gotoPage(StringFormatIdentity.INSTANCE.format(status));
     }
-
+    
     private void gotoPage(String status) {
-
+        
         listpages.getSelectionModel().select(-1);
         StackPane messagesroot = MessageUtils.getRoot(rootpane);
         if (messagesroot != null) {
             // If it is not already added to the scene, there is no need to dispose dialogs.
             MessageUtils.disposeAllDialogs(messagesroot);
         }
-
+        
         UnitPage unitpage = unitpages.get(status);
-
+        
         if (unitpage == null) {
             unitpage = unitpages.get("notfound");
         }
 
         // clean everything
         container.getChildren().clear();
-
+        
         FadeTransition s2 = new FadeTransition(Duration.millis(200), container);
         s2.setInterpolator(Interpolator.EASE_IN);
         s2.setFromValue(0.3);
@@ -309,14 +314,14 @@ public final class MQTTMainNode {
         for (UnitLine line : unitpage.getUnitLines()) {
             container.getChildren().add(line.getNode());
         }
-
+        
         headertitle.setText(unitpage.getText());
 
         // Set label if empty
         if (container.getChildren().isEmpty()) {
-
+            
             container.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-
+            
             Label l = new Label();
             l.setText(unitpage.getEmptyLabel());
             l.setAlignment(Pos.CENTER);
@@ -330,42 +335,42 @@ public final class MQTTMainNode {
         if (menubutton != null) {
             menubutton.setDisable(unitpage.isSystem());
         }
-
+        
         animateListPages(-1.0);
     }
-
+    
     public void showConnecting() {
         if (connectingdialog == null) {
             Label l = new Label(resources.getString("message.waitingconnection"));
             l.setAlignment(Pos.CENTER);
             l.setMaxSize(Integer.MAX_VALUE, Integer.MAX_VALUE);
-
+            
             ProgressBar p = new ProgressBar();
             p.setMaxSize(Integer.MAX_VALUE, Integer.MAX_VALUE);
-
+            
             VBox box = new VBox();
             box.setSpacing(5.0);
             box.setPadding(new Insets(0.0, 0.0, 50.0, 0.0));
             box.getChildren().addAll(l, p);
-
+            
             connectingdialog = new DialogView();
             connectingdialog.setMaster(true);
             connectingdialog.setContent(box);
             connectingdialog.show(MessageUtils.getRoot(rootpane));
         }
     }
-
+    
     public void hideConnecting() {
         if (connectingdialog != null) {
             connectingdialog.dispose();
             connectingdialog = null;
         }
     }
-
+    
     private void addUnitPage(UnitPage unitpage) {
         unitpages.put(unitpage.getName(), unitpage);
     }
-
+    
     private UnitPage buildUnitPage(String name) {
         UnitPage unitpage = unitpages.get(Strings.isNullOrEmpty(name) ? "main" : name);
         if (unitpage == null) {
@@ -374,9 +379,9 @@ public final class MQTTMainNode {
         }
         return unitpage;
     }
-
+    
     private static class UnitPageCell extends ListCell<UnitPage> {
-
+        
         @Override
         public void updateItem(UnitPage item, boolean empty) {
             super.updateItem(item, empty);
