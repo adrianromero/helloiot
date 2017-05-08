@@ -55,6 +55,14 @@ public interface IconStatus {
             return new Power(FontAwesome.valueOf(value.substring(6)));
         } else if (value.startsWith("POWERTEXT/")) {
             return new Power(new IconFontList(value.substring(10), "ROBOTO BOLD"));
+        } else if ("COLOR".equals(value)) {
+            return new IconColor();
+        } else if (value.startsWith("COLOR/")) {
+            return new IconColor(FontAwesome.valueOf(value.substring(6)));
+        } else if ("BRIGHTNESS".equals(value)) {
+            return new IconBrightness();
+        } else if (value.startsWith("BRIGHTNESS/")) {
+            return new IconBrightness(FontAwesome.valueOf(value.substring(11)));      
         } else {
             throw new IllegalArgumentException("Cannot create IconStatus: " + value);
         }
