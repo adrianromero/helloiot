@@ -124,7 +124,7 @@ public final class MQTTManager implements MqttCallback {
             }
         }
 
-        String[] listtopics = worktopics.stream().toArray(String[]::new);
+        String[] listtopics = worktopics.toArray(new String[worktopics.size()]);
         int[] listqos = new int[workqos.size()];
         for (int i = 0; i < workqos.size(); i++) {
             listqos[i] = workqos.get(i);
@@ -152,6 +152,7 @@ public final class MQTTManager implements MqttCallback {
                     File dbfile = new File(System.getProperty("user.home"), ".helloiot-" + CryptUtils.hashSHA512(url) + ".mapdb"); // dbfile is function of url only
                     dbClient = DBMaker.fileDB(dbfile).make();
                     mapClient = dbClient.hashMap("map", Serializer.STRING, Serializer.BYTE_ARRAY).createOrOpen();
+//                    mapClient = new ConcurrentHashMap<> (); // and deserialize from disk
 
                     mapClient.forEach((topic, payload) -> {
                         try {
