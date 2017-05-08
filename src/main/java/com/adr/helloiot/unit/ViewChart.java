@@ -43,6 +43,9 @@ import javafx.util.Duration;
 public class ViewChart extends Tile {
 
     private StackPane chartcontainer; 
+    private Duration duration = Duration.seconds(1.0);
+    private boolean legendVisible = true;
+    private Side legendSide  = Side.RIGHT;
     private Timeline timeline;
     private final List<ViewChartSerie> series = new ArrayList<>();
 
@@ -83,14 +86,14 @@ public class ViewChart extends Tile {
         yAxis.setMinorTickVisible(false);        
         
         chart = new LineChart<>(xAxis, yAxis, areaChartData);
-        chart.setLegendVisible(true);
-        chart.setLegendSide(Side.RIGHT);
+        chart.setLegendVisible(legendVisible);
+        chart.setLegendSide(legendSide);
         chart.setAnimated(false);
         chart.setCreateSymbols(false);
 
         chartcontainer.getChildren().add(chart); 
         
-        timeline = new Timeline(new KeyFrame(Duration.seconds(1.0), ae -> {
+        timeline = new Timeline(new KeyFrame(duration, ae -> {
             for (ViewChartSerie serie: series) {
                 serie.tick();
             }                   
@@ -113,4 +116,29 @@ public class ViewChart extends Tile {
     public List<ViewChartSerie> getSeries() {
         return series;
     }
+
+    public Duration getDuration() {
+        return duration;
+    }
+
+    public void setDuration(Duration duration) {
+        this.duration = duration;
+    }
+
+    public boolean isLegendVisible() {
+        return legendVisible;
+    }
+
+    public void setLegendVisible(boolean legendVisible) {
+        this.legendVisible = legendVisible;
+    }
+
+    public Side getLegendSide() {
+        return legendSide;
+    }
+
+    public void setLegendSide(Side legendSide) {
+        this.legendSide = legendSide;
+    }
+    
 }

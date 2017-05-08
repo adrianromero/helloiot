@@ -22,8 +22,8 @@ package com.adr.helloiot.unit;
 import com.adr.helloiot.EventMessage;
 import com.adr.helloiot.device.DeviceNumber;
 import com.google.common.eventbus.Subscribe;
-import java.util.concurrent.atomic.AtomicReference;
-import java.nio.charset.StandardCharsets;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -41,7 +41,10 @@ public class ViewChartSerie {
     private DeviceNumber device = null;
     private final ObservableList<XYChart.Data<Number, Number>> data = FXCollections.observableArrayList();
     
-    private final AtomicReference<Double> current = new AtomicReference<>(0.0);
+    private double current = 0.0;
+    private double last = 0.0;
+    private double currentcount = 0.0;
+    private final Lock currentlock = new ReentrantLock();
     
     public DeviceNumber getDevice() {
         return device;
@@ -86,21 +89,40 @@ public class ViewChartSerie {
             return;
         }
         
-        current.set(device.getFormat().value(status).asDouble()); 
+        currentlock.lock();
+        try {            
+            last = device.getFormat().value(status).asDouble();
+            if (currentcount == 0.0) {
+                currentcount = 1.0;
+                current = last;
+            } else  {
+                currentcount += 1.0;
+                current = current * ((currentcount - 1.0) / currentcount) + last / currentcount;
+            }
+        } finally {
+            currentlock.unlock();
+        }
     }   
     
     public void tick() {
-              
-        Number d = current.get();
         
-        if (data.size() < SIZE) {
-            data.add(new XYChart.Data<>(SIZE - data.size(), 0.0));
-        }
-        
-        for (XYChart.Data<Number, Number> xydata : data) {
-            Number aux = xydata.getYValue();
-            xydata.setYValue(d);
-            d = aux;
+        currentlock.lock();
+        try {
+            Number d = currentcount == 0.0 ? last : current;
+            currentcount = 0.0;
+            current = 0.0;
+
+            if (data.size() < SIZE) {
+                data.add(new XYChart.Data<>(SIZE - data.size(), 0.0));
+            }
+
+            for (XYChart.Data<Number, Number> xydata : data) {
+                Number aux = xydata.getYValue();
+                xydata.setYValue(d);
+                d = aux;
+            }            
+        } finally {
+            currentlock.unlock();
         }
     }
 }
