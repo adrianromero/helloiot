@@ -26,7 +26,6 @@ import com.adr.helloiot.device.Device;
 import com.adr.helloiot.device.DeviceBasic;
 import com.adr.helloiot.device.DeviceSimple;
 import com.adr.helloiot.device.DeviceSwitch;
-import com.adr.helloiot.device.TransmitterSimple;
 import com.adr.helloiot.device.TreePublish;
 import com.adr.helloiot.device.TreePublishSubscribe;
 import com.adr.helloiot.media.SilentClipFactory;
@@ -141,9 +140,9 @@ public class HelloIoTApp {
 
     public void addServiceDevicesUnits() {
         ServiceLoader<ApplicationDevicesUnits> devicesunitsloader = ServiceLoader.load(ApplicationDevicesUnits.class);
-        devicesunitsloader.forEach(c -> {
+        for (ApplicationDevicesUnits c : devicesunitsloader) {
             addDevicesUnits(c.getDevices(), c.getUnits());
-        });
+        }
     }
 
     private void addSystemDevicesUnits(String topicapp) {
@@ -208,9 +207,9 @@ public class HelloIoTApp {
 
         // External services
         ServiceLoader<ApplicationUnitPages> unitpagesloader = ServiceLoader.load(ApplicationUnitPages.class);
-        unitpagesloader.forEach(c -> {
+        for (ApplicationUnitPages c : unitpagesloader) {
             appunitpages.addAll(c.getUnitPages());
-        });
+        }
         // Add "main" unit page if needed
         if (!appunitpages.stream().anyMatch(p -> "main".equals(p.getName()))) {
             UnitPage main = new UnitPage("main", IconBuilder.create(FontAwesome.FA_HOME, 24.0).build(), resources.getString("page.main"));
