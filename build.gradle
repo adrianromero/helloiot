@@ -61,6 +61,7 @@ dependencies {
     compile group: 'com.jidesoft', name: 'jidefx-common', version:'0.9.1'
     compile group: 'eu.hansolo', name: 'Medusa', version:'7.7'
     compile group: 'commons-io', name: 'commons-io', version:'2.5'
+    compile group: 'com.google.guava', name: 'guava', version: '20.0'
     compile group: 'org.mapdb', name: 'mapdb', version: '3.0.3'
     compile group: 'com.jayway.jsonpath', name: 'json-path', version: '2.2.0'
 }
@@ -95,6 +96,18 @@ install {
   }
 }
 jfxmobile {
+    android {
+        compileSdkVersion = '24'
+        minSdkVersion = '24'        
+        manifest = 'src/android/AndroidManifest.xml'
+        signingConfig {
+            // keytool -genkey -v -keystore my-release-key.jks -keyalg RSA -keysize 2048 -validity 10000 -alias app
+            storeFile file('my-release-key.jks')
+            storePassword '123456'
+            keyAlias 'app'
+            keyPassword '123456'
+        }
+    }    
     embedded {
         remotePlatforms {
             raspberry {
