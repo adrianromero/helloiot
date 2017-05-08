@@ -23,8 +23,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.text.MessageFormat;
-import kotlin.text.Charsets;
 
 public class HTTPUtils {
 
@@ -43,7 +43,7 @@ public class HTTPUtils {
         if (responsecode == HttpURLConnection.HTTP_OK) {
             StringBuilder text = new StringBuilder();
 
-            try (BufferedReader readerin = new BufferedReader(new InputStreamReader(connection.getInputStream(), Charsets.UTF_8))) {
+            try (BufferedReader readerin = new BufferedReader(new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8))) {
                 String line;
                 while ((line = readerin.readLine()) != null) {
                     text.append(line);
