@@ -211,10 +211,10 @@ public class HelloIoTApp {
             appunitpages.addAll(c.getUnitPages());
         }
         // Add "main" unit page if needed
-        if (!appunitpages.stream().anyMatch(p -> "main".equals(p.getName()))) {
+        if (!existsUnitPageMain()) {
             UnitPage main = new UnitPage("main", IconBuilder.create(FontAwesome.FA_HOME, 24.0).build(), resources.getString("page.main"));
             main.setOrder(0);
-            appunitpages.add(main);
+            appunitpages.add(main);            
         }
         mqttnode.construct(appunitpages);
 
@@ -227,6 +227,15 @@ public class HelloIoTApp {
         }
 
         connection();
+    }
+    
+    private boolean existsUnitPageMain() {
+        for (UnitPage p: appunitpages) {
+            if ("main".equals(p.getName())) {
+                return true;
+            }
+        }     
+        return false;
     }
 
     private void connection() {
