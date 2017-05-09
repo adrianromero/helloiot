@@ -24,17 +24,17 @@ import javafx.geometry.Pos;
  *
  * @author adrian
  */
-public interface StringFormat {
+public abstract class StringFormat {
 
-    public String format(byte[] value);
-    public MiniVar value(byte[] value);
+    public abstract String format(byte[] value);
+    public abstract MiniVar value(byte[] value);
 
-    public byte[] parse(String formattedvalue);
-    public byte[] devalue(MiniVar formattedvalue);
+    public abstract byte[] parse(String formattedvalue);
+    public abstract byte[] devalue(MiniVar formattedvalue);
 
-    public Pos alignment();
+    public abstract Pos alignment();
     
-    public default ValueFormatValue getValueFormat(byte[] value) {
+    public final ValueFormatValue getValueFormat(byte[] value) {
         return new ValueFormatValue(value(value), format(value));        
     }
 

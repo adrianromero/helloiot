@@ -26,7 +26,7 @@ import javafx.geometry.Pos;
  *
  * @author adrian
  */
-public class StringFormatHex implements StringFormat {
+public class StringFormatHex extends StringFormat {
 
     private final static Logger logger = Logger.getLogger(StringFormatHex.class.getName());
     public static final StringFormat INSTANCE = new StringFormatHex();

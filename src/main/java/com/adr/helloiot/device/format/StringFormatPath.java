@@ -25,7 +25,7 @@ import java.nio.charset.StandardCharsets;
  *
  * @author adrian
  */
-public abstract class StringFormatPath implements StringFormat {
+public abstract class StringFormatPath extends StringFormat {
 
     private String path;
 

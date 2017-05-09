@@ -25,7 +25,7 @@ import javafx.geometry.Pos;
  *
  * @author adrian
  */
-public class StringFormatBase64 implements StringFormat {
+public class StringFormatBase64 extends StringFormat {
 
     public static final StringFormat INSTANCE = new StringFormatBase64();
 
