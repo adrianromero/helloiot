@@ -23,6 +23,11 @@ import com.adr.helloiot.util.CryptUtils;
 import com.google.common.base.Strings;
 import com.google.common.util.concurrent.ListenableFuture;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -31,6 +36,7 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.ResourceBundle;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.function.Consumer;
 import java.util.logging.Level;
@@ -42,9 +48,6 @@ import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
-import org.mapdb.DB;
-import org.mapdb.DBMaker;
-import org.mapdb.Serializer;
 
 /**
  *
@@ -58,7 +61,6 @@ public final class MQTTManager implements MqttCallback {
     private final static Logger logger = Logger.getLogger(MQTTManager.class.getName());
 
     private MqttAsyncClient mqttClient;
-    private DB dbClient;
     private ConcurrentMap<String, byte[]> mapClient;
     private final ResourceBundle resources;
 
@@ -150,24 +152,19 @@ public final class MQTTManager implements MqttCallback {
                     mqttClient.setCallback(this);
                     mqttClient.subscribe(listtopics, listqos);
 
-                    File dbfile = new File(System.getProperty("user.home"), ".helloiot-" + CryptUtils.hashSHA512(url) + ".mapdb"); // dbfile is function of url only
-                    dbClient = DBMaker.fileDB(dbfile).make();
-                    mapClient = dbClient.hashMap("map", Serializer.STRING, Serializer.BYTE_ARRAY).createOrOpen();
-//                    mapClient = new ConcurrentHashMap<>(); // and deserialize from disk
-
-                    mapClient.forEach((topic, payload) -> {
+                    readMapClient();  
+                    for (Map.Entry<String, byte[]> entry : mapClient.entrySet()) {
                         try {
-                            MqttMessage mm = new MqttMessage(payload);
+                            MqttMessage mm = new MqttMessage(entry.getValue());
                             mm.setQos(defaultqos);
                             mm.setRetained(true);
-                            messageArrived(topicprefix + topic, mm);
-                            logger.log(Level.INFO, "Init status: {0}", topic);
+                            messageArrived(topicprefix + entry.getKey(), mm);
+                            logger.log(Level.INFO, "Init status: {0}", entry.getKey());
                         } catch (Exception ex) {
                             logger.log(Level.SEVERE, "Cannot publish locally.", ex);
-                        }
-                    });
-
-                } catch (MqttException ex) {
+                        }                        
+                    }
+                } catch (MqttException | IOException | ClassNotFoundException ex) {
                     closeinternal();
                     logger.log(Level.WARNING, null, ex);
                     throw new RuntimeException(ex);
@@ -186,11 +183,12 @@ public final class MQTTManager implements MqttCallback {
         // To be invoked by executor thread
         if (mqttClient != null) {
 
-            mapClient = null;
-            if (dbClient != null) {
-                dbClient.close();
-                dbClient = null;
+            try {
+                writeMapClient();
+            } catch (IOException ex) {
+                logger.log(Level.WARNING, "Cannot save client map.", ex);
             }
+            mapClient = null;
 
             if (mqttClient.isConnected()) {
                 try {
@@ -256,7 +254,6 @@ public final class MQTTManager implements MqttCallback {
                 try {
                     if (isRetained) {
                         mapClient.put(topic, mm.getPayload());
-                        dbClient.commit();
                     }
                     messageArrived(topicprefix + topic, mm);
                 } catch (Exception ex) {
@@ -324,7 +321,25 @@ public final class MQTTManager implements MqttCallback {
     public void deliveryComplete(IMqttDeliveryToken imdt) {
         //throw new UnsupportedOperationException("Not supported yet."); 
     }
-
+    
+    private void writeMapClient() throws IOException {
+        File dbfile = new File(System.getProperty("user.home"), ".helloiot-" + CryptUtils.hashSHA512(url) + ".map"); 
+        try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(dbfile))) {
+            out.writeObject(mapClient);
+        }      
+    }
+    
+    private void readMapClient() throws IOException, ClassNotFoundException {
+        File dbfile = new File(System.getProperty("user.home"), ".helloiot-" + CryptUtils.hashSHA512(url) + ".map"); 
+        if (dbfile.exists()) {
+            try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(dbfile))) {
+                mapClient = (ConcurrentMap<String, byte[]>) in.readObject();    
+            }
+        } else {
+            mapClient = new ConcurrentHashMap<>();
+        }
+    }
+    
     public static class Subscription {
 
         private final String topic;

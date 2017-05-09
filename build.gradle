@@ -62,7 +62,6 @@ dependencies {
     compile group: 'eu.hansolo', name: 'Medusa', version:'7.7'
     compile group: 'commons-io', name: 'commons-io', version:'2.5'
     compile group: 'com.google.guava', name: 'guava', version: '20.0'
-    compile group: 'org.mapdb', name: 'mapdb', version: '3.0.3'
     compile group: 'com.jayway.jsonpath', name: 'json-path', version: '2.2.0'
 }
 
