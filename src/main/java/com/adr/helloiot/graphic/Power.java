@@ -29,7 +29,7 @@ import javafx.scene.paint.Color;
  *
  * @author adrian
  */
-public class Power implements IconSwitch {
+public class Power extends IconSwitch {
 
     private IconFont icon;
     private Color color;
@@ -48,12 +48,12 @@ public class Power implements IconSwitch {
     }
 
     @Override
-    public Node buildIconOn() {
+    protected Node buildIconOn() {
         return IconBuilder.create(icon, 48.0).color(color).apply(new Shine(color)).build();
     }
 
     @Override
-    public Node buildIconOff() {
+    protected Node buildIconOff() {
         return IconBuilder.create(icon, 48.0).color(Color.DARKGRAY).apply(new Shine(Color.DARKGRAY)).build();
     }
 }

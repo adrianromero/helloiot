@@ -29,7 +29,7 @@ import javafx.scene.paint.Color;
  *
  * @author adrian
  */
-public class IconBrightness implements IconStatus {
+public class IconBrightness extends IconStatus {
     
     private IconFont icon;
     private Color color;

@@ -25,7 +25,7 @@ import javafx.scene.Node;
  *
  * @author adrian
  */
-public class IconNull implements IconStatus {
+public class IconNull extends IconStatus {
 
     @Override
     public Node buildIcon(ValueFormatValue value) {

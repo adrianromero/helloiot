@@ -29,7 +29,7 @@ import javafx.scene.paint.Color;
  *
  * @author adrian
  */
-public class IconColor implements IconStatus {
+public class IconColor extends IconStatus {
     
     private IconFont icon;
 

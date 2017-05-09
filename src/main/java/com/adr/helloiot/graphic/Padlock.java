@@ -28,7 +28,7 @@ import javafx.scene.paint.Color;
  *
  * @author adrian
  */
-public class Padlock implements IconSwitch {
+public class Padlock extends IconSwitch {
 
     private final IconFont iconon;
     private final IconFont iconoff;
@@ -49,12 +49,12 @@ public class Padlock implements IconSwitch {
     }
 
     @Override
-    public Node buildIconOn() {
+    protected Node buildIconOn() {
         return IconBuilder.create(iconon, 48.0).color(iconcolor).build();
     }
 
     @Override
-    public Node buildIconOff() {
+    protected Node buildIconOff() {
         return IconBuilder.create(iconoff, 48.0).color(iconcolor).build();
     }
 }

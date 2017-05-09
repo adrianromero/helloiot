@@ -28,11 +28,11 @@ import javafx.scene.Node;
  *
  * @author adrian
  */
-public interface IconStatus {
+public abstract class IconStatus {
 
     public static final ResourceBundle RESOURCES = ResourceBundle.getBundle("com/adr/helloiot/fxml/main");
 
-    public Node buildIcon(ValueFormatValue value);
+    public abstract Node buildIcon(ValueFormatValue value);
 
     public static IconStatus valueOf(String value) {
         if ("NULL".equals(value)) {
@@ -67,5 +67,4 @@ public interface IconStatus {
             throw new IllegalArgumentException("Cannot create IconStatus: " + value);
         }
     }
-
 }

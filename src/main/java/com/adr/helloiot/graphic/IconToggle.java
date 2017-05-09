@@ -29,7 +29,7 @@ import javafx.scene.paint.Color;
  *
  * @author adrian
  */
-public class IconToggle implements IconSwitch {
+public class IconToggle extends IconSwitch {
 
     private final IconFont iconon;
     private final IconFont iconoff;
@@ -44,12 +44,12 @@ public class IconToggle implements IconSwitch {
     }
 
     @Override
-    public Node buildIconOn() {
+    protected Node buildIconOn() {
         return IconBuilder.create(iconon, 48.0).color(Color.LIME).apply(new Shine(Color.LIME)).build();
     }
 
     @Override
-    public Node buildIconOff() {
+    protected Node buildIconOff() {
         return IconBuilder.create(iconoff, 48.0).color(Color.DARKGREY).apply(new Shine(Color.DARKGREY)).build();
     }
 }

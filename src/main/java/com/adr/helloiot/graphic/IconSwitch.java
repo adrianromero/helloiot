@@ -25,10 +25,10 @@ import javafx.scene.Node;
  *
  * @author adrian
  */
-public interface IconSwitch extends IconStatus {
+public abstract class IconSwitch extends IconStatus {
 
     @Override
-    public default Node buildIcon(ValueFormatValue value) {
+    public final Node buildIcon(ValueFormatValue value) {
         if (value.getValue().asBoolean()) {
             return buildIconOn();
         } else {
@@ -36,7 +36,7 @@ public interface IconSwitch extends IconStatus {
         }
     }
 
-    public Node buildIconOn();
+    protected abstract Node buildIconOn();
 
-    public Node buildIconOff();
+    protected abstract Node buildIconOff();
 }

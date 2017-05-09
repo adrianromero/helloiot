@@ -29,7 +29,7 @@ import javafx.scene.Node;
  *
  * @author adrian
  */
-public class Bulb implements IconSwitch {
+public class Bulb extends IconSwitch {
 
     private IconFont icon;
 
@@ -42,12 +42,12 @@ public class Bulb implements IconSwitch {
     }
 
     @Override
-    public Node buildIconOn() {
+    protected Node buildIconOn() {
         return IconBuilder.create(icon, 48.0).apply(new LightOn()).build();
     }
 
     @Override
-    public Node buildIconOff() {
+    protected Node buildIconOff() {
         return IconBuilder.create(icon, 48.0).apply(new LightOff()).build();
     }
 }

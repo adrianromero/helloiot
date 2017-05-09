@@ -31,7 +31,7 @@ import javafx.scene.text.Text;
  *
  * @author adrian
  */
-public class IconText implements IconStatus {
+public class IconText extends IconStatus {
 
     @Override
     public Node buildIcon(ValueFormatValue value) {
