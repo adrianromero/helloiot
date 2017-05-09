@@ -18,14 +18,14 @@
 //
 package com.adr.helloiot.util;
 
-import java.util.concurrent.CompletableFuture;
+import com.google.common.util.concurrent.ListenableFuture;
+import com.google.common.util.concurrent.ListenableScheduledFuture;
+import com.google.common.util.concurrent.ListeningScheduledExecutorService;
+import com.google.common.util.concurrent.MoreExecutors;
+import java.util.concurrent.Callable;
+import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
-import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.function.Supplier;
 import java.util.logging.Logger;
 import javafx.application.Platform;
 
@@ -36,90 +36,35 @@ import javafx.application.Platform;
 public class CompletableAsync<T> {
 
     private final static Logger logger = Logger.getLogger(CompletableAsync.class.getName());
-    private final static ScheduledExecutorService exec = Executors.newScheduledThreadPool(5);
-    private final CompletableFuture<T> future;
+    private final static ListeningScheduledExecutorService service = MoreExecutors.listeningDecorator(Executors.newScheduledThreadPool(5));
 
-    private CompletableAsync(CompletableFuture<T> future) {
-        this.future = future;
-    }
-
-    public static ScheduledFuture<?> scheduleTask(long millis, Runnable r) {
-        return exec.schedule(r, millis, TimeUnit.MILLISECONDS);
-    }
-
-    public static ScheduledFuture<?> scheduleTask(long millis, long period, Runnable r) {
-        return exec.scheduleAtFixedRate(r, millis, period, TimeUnit.MILLISECONDS);
-    }
-
-    public static <U> CompletableAsync<U> supplyAsync(Supplier<U> s) {
-        return new CompletableAsync<>(CompletableFuture.supplyAsync(s, exec));
-    }
-
-    public static CompletableAsync<Void> runAsync(Runnable runnable) {
-        return new CompletableAsync<>(CompletableFuture.runAsync(runnable, exec));
-    }
-
-    public CompletableAsync<Void> thenAccept(Consumer<? super T> action) {
-        return new CompletableAsync<>(future.thenAccept(action));
-    }
-
-    public CompletableAsync<Void> thenAcceptFX(Consumer<? super T> action) {
-
-        CompletableFuture<Void> cf = new CompletableFuture<>();
-
-        future.thenAccept((T t) -> {
-            Platform.runLater(() -> {
-                try {
-                    action.accept(t);
-                    cf.complete(null);
-                } catch (Exception ex) {
-                    cf.completeExceptionally(ex);
-                }
-            });
-        }).exceptionally(ex -> {
-            Platform.runLater(() -> {
-                cf.completeExceptionally(ex);
-            });
-            return null;
-        });
-
-        return new CompletableAsync<>(cf);
-    }
-
-    public CompletableAsync<T> exceptionally(Function<Throwable, ? extends T> fn) {
-        return new CompletableAsync<>(future.exceptionally(fn));
-    }
-
-    public CompletableAsync<T> exceptionallyFX(Function<Throwable, ? extends T> fn) {
-
-        CompletableFuture<T> cf = new CompletableFuture<>();
-
-        future.exceptionally((Throwable t) -> {
-            Platform.runLater(() -> {
-                try {
-                    cf.complete(fn.apply(t));
-                } catch (Exception ex) {
-                    cf.completeExceptionally(ex);
-                }
-            });
-            return null;
-        });
-
-        return new CompletableAsync<>(cf);
-    }
-
-    public static void shutdown() {
-        exec.shutdown();
-        try {
-            if (!exec.awaitTermination(60, TimeUnit.SECONDS)) {
-                exec.shutdownNow();
-                if (!exec.awaitTermination(60, TimeUnit.SECONDS)) {
-                    logger.severe("Cannot terminate Task Executor service");
-                }
+    public static Executor fxThread() {
+        return new Executor() {
+            @Override
+            public void execute(Runnable command) {
+                Platform.runLater(() -> {
+                    command.run();
+                });          
             }
-        } catch (InterruptedException ie) {
-            exec.shutdownNow();
-            Thread.currentThread().interrupt();
-        }
+        };
+    }
+    public static ListenableScheduledFuture<?> scheduleTask(long millis, Runnable r) {
+        return service.schedule(r, millis, TimeUnit.MILLISECONDS);
+    }
+
+    public static ListenableScheduledFuture<?> scheduleTask(long millis, long period, Runnable r) {
+        return service.scheduleAtFixedRate(r, millis, period, TimeUnit.MILLISECONDS);
+    }
+
+    public static <U> ListenableFuture<U> supplyAsync(Callable<U> s) {
+        return service.submit(s);
+    }
+
+    public static ListenableFuture<?> runAsync(Runnable runnable) {
+        return service.submit(runnable);
+    }
+
+    public static void shutdown() {       
+        MoreExecutors.shutdownAndAwaitTermination(service, 60, TimeUnit.SECONDS);
     }
 }

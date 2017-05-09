@@ -31,7 +31,10 @@ import com.adr.helloiot.device.TreePublishSubscribe;
 import com.adr.helloiot.media.SilentClipFactory;
 import com.adr.helloiot.media.StandardClipFactory;
 import com.adr.helloiot.unit.UnitPage;
+import com.adr.helloiot.util.CompletableAsync;
 import com.adr.helloiot.util.CryptUtils;
+import com.google.common.util.concurrent.FutureCallback;
+import com.google.common.util.concurrent.Futures;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -245,30 +248,37 @@ public class HelloIoTApp {
     }
 
     private void oneConnection() {
-        mqttmanager.open().thenAcceptFX((v) -> {
-            // success
-            mqttnode.hideConnecting();
-            startUnits();
-        }).exceptionallyFX(ex -> {
-            mqttnode.hideConnecting();
-            MessageUtils.showError(MessageUtils.getRoot(mqttnode.getNode()), resources.getString("title.errorconnection"), ex.getLocalizedMessage(), ev -> {
-                exitevent.handle(new ActionEvent());
-            });
-            return null;
-        });
+        Futures.addCallback(mqttmanager.open(), new FutureCallback<Object>() {
+            @Override
+            public void onSuccess(Object v) {
+                mqttnode.hideConnecting();
+                startUnits();
+            }
+            @Override
+            public void onFailure(Throwable ex) {
+                mqttnode.hideConnecting();
+                MessageUtils.showError(MessageUtils.getRoot(mqttnode.getNode()), resources.getString("title.errorconnection"), ex.getLocalizedMessage(), ev -> {
+                    exitevent.handle(new ActionEvent());
+                });
+            }
+        }, CompletableAsync.fxThread());  
     }
 
     private void tryConnection() {
-        mqttmanager.open().thenAcceptFX((v) -> {
-            // success
-            mqttnode.hideConnecting();
-            startUnits();
-        }).exceptionallyFX(ex -> {
-            new Timeline(new KeyFrame(Duration.millis(2500), ev -> {
-                tryConnection();
-            })).play();
-            return null;
-        });
+        
+        Futures.addCallback(mqttmanager.open(), new FutureCallback<Object>() {
+            @Override
+            public void onSuccess(Object v) {
+                mqttnode.hideConnecting();
+                startUnits();                
+            }
+            @Override
+            public void onFailure(Throwable ex) {
+                new Timeline(new KeyFrame(Duration.millis(2500), ev -> {
+                    tryConnection();
+                })).play();
+            }
+        }, CompletableAsync.fxThread());  
     }
 
     public void stopAndDestroy() {

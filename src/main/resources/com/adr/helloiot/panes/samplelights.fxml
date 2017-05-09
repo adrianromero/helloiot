@@ -77,12 +77,6 @@
         <LabelSection UnitPage.page="light" GridPane.columnSpan="5" text="%title.moreactions"/> 
         <StartLine UnitPage.page="light" VBox.vgrow= "SOMETIMES" />
         <ButtonSimple UnitPage.page="light" device="$living_light1"/>
-        <ButtonsSwitch UnitPage.page="light" label="%label.livinglight1">
-            <parameters light1="$living_light1"/>
-            <scriptCode><![CDATA[
-                light1.sendStatus(_status);
-            ]]></scriptCode>
-        </ButtonsSwitch>   
         <ButtonScript UnitPage.page="light" label="%label.timerlight1">
             <graphic><Icon iconAwesome="FA_CLOCK_O" size="48" color="WHITE" shine="darkgray"/></graphic>
             <scriptCode><![CDATA[
@@ -101,7 +95,7 @@
             <graphic><Icon iconAwesome="FA_STAR_O" size="48" color="GREEN" shine="darkgray"/></graphic>
             <parameters light1="$living_light1" light2="$living_light2" light3="$living_light3" light4="$living_light4" light5="$living_light5"/>
             <scriptCode><![CDATA[
-                
+                adadasdad.......
                 light1.sendOFF();
                 light2.sendOFF();
                 light3.sendOFF();

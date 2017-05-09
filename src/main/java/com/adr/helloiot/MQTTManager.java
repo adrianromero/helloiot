@@ -21,6 +21,7 @@ package com.adr.helloiot;
 import com.adr.helloiot.util.CompletableAsync;
 import com.adr.helloiot.util.CryptUtils;
 import com.google.common.base.Strings;
+import com.google.common.util.concurrent.ListenableFuture;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,7 +31,6 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.ResourceBundle;
 import java.util.Set;
-import java.util.concurrent.CompletionException;
 import java.util.concurrent.ConcurrentMap;
 import java.util.function.Consumer;
 import java.util.logging.Level;
@@ -41,6 +41,7 @@ import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
+import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 import org.mapdb.DB;
 import org.mapdb.DBMaker;
 import org.mapdb.Serializer;
@@ -103,14 +104,14 @@ public final class MQTTManager implements MqttCallback {
         this.topicsubscriptions = new HashSet<>();
     }
 
-    public CompletableAsync<Void> open() {
+    public ListenableFuture<?> open() {
 
         List<String> worktopics = new ArrayList<>();
         List<Integer> workqos = new ArrayList<>();
         for (TopicQos tq : topicsubscriptions) {
             if (tq.getTopic() == null || tq.getTopic().isEmpty()) {
                 return CompletableAsync.runAsync(() -> {
-                    throw new CompletionException(new HelloIoTException(resources.getString("exception.topicscannotbeempty")));
+                    throw new RuntimeException(new HelloIoTException(resources.getString("exception.topicscannotbeempty")));
                 });
             }
 
@@ -133,7 +134,7 @@ public final class MQTTManager implements MqttCallback {
         return CompletableAsync.runAsync(() -> {
             if (mqttClient == null) {
                 try {
-                    mqttClient = new MqttAsyncClient(url, clientid == null || clientid.isEmpty() ? MqttAsyncClient.generateClientId() : clientid);
+                    mqttClient = new MqttAsyncClient(url, clientid == null || clientid.isEmpty() ? MqttAsyncClient.generateClientId() : clientid, new MemoryPersistence());
                     MqttConnectOptions options = new MqttConnectOptions();
                     options.setCleanSession(true);
                     if (!Strings.isNullOrEmpty(username)) {
@@ -152,7 +153,7 @@ public final class MQTTManager implements MqttCallback {
                     File dbfile = new File(System.getProperty("user.home"), ".helloiot-" + CryptUtils.hashSHA512(url) + ".mapdb"); // dbfile is function of url only
                     dbClient = DBMaker.fileDB(dbfile).make();
                     mapClient = dbClient.hashMap("map", Serializer.STRING, Serializer.BYTE_ARRAY).createOrOpen();
-//                    mapClient = new ConcurrentHashMap<> (); // and deserialize from disk
+//                    mapClient = new ConcurrentHashMap<>(); // and deserialize from disk
 
                     mapClient.forEach((topic, payload) -> {
                         try {
@@ -169,13 +170,13 @@ public final class MQTTManager implements MqttCallback {
                 } catch (MqttException ex) {
                     closeinternal();
                     logger.log(Level.WARNING, null, ex);
-                    throw new CompletionException(ex);
+                    throw new RuntimeException(ex);
                 }
             }
         });
     }
 
-    public CompletableAsync<Void> close() {
+    public ListenableFuture<?> close() {
         return CompletableAsync.runAsync(() -> {
             closeinternal();
         });
@@ -268,7 +269,7 @@ public final class MQTTManager implements MqttCallback {
             try {
                 mqttClient.publish(topicprefix + topic, mm);
             } catch (MqttException ex) {
-                throw new CompletionException(ex);
+                throw new RuntimeException(ex); // TODO: Review in cas of paho exception too much publications              
             }
         }
     }

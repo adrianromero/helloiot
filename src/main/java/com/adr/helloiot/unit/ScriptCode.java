@@ -20,8 +20,8 @@ package com.adr.helloiot.unit;
 
 import com.adr.helloiot.HelloIoTAppPublic;
 import com.adr.helloiot.util.CompletableAsync;
+import com.google.common.util.concurrent.ListenableFuture;
 import java.util.Map;
-import java.util.concurrent.CompletionException;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import javafx.beans.DefaultProperty;
@@ -64,11 +64,11 @@ public class ScriptCode {
         this.app = app;
     }
 
-    public CompletableAsync<Object> run() throws ScriptException {
+    public ListenableFuture<Object> run() throws ScriptException {
         return run(null);
     }
 
-    public CompletableAsync<Object> run(Map<String, Object> params) {
+    public ListenableFuture<Object> run(Map<String, Object> params) {
 
         return CompletableAsync.supplyAsync(() -> {
             try {
@@ -81,7 +81,7 @@ public class ScriptCode {
                 scriptengine.put("_device", (Function<String, ?>) (id) -> app.getDevice(id));
                 return scriptengine.eval(text);
             } catch (ScriptException ex) {
-                throw new CompletionException(ex);
+                throw new RuntimeException(ex);
             }
         });
     }
