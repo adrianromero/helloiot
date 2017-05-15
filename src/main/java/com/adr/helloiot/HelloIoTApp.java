@@ -297,9 +297,9 @@ public class HelloIoTApp {
     }
 
     private void startUnits() {
-
-        initFirstTime();
-
+        if (mqttmanager.isNewConnection()) {
+            getUnitPage().sendStatus("main");
+        }        
         for (Unit s : appunits) {
             s.start();
         }
@@ -398,23 +398,5 @@ public class HelloIoTApp {
             apppublic = new HelloIoTAppPublic(this);
         }
         return apppublic;
-    }
-
-    private void initFirstTime() {
-
-        // Check if it is first time  
-        File freshfile = HelloPlatform.getInstance().getFile(".helloiot-init-" + CryptUtils.hashSHA512(config.mqtt_url + config.mqtt_topicapp) + ".map");
-        if (!freshfile.exists()) {
-            // This is the first time initialization
-            LOGGER.log(Level.INFO, "Executing unit page initialization.");
-            getUnitPage().sendStatus("main");
-            LOGGER.log(Level.INFO, "Finished unitpage initialization.");
-        }
-
-        try {
-            freshfile.createNewFile();
-        } catch (IOException ex) {
-            LOGGER.log(Level.WARNING, "Cannot create configuration file.", ex);
-        }
     }
 }

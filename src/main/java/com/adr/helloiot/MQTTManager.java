@@ -62,6 +62,7 @@ public final class MQTTManager implements MqttCallback {
 
     private MqttAsyncClient mqttClient;
     private ConcurrentMap<String, byte[]> mapClient;
+    private boolean mapClientNew;
     private final ResourceBundle resources;
 
     private final String url;
@@ -164,7 +165,7 @@ public final class MQTTManager implements MqttCallback {
                             logger.log(Level.SEVERE, "Cannot publish locally.", ex);
                         }                        
                     }
-                } catch (MqttException | IOException | ClassNotFoundException ex) {
+                } catch (MqttException ex) {
                     closeinternal();
                     logger.log(Level.WARNING, null, ex);
                     throw new RuntimeException(ex);
@@ -200,6 +201,10 @@ public final class MQTTManager implements MqttCallback {
             }
             mqttClient = null;
         }
+    }
+    
+    public boolean isNewConnection() {
+        return mapClientNew;
     }
 
     public void setOnConnectionLost(Consumer<Throwable> callback) {
@@ -330,14 +335,20 @@ public final class MQTTManager implements MqttCallback {
     }
     
     @SuppressWarnings("unchecked")
-    private void readMapClient() throws IOException, ClassNotFoundException {
+    private void readMapClient() {
+        mapClient = null;
+        mapClientNew = true;
         File dbfile = HelloPlatform.getInstance().getFile(".helloiot-localmsg-" + CryptUtils.hashSHA512(url) + ".map"); 
-        if (dbfile.exists()) {
-            try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(dbfile))) {                
-                mapClient = (ConcurrentMap<String, byte[]>) in.readObject();    
-            }
-        } else {
+        try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(dbfile))) {                
+            mapClient = (ConcurrentMap<String, byte[]>) in.readObject(); 
+            mapClientNew = false;
+        } catch (IOException | ClassNotFoundException ex) {
+            logger.log(Level.WARNING, "Cannot load map file.", ex);
+        }
+        
+        if (mapClient == null) {
             mapClient = new ConcurrentHashMap<>();
+            mapClientNew = true;
         }
     }
     
