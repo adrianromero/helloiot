@@ -94,29 +94,22 @@
         <ButtonScript UnitPage.page="light" label="%label.dance">
             <graphic><Icon iconAwesome="FA_STAR_O" size="48" color="GREEN" shine="darkgray"/></graphic>
             <parameters light1="$living_light1" light2="$living_light2" light3="$living_light3" light4="$living_light4" light5="$living_light5"/>
-            <scriptCode><![CDATA[
-                adadasdad.......
-                light1.sendOFF();
-                light2.sendOFF();
-                light3.sendOFF();
-                light4.sendOFF();
-                light5.sendOFF();
-                
+            <scriptCode><![CDATA[                
                 for (var i = 1; i < 5; i++) {
                     light1.sendON();
-                    java.lang.Thread.sleep(100);
+                    java.lang.Thread.sleep(300);
                     light1.sendOFF();
                     light2.sendON();                
-                    java.lang.Thread.sleep(100);
+                    java.lang.Thread.sleep(300);
                     light2.sendOFF();
                     light3.sendON(); 
-                    java.lang.Thread.sleep(100);
+                    java.lang.Thread.sleep(300);
                     light3.sendOFF();
                     light4.sendON();                 
-                    java.lang.Thread.sleep(100);
+                    java.lang.Thread.sleep(300);
                     light4.sendOFF();
                     light5.sendON();             
-                    java.lang.Thread.sleep(100);
+                    java.lang.Thread.sleep(300);
                     light5.sendOFF();                                                                                      
                 }
             ]]></scriptCode>

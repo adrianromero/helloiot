@@ -166,33 +166,34 @@ public class MainManagerClient implements MainManager {
 //        helloiotapp.addFXMLFileDevicesUnits("local:com/adr/helloiot/panes/sampletemperature");
 
         helloiotapp.addDevicesUnits(Collections.emptyList(), Collections.singletonList(new StartFlow()));
-
         TopicStatus ts;
         for (TopicInfo topicinfo : topicinfolist) {            
             ts = topicinfo.getTopicStatus();
             helloiotapp.addDevicesUnits(ts.getDevices(), ts.getUnits());
         }
 
-//        ts = TopicStatus.buildTopicPublishSubscription("hello/test1", 0, StringFormat.valueOf("DOUBLE"), true);
+//        ts = TopicStatus.buildTopicPublishSubscription("sample/topic1", 0, StringFormat.valueOf("DOUBLE"), true);
 //        helloiotapp.addDevicesUnits(ts.getDevices(), ts.getUnits());
 //        
-//        ts = TopicStatus.buildTopicPublishSubscription("hello/test1", 0, StringFormat.valueOf("HEXADECIMAL"), false);
+//        ts = TopicStatus.buildTopicPublishSubscription("sample/topic1", 0, StringFormat.valueOf("HEXADECIMAL"), false);
 //        helloiotapp.addDevicesUnits(ts.getDevices(), ts.getUnits());
 //        
-//        ts = TopicStatus.buildTopicPublish("hello/test1", -1, StringFormat.valueOf("DECIMAL"), true);
+//        ts = TopicStatus.buildTopicPublish("sample/topic1", -1, StringFormat.valueOf("DECIMAL"), true);
 //        helloiotapp.addDevicesUnits(ts.getDevices(), ts.getUnits());
 //        
-//        ts = TopicStatus.buildTopicPublish("hello/test1", -1, StringFormat.valueOf("BASE64"), false);
+//        ts = TopicStatus.buildTopicPublish("sample/topic1", -1, StringFormat.valueOf("BASE64"), false);
 //        helloiotapp.addDevicesUnits(ts.getDevices(), ts.getUnits());
 //        
-//        ts = TopicStatus.buildTopicSubscription("hello/test1", 1, StringFormat.valueOf("DEGREES"), true);
+//        ts = TopicStatus.buildTopicSubscription("sample/topic1", 1, StringFormat.valueOf("DEGREES"), true);
 //        helloiotapp.addDevicesUnits(ts.getDevices(), ts.getUnits());
 //        
-//        ts = TopicStatus.buildTopicSubscription("hello/test1", 1, StringFormat.valueOf("DECIMAL"), false);
+//        ts = TopicStatus.buildTopicSubscription("sample/topic1", 1, StringFormat.valueOf("DECIMAL"), false);
 //        helloiotapp.addDevicesUnits(ts.getDevices(), ts.getUnits());
 //        
 //        ts = TopicStatus.buildTopicSubscription("$SYS/broker/uptime", -1, StringFormatIdentity.INSTANCE, false);
 //        helloiotapp.addDevicesUnits(ts.getDevices(), ts.getUnits());
+//        
+        
         EventHandler<ActionEvent> showloginevent = (event -> {
             showLogin();
             hideApplication();

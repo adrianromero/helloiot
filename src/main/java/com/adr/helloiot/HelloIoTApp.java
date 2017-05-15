@@ -403,7 +403,7 @@ public class HelloIoTApp {
     private void initFirstTime() {
 
         // Check if it is first time  
-        File freshfile = new File(System.getProperty("user.home"), ".helloiot-" + CryptUtils.hashSHA512(config.mqtt_url + config.mqtt_topicapp));
+        File freshfile = HelloPlatform.getInstance().getFile(".helloiot-init-" + CryptUtils.hashSHA512(config.mqtt_url + config.mqtt_topicapp) + ".map");
         if (!freshfile.exists()) {
             // This is the first time initialization
             LOGGER.log(Level.INFO, "Executing unit page initialization.");

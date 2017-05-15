@@ -63,6 +63,7 @@ dependencies {
     compile group: 'commons-io', name: 'commons-io', version:'2.5'
     compile group: 'com.google.guava', name: 'guava', version: '20.0'
     compile group: 'com.jayway.jsonpath', name: 'json-path', version: '2.2.0'
+    compile group: 'org.mozilla', name: 'rhino', version: '1.7.7.1'    
 }
 
 applicationDistribution.from("${rootProject.projectDir}") {

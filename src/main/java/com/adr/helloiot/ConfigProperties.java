@@ -46,11 +46,11 @@ public class ConfigProperties {
         // read the configuration properties 
         List<String> unnamed = params.getUnnamed();
         if (unnamed.isEmpty()) {
-            configfile = new File("helloiot.properties");
+            configfile = HelloPlatform.getInstance().getFile(".helloiot-config.properties");
         } else {
             String param = unnamed.get(0);
             if (Strings.isNullOrEmpty(param)) {
-                configfile = new File("helloiot.properties");
+                configfile = HelloPlatform.getInstance().getFile(".helloiot-config.properties");
             } else {
                 configfile = new File(param);
             }

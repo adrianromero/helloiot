@@ -152,7 +152,7 @@ public final class MQTTManager implements MqttCallback {
                     mqttClient.setCallback(this);
                     mqttClient.subscribe(listtopics, listqos);
 
-                    readMapClient();  
+                    readMapClient();                      
                     for (Map.Entry<String, byte[]> entry : mapClient.entrySet()) {
                         try {
                             MqttMessage mm = new MqttMessage(entry.getValue());
@@ -323,16 +323,17 @@ public final class MQTTManager implements MqttCallback {
     }
     
     private void writeMapClient() throws IOException {
-        File dbfile = new File(System.getProperty("user.home"), ".helloiot-" + CryptUtils.hashSHA512(url) + ".map"); 
+        File dbfile = HelloPlatform.getInstance().getFile(".helloiot-localmsg-" + CryptUtils.hashSHA512(url) + ".map"); 
         try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(dbfile))) {
             out.writeObject(mapClient);
         }      
     }
     
+    @SuppressWarnings("unchecked")
     private void readMapClient() throws IOException, ClassNotFoundException {
-        File dbfile = new File(System.getProperty("user.home"), ".helloiot-" + CryptUtils.hashSHA512(url) + ".map"); 
+        File dbfile = HelloPlatform.getInstance().getFile(".helloiot-localmsg-" + CryptUtils.hashSHA512(url) + ".map"); 
         if (dbfile.exists()) {
-            try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(dbfile))) {
+            try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(dbfile))) {                
                 mapClient = (ConcurrentMap<String, byte[]>) in.readObject();    
             }
         } else {

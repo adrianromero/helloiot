@@ -22,7 +22,7 @@ import com.adr.helloiot.device.Device;
 import com.adr.helloiot.device.DeviceBasic;
 import com.adr.helloiot.device.DeviceSimple;
 import com.adr.helloiot.device.DeviceSwitch;
-import com.adr.helloiot.device.StreamDevice;
+import com.adr.helloiot.device.ListDevice;
 
 /**
  *
@@ -36,8 +36,8 @@ public class HelloIoTAppPublic {
         this.app = app;
     }
 
-    public StreamDevice getAllDevices() {
-        return new StreamDevice(app.getDevices().stream());
+    public ListDevice getAllDevices() {
+        return new ListDevice(app.getDevices());
     }
 
     public Device getDevice(String id) {

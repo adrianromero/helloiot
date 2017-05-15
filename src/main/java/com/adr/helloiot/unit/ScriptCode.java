@@ -19,16 +19,14 @@
 package com.adr.helloiot.unit;
 
 import com.adr.helloiot.HelloIoTAppPublic;
+import com.adr.helloiot.HelloPlatform;
+import com.adr.helloiot.scripting.Script;
 import com.adr.helloiot.util.CompletableAsync;
 import com.google.common.util.concurrent.ListenableFuture;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import javafx.beans.DefaultProperty;
-import javax.script.ScriptContext;
-import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
-import javax.script.ScriptException;
 
 /**
  *
@@ -37,11 +35,7 @@ import javax.script.ScriptException;
 @DefaultProperty("text")
 public class ScriptCode {
 
-    private static final ScriptEngineManager SCRIPTMANAGER = new ScriptEngineManager();
-
-    private String engine = "nashorn";
     private String text = null;
-
     private HelloIoTAppPublic app;
 
     public String getText() {
@@ -52,37 +46,25 @@ public class ScriptCode {
         this.text = text;
     }
 
-    public String getEngine() {
-        return engine;
-    }
-
-    public void setEngine(String engine) {
-        this.engine = engine;
-    }
-
     public void construct(HelloIoTAppPublic app) {
         this.app = app;
     }
 
-    public ListenableFuture<Object> run() throws ScriptException {
+    public ListenableFuture<Object> run() {
         return run(null);
     }
 
     public ListenableFuture<Object> run(Map<String, Object> params) {
 
         return CompletableAsync.supplyAsync(() -> {
-            try {
-                ScriptEngine scriptengine = SCRIPTMANAGER.getEngineByName(engine);
-                if (params != null) {
-                    scriptengine.getBindings(ScriptContext.ENGINE_SCOPE).putAll(params);
-                }
-                scriptengine.put("_app", (Supplier) () -> app);
-                scriptengine.put("_allDevices", (Supplier) () -> app.getAllDevices());
-                scriptengine.put("_device", (Function<String, ?>) (id) -> app.getDevice(id));
-                return scriptengine.eval(text);
-            } catch (ScriptException ex) {
-                throw new RuntimeException(ex);
+            Script script = HelloPlatform.getInstance().getNewScript();
+            if (params != null) {
+                script.putScopeMap(params);
             }
+            script.putScopeFunction("_app", (Supplier) () -> app, "get", 0);
+            script.putScopeFunction("_allDevices", (Supplier) () -> app.getAllDevices(), "get", 0);
+            script.putScopeFunction("_device", (Function<String, ?>) (id) -> app.getDevice(id), "apply", 1);
+            return script.exec(text);
         });
     }
 

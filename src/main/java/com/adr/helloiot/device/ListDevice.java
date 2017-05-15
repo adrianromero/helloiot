@@ -18,47 +18,54 @@
 //
 package com.adr.helloiot.device;
 
-import java.util.function.Consumer;
-import java.util.stream.Stream;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
  * @author adrian
  */
-public class StreamDevice {
+public class ListDevice {
 
-    private final Stream<Device> devices;
+    private final List<Device> devices;
 
-    public StreamDevice(Stream<Device> devices) {
+    public ListDevice(List<Device> devices) {
         this.devices = devices;
     }
 
-    public void forEach(Consumer<? super Device> action) {
-        devices.forEach(action);
+    public void forEach(DeviceProvider<? super Device> action) {
+        for (Device d : devices) {
+            action.accept(d);
+        }
     }
 
-    public Device getByName(String name) {
-        return property("name", name).devices.findAny().get();
+    public Device getByName(String name) {      
+        for (Device d: devices) {
+            if (name.equals(d.getProperties().getProperty("name"))) {
+                return d;
+            }
+        }
+        return null;
     }
 
-    public StreamDevice type(String type) {
-        return new StreamDevice(devices.filter(device -> type.equals(device.getClass().getSimpleName())));
+    public ListDevice type(String type) {
+        return filter(device -> type.equals(device.getClass().getSimpleName()));
     }
 
-    public StreamDevice topic(String topic) {
-        return new StreamDevice(devices.filter(device -> topic.equals(device.getTopic())));
+    public ListDevice topic(String topic) {
+        return filter(device -> topic.equals(device.getTopic()));
     }
 
-    public StreamDevice property(String property, String value) {
-        return new StreamDevice(devices.filter(device -> value.equals(device.getProperties().get(property))));
+    public ListDevice property(String property, String value) {
+        return filter(device -> value.equals(device.getProperties().get(property)));
     }
 
-    public StreamDevice name(String name) {
+    public ListDevice name(String name) {
         return property("name", name);
     }
 
-    public StreamDevice tagged(String tag) {
-        return new StreamDevice(devices.filter(device -> {
+    public ListDevice tagged(String tag) {
+        return filter(device -> {
             String tags = device.getProperties().getProperty("tags");
             if (tags == null) {
                 return false;
@@ -71,6 +78,16 @@ public class StreamDevice {
                 }
             }
             return false;
-        }));
+        });
+    }
+    
+    private ListDevice filter(DevicePredicate<Device> p) {
+        List<Device> newlist = new ArrayList<>();
+        for (Device d : devices) {
+            if (p.test(d)) {
+                newlist.add(d);
+            }
+        }
+        return new ListDevice(newlist);
     }
 }

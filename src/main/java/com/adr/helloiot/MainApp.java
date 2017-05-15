@@ -20,7 +20,6 @@ package com.adr.helloiot;
 
 import com.adr.hellocommon.dialog.MessageUtils;
 import com.adr.helloiot.util.CompletableAsync;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -40,19 +39,19 @@ import javafx.scene.control.Slider;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 
 public abstract class MainApp extends Application {
+    
+    private final static String APP_PROPERTIES = ".helloiot-app.properties";
 
     private MainManager manager;
     private Stage stage;
 
     private Properties appproperties;
-    private File fileproperties;
 
     protected abstract MainManager createManager();
 
-    protected boolean isFullScreen() {
+    protected boolean isAppFullScreen() {
         return false;
     }
 
@@ -63,8 +62,8 @@ public abstract class MainApp extends Application {
     protected String getStyleName() {
         // Locale.setDefault(Locale.forLanguageTag("en-US"));     
         // Main, dark or standard
-//        return "/com/adr/helloiot/styles/empty";
-        return "/com/adr/helloiot/styles/main";
+        return "/com/adr/helloiot/styles/empty";
+//        return "/com/adr/helloiot/styles/main";
 //        return "/com/adr/helloiot/styles/main-dark";        
     }
 
@@ -81,25 +80,19 @@ public abstract class MainApp extends Application {
         root.getStyleClass().add("maincontainer");
         root.getStylesheets().add(getClass().getResource(styleroot + ".css").toExternalForm());
         root.getStylesheets().add(getClass().getResource(stylename + ".css").toExternalForm());
-
+        
         MessageUtils.setDialogRoot(root, true);
 
         // Construct root graph scene
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-
-        if (isFullScreen()) {
+        Scene scene;       
+        if (HelloPlatform.getInstance().isFullScreen() || isAppFullScreen()) {
+            Rectangle2D dimension = Screen.getPrimary().getVisualBounds();
+            scene = new Scene(root, dimension.getWidth(), dimension.getHeight());
             scene.setCursor(Cursor.NONE);
-            Rectangle2D dimension = Screen.getPrimary().getBounds();
-            stage.setX(dimension.getMinX());
-            stage.setY(dimension.getMinY());
-            stage.setWidth(dimension.getWidth());
-            stage.setHeight(dimension.getHeight());
-            stage.initStyle(StageStyle.UNDECORATED);
-
             root.getStylesheets().add(getClass().getResource("/com/adr/helloiot/styles/fullscreen.css").toExternalForm());
         } else {
             // Dimension properties only managed if not fullscreen
+            scene = new Scene(root);
             boolean maximized = Boolean.parseBoolean(appproperties.getProperty("window.maximized"));
             if (maximized) {
                 stage.setMaximized(true);
@@ -108,7 +101,8 @@ public abstract class MainApp extends Application {
                 stage.setHeight(Double.parseDouble(appproperties.getProperty("window.height")));
             }
         }
-
+        stage.setScene(scene);
+        
         // hack to avoid slider to get the focus.
         scene.focusOwnerProperty().addListener((ObservableValue<? extends Node> observable, Node oldValue, Node newValue) -> {
             if (newValue != null && (newValue instanceof Slider || newValue instanceof ScrollPane)) {
@@ -126,12 +120,9 @@ public abstract class MainApp extends Application {
     @Override
     public final void stop() throws Exception {
 
-        if (!isFullScreen()) {
-            // Dimension properties only managed if not fullscreen
-            appproperties.setProperty("window.height", Double.toString(stage.getHeight()));
-            appproperties.setProperty("window.width", Double.toString(stage.getWidth()));
-            appproperties.setProperty("window.maximized", Boolean.toString(stage.isMaximized()));
-        }
+        appproperties.setProperty("window.height", Double.toString(stage.getHeight()));
+        appproperties.setProperty("window.width", Double.toString(stage.getWidth()));
+        appproperties.setProperty("window.maximized", Boolean.toString(stage.isMaximized()));
         saveAppProperties();
 
         manager.destroy();
@@ -147,8 +138,7 @@ public abstract class MainApp extends Application {
         appproperties.setProperty("window.height", "600.0");
         appproperties.setProperty("window.width", "800.0");
         appproperties.setProperty("window.maximized", "false");
-        fileproperties = new File(System.getProperty("user.home"), ".helloiot-app.properties");
-        try (InputStream in = new FileInputStream(fileproperties)) {
+        try (InputStream in = new FileInputStream(HelloPlatform.getInstance().getFile(APP_PROPERTIES))) {
             appproperties.load(in);
         } catch (IOException ex) {
             Logger.getLogger(HelloIoTApp.class.getName()).log(Level.WARNING, ex.getMessage());
@@ -157,7 +147,7 @@ public abstract class MainApp extends Application {
 
     private void saveAppProperties() {
         // Save the properties...
-        try (OutputStream out = new FileOutputStream(fileproperties)) {
+        try (OutputStream out = new FileOutputStream(HelloPlatform.getInstance().getFile(APP_PROPERTIES))) {
             appproperties.store(out, "HelloIoT properties");
         } catch (IOException ex) {
             Logger.getLogger(HelloIoTApp.class.getName()).log(Level.WARNING, ex.getMessage());
