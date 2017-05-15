@@ -97,7 +97,7 @@
     -fx-background-radius: 6, 5;
     -fx-background-insets: 0, 1;
     -fx-background-color:  -fx-border-unit, -fx-background-unit;        
-    -fx-effect: dropshadow(three-pass-box, derive(-fx-border-unit, 20%), 4, 0, 0, 0);
+    -fx-effect: dropshadow(one-pass-box, derive(-fx-border-unit, 20%), 4, 0, 0, 0);
     
     -fx-value-color: -fx-main-fill;    
 }
@@ -251,7 +251,6 @@
 /* Dialog styles */
 .dialog-body {
     -fx-background-color: -fx-background-container;  
-    -fx-effect: dropshadow(one-pass-box, #555555, 20, 0.5, 3, 3);
 }
 .dialog-close-button:hover {
     -fx-background-color: -fx-hover-fill;

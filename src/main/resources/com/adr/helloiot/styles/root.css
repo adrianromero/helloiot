@@ -95,7 +95,7 @@
 
 .dialog-body {
     -fx-background-color: -fx-background;  
-    -fx-effect: dropshadow(one-pass-box, #555555, 20, 0.5, 3, 3);
+    -fx-effect: dropshadow(one-pass-box, #606060, 20, 0.5, 3, 3);
 }
 
 .dialog-close-button {
