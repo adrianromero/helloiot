@@ -80,6 +80,18 @@
     -fx-background-color: -fx-border-fill,  -fx-armed-fill;             
 }
 
+.menubutton {
+    -fx-background-color:  -fx-button-fill;       
+}
+
+.menubutton:hover {
+    -fx-background-color:  -fx-hover-fill;       
+}
+
+.menubutton:armed  {
+    -fx-background-color:  -fx-armed-fill;       
+}
+
 .currenttime {
     -fx-font-family: 'ROBOTO LIGHT';
     -fx-font-size: 16px;

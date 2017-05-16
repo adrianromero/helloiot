@@ -51,9 +51,8 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
 import javafx.scene.control.ProgressBar;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
@@ -80,7 +79,9 @@ public final class MQTTMainNode {
     @FXML
     private VBox container;
     @FXML
-    private ListView<UnitPage> listpages;
+    private ScrollPane scrollpages;
+    @FXML
+    private VBox menupages;
     @FXML
     private Pane listpagesgray;
     @FXML
@@ -154,14 +155,27 @@ public final class MQTTMainNode {
         Collections.sort(sortedunitpages);
         for (UnitPage value : sortedunitpages) {
             if (!value.isSystem() && value.getUnitLines().size() > 0 && (value.getName() == null || !value.getName().startsWith("."))) {
-                listpages.getItems().add(value);
+                Label l = new Label();
+                l.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+                l.setAlignment(Pos.CENTER);
+                l.setGraphic(value.getGraphic());
+                l.setPrefSize(45.0, 40.0);                
+                Button buttonmenu = new Button(value.getText(), l);
+                buttonmenu.getStyleClass().add("menubutton");
+                buttonmenu.setAlignment(Pos.BASELINE_LEFT);
+                buttonmenu.setMaxWidth(Double.MAX_VALUE);
+                buttonmenu.setFocusTraversable(false);
+                buttonmenu.setOnAction(e -> {
+                    app.getUnitPage().sendStatus(value.getName());              
+                });
+                menupages.getChildren().add(buttonmenu);            
             }
         }
         
         gotoPage("start");
 
         // Remove menubutton if 0 or 1 visible page.
-        menubutton.setVisible(!listpages.getItems().isEmpty());
+        menubutton.setVisible(!menupages.getChildren().isEmpty());
 
         // Remove headerbox if empty
         if ((headertitle.getText() == null || headertitle.getText().equals(""))
@@ -211,10 +225,8 @@ public final class MQTTMainNode {
             clock.play();
         }
         
-        listpages.setCellFactory((ListView<UnitPage> list) -> new UnitPageCell());
-        
         listpagesgray.setBackground(new Background(new BackgroundFill(Color.gray(0.5, 0.75), CornerRadii.EMPTY, Insets.EMPTY)));
-        FadeTransition ft = new FadeTransition(Duration.millis(300), listpages);
+        FadeTransition ft = new FadeTransition(Duration.millis(300), scrollpages);
         ft.setFromValue(0.0);
         ft.setToValue(1.0);
         ft.setInterpolator(Interpolator.LINEAR);
@@ -222,20 +234,20 @@ public final class MQTTMainNode {
         ft2.setFromValue(0.0);
         ft2.setToValue(1.0);
         ft2.setInterpolator(Interpolator.LINEAR);
-        TranslateTransition tt = new TranslateTransition(Duration.millis(300), listpages);
-        tt.setFromX(-listpages.prefWidth(0));
+        TranslateTransition tt = new TranslateTransition(Duration.millis(300), scrollpages);
+        tt.setFromX(-scrollpages.prefWidth(0));
         tt.setToX(0.0);
         tt.setInterpolator(Interpolator.EASE_BOTH);
         TranslateTransition tt2 = new TranslateTransition(Duration.millis(300), appcontainer);
         tt2.setFromX(0.0);
-        tt2.setToX(listpages.prefWidth(0));
+        tt2.setToX(scrollpages.prefWidth(0));
         tt2.setInterpolator(Interpolator.EASE_BOTH);
         
         listpagestransition = new ParallelTransition(ft, ft2, tt, tt2);
         listpagestransition.setRate(-1.0);
         listpagestransition.setOnFinished((ActionEvent actionEvent) -> {
             if (listpagestransition.getCurrentTime().equals(Duration.ZERO)) {
-                listpages.setVisible(false);
+                scrollpages.setVisible(false);
                 listpagesgray.setVisible(false);
             }
         });
@@ -251,20 +263,10 @@ public final class MQTTMainNode {
         animateListPages(-1.0);
     }
     
-    @FXML
-    void onSelectedItem(MouseEvent event) {
-        
-        UnitPage selectedpage = listpages.getSelectionModel().getSelectedItem();
-        if (selectedpage != null) {
-            // clicked on an item not empty space
-            app.getUnitPage().sendStatus(selectedpage.getName());
-        }
-    }
-    
     private void animateListPages(double newrate) {
         
         if (newrate > 0.0) {
-            listpages.setVisible(true);
+            scrollpages.setVisible(true);
             listpagesgray.setVisible(true);
         }
         
@@ -287,7 +289,6 @@ public final class MQTTMainNode {
     
     private void gotoPage(String status) {
         
-        listpages.getSelectionModel().select(-1);
         StackPane messagesroot = MessageUtils.getRoot(rootpane);
         if (messagesroot != null) {
             // If it is not already added to the scene, there is no need to dispose dialogs.
@@ -378,22 +379,5 @@ public final class MQTTMainNode {
             addUnitPage(unitpage);
         }
         return unitpage;
-    }
-    
-    private static class UnitPageCell extends ListCell<UnitPage> {
-        
-        @Override
-        public void updateItem(UnitPage item, boolean empty) {
-            super.updateItem(item, empty);
-            if (!empty) {
-                Label l = new Label();
-                l.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
-                l.setAlignment(Pos.CENTER);
-                l.setGraphic(item.getGraphic());
-                l.setPrefSize(45.0, 40.0);
-                setGraphic(l);
-                setText(item.getText());
-            }
-        }
     }
 }
