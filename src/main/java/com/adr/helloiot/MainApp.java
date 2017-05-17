@@ -62,8 +62,8 @@ public abstract class MainApp extends Application {
     protected String getStyleName() {
         // Locale.setDefault(Locale.forLanguageTag("en-US"));     
         // Main, dark or standard
-        return "/com/adr/helloiot/styles/empty";
-//        return "/com/adr/helloiot/styles/main";
+//        return "/com/adr/helloiot/styles/empty";
+        return "/com/adr/helloiot/styles/main";
 //        return "/com/adr/helloiot/styles/main-dark";        
     }
 
@@ -80,9 +80,9 @@ public abstract class MainApp extends Application {
         root.getStyleClass().add("maincontainer");
         root.getStylesheets().add(getClass().getResource(styleroot + ".css").toExternalForm());
         root.getStylesheets().add(getClass().getResource(stylename + ".css").toExternalForm());
-        
-        MessageUtils.setDialogRoot(root, true);
 
+        MessageUtils.setDialogRoot(root, true);
+        
         // Construct root graph scene
         Scene scene;       
         if (HelloPlatform.getInstance().isFullScreen() || isAppFullScreen()) {

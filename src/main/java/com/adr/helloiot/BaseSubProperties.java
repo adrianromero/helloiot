@@ -18,12 +18,28 @@
 //
 package com.adr.helloiot;
 
+import java.util.Properties;
+
 /**
  *
  * @author adrian
  */
-public interface SubProperties { 
-    public String getProperty(String key); 
-    public String getProperty(String key, String defaultValue);
-    public void setProperty(String key, String value);
+public class BaseSubProperties implements SubProperties {
+    
+    private final Properties properties = new Properties();
+    
+    @Override
+    public String getProperty(String key) {
+        return properties.getProperty(key);
+    }
+    
+    @Override
+    public String getProperty(String key, String defaultValue) {
+        return properties.getProperty(key, defaultValue);
+    }
+    
+    @Override
+    public void setProperty(String key, String value) {
+        properties.setProperty(key, value);
+    }  
 }

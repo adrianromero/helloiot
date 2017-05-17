@@ -1,0 +1,24 @@
+
+<DeviceNumber fx:id="number" topic="home/bedroom1/number" levelMin="0.0" levelMax="20.0" increment="0.2" format="DECIMAL/0.00">
+        <properties label="Numeric level"/>
+</DeviceNumber> 
+
+<StartLine UnitPage.page="Numbers" VBox.vgrow= "NEVER" />
+<LabelSection UnitPage.page="Numbers" text="Numeric units"/> 
+
+<StartLine UnitPage.page="Numbers" VBox.vgrow= "SOMETIMES" />   
+<ViewText  UnitPage.page="Numbers" device="$number"/>
+<ButtonSimple UnitPage.page="Numbers" device="$number" />
+<ButtonsSpinner UnitPage.page="Numbers" device="$number"/>
+<ButtonPair UnitPage.page="Numbers" device="$number"/>
+<SliderSimple UnitPage.page="Numbers" device="$number"/>
+
+<StartLine UnitPage.page="Numbers" VBox.vgrow= "NEVER" />
+<LabelSection UnitPage.page="Numbers" text="Gauges"/>
+
+<StartLine UnitPage.page="Numbers" VBox.vgrow= "SOMETIMES" />
+<ViewGauge UnitPage.page="Numbers" device="$number"/>
+<ViewGauge UnitPage.page="Numbers" device="$number" type="LINEAR"/>
+<ViewGauge UnitPage.page="Numbers" device="$number" type="BAR"/>
+<ViewGauge UnitPage.page="Numbers" device="$number" type="WHITE"/>
+<ViewGauge UnitPage.page="Numbers" device="$number" type="BASIC"/>

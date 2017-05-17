@@ -29,6 +29,7 @@
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TextField?>
@@ -42,7 +43,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane fx:id="rootpane" prefHeight="730.0" prefWidth="969.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane fx:id="rootpane" prefHeight="730.0" prefWidth="969.0" xmlns="http://javafx.com/javafx/8.0.131" xmlns:fx="http://javafx.com/fxml/1">
     <top>
        <HBox spacing="5.0" styleClass="header" BorderPane.alignment="CENTER">
           <children>
@@ -195,12 +196,13 @@
                         </ScrollPane>
                      </center>
                      <top>
-                        <ToolBar BorderPane.alignment="CENTER">
+                        <ToolBar fx:id="unitstoolbar" BorderPane.alignment="CENTER">
                            <items>
                               <Button fx:id="adddeviceunit" focusTraversable="false" mnemonicParsing="false" onAction="#onAddDeviceUnit" />
                               <Button fx:id="removedeviceunit" focusTraversable="false" mnemonicParsing="false" onAction="#onRemoveDeviceUnit" />
                               <Button fx:id="updeviceunit" focusTraversable="false" mnemonicParsing="false" onAction="#onUpDeviceUnit" />
                               <Button fx:id="downdeviceunit" focusTraversable="false" mnemonicParsing="false" onAction="#onDownDeviceUnit" />
+                              <Separator orientation="VERTICAL" />
                            </items>
                         </ToolBar>
                      </top>

@@ -21,7 +21,12 @@ package com.adr.helloiot;
 import com.adr.fonticon.FontAwesome;
 import com.adr.fonticon.IconBuilder;
 import com.adr.hellocommon.utils.FXMLUtil;
+import com.google.common.io.Resources;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Platform;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -33,12 +38,14 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToolBar;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
@@ -99,23 +106,17 @@ public class ClientLoginNode {
     @FXML
     private CheckBox mainpage;
 
-    @FXML
-    Button adddeviceunit;
-    @FXML
-    Button removedeviceunit;
-    @FXML
-    Button updeviceunit;
-    @FXML
-    Button downdeviceunit;
-    @FXML
-    ListView<TopicInfo> devicesunitslist;
-    @FXML
-    ScrollPane deviceunitform;
+    @FXML Button adddeviceunit;
+    @FXML Button removedeviceunit;
+    @FXML Button updeviceunit;
+    @FXML Button downdeviceunit;
+    @FXML ListView<TopicInfo> devicesunitslist;
+    @FXML ScrollPane deviceunitform;
     
-    @FXML
-    ChoiceBox<String> edittype;
-    @FXML
-    StackPane topicinfocontainer;
+    @FXML ChoiceBox<String> edittype;
+    @FXML StackPane topicinfocontainer;
+    @FXML ToolBar unitstoolbar;
+    
     TopicInfoNode editnode = null;
  
     private TopicInfoBuilder topicinfobuilder;
@@ -144,6 +145,8 @@ public class ClientLoginNode {
             updateCurrentTopic();
         });
 
+        constructSampleButtons();
+
         devicesunitslist.setCellFactory((ListView<TopicInfo> list) -> new ListCell<TopicInfo>() {
             @Override
             public void updateItem(TopicInfo item, boolean empty) {
@@ -164,6 +167,13 @@ public class ClientLoginNode {
         updateDevicesUnitsList();
 
         Platform.runLater(host::requestFocus);
+    }
+    
+    private void constructSampleButtons() {
+        unitstoolbar.getItems().addAll(
+                new Label(resources.getString("label.samplestitle")),
+                createSamplesButton("samples.lights", IconBuilder.create(FontAwesome.FA_LIGHTBULB_O, 18.0).build(), "com/adr/helloiot/samples/lights.fxml"),
+                createSamplesButton("samples.numbers", IconBuilder.create(FontAwesome.FA_DASHBOARD, 18.0).build(), "com/adr/helloiot/samples/numbers.fxml"));
     }
 
     public Node getNode() {
@@ -467,5 +477,25 @@ public class ClientLoginNode {
 
     public void setMainPage(boolean value) {
         mainpage.setSelected(value);
+    }
+    
+    public Button createSamplesButton(String key, Node graphic, String fxml) {
+        Button b = new Button(resources.getString(key), graphic);
+        b.setFocusTraversable(false);        
+        b.setOnAction(e -> {
+            try {
+                TopicInfo t = topicinfobuilder.create("Code");
+                BaseSubProperties props = new BaseSubProperties();
+                props.setProperty(".name", resources.getString(key));
+                props.setProperty(".code", Resources.toString(Resources.getResource(fxml), StandardCharsets.UTF_8));
+                t.load(props);
+                
+                devicesunitslist.getItems().add(t);
+                devicesunitslist.getSelectionModel().select(t);
+            } catch (IOException ex) {
+                Logger.getLogger(ClientLoginNode.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
+        return b;
     }
 }

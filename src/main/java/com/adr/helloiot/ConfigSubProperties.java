@@ -22,8 +22,28 @@ package com.adr.helloiot;
  *
  * @author adrian
  */
-public interface SubProperties { 
-    public String getProperty(String key); 
-    public String getProperty(String key, String defaultValue);
-    public void setProperty(String key, String value);
+public class ConfigSubProperties implements SubProperties {
+    
+    private final ConfigProperties properties;
+    private final String prefix;
+    
+    public ConfigSubProperties(ConfigProperties properties, String prefix) {
+        this.properties = properties;
+        this.prefix = prefix;
+    }
+    
+    @Override
+    public String getProperty(String key) {
+        return properties.getProperty(prefix + key);
+    }
+    
+    @Override
+    public String getProperty(String key, String defaultValue) {
+        return properties.getProperty(prefix + key, defaultValue);
+    }
+    
+    @Override
+    public void setProperty(String key, String value) {
+        properties.setProperty(prefix + key, value);
+    }
 }

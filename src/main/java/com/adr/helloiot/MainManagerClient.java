@@ -75,7 +75,7 @@ public class MainManagerClient implements MainManager {
         TopicInfoBuilder topicinfobuilder = new TopicInfoBuilder();
         int topicinfosize = Integer.parseInt(configprops.getProperty("topicinfo.size", "0"));
         while (i++ < topicinfosize) {
-            topicinfolist.add(topicinfobuilder.fromProperties(new SubProperties(configprops, "topicinfo" + Integer.toString(i))));
+            topicinfolist.add(topicinfobuilder.fromProperties(new ConfigSubProperties(configprops, "topicinfo" + Integer.toString(i))));
         }
         clientlogin.setTopicInfoList(topicinfobuilder, FXCollections.observableList(topicinfolist));
 
@@ -117,7 +117,7 @@ public class MainManagerClient implements MainManager {
         configprops.setProperty("topicinfo.size", Integer.toString(topicinfolist.size()));
         int i = 0;
         for (TopicInfo topicinfo : topicinfolist) {       
-            SubProperties subproperties = new SubProperties(configprops, "topicinfo" + Integer.toString(++i));
+            SubProperties subproperties = new ConfigSubProperties(configprops, "topicinfo" + Integer.toString(++i));
             subproperties.setProperty(".type", topicinfo.getType());
             topicinfo.store(subproperties);
         }
@@ -155,23 +155,26 @@ public class MainManagerClient implements MainManager {
             helloiotapp.addUnitPages(Arrays.asList(info));
             helloiotapp.addFXMLFileDevicesUnits("local:com/adr/helloiot/panes/mosquitto");
         }
-
-        helloiotapp.addUnitPages(Arrays.asList(
-                new UnitPage("light", IconBuilder.create(FontAwesome.FA_LIGHTBULB_O, 24.0).build(), resources.getString("page.light")))
-        );
-        helloiotapp.addFXMLFileDevicesUnits("local:com/adr/helloiot/panes/samplelights");
-        helloiotapp.addUnitPages(Arrays.asList(
-                new UnitPage("temperature", IconBuilder.create(FontAwesome.FA_DASHBOARD, 24.0).build(), resources.getString("page.temperature")))
-        );
-        helloiotapp.addFXMLFileDevicesUnits("local:com/adr/helloiot/panes/sampletemperature");
-
+        
         helloiotapp.addDevicesUnits(Collections.emptyList(), Collections.singletonList(new StartFlow()));
         TopicStatus ts;
         for (TopicInfo topicinfo : topicinfolist) {            
             ts = topicinfo.getTopicStatus();
             helloiotapp.addDevicesUnits(ts.getDevices(), ts.getUnits());
-        }
+        }        
 
+        helloiotapp.addUnitPages(Arrays.asList(
+                new UnitPage("Lights", IconBuilder.create(FontAwesome.FA_LIGHTBULB_O, 24.0).build(), resources.getString("page.lights")))
+        );
+        helloiotapp.addUnitPages(Arrays.asList(
+                new UnitPage("Temperature", IconBuilder.create(FontAwesome.FA_DASHBOARD, 24.0).build(), resources.getString("page.temperature")))
+        );        
+//        helloiotapp.addFXMLFileDevicesUnits("local:com/adr/helloiot/panes/samplelights");
+//        helloiotapp.addUnitPages(Arrays.asList(
+//                new UnitPage("temperature", IconBuilder.create(FontAwesome.FA_DASHBOARD, 24.0).build(), resources.getString("page.temperature")))
+//        );
+//        helloiotapp.addFXMLFileDevicesUnits("local:com/adr/helloiot/panes/sampletemperature");
+//
 //        ts = TopicStatus.buildTopicPublishSubscription("sample/topic1", 0, StringFormat.valueOf("DOUBLE"), true);
 //        helloiotapp.addDevicesUnits(ts.getDevices(), ts.getUnits());
 //        
@@ -191,8 +194,7 @@ public class MainManagerClient implements MainManager {
 //        helloiotapp.addDevicesUnits(ts.getDevices(), ts.getUnits());
 //        
 //        ts = TopicStatus.buildTopicSubscription("$SYS/broker/uptime", -1, StringFormatIdentity.INSTANCE, false);
-//        helloiotapp.addDevicesUnits(ts.getDevices(), ts.getUnits());
-//        
+//        helloiotapp.addDevicesUnits(ts.getDevices(), ts.getUnits());  
         
         EventHandler<ActionEvent> showloginevent = (event -> {
             showLogin();
