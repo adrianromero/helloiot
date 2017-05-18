@@ -35,6 +35,7 @@ import com.adr.helloiot.unit.EditView;
 import com.adr.helloiot.unit.Unit;
 import com.adr.helloiot.util.ExternalFonts;
 import java.util.Arrays;
+import java.util.ResourceBundle;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.paint.Color;
@@ -138,7 +139,13 @@ public class TopicInfoEdit implements TopicInfo {
     }
     
     @Override
-    public TopicStatus getTopicStatus() {
+    public TopicStatus getTopicStatus() throws HelloIoTException {
+        
+        if (topic == null || topic.isEmpty()) {
+            ResourceBundle resources = ResourceBundle.getBundle("com/adr/helloiot/fxml/main");
+            String label = getLabel();
+            throw new HelloIoTException(resources.getString("exception.topicinfoedit"));
+        }
         
         if ("Subscription".equals(getType())) {
             return buildTopicSubscription();

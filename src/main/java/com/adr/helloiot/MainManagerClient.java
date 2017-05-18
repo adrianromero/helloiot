@@ -20,6 +20,7 @@ package com.adr.helloiot;
 
 import com.adr.fonticon.FontAwesome;
 import com.adr.fonticon.IconBuilder;
+import com.adr.hellocommon.dialog.MessageUtils;
 import com.adr.helloiot.unit.StartFlow;
 import com.adr.helloiot.unit.UnitPage;
 import java.io.IOException;
@@ -79,9 +80,15 @@ public class MainManagerClient implements MainManager {
         }
         clientlogin.setTopicInfoList(topicinfobuilder, FXCollections.observableList(topicinfolist));
 
-        clientlogin.setOnNextAction(e -> {
-            showApplication();
-            hideLogin();
+        clientlogin.setOnNextAction(e -> {           
+            try {
+                showApplication();
+                hideLogin();
+            } catch (HelloIoTException ex) {
+                ResourceBundle resources = ResourceBundle.getBundle("com/adr/helloiot/fxml/main");
+                MessageUtils.showError(MessageUtils.getRoot(root), resources.getString("exception.topicinfotitle"), ex.getLocalizedMessage());
+            }
+            
         });
         root.getChildren().add(clientlogin.getNode());
     }
@@ -93,7 +100,7 @@ public class MainManagerClient implements MainManager {
         }
     }
 
-    private void showApplication() {
+    private void showApplication() throws HelloIoTException {
 
         configprops.clear();
 
@@ -147,62 +154,68 @@ public class MainManagerClient implements MainManager {
 
         helloiotapp = new HelloIoTApp(config);
 
-        // add sample panes
-        ResourceBundle resources = ResourceBundle.getBundle("com/adr/helloiot/fxml/main");
+        try {
+            // add sample panes
+            ResourceBundle resources = ResourceBundle.getBundle("com/adr/helloiot/fxml/main");
 
-        if (clientlogin.getBrokerPane() == 1) {
-            UnitPage info = new UnitPage("info", IconBuilder.create(FontAwesome.FA_INFO, 24.0).build(), resources.getString("page.info"));
-            helloiotapp.addUnitPages(Arrays.asList(info));
-            helloiotapp.addFXMLFileDevicesUnits("local:com/adr/helloiot/panes/mosquitto");
-        }
-        
-        helloiotapp.addDevicesUnits(Collections.emptyList(), Collections.singletonList(new StartFlow()));
-        TopicStatus ts;
-        for (TopicInfo topicinfo : topicinfolist) {            
-            ts = topicinfo.getTopicStatus();
-            helloiotapp.addDevicesUnits(ts.getDevices(), ts.getUnits());
-        }        
+            if (clientlogin.getBrokerPane() == 1) {
+                UnitPage info = new UnitPage("info", IconBuilder.create(FontAwesome.FA_INFO, 24.0).build(), resources.getString("page.info"));
+                helloiotapp.addUnitPages(Arrays.asList(info));
+                helloiotapp.addFXMLFileDevicesUnits("local:com/adr/helloiot/panes/mosquitto");
+            }
 
-        helloiotapp.addUnitPages(Arrays.asList(
-                new UnitPage("Lights", IconBuilder.create(FontAwesome.FA_LIGHTBULB_O, 24.0).build(), resources.getString("page.lights")))
-        );
-        helloiotapp.addUnitPages(Arrays.asList(
-                new UnitPage("Temperature", IconBuilder.create(FontAwesome.FA_DASHBOARD, 24.0).build(), resources.getString("page.temperature")))
-        );        
-//        helloiotapp.addFXMLFileDevicesUnits("local:com/adr/helloiot/panes/samplelights");
-//        helloiotapp.addUnitPages(Arrays.asList(
-//                new UnitPage("temperature", IconBuilder.create(FontAwesome.FA_DASHBOARD, 24.0).build(), resources.getString("page.temperature")))
-//        );
-//        helloiotapp.addFXMLFileDevicesUnits("local:com/adr/helloiot/panes/sampletemperature");
-//
-//        ts = TopicStatus.buildTopicPublishSubscription("sample/topic1", 0, StringFormat.valueOf("DOUBLE"), true);
-//        helloiotapp.addDevicesUnits(ts.getDevices(), ts.getUnits());
-//        
-//        ts = TopicStatus.buildTopicPublishSubscription("sample/topic1", 0, StringFormat.valueOf("HEXADECIMAL"), false);
-//        helloiotapp.addDevicesUnits(ts.getDevices(), ts.getUnits());
-//        
-//        ts = TopicStatus.buildTopicPublish("sample/topic1", -1, StringFormat.valueOf("DECIMAL"), true);
-//        helloiotapp.addDevicesUnits(ts.getDevices(), ts.getUnits());
-//        
-//        ts = TopicStatus.buildTopicPublish("sample/topic1", -1, StringFormat.valueOf("BASE64"), false);
-//        helloiotapp.addDevicesUnits(ts.getDevices(), ts.getUnits());
-//        
-//        ts = TopicStatus.buildTopicSubscription("sample/topic1", 1, StringFormat.valueOf("DEGREES"), true);
-//        helloiotapp.addDevicesUnits(ts.getDevices(), ts.getUnits());
-//        
-//        ts = TopicStatus.buildTopicSubscription("sample/topic1", 1, StringFormat.valueOf("DECIMAL"), false);
-//        helloiotapp.addDevicesUnits(ts.getDevices(), ts.getUnits());
-//        
-//        ts = TopicStatus.buildTopicSubscription("$SYS/broker/uptime", -1, StringFormatIdentity.INSTANCE, false);
-//        helloiotapp.addDevicesUnits(ts.getDevices(), ts.getUnits());  
-        
-        EventHandler<ActionEvent> showloginevent = (event -> {
-            showLogin();
-            hideApplication();
-        });
-        helloiotapp.setOnDisconnectAction(showloginevent);
-        helloiotapp.getMQTTNode().setToolbarButton(showloginevent, IconBuilder.create(FontAwesome.FA_SIGN_OUT, 18.0).styleClass("icon-fill").build(), resources.getString("label.disconnect"));
+            helloiotapp.addDevicesUnits(Collections.emptyList(), Collections.singletonList(new StartFlow()));
+            TopicStatus ts;
+            for (TopicInfo topicinfo : topicinfolist) {            
+                ts = topicinfo.getTopicStatus();
+                helloiotapp.addDevicesUnits(ts.getDevices(), ts.getUnits());
+            }        
 
+            helloiotapp.addUnitPages(Arrays.asList(
+                    new UnitPage("Lights", IconBuilder.create(FontAwesome.FA_LIGHTBULB_O, 24.0).build(), resources.getString("page.lights")))
+            );
+            helloiotapp.addUnitPages(Arrays.asList(
+                    new UnitPage("Temperature", IconBuilder.create(FontAwesome.FA_DASHBOARD, 24.0).build(), resources.getString("page.temperature")))
+            );        
+    //        helloiotapp.addFXMLFileDevicesUnits("local:com/adr/helloiot/panes/samplelights");
+    //        helloiotapp.addUnitPages(Arrays.asList(
+    //                new UnitPage("temperature", IconBuilder.create(FontAwesome.FA_DASHBOARD, 24.0).build(), resources.getString("page.temperature")))
+    //        );
+    //        helloiotapp.addFXMLFileDevicesUnits("local:com/adr/helloiot/panes/sampletemperature");
+    //
+    //        ts = TopicStatus.buildTopicPublishSubscription("sample/topic1", 0, StringFormat.valueOf("DOUBLE"), true);
+    //        helloiotapp.addDevicesUnits(ts.getDevices(), ts.getUnits());
+    //        
+    //        ts = TopicStatus.buildTopicPublishSubscription("sample/topic1", 0, StringFormat.valueOf("HEXADECIMAL"), false);
+    //        helloiotapp.addDevicesUnits(ts.getDevices(), ts.getUnits());
+    //        
+    //        ts = TopicStatus.buildTopicPublish("sample/topic1", -1, StringFormat.valueOf("DECIMAL"), true);
+    //        helloiotapp.addDevicesUnits(ts.getDevices(), ts.getUnits());
+    //        
+    //        ts = TopicStatus.buildTopicPublish("sample/topic1", -1, StringFormat.valueOf("BASE64"), false);
+    //        helloiotapp.addDevicesUnits(ts.getDevices(), ts.getUnits());
+    //        
+    //        ts = TopicStatus.buildTopicSubscription("sample/topic1", 1, StringFormat.valueOf("DEGREES"), true);
+    //        helloiotapp.addDevicesUnits(ts.getDevices(), ts.getUnits());
+    //        
+    //        ts = TopicStatus.buildTopicSubscription("sample/topic1", 1, StringFormat.valueOf("DECIMAL"), false);
+    //        helloiotapp.addDevicesUnits(ts.getDevices(), ts.getUnits());
+    //        
+    //        ts = TopicStatus.buildTopicSubscription("$SYS/broker/uptime", -1, StringFormatIdentity.INSTANCE, false);
+    //        helloiotapp.addDevicesUnits(ts.getDevices(), ts.getUnits());  
+
+            EventHandler<ActionEvent> showloginevent = (event -> {
+                showLogin();
+                hideApplication();
+            });
+            helloiotapp.setOnDisconnectAction(showloginevent);
+            helloiotapp.getMQTTNode().setToolbarButton(showloginevent, IconBuilder.create(FontAwesome.FA_SIGN_OUT, 18.0).styleClass("icon-fill").build(), resources.getString("label.disconnect"));
+        } catch (HelloIoTException ex) {
+            helloiotapp = null;
+            throw ex;
+        }               
+          
+        // ALL the job is done
         root.getChildren().add(helloiotapp.getMQTTNode().getNode());
         helloiotapp.startAndConstruct();
     }

@@ -27,8 +27,7 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.ResourceBundle;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
@@ -44,7 +43,7 @@ import javafx.scene.text.TextFlow;
  * @author adrian
  */
 public class TopicInfoCode implements TopicInfo {
-    
+        
     private String name;
     private String code;
     
@@ -94,7 +93,7 @@ public class TopicInfoCode implements TopicInfo {
     }
 
     @Override
-    public TopicStatus getTopicStatus() {
+    public TopicStatus getTopicStatus() throws HelloIoTException {
         
         String fxml = 
                 "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
@@ -127,8 +126,9 @@ public class TopicInfoCode implements TopicInfo {
             } 
             return new TopicStatus(devices, units);
         } catch (IOException ex) {
-            Logger.getLogger(TopicInfoCode.class.getName()).log(Level.SEVERE, null, ex);
-            throw new RuntimeException(ex);
+            ResourceBundle resources = ResourceBundle.getBundle("com/adr/helloiot/fxml/main");
+            String label = getLabel();
+            throw new HelloIoTException(String.format(resources.getString("exception.topicinfocode"), label == null || label.isEmpty() ? resources.getString("label.empty") : label));
         }
     }
 
