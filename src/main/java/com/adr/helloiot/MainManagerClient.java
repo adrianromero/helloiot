@@ -235,6 +235,7 @@ public class MainManagerClient implements MainManager {
         try {
             this.configprops.load();
         } catch (IOException ex) {
+            // No properties file found, user default and continue
             LOGGER.log(Level.WARNING, null, ex);
         }
 

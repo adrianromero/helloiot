@@ -32,7 +32,6 @@ import com.adr.helloiot.media.SilentClipFactory;
 import com.adr.helloiot.media.StandardClipFactory;
 import com.adr.helloiot.unit.UnitPage;
 import com.adr.helloiot.util.CompletableAsync;
-import com.adr.helloiot.util.CryptUtils;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
 import java.io.File;
@@ -44,6 +43,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
+import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 import java.util.ServiceLoader;
 import java.util.logging.Level;
@@ -172,7 +172,7 @@ public class HelloIoTApp {
         addDevicesUnits(Arrays.asList(sysevents, sysstatus, unitpage, beeper, buzzer), Collections.emptyList());
     }
 
-    public void addFXMLFileDevicesUnits(String filedescriptor) {
+    public void addFXMLFileDevicesUnits(String filedescriptor) throws HelloIoTException {
 
         try {
             URL fxmlurl;
@@ -197,8 +197,8 @@ public class HelloIoTApp {
             }
             DevicesUnits du = fxmlloader.load();
             addDevicesUnits(du.getDevices(), du.getUnits());
-        } catch (IOException ex) {
-            throw new RuntimeException(ex);
+        } catch (IOException | MissingResourceException ex) {
+            throw new HelloIoTException(String.format(resources.getString("exception.cannotloadfxml"), filedescriptor), ex);
         }
     }
 

@@ -66,7 +66,11 @@ public class MainManagerPlatform implements MainManager {
         String devproperty = configprops.getProperty("devicesunits", null);
         if (!Strings.isNullOrEmpty(devproperty)) {
             for (String s : devproperty.split(",")) {
-                helloiotapp.addFXMLFileDevicesUnits(s);
+                try {
+                    helloiotapp.addFXMLFileDevicesUnits(s);
+                } catch (HelloIoTException ex) {
+                    throw new RuntimeException(ex);
+                }
             }
         }
 
