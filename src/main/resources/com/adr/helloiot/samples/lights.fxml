@@ -49,23 +49,35 @@
 <LabelSection UnitPage.page="Lights" text="More actions"/> 
 
 <StartLine UnitPage.page="Lights" VBox.vgrow= "SOMETIMES" />
-<ButtonSimple UnitPage.page="Lights" device="$living_light1"/>
-<ButtonScript UnitPage.page="Lights" label="Timer light 1">
-    <graphic><Icon iconAwesome="FA_CLOCK_O" size="48" color="WHITE" shine="darkgray"/></graphic>
+<ButtonSimple UnitPage.page="Lights" device="$living_light1"
+  label=""
+  text="Light 1" 
+  style="-fx-background-color: transparent;-fx-button-fill:lavender;"/>
+<ButtonScript UnitPage.page="Lights"
+  label=""
+  text="Timer Light 1" 
+  style="-fx-background-color: transparent;-fx-button-fill:lavender;">
+    <graphic><Icon iconAwesome="FA_CLOCK_O" size="48" color="WHITE" shine="white"/></graphic>
     <scriptCode><![CDATA[
         _allDevices().getByName('living_light1').sendON(2000);
     ]]></scriptCode>
 </ButtonScript>                        
-<ButtonScript UnitPage.page="Lights" label="Switch all off" confirm="true">
-    <graphic><Icon iconAwesome="FA_POWER_OFF" size="48" color="RED" shine="darkgray"/></graphic>
+<ButtonScript UnitPage.page="Lights" confirm="true"
+  label=""
+  text="Switch lights off" 
+  style="-fx-background-color: transparent;-fx-button-fill:lavender;">
+    <graphic><Icon iconAwesome="FA_POWER_OFF" size="48" color="RED" shine="white"/></graphic>
     <scriptCode><![CDATA[
         _allDevices().tagged('lamp').forEach(function (d) {
             d.sendOFF();
         });
     ]]></scriptCode>
 </ButtonScript>                                   
-<ButtonScript UnitPage.page="Lights" label="Dance">
-    <graphic><Icon iconAwesome="FA_STAR_O" size="48" color="GREEN" shine="darkgray"/></graphic>
+<ButtonScript UnitPage.page="Lights"
+  label=""
+  text="Dance" 
+  style="-fx-background-color: transparent;-fx-button-fill:lightpink;">
+    <graphic><Icon iconAwesome="FA_STAR_O" size="48" color="yellow" shine="white"/></graphic>
     <parameters light1="$living_light1" light2="$living_light2" light3="$living_light3" light4="$living_light4" light5="$living_light5"/>
     <scriptCode><![CDATA[                
         for (var i = 1; i < 5; i++) {
@@ -87,3 +99,4 @@
         }
     ]]></scriptCode>
 </ButtonScript>                            
+d
