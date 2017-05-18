@@ -114,7 +114,7 @@ public final class MQTTManager implements MqttCallback {
         for (TopicQos tq : topicsubscriptions) {
             if (tq.getTopic() == null || tq.getTopic().isEmpty()) {
                 return CompletableAsync.runAsync(() -> {
-                    throw new RuntimeException(new HelloIoTException(resources.getString("exception.topicscannotbeempty")));
+                    throw new RuntimeException(resources.getString("exception.topicscannotbeempty"));
                 });
             }
 
@@ -168,7 +168,7 @@ public final class MQTTManager implements MqttCallback {
                 } catch (MqttException ex) {
                     closeinternal();
                     logger.log(Level.WARNING, null, ex);
-                    throw new RuntimeException(ex);
+                    throw new RuntimeException(String.format(resources.getString("exception.mqtt"), url), ex);
                 }
             }
         });

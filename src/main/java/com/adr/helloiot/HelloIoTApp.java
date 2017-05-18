@@ -257,7 +257,7 @@ public class HelloIoTApp {
             @Override
             public void onFailure(Throwable ex) {
                 mqttnode.hideConnecting();
-                MessageUtils.showError(MessageUtils.getRoot(mqttnode.getNode()), resources.getString("title.errorconnection"), ex.getLocalizedMessage(), ev -> {
+                MessageUtils.showException(MessageUtils.getRoot(mqttnode.getNode()), resources.getString("title.errorconnection"), ex.getLocalizedMessage(), ex, ev -> {
                     exitevent.handle(new ActionEvent());
                 });
             }
