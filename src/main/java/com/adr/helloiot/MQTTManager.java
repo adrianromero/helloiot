@@ -89,6 +89,8 @@ public final class MQTTManager implements MqttCallback {
     public MQTTManager(String url, String username, String password, String clientid, int timeout, int keepalive, int defaultqos, int version, boolean cleansession, Properties sslproperties, String topicprefix) {
 
         this.mqttClient = null;
+        this.mapClient = null;
+        this.mapClientNew = false;
         this.resources = ResourceBundle.getBundle("com/adr/helloiot/resources/helloiot");
 
         this.url = url;
@@ -182,15 +184,15 @@ public final class MQTTManager implements MqttCallback {
 
     private void closeinternal() {
         // To be invoked by executor thread
-        if (mqttClient != null) {
-
+        if (mapClient != null) {
             try {
                 writeMapClient();
             } catch (IOException ex) {
                 logger.log(Level.WARNING, "Cannot save client map.", ex);
             }
             mapClient = null;
-
+        }        
+        if (mqttClient != null) {
             if (mqttClient.isConnected()) {
                 try {
                     mqttClient.setCallback(null);
@@ -204,7 +206,7 @@ public final class MQTTManager implements MqttCallback {
     }
     
     public boolean isNewConnection() {
-        return mapClientNew;
+        return mapClient != null && mapClientNew;
     }
 
     public void setOnConnectionLost(Consumer<Throwable> callback) {
