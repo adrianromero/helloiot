@@ -32,55 +32,58 @@ import javafx.scene.paint.Stop;
  * @author adrian
  */
 public enum GaugeType {
-    BASIC((min, max) -> {
-        double sixth = (max - min) / 6.0;
+    BASIC((min, max, barColor) -> {
+        double fith = (max - min) / 5.0;
         return GaugeBuilder.create()
                 .minValue(min)
                 .maxValue(max)
+                .prefSize(150.0, 150.0)                
                 .autoScale(false)
                 .minorTickMarksVisible(false)
                 .mediumTickMarksVisible(false)
                 .majorTickSpace(1.0)
                 .majorTickMarkType(TickMarkType.BOX)
                 .gradientBarEnabled(true)
-                .sections(new Section(min, min + sixth, Color.web("#11632f")),
-                        new Section(min + sixth, min + sixth * 2, Color.web("#36843d")),
-                        new Section(min + sixth * 2, min + sixth * 3, Color.web("#67a328")),
-                        new Section(min + sixth * 3, min + sixth * 4, Color.web("#80b940")),
-                        new Section(min + sixth * 4, min + sixth * 5, Color.web("#95c262")),
-                        new Section(min + sixth * 5, max, Color.web("#badf8d")))
+                .sections(new Section(min, min + fith, barColor.deriveColor(1.0, 1.0, 0.8, 1.0)),
+                        new Section(min + fith, min + fith * 2, barColor.deriveColor(1.0, 1.0, 0.85, 1.0)),
+                        new Section(min + fith * 2, min + fith * 3, barColor.deriveColor(1.0, 1.0, 0.9, 1.0)),
+                        new Section(min + fith * 3, min + fith * 4, barColor.deriveColor(1.0, 1.0, 0.95, 1.0)),
+                        new Section(min + fith * 4, max, barColor))
                 .sectionsVisible(true)
                 .decimals(1)
                 .build();
     }),
-    SPACEX((min, max) -> {
+    SPACEX((min, max, barColor) -> {
         return GaugeBuilder.create()
                 .skinType(Gauge.SkinType.SPACE_X)
-                .backgroundPaint(Color.TRANSPARENT)
+                .backgroundPaint(Color.TRANSPARENT)              
                 .valueColor(Color.BLACK)
                 .titleColor(Color.BLACK)
                 .minValue(min)
                 .maxValue(max)
+                .prefSize(150.0, 150.0)                
                 .autoScale(false)
+                .barColor(barColor)
                 .decimals(1)
                 .build();
     }),
-    FLAT((min, max) -> {
+    FLAT((min, max, barColor) -> {
         return GaugeBuilder.create()
                 .skinType(Gauge.SkinType.FLAT)
                 .minValue(min)
                 .maxValue(max)
-                .prefSize(100.0, 100.0)
+                .prefSize(150.0, 150.0)
                 .autoScale(false)
-                .barColor(Color.BLUE)
+                .barColor(barColor)
                 .decimals(1)
                 .build();
     }),
-    DASHBOARD((min, max) -> {
+    DASHBOARD((min, max, barColor) -> {
         return GaugeBuilder.create()
                 .skinType(Gauge.SkinType.DASHBOARD)
                 .minValue(min)
                 .maxValue(max)
+                .prefSize(150.0, 150.0)                
                 .autoScale(false)
                 .decimals(1)
                 .barColor(Color.CRIMSON)
@@ -96,59 +99,224 @@ public enum GaugeType {
                         new Stop(1.00, Color.RED))
                 .build();
     }),
-    SIMPLE((min, max) -> {
-        double sixth = (max - min) / 6.0;
+    SIMPLE((min, max, barColor) -> {
+        double fith = (max - min) / 5.0;
         return GaugeBuilder.create()
                 .skinType(Gauge.SkinType.SIMPLE)
-                .scaleDirection(ScaleDirection.CLOCKWISE)
-                .sections(new Section(min, min + sixth, Color.web("#11632f")),
-                        new Section(min + sixth, min + sixth * 2, Color.web("#36843d")),
-                        new Section(min + sixth * 2, min + sixth * 3, Color.web("#67a328")),
-                        new Section(min + sixth * 3, min + sixth * 4, Color.web("#80b940")),
-                        new Section(min + sixth * 4, min + sixth * 5, Color.web("#95c262")),
-                        new Section(min + sixth * 5, max, Color.web("#badf8d")))
-                .decimals(1)
                 .minValue(min)
                 .maxValue(max)
+                .prefSize(150.0, 150.0)               
                 .autoScale(false)
-                .titleColor(Color.LIGHTGRAY)
-                .borderPaint(Color.LIGHTGRAY)
+                .scaleDirection(ScaleDirection.CLOCKWISE)
+                .sections(new Section(min, min + fith, barColor.deriveColor(1.0, 1.0, 0.8, 1.0)),
+                        new Section(min + fith, min + fith * 2, barColor.deriveColor(1.0, 1.0, 0.85, 1.0)),
+                        new Section(min + fith * 2, min + fith * 3, barColor.deriveColor(1.0, 1.0, 0.9, 1.0)),
+                        new Section(min + fith * 3, min + fith * 4, barColor.deriveColor(1.0, 1.0, 0.95, 1.0)),
+                        new Section(min + fith * 4, max, barColor))
+                .decimals(1)
+
+                .borderPaint(Color.DARKGRAY)
+                .needleColor(Color.WHITE)
+                .needleBorderColor(Color.valueOf("#474747"))
                 .build();
     }),
-    LINEAR((min, max) -> {
+    LINEAR((min, max, barColor) -> {
         return GaugeBuilder.create()
                 .skinType(Gauge.SkinType.LINEAR)
                 .minValue(min)
                 .maxValue(max)
-                .prefSize(100.0, 100.0)
+                .prefSize(150.0, 150.0)
                 .autoScale(false)
                 .orientation(Orientation.HORIZONTAL)
-                .barColor(Color.BLUE)
+                .barColor(barColor)
                 .decimals(1)
                 .build();
     }),
-    BAR((min, max) -> {
+    BAR((min, max, barColor) -> {
         return GaugeBuilder.create()
-                .skinType(Gauge.SkinType.BAR)
+                .skinType(Gauge.SkinType.BAR)     
                 .minValue(min)
-                .maxValue(max)
+                .maxValue(max)                 
                 .prefSize(100.0, 100.0)
                 .autoScale(false)
-                .barColor(Color.BLUE)
+                .barColor(barColor)
                 .decimals(1)
-                .animated(false)                
+                .animated(false)               
                 .build();
     }),
-    WHITE((min, max) -> {
+    WHITE((min, max, barColor) -> {
         return GaugeBuilder.create()
                 .skinType(Gauge.SkinType.WHITE)
                 .minValue(min)
                 .maxValue(max)
-                .prefSize(100.0, 100.0)
+                .prefSize(150.0, 150.0)
                 .autoScale(false)
+                .barColor(barColor)
                 .decimals(1)
                 .animated(false)
                 .build();
+    }),
+    INDICATOR((min, max, barColor) -> {
+        return GaugeBuilder.create()
+                .skinType(Gauge.SkinType.INDICATOR)
+                .minValue(min)
+                .maxValue(max)
+                .prefSize(150.0, 150.0)
+                .autoScale(false)
+                .barColor(barColor)
+                .decimals(1)
+                .animated(false)
+                .build();
+    }),
+    LEVEL((min, max, barColor) -> {
+        return GaugeBuilder.create()
+                .skinType(Gauge.SkinType.LEVEL)
+                .minValue(min)
+                .maxValue(max)
+                .prefSize(150.0, 150.0)
+                .autoScale(false)
+                .barColor(barColor)
+                .decimals(1)
+                .animated(false)
+                .build();
+    }),
+    TINY((min, max, barColor) -> {
+        double fith = (max - min) / 5.0;
+        return GaugeBuilder.create()
+                .skinType(Gauge.SkinType.TINY)
+                .minValue(min)
+                .maxValue(max)
+                .prefSize(150.0, 150.0)
+                .autoScale(false)
+                .barColor(barColor)
+                .sections(new Section(min, min + fith, barColor.deriveColor(1.0, 1.0, 0.8, 1.0)),
+                        new Section(min + fith, min + fith * 2, barColor.deriveColor(1.0, 1.0, 0.85, 1.0)),
+                        new Section(min + fith * 2, min + fith * 3, barColor.deriveColor(1.0, 1.0, 0.9, 1.0)),
+                        new Section(min + fith * 3, min + fith * 4, barColor.deriveColor(1.0, 1.0, 0.95, 1.0)),
+                        new Section(min + fith * 4, max, barColor))                
+                .decimals(1)
+                .animated(false)               
+                .build();
+    }),
+    BULLET((min, max, barColor) -> {
+        return GaugeBuilder.create()
+                .skinType(Gauge.SkinType.BULLET_CHART)
+                .minValue(min)
+                .maxValue(max)
+                .prefSize(150.0, 150.0)
+                .autoScale(false)
+                .barColor(barColor)
+                .decimals(1)
+                .animated(false)               
+                .build();        
+    }),
+    DIGITAL((min, max, barColor) -> {
+        return GaugeBuilder.create()
+                .skinType(Gauge.SkinType.DIGITAL)
+                .minValue(min)
+                .maxValue(max)
+                .prefSize(150.0, 150.0)
+                .autoScale(false)
+                .barColor(barColor)
+                .decimals(1)
+                .animated(false)               
+                .build();        
+    }),
+    SLIM((min, max, barColor) -> {
+        return GaugeBuilder.create()
+                .skinType(Gauge.SkinType.SLIM)
+                .minValue(min)
+                .maxValue(max)
+                .prefSize(150.0, 150.0)
+                .autoScale(false)
+                .barColor(barColor)
+                .decimals(1)
+                .animated(false)               
+                .build();        
+    }),
+    AMP((min, max, barColor) -> {
+        return GaugeBuilder.create()
+                .skinType(Gauge.SkinType.AMP)
+                .minValue(min)
+                .maxValue(max)
+                .prefSize(150.0, 150.0)
+                .autoScale(false)
+                .barColor(barColor)
+                .decimals(1)
+                .animated(false)               
+                .build();        
+    }),
+    KPI((min, max, barColor) -> {
+        return GaugeBuilder.create()
+                .skinType(Gauge.SkinType.KPI)
+                .minValue(min)
+                .maxValue(max)
+                .prefSize(150.0, 150.0)
+                .autoScale(false)
+                .barColor(barColor)
+                .decimals(1)
+                .animated(false)               
+                .build();        
+    }),
+    MODERN((min, max, barColor) -> {
+        return GaugeBuilder.create()
+                .skinType(Gauge.SkinType.MODERN)
+                .minValue(min)
+                .maxValue(max)
+                .prefSize(150.0, 150.0)
+                .autoScale(false)
+                .barColor(barColor)
+                .decimals(1)
+                .animated(false)               
+                .build();        
+    }),
+    QUARTER((min, max, barColor) -> {
+        double fith = (max - min) / 5.0;        
+        return GaugeBuilder.create()
+                .skinType(Gauge.SkinType.QUARTER)
+                .prefSize(150.0, 150.0)
+                .autoScale(false)   
+                .decimals(1)
+                .animated(false)
+                .minValue(min)
+                .maxValue(max)                
+                .build();        
+    }),
+    LCD((min, max, barColor) -> {
+        return GaugeBuilder.create()
+                .skinType(Gauge.SkinType.LCD)
+                .minValue(min)
+                .maxValue(max)
+                .prefSize(150.0, 150.0)
+                .autoScale(false)
+                .barColor(barColor)
+                .decimals(1)
+                .animated(false)               
+                .build();        
+    }),
+    SECTION((min, max, barColor) -> {
+         return GaugeBuilder.create()
+                .skinType(Gauge.SkinType.SECTION)
+                .minValue(min)
+                .maxValue(max)
+                .prefSize(150.0, 150.0)
+                .autoScale(false)
+                .barColor(barColor)
+                .decimals(1)
+                .animated(false)               
+                .build();        
+    }),
+    SIMPLE_SECTION((min, max, barColor) -> {
+        return GaugeBuilder.create()
+                .skinType(Gauge.SkinType.SIMPLE_SECTION)
+                .minValue(min)
+                .maxValue(max)
+                .prefSize(150.0, 150.0)
+                .autoScale(false)
+                .barColor(barColor)
+                .decimals(1)
+                .animated(false)               
+                .build();            
     });
 
     private final GaugeSupplier builder;
@@ -157,13 +325,12 @@ public enum GaugeType {
         this.builder = builder;
     }
 
-    public Gauge build(double min, double max) {
-        return builder.get(min, max);
+    public Gauge build(double min, double max, Color barColor) {
+        return builder.get(min, max, barColor);
     }
 
     @FunctionalInterface
     private static interface GaugeSupplier {
-
-        Gauge get(double min, double max);
+        Gauge get(double min, double max, Color barColor);
     }
 }

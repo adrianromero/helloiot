@@ -49,6 +49,10 @@ public class ViewGauge extends Tile {
     private StackPane gaugecontainer;
     private Gauge gauge = null;
     private GaugeType type = GaugeType.DASHBOARD;
+    
+    private final StyleableObjectProperty<Color> valueColor = new SimpleStyleableObjectProperty<>(VALUECOLOR, this, "value-color");
+    private Color barColor = Color.web("#29b1ff"); // blue cyan
+
 
     public ObjectProperty<Color> valueColorProperty() {
         return valueColor;
@@ -61,7 +65,14 @@ public class ViewGauge extends Tile {
     public final void setValueColor(Color color) {
         valueColor.setValue(color);
     }
-    private final StyleableObjectProperty<Color> valueColor = new SimpleStyleableObjectProperty<>(VALUECOLOR, this, "value-color");
+    
+    public final Color getBarColor() {
+        return barColor;
+    }
+
+    public final void setBarColor(Color color) {
+        barColor = color;
+    }
 
     @Override
     protected Node constructContent() {
@@ -133,10 +144,13 @@ public class ViewGauge extends Tile {
             return;
         }
 
-        gauge = type.build(device.getLevelMin(), device.getLevelMax());
+        gauge = type.build(device.getLevelMin(), device.getLevelMax(), barColor);
+        gauge.setMinValue(device.getLevelMin());
+        gauge.setMaxValue(device.getLevelMax());
         gauge.titleColorProperty().bind(valueColor);
         gauge.valueColorProperty().bind(valueColor);
         gauge.unitColorProperty().bind(valueColor);
+        gauge.tickLabelColorProperty().bind(valueColor);
         gauge.setUnit(device.getUnit());
         gaugecontainer.getChildren().add(gauge);
 
