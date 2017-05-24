@@ -273,7 +273,9 @@ public final class MQTTManager implements MqttCallback {
             try {
                 mqttClient.publish(topicprefix + topic, mm);
             } catch (MqttException ex) {
-                throw new RuntimeException(ex); // TODO: Review in cas of paho exception too much publications              
+                // TODO: Review in cas of paho exception too much publications              
+                logger.log(Level.WARNING, "Cannot publish message", ex);
+                // throw new RuntimeException(ex); 
             }
         }
     }
