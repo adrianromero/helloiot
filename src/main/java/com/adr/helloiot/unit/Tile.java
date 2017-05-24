@@ -46,7 +46,7 @@ public abstract class Tile extends BorderPane implements Unit {
     public Tile() {
         getStyleClass().add("unitbase");
         setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-        setMinSize(160.0, Control.USE_COMPUTED_SIZE);
+        setMinSize(150.0, Control.USE_COMPUTED_SIZE);
         setPrefSize(160.0, Control.USE_COMPUTED_SIZE);
         HBox.setHgrow(this, Priority.SOMETIMES);
         setDisable(true);
