@@ -1,0 +1,19 @@
+
+<DeviceSet fx:id="scenes"  topic="home/bedroom/scene">
+        <properties label="Scene"/>
+        <values>
+             <String fx:value="CITY"/>
+             <String fx:value="MOUNTAINS"/>
+             <String fx:value="BEACH"/>
+             <String fx:value="FOREST"/>
+        </values>
+</DeviceSet> 
+
+<StartLine UnitPage.page="Scenes" VBox.vgrow= "NEVER" />
+<LabelSection UnitPage.page="Scenes" text="Bedroom scenes"/>
+
+<StartLine UnitPage.page="Scenes" VBox.vgrow= "ALWAYS" />
+<ViewText  UnitPage.page="Scenes" device="$scenes"/>
+<ButtonSimple UnitPage.page="Scenes" device="$scenes" />
+<ButtonsSpinner UnitPage.page="Scenes" device="$scenes"/>
+<ButtonPair UnitPage.page="Scenes" device="$scenes"/>

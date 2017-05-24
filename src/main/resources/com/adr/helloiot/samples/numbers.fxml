@@ -1,5 +1,5 @@
 
-<DeviceNumber fx:id="number" topic="home/bedroom1/number" levelMin="0.0" levelMax="20.0" increment="0.2" format="DECIMAL/0.00">
+<DeviceNumber fx:id="number" topic="home/bedroom1/number" levelMin="10.0" levelMax="30.0" increment="0.2" format="DECIMAL/0.00">
         <properties label="Numeric level"/>
 </DeviceNumber> 
 
@@ -17,8 +17,19 @@
 <LabelSection UnitPage.page="Numbers" text="Gauges"/>
 
 <StartLine UnitPage.page="Numbers" VBox.vgrow= "SOMETIMES" />
-<ViewGauge UnitPage.page="Numbers" device="$number"/>
-<ViewGauge UnitPage.page="Numbers" device="$number" type="LINEAR"/>
-<ViewGauge UnitPage.page="Numbers" device="$number" type="BAR"/>
-<ViewGauge UnitPage.page="Numbers" device="$number" type="WHITE"/>
+<ViewGauge UnitPage.page="Numbers" device="$number" type="DASHBOARD"/>
 <ViewGauge UnitPage.page="Numbers" device="$number" type="BASIC"/>
+<ViewGauge UnitPage.page="Numbers" device="$number" type="SPACEX"/>
+<ViewGauge UnitPage.page="Numbers" device="$number" type="FLAT"/>
+
+<StartLine UnitPage.page="Numbers" VBox.vgrow= "SOMETIMES" />
+<ViewGauge UnitPage.page="Numbers" device="$number" barColor="RED" type="SIMPLE"/>
+<ViewGauge UnitPage.page="Numbers" device="$number" barColor="YELLOW" type="LINEAR"/>
+<ViewGauge UnitPage.page="Numbers" device="$number" barColor="MAGENTA" type="SLIM"/>
+<ViewGauge UnitPage.page="Numbers" device="$number" barColor="LIGHTGREEN" type="TINY"/>
+
+<StartLine UnitPage.page="Numbers" VBox.vgrow= "SOMETIMES" />
+<ViewGauge UnitPage.page="Numbers" device="$number" type="INDICATOR"/>
+<ViewGauge UnitPage.page="Numbers" device="$number" type="DIGITAL"/>
+<ViewGauge UnitPage.page="Numbers" device="$number" type="QUARTER"/>
+<ViewGauge UnitPage.page="Numbers" device="$number" type="SIMPLE_SECTION"/>
