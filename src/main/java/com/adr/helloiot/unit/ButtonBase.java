@@ -22,6 +22,7 @@ import com.adr.hellocommon.dialog.DialogView;
 import com.adr.hellocommon.dialog.MessageUtils;
 import com.adr.helloiot.HelloIoTAppPublic;
 import com.adr.helloiot.util.CryptUtils;
+import com.google.common.base.Strings;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.scene.Node;
@@ -96,7 +97,11 @@ public abstract class ButtonBase extends Tile {
 
     void onScriptAction(ActionEvent event) {
         if (confirm) {
-            MessageUtils.showConfirm(MessageUtils.getRoot(this), getLabel(), resources.getString("message.confirm"), this::doSecurityAction);
+            String title = getLabel();
+            if (Strings.isNullOrEmpty(title)) {
+                title = getText();
+            }
+            MessageUtils.showConfirm(MessageUtils.getRoot(this), title, resources.getString("message.confirm"), this::doSecurityAction);
         } else {
             doSecurityAction(event);
         }
