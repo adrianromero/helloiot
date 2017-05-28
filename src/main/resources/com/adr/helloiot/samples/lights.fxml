@@ -59,7 +59,7 @@
   style="-fx-background-color: transparent;-fx-button-fill:lavender;">
     <graphic><Icon iconAwesome="FA_CLOCK_O" size="48" color="WHITE" shine="white"/></graphic>
     <scriptCode><![CDATA[
-        _allDevices().getByName('living_light1').sendON(2000);
+        _allDevices().getByName('living_light1').sendON(5000);
     ]]></scriptCode>
 </ButtonScript>                        
 <ButtonScript UnitPage.page="Lights" confirm="true"
@@ -75,27 +75,38 @@
 </ButtonScript>                                   
 <ButtonScript UnitPage.page="Lights"
   label=""
-  text="Dance" 
+  text="Scroll" 
   style="-fx-background-color: transparent;-fx-button-fill:lightpink;">
     <graphic><Icon iconAwesome="FA_STAR_O" size="48" color="yellow" shine="white"/></graphic>
     <parameters light1="$living_light1" light2="$living_light2" light3="$living_light3" light4="$living_light4" light5="$living_light5"/>
-    <scriptCode><![CDATA[                
+    <scriptCode><![CDATA[
+        light1.sendOFF();           
+        light2.sendOFF();           
+        light3.sendOFF();           
+        light4.sendOFF();           
+        light5.sendOFF();  
+                 
         for (var i = 1; i < 5; i++) {
+            java.lang.Thread.sleep(300);;       
             light1.sendON();
             java.lang.Thread.sleep(300);
+            light2.sendON();
+            java.lang.Thread.sleep(300);
+            light3.sendON();
+            java.lang.Thread.sleep(300);
+            light4.sendON();
+            java.lang.Thread.sleep(300);
+            light5.sendON();
+            java.lang.Thread.sleep(300);
             light1.sendOFF();
-            light2.sendON();                
             java.lang.Thread.sleep(300);
             light2.sendOFF();
-            light3.sendON(); 
             java.lang.Thread.sleep(300);
             light3.sendOFF();
-            light4.sendON();                 
             java.lang.Thread.sleep(300);
             light4.sendOFF();
-            light5.sendON();             
             java.lang.Thread.sleep(300);
-            light5.sendOFF();                                                                                      
+            light5.sendOFF();                                                                                          
         }
     ]]></scriptCode>
-</ButtonScript>                            
+</ButtonScript>
