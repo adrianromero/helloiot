@@ -27,7 +27,7 @@ import javafx.geometry.Pos;
  */
 public class StringFormatSwitch extends StringFormatPath {
 
-    private String[] values = {"OFF", "ON"};
+    private String[] values = {"0", "1"};
     private String[] pattern = {"OFF", "ON"};
 
     public StringFormatSwitch() {
