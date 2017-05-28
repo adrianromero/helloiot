@@ -43,12 +43,12 @@ import javafx.scene.text.TextFlow;
  * @author adrian
  */
 public class TopicInfoCode implements TopicInfo {
-        
+
     private String name;
     private String code;
-    
+
     private final TopicInfoCodeNode editnode;
-    
+
     public TopicInfoCode(TopicInfoCodeNode editnode) {
         this.editnode = editnode;
     }
@@ -94,36 +94,37 @@ public class TopicInfoCode implements TopicInfo {
 
     @Override
     public TopicStatus getTopicStatus() throws HelloIoTException {
-        
-        String fxml = 
-                "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
-                "<?import java.lang.*?>\n" +
-                "<?import java.util.*?>\n" +
-                "<?import javafx.scene.layout.*?>\n" +
-                "<?import com.adr.fonticon.*?>\n" +
-                "<?import com.adr.helloiot.*?>\n" +
-                "<?import com.adr.helloiot.unit.*?>\n" +
-                "<?import com.adr.helloiot.unitsensor.*?>\n" +
-                "<?import com.adr.helloiot.device.*?>\n" +
-                "<?import com.adr.helloiot.graphic.*?>\n" +
-                "<ArrayList xmlns=\"http://javafx.com/javafx/8.0.40\" xmlns:fx=\"http://javafx.com/fxml/1\">\n" +
-                code +
-                "</ArrayList>";
-        
+
+        String fxml
+                = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+                + "<?import java.lang.*?>\n"
+                + "<?import java.util.*?>\n"
+                + "<?import javafx.scene.layout.*?>\n"
+                + "<?import com.adr.fonticon.*?>\n"
+                + "<?import com.adr.helloiot.*?>\n"
+                + "<?import com.adr.helloiot.unit.*?>\n"
+                + "<?import com.adr.helloiot.unitsensor.*?>\n"
+                + "<?import com.adr.helloiot.device.*?>\n"
+                + "<?import com.adr.helloiot.device.format.*?>\n"
+                + "<?import com.adr.helloiot.graphic.*?>\n"
+                + "<ArrayList xmlns=\"http://javafx.com/javafx/8.0.40\" xmlns:fx=\"http://javafx.com/fxml/1\">\n"
+                + code
+                + "</ArrayList>";
+
         try (InputStream in = new ByteArrayInputStream(fxml.getBytes(StandardCharsets.UTF_8))) {
             FXMLLoader fxmlloader;
             fxmlloader = new FXMLLoader(StandardCharsets.UTF_8);
             ArrayList list = fxmlloader.<ArrayList>load(in);
             List<Device> devices = new ArrayList<>();
             List<Unit> units = new ArrayList<>();
-            
-            for (Object o: list) {
+
+            for (Object o : list) {
                 if (o instanceof Device) {
                     devices.add((Device) o);
                 } else if (o instanceof Unit) {
                     units.add((Unit) o);
                 }
-            } 
+            }
             return new TopicStatus(devices, units);
         } catch (IOException ex) {
             ResourceBundle resources = ResourceBundle.getBundle("com/adr/helloiot/fxml/main");
@@ -147,12 +148,12 @@ public class TopicInfoCode implements TopicInfo {
     public void readFromEditNode() {
         name = editnode.name.getText();
         code = editnode.code.getText();
-    }  
-    
+    }
+
     public String getName() {
         return name;
     }
-    
+
     public String getCode() {
         return code;
     }
