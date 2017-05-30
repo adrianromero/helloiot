@@ -92,7 +92,7 @@ public class HelloIoTAppPublic {
         return app.getBeeper();
     }
 
-    public DeviceBasic buzzer() {
+    public DeviceSimple buzzer() {
         return app.getBuzzer();
     }
 }

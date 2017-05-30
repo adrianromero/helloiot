@@ -87,7 +87,7 @@ public class HelloIoTApp {
     private HelloIoTAppPublic apppublic = null;
     private DeviceSimple appunitpage;
     private DeviceSwitch appbeeper;
-    private DeviceBasic appbuzzer;
+    private DeviceSimple appbuzzer;
 
     private EventHandler<ActionEvent> exitevent = null;
     private final Runnable styleConnection;
@@ -165,7 +165,7 @@ public class HelloIoTApp {
         beeper.setTopic(topicapp + "/beeper");
         beeper.setId(SYS_BEEPER_ID);
 
-        DeviceBasic buzzer = new DeviceBasic();
+        DeviceSimple buzzer = new DeviceSimple();
         buzzer.setTopic(topicapp + "/buzzer");
         buzzer.setId(SYS_BUZZER_ID);
 
@@ -329,9 +329,9 @@ public class HelloIoTApp {
         return appbeeper;
     }
 
-    public DeviceBasic getBuzzer() {
+    public DeviceSimple getBuzzer() {
         if (appbuzzer == null) {
-            appbuzzer = ((DeviceBasic) getDevice(SYS_BUZZER_ID));
+            appbuzzer = ((DeviceSimple) getDevice(SYS_BUZZER_ID));
         }
         return appbuzzer;
     }
