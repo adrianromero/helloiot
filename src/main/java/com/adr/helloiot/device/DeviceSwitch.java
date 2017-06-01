@@ -44,7 +44,7 @@ public class DeviceSwitch extends DeviceSimple {
     
     @Override
     public byte[] rollNextStatus() {
-        return getFormat().devalue(new MiniVarBoolean(!readStatus().asBoolean()));
+        return getFormat().devalue(new MiniVarBoolean(!varStatus().asBoolean()));
     }
     
     @Override
@@ -54,17 +54,17 @@ public class DeviceSwitch extends DeviceSimple {
     
     @Override
     public byte[] rollPrevStatus() {
-        return getFormat().devalue(new MiniVarBoolean(!readStatus().asBoolean()));
+        return getFormat().devalue(new MiniVarBoolean(!varStatus().asBoolean()));
     }
     
     @Override
     public boolean hasPrevStatus() {
-        return readStatus().asBoolean();
+        return varStatus().asBoolean();
     }
 
     @Override
     public boolean hasNextStatus() {
-        return !readStatus().asBoolean();
+        return !varStatus().asBoolean();
     }
 
     public void sendON() {
@@ -81,7 +81,7 @@ public class DeviceSwitch extends DeviceSimple {
 
     public void sendON(long duration) {
 
-        if (readStatus().asBoolean() && !hasTimer()) {
+        if (varStatus().asBoolean() && !hasTimer()) {
             // If  already on and not with a timer then do nothing
             return;
         }

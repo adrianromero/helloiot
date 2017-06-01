@@ -45,11 +45,15 @@ public class DeviceBasic extends DeviceSubscribe {
         status.set(message.getMessage());
     }
 
-    public MiniVar readStatus() {
+    public byte[] rawStatus() {
+        return status.get();
+    }
+    
+    public MiniVar varStatus() {
         return getFormat().value(status.get());
     }
 
-    public String loadStatus() {
+    public String formatStatus() {
         return getFormat().format(status.get());
     }
 }

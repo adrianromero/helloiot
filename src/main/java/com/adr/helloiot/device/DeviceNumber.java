@@ -96,31 +96,31 @@ public class DeviceNumber extends DeviceSimple {
     
     @Override
     public byte[] prevStatus() {
-        return getFormat().devalue(new MiniVarDouble(adjustLevel(readStatus().asDouble() - increment)));
+        return getFormat().devalue(new MiniVarDouble(adjustLevel(varStatus().asDouble() - increment)));
     }
     
     @Override
     public byte[] rollPrevStatus() {
-        return getFormat().devalue(new MiniVarDouble(rollLevel(readStatus().asDouble() - increment)));
+        return getFormat().devalue(new MiniVarDouble(rollLevel(varStatus().asDouble() - increment)));
     }
     
     @Override
     public byte[] nextStatus() {
-        return getFormat().devalue(new MiniVarDouble(adjustLevel(readStatus().asDouble() + increment)));
+        return getFormat().devalue(new MiniVarDouble(adjustLevel(varStatus().asDouble() + increment)));
     }
     
     @Override
     public byte[] rollNextStatus() {
-        return getFormat().devalue(new MiniVarDouble(rollLevel(readStatus().asDouble() + increment)));
+        return getFormat().devalue(new MiniVarDouble(rollLevel(varStatus().asDouble() + increment)));
     }
     
     @Override
     public boolean hasPrevStatus() {
-        return readStatus().asDouble() > levelmin;
+        return varStatus().asDouble() > levelmin;
     }
 
     @Override
     public boolean hasNextStatus() {
-        return readStatus().asDouble() < levelmax;
+        return varStatus().asDouble() < levelmax;
     }
 }
