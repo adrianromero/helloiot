@@ -18,8 +18,8 @@
 //
 package com.adr.helloiot.unitsensor;
 
+import com.adr.helloiot.device.DeviceSend;
 import com.adr.helloiot.unit.Unit;
-import com.adr.helloiot.device.TransmitterSimple;
 import com.adr.helloiot.util.CompletableAsync;
 import java.util.concurrent.ScheduledFuture;
 import javafx.scene.Node;
@@ -34,9 +34,9 @@ public abstract class SensorTimer implements Unit {
     private ScheduledFuture<?> sf = null;
     private final Object sflock = new Object();
 
-    private TransmitterSimple device = null;
+    private DeviceSend device = null;
 
-    protected abstract void execEvent(TransmitterSimple device);
+    protected abstract void execEvent(DeviceSend device);
 
     @Override
     public void start() {
@@ -64,11 +64,11 @@ public abstract class SensorTimer implements Unit {
         return null;
     }
 
-    public void setDevice(TransmitterSimple device) {
+    public void setDevice(DeviceSend device) {
         this.device = device;
     }
 
-    public TransmitterSimple getDevice() {
+    public DeviceSend getDevice() {
         return device;
     }
 
