@@ -18,43 +18,14 @@
 //
 package com.adr.helloiot.device;
 
-import com.adr.helloiot.MQTTManager;
 import com.adr.helloiot.device.format.MiniVar;
 
 /**
  *
  * @author adrian
  */
-public class TransmitterSimple extends Device implements DeviceSend {
-    
-    protected MQTTManager mqttHelper;
-    
-    @Override
-    public final void construct(MQTTManager mqttManager) {
-        this.mqttHelper = mqttManager;
-    }
-
-    @Override
-    public final void destroy() {
-    }
-
-    @Override
-    public String getDeviceName() {
-        return resources.getString("devicename.transmittersimple");
-    }
-
-    @Override
-    public void sendStatus(byte[] event) {
-        mqttHelper.publish(getTopicPublish(), getQos(), event, isRetained());
-    }
-
-    @Override
-    public void sendStatus(MiniVar event) {
-        sendStatus(getFormat().devalue(event));
-    }
-
-    @Override
-    public void sendStatus(String event) {
-        sendStatus(getFormat().parse(event));
-    }
+public interface DeviceSend {
+    public void sendStatus(byte[] event);
+    public void sendStatus(MiniVar status);
+    public void sendStatus(String event);
 }

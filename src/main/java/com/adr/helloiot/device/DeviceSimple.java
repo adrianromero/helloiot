@@ -18,6 +18,7 @@
 //
 package com.adr.helloiot.device;
 
+import com.adr.helloiot.device.format.MiniVar;
 import com.adr.helloiot.util.CompletableAsync;
 import java.util.concurrent.ScheduledFuture;
 
@@ -25,7 +26,7 @@ import java.util.concurrent.ScheduledFuture;
  *
  * @author adrian
  */
-public class DeviceSimple extends DeviceBasic {
+public class DeviceSimple extends DeviceBasic implements DeviceSend {
 
     private ScheduledFuture<?> sf = null;
     private final Object sflock = new Object();
@@ -71,11 +72,18 @@ public class DeviceSimple extends DeviceBasic {
         super.destroy();
     }
 
+    @Override
     public void sendStatus(byte[] status) {
         cancelTimer();
         mqttHelper.publish(getTopicPublish(), getQos(), status, isRetained());
     }
+    
+    @Override
+    public void sendStatus(MiniVar status) {
+        sendStatus(getFormat().devalue(status));
+    }
 
+    @Override
     public void sendStatus(String status) {
         sendStatus(getFormat().parse(status));
     }
@@ -88,6 +96,10 @@ public class DeviceSimple extends DeviceBasic {
                 DeviceSimple.this.sendStatus(status);
             });
         }
+    }
+
+    public void sendStatus(MiniVar status, long delay) {
+        sendStatus(getFormat().devalue(status), delay);
     }
 
     public void sendStatus(String status, long delay) {
