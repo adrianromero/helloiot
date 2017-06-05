@@ -97,7 +97,7 @@ public class EditEvent extends Tile {
     void onSendEvent(ActionEvent event) {
 
         try {
-            device.sendEvent(device.getFormat().parse(payload.getText()));
+            device.sendStatus(device.getFormat().parse(payload.getText()));
             if (deleteSent) {
                 payload.setText(defaultValue);
             }
