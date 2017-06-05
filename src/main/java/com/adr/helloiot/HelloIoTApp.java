@@ -23,7 +23,6 @@ import com.adr.fonticon.IconBuilder;
 import com.adr.hellocommon.dialog.MessageUtils;
 import com.adr.helloiot.unit.Unit;
 import com.adr.helloiot.device.Device;
-import com.adr.helloiot.device.DeviceBasic;
 import com.adr.helloiot.device.DeviceSimple;
 import com.adr.helloiot.device.DeviceSwitch;
 import com.adr.helloiot.device.TreePublish;
@@ -217,7 +216,7 @@ public class HelloIoTApp {
         if (!existsUnitPageMain()) {
             UnitPage main = new UnitPage("main", IconBuilder.create(FontAwesome.FA_HOME, 24.0).build(), resources.getString("page.main"));
             main.setOrder(0);
-            appunitpages.add(main);            
+            appunitpages.add(main);
         }
         mqttnode.construct(appunitpages);
 
@@ -231,13 +230,13 @@ public class HelloIoTApp {
 
         connection();
     }
-    
+
     private boolean existsUnitPageMain() {
-        for (UnitPage p: appunitpages) {
+        for (UnitPage p : appunitpages) {
             if ("main".equals(p.getName())) {
                 return true;
             }
-        }     
+        }
         return false;
     }
 
@@ -254,6 +253,7 @@ public class HelloIoTApp {
                 mqttnode.hideConnecting();
                 startUnits();
             }
+
             @Override
             public void onFailure(Throwable ex) {
                 mqttnode.hideConnecting();
@@ -261,24 +261,25 @@ public class HelloIoTApp {
                     exitevent.handle(new ActionEvent());
                 });
             }
-        }, CompletableAsync.fxThread());  
+        }, CompletableAsync.fxThread());
     }
 
     private void tryConnection() {
-        
+
         Futures.addCallback(mqttmanager.open(), new FutureCallback<Object>() {
             @Override
             public void onSuccess(Object v) {
                 mqttnode.hideConnecting();
-                startUnits();                
+                startUnits();
             }
+
             @Override
             public void onFailure(Throwable ex) {
                 new Timeline(new KeyFrame(Duration.millis(2500), ev -> {
                     tryConnection();
                 })).play();
             }
-        }, CompletableAsync.fxThread());  
+        }, CompletableAsync.fxThread());
     }
 
     public void stopAndDestroy() {
@@ -299,7 +300,7 @@ public class HelloIoTApp {
     private void startUnits() {
         if (mqttmanager.isNewConnection()) {
             getUnitPage().sendStatus("main");
-        }        
+        }
         for (Unit s : appunits) {
             s.start();
         }
