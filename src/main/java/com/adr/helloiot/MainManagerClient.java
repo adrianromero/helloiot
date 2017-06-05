@@ -230,12 +230,12 @@ public class MainManagerClient implements MainManager {
 
     @Override
     public void construct(StackPane root, Parameters params) {
-        this.configprops = new ConfigProperties(params);
+        this.configprops = new ConfigPropertiesClient(params);
         this.root = root;
         try {
             this.configprops.load();
         } catch (IOException ex) {
-            // No properties file found, user default and continue
+            // No properties file found, then use defaults and continue
             LOGGER.log(Level.WARNING, null, ex);
         }
 

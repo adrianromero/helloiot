@@ -18,46 +18,30 @@
 //
 package com.adr.helloiot;
 
-import com.google.common.base.Strings;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Collections;
 import java.util.Enumeration;
-import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 import java.util.TreeSet;
-import javafx.application.Application;
 
 /**
  *
  * @author adrian
  */
-public class ConfigProperties {
+public abstract class ConfigProperties {
 
-    private final File configfile;
     private final Properties config;
-    private final Application.Parameters params;
-
-    public ConfigProperties(Application.Parameters params) {
-        // read the configuration properties 
-        List<String> unnamed = params.getUnnamed();
-        if (unnamed.isEmpty()) {
-            configfile = HelloPlatform.getInstance().getFile(".helloiot-config.properties");
-        } else {
-            String param = unnamed.get(0);
-            if (Strings.isNullOrEmpty(param)) {
-                configfile = HelloPlatform.getInstance().getFile(".helloiot-config.properties");
-            } else {
-                configfile = new File(param);
-            }
-        }
-        this.params = params;
+ 
+    public ConfigProperties() {
         config = new Properties();
     }
+    
+    protected abstract Map<String, String> getParameters();
+    protected abstract InputStream openInputStream() throws IOException;
+    protected abstract OutputStream openOutputStream() throws IOException;
 
     public void clear() {
         config.clear();
@@ -65,10 +49,10 @@ public class ConfigProperties {
 
     public void load() throws IOException {
         config.clear();
-        try (InputStream in = new FileInputStream(configfile)) {
+        try (InputStream in = openInputStream()) {
             config.load(in);
         }
-        config.putAll(params.getNamed());
+        config.putAll(getParameters());
     }
 
     public void save() throws IOException {
@@ -81,7 +65,7 @@ public class ConfigProperties {
             }
         };
         tmp.putAll(config);
-        try (OutputStream out = new FileOutputStream(configfile)) {
+        try (OutputStream out = openOutputStream()) {
             tmp.store(out, "HelloIoT");
         }
     }

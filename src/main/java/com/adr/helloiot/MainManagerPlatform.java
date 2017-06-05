@@ -35,7 +35,7 @@ public class MainManagerPlatform implements MainManager {
     @Override
     public void construct(StackPane root, Parameters params) {
 
-        ConfigProperties configprops = new ConfigProperties(params);
+        ConfigProperties configprops = new ConfigPropertiesPlatform();
         try {
             configprops.load();
         } catch (IOException ex) {
