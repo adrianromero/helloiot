@@ -20,11 +20,8 @@ package com.adr.helloiot.unit;
 
 import com.adr.helloiot.graphic.IconStatus;
 import com.adr.helloiot.device.DeviceSubscribe;
-import com.adr.helloiot.EventMessage;
 import com.adr.helloiot.HelloIoTAppPublic;
 import com.adr.helloiot.graphic.IconNull;
-import com.google.common.eventbus.Subscribe;
-import javafx.application.Platform;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.ContentDisplay;
@@ -45,6 +42,7 @@ public class ViewSimple extends Tile {
     private IconStatus iconbuilder = ICONNULL;
 
     private DeviceSubscribe device = null;
+    private final Object messageHandler = Units.messageHandler(this::updateStatus);        
 
     @Override
     protected Node constructContent() {
@@ -56,11 +54,6 @@ public class ViewSimple extends Tile {
         return content;
     }
 
-    @Subscribe
-    public void receivedStatus(EventMessage message) {
-        Platform.runLater(() -> updateStatus(message.getMessage()));
-    }
-
     private void updateStatus(byte[] status) {
         content.setGraphic(iconbuilder.buildIcon(device.getFormat().getValueFormat(status)));
     }
@@ -68,14 +61,14 @@ public class ViewSimple extends Tile {
     @Override
     public void construct(HelloIoTAppPublic app) {
         super.construct(app);
-        device.subscribeStatus(this);
+        device.subscribeStatus(messageHandler);
         updateStatus(null);
     }
 
     @Override
     public void destroy() {
         super.destroy();
-        device.unsubscribeStatus(this);
+        device.unsubscribeStatus(messageHandler);
     }
 
     public void setDevice(DeviceSubscribe device) {

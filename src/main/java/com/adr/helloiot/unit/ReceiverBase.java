@@ -35,6 +35,7 @@ public abstract class ReceiverBase implements Unit {
 //    @Subscribe
 //    public void receivedStatus(EventStatus message) {
 //    }
+    
     @Override
     public void construct(HelloIoTAppPublic app) {
         Unit.super.construct(app);

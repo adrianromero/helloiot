@@ -28,8 +28,8 @@ import com.adr.helloiot.device.format.StringFormatIdentity;
 import com.adr.helloiot.unit.Unit;
 import com.adr.helloiot.media.ClipFactory;
 import com.adr.helloiot.unit.UnitLine;
+import com.adr.helloiot.unit.Units;
 import com.google.common.base.Strings;
-import com.google.common.eventbus.Subscribe;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
@@ -41,7 +41,6 @@ import javafx.animation.Interpolator;
 import javafx.animation.ParallelTransition;
 import javafx.animation.Transition;
 import javafx.animation.TranslateTransition;
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -105,6 +104,7 @@ public final class MQTTMainNode {
     private Transition listpagestransition;
     
     private final Map<String, UnitPage> unitpages = new LinkedHashMap<>();
+    private final Object messagePageHandler = Units.messageHandler(this::updatePageStatus);  
     private final Beeper beeper;
     private final Buzzer buzzer;
     private final HelloIoTApp app;
@@ -131,9 +131,9 @@ public final class MQTTMainNode {
     
     public void construct(List<UnitPage> appunitpages) {
         
-        app.getUnitPage().subscribeStatus(this);
-        app.getBeeper().subscribeStatus(beeper);
-        app.getBuzzer().subscribeStatus(buzzer);
+        app.getUnitPage().subscribeStatus(messagePageHandler);
+        app.getBeeper().subscribeStatus(beeper.getMessageHandler());
+        app.getBuzzer().subscribeStatus(buzzer.getMessageHandler());
 
         // Add configured unitpages.
         for (UnitPage up : appunitpages) {
@@ -188,9 +188,9 @@ public final class MQTTMainNode {
     }
     
     public void destroy() {
-        app.getUnitPage().unsubscribeStatus(this);
-        app.getBeeper().unsubscribeStatus(beeper);
-        app.getBuzzer().unsubscribeStatus(buzzer);
+        app.getUnitPage().unsubscribeStatus(messagePageHandler);
+        app.getBeeper().unsubscribeStatus(beeper.getMessageHandler());
+        app.getBuzzer().unsubscribeStatus(buzzer.getMessageHandler());
         unitpages.clear();
     }
     
@@ -275,15 +275,8 @@ public final class MQTTMainNode {
             listpagestransition.play();
         }
     }
-    
-    @Subscribe
-    public void selectUnitPage(EventMessage message) {
-        Platform.runLater(() -> {
-            updateStatus(message.getMessage());
-        });
-    }
-    
-    private void updateStatus(byte[] status) {
+       
+    private void updatePageStatus(byte[] status) {
         gotoPage(StringFormatIdentity.INSTANCE.format(status));
     }
     

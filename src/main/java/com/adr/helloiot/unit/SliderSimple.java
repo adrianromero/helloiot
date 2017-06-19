@@ -19,11 +19,8 @@
 package com.adr.helloiot.unit;
 
 import com.adr.helloiot.device.DeviceNumber;
-import com.adr.helloiot.EventMessage;
 import com.adr.helloiot.HelloIoTAppPublic;
 import com.adr.helloiot.device.format.MiniVarDouble;
-import com.google.common.eventbus.Subscribe;
-import javafx.application.Platform;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -43,6 +40,7 @@ public class SliderSimple extends Tile {
 
     private boolean levelupdating = false;
     private DeviceNumber device = null;
+    private final Object messageHandler = Units.messageHandler(this::updateStatus);
 
     @Override
     public Node constructContent() {
@@ -53,15 +51,10 @@ public class SliderSimple extends Tile {
     public void initialize() {
         slider.valueProperty().addListener((ObservableValue<? extends Number> ov, Number old_val, Number new_val) -> {
             if (!levelupdating) {
-                device.sendStatus(device.getFormat().devalue(new MiniVarDouble(device.adjustLevel(new_val.doubleValue()))));
+                device.sendStatus(new MiniVarDouble(device.adjustLevel(new_val.doubleValue())));
             }
         });
         level.setText(null);
-    }
-
-    @Subscribe
-    public void receivedStatus(EventMessage message) {
-        Platform.runLater(() -> updateStatus(message.getMessage()));
     }
 
     private void updateStatus(byte[] status) {
@@ -74,14 +67,14 @@ public class SliderSimple extends Tile {
     @Override
     public void construct(HelloIoTAppPublic app) {
         super.construct(app);
-        device.subscribeStatus(this);
+        device.subscribeStatus(messageHandler);
         updateStatus(null);
     }
 
     @Override
     public void destroy() {
         super.destroy();
-        device.unsubscribeStatus(this);
+        device.unsubscribeStatus(messageHandler);
     }
 
     public void setDevice(DeviceNumber device) {

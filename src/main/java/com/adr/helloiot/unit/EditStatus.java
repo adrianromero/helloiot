@@ -21,13 +21,10 @@ package com.adr.helloiot.unit;
 import com.adr.fonticon.FontAwesome;
 import com.adr.fonticon.IconBuilder;
 import com.adr.hellocommon.dialog.MessageUtils;
-import com.adr.helloiot.EventMessage;
 import com.adr.helloiot.HelloIoTAppPublic;
 import com.adr.helloiot.device.DeviceSimple;
 import com.google.common.base.Strings;
-import com.google.common.eventbus.Subscribe;
 import java.util.ResourceBundle;
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.HPos;
@@ -60,6 +57,7 @@ public class EditStatus extends Tile {
     private Pane boxedit;
 
     private DeviceSimple device = null;
+    private final Object messageHandler = Units.messageHandler(this::updateStatus);    
 
     @Override
     public Node constructContent() {
@@ -74,11 +72,6 @@ public class EditStatus extends Tile {
         setDisable(true);
     }
 
-    @Subscribe
-    public void receivedStatus(EventMessage message) {
-        Platform.runLater(() -> updateStatus(message.getMessage()));
-    }
-
     private void updateStatus(byte[] status) {
         statusview.setText(device.getFormat().format(status));
     }
@@ -86,14 +79,14 @@ public class EditStatus extends Tile {
     @Override
     public void construct(HelloIoTAppPublic app) {
         super.construct(app);
-        device.subscribeStatus(this);
+        device.subscribeStatus(messageHandler);
         updateStatus(null);
     }
 
     @Override
     public void destroy() {
         super.destroy();
-        device.unsubscribeStatus(this);
+        device.unsubscribeStatus(messageHandler);
     }
 
     public void setDevice(DeviceSimple device) {

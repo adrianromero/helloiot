@@ -22,8 +22,7 @@ import com.adr.helloiot.device.format.StringFormat;
 import com.adr.helloiot.device.format.StringFormatSwitch;
 import com.adr.helloiot.media.Clip;
 import com.adr.helloiot.media.ClipFactory;
-import com.google.common.eventbus.Subscribe;
-import javafx.application.Platform;
+import com.adr.helloiot.unit.Units;
 import javafx.scene.control.Label;
 import javafx.scene.media.AudioClip;
 
@@ -37,6 +36,8 @@ public class Beeper {
     private final Label alert;
     
     private final StringFormat format = new StringFormatSwitch();
+    
+    private final Object messageHandler = Units.messageHandler(this::updateStatus);  
 
     public Beeper(ClipFactory factory, Label alert) {
 
@@ -44,10 +45,9 @@ public class Beeper {
         // http://www.soundjay.com/tos.html
         beep = factory.createClip(getClass().getResource("/com/adr/helloiot/sounds/beep-01a.wav").toExternalForm(), AudioClip.INDEFINITE);
     }
-
-    @Subscribe
-    public void selectUnitPage(EventMessage message) {
-        Platform.runLater(() -> updateStatus(message.getMessage()));
+    
+    public Object getMessageHandler() {
+        return messageHandler;
     }
 
     private void updateStatus(byte[] status) {

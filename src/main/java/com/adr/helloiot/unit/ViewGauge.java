@@ -18,13 +18,10 @@
 //
 package com.adr.helloiot.unit;
 
-import com.adr.helloiot.EventMessage;
 import com.adr.helloiot.HelloIoTAppPublic;
 import com.adr.helloiot.device.DeviceNumber;
-import com.google.common.eventbus.Subscribe;
 import eu.hansolo.medusa.Gauge;
 import java.util.List;
-import javafx.application.Platform;
 import javafx.beans.property.ObjectProperty;
 import javafx.css.CssMetaData;
 import javafx.css.SimpleStyleableObjectProperty;
@@ -45,6 +42,7 @@ public class ViewGauge extends Tile {
     private static final CssMetaData<ViewGauge, Color> VALUECOLOR = FACTORY.createColorCssMetaData("-fx-value-color", s -> s.valueColor, Color.BLACK, false);
 
     private DeviceNumber device = null;
+    private final Object messageHandler = Units.messageHandler(this::updateStatus);
 
     private StackPane gaugecontainer;
     private Gauge gauge = null;
@@ -80,11 +78,6 @@ public class ViewGauge extends Tile {
         return gaugecontainer;
     }
 
-    @Subscribe
-    public void receivedStatus(EventMessage message) {
-        Platform.runLater(() -> updateStatus(message.getMessage()));
-    }
-
     private void updateStatus(byte[] status) {
 
         if (gauge == null) {
@@ -104,14 +97,14 @@ public class ViewGauge extends Tile {
     @Override
     public void construct(HelloIoTAppPublic app) {
         super.construct(app);
-        device.subscribeStatus(this);
+        device.subscribeStatus(messageHandler);
         updateStatus(null);
     }
 
     @Override
     public void destroy() {
         super.destroy();
-        device.unsubscribeStatus(this);
+        device.unsubscribeStatus(messageHandler);
     }
 
     public void setDevice(DeviceNumber device) {

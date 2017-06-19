@@ -19,10 +19,7 @@
 package com.adr.helloiot.unit;
 
 import com.adr.helloiot.device.DeviceSubscribe;
-import com.adr.helloiot.EventMessage;
 import com.adr.helloiot.HelloIoTAppPublic;
-import com.google.common.eventbus.Subscribe;
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
@@ -37,6 +34,7 @@ public class ViewText extends Tile {
     private Label level;
 
     private DeviceSubscribe device = null;
+    private final Object messageHandler = Units.messageHandler(this::updateStatus);    
 
     @Override
     protected Node constructContent() {
@@ -48,11 +46,6 @@ public class ViewText extends Tile {
         level.setText(null);
     }
 
-    @Subscribe
-    public void receivedStatus(EventMessage message) {
-        Platform.runLater(() -> updateStatus(message.getMessage()));
-    }
-
     private void updateStatus(byte[] newstatus) {
         level.setText(device.getFormat().format(newstatus));
     }
@@ -60,14 +53,14 @@ public class ViewText extends Tile {
     @Override
     public void construct(HelloIoTAppPublic app) {
         super.construct(app);
-        device.subscribeStatus(this);
+        device.subscribeStatus(messageHandler);
         updateStatus(null);
     }
 
     @Override
     public void destroy() {
         super.destroy();
-        device.unsubscribeStatus(this);
+        device.unsubscribeStatus(messageHandler);
     }
 
     public void setDevice(DeviceSubscribe device) {

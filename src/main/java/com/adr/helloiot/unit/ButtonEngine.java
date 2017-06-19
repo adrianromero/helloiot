@@ -19,15 +19,12 @@
 package com.adr.helloiot.unit;
 
 import com.adr.helloiot.device.DeviceSwitch;
-import com.adr.helloiot.EventMessage;
 import com.adr.helloiot.HelloIoTAppPublic;
 import com.adr.helloiot.graphic.IconNull;
 import com.adr.helloiot.graphic.IconStatus;
-import com.google.common.eventbus.Subscribe;
 import java.util.ResourceBundle;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.application.Platform;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.scene.Node;
@@ -49,6 +46,7 @@ public class ButtonEngine extends Tile {
     private final static IconStatus ICONNULL = new IconNull();
     private IconStatus iconbuilder = ICONNULL;
     private DeviceSwitch device = null;
+    private final Object messageHandler = Units.messageHandler(this::updateStatus);
 
     private Timeline timerarm = null;
     private boolean timedarmed = false;
@@ -71,7 +69,7 @@ public class ButtonEngine extends Tile {
     @Override
     public void construct(HelloIoTAppPublic app) {
         super.construct(app);
-        device.subscribeStatus(this);
+        device.subscribeStatus(messageHandler);
         updateStatus(null);
     }
 
@@ -83,7 +81,7 @@ public class ButtonEngine extends Tile {
             timerarm = null;
         }
         timedarmed = false;
-        device.unsubscribeStatus(this);
+        device.unsubscribeStatus(messageHandler);
     }
 
     @Override
@@ -94,11 +92,6 @@ public class ButtonEngine extends Tile {
         }
         timedarmed = false;
         super.stop();
-    }
-
-    @Subscribe
-    public void receivedStatus(EventMessage message) {
-        Platform.runLater(() -> updateStatus(message.getMessage()));
     }
 
     private void updateStatus(byte[] status) {

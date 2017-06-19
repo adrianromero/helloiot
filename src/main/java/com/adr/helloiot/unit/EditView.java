@@ -18,12 +18,9 @@
 //
 package com.adr.helloiot.unit;
 
-import com.adr.helloiot.EventMessage;
 import com.adr.helloiot.HelloIoTAppPublic;
 import com.adr.helloiot.device.DeviceSubscribe;
 import com.google.common.base.Strings;
-import com.google.common.eventbus.Subscribe;
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.geometry.HPos;
 import javafx.scene.Node;
@@ -39,6 +36,7 @@ public class EditView extends Tile {
     private TextInputControl statusview;
 
     private DeviceSubscribe device = null;
+    private final Object messageHandler = Units.messageHandler(this::updateStatus);      
 
     @Override
     public Node constructContent() {
@@ -50,11 +48,6 @@ public class EditView extends Tile {
         setDisable(true);
     }
 
-    @Subscribe
-    public void receivedStatus(EventMessage message) {
-        Platform.runLater(() -> updateStatus(message.getMessage()));
-    }
-
     private void updateStatus(byte[] status) {
         statusview.setText(device.getFormat().format(status));
     }
@@ -62,14 +55,14 @@ public class EditView extends Tile {
     @Override
     public void construct(HelloIoTAppPublic app) {
         super.construct(app);
-        device.subscribeStatus(this);
+        device.subscribeStatus(messageHandler);
         updateStatus(null);
     }
 
     @Override
     public void destroy() {
         super.destroy();
-        device.unsubscribeStatus(this);
+        device.unsubscribeStatus(messageHandler);
     }
 
     public void setDevice(DeviceSubscribe device) {

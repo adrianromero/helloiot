@@ -21,8 +21,7 @@ package com.adr.helloiot;
 import com.adr.helloiot.device.format.StringFormatIdentity;
 import com.adr.helloiot.media.Clip;
 import com.adr.helloiot.media.ClipFactory;
-import com.google.common.eventbus.Subscribe;
-import javafx.application.Platform;
+import com.adr.helloiot.unit.Units;
 
 /**
  *
@@ -38,6 +37,8 @@ public class Buzzer {
     private final Clip buzzerb04;
     private final Clip buzzerb41;
     private final Clip buzzerr03;
+    
+    private final Object messageHandler = Units.messageHandler(this::updateStatus);      
 
     public Buzzer(ClipFactory factory) {
         // http://www.soundjay.com/tos.html
@@ -51,9 +52,8 @@ public class Buzzer {
         buzzerr03 = factory.createClip(getClass().getResource("/com/adr/helloiot/sounds/telephone-ring-03a.wav").toExternalForm());
     }
 
-    @Subscribe
-    public void selectUnitPage(EventMessage message) {
-        Platform.runLater(() -> updateStatus(message.getMessage()));
+    public Object getMessageHandler() {
+        return messageHandler;
     }
 
     private void updateStatus(byte[] status) {

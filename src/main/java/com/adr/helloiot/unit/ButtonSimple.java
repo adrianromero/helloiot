@@ -20,11 +20,8 @@ package com.adr.helloiot.unit;
 
 import com.adr.helloiot.graphic.IconStatus;
 import com.adr.helloiot.device.DeviceSimple;
-import com.adr.helloiot.EventMessage;
 import com.adr.helloiot.HelloIoTAppPublic;
 import com.adr.helloiot.graphic.IconNull;
-import com.google.common.eventbus.Subscribe;
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 
 /**
@@ -37,11 +34,7 @@ public class ButtonSimple extends ButtonBase {
     private IconStatus iconbuilder = ICONNULL;
 
     private DeviceSimple device = null;
-
-    @Subscribe
-    public void receivedStatus(EventMessage message) {
-        Platform.runLater(() -> updateStatus(message.getMessage()));
-    }
+    private final Object messageHandler = Units.messageHandler(this::updateStatus);
 
     private void updateStatus(byte[] status) {
         button.setGraphic(iconbuilder.buildIcon(device.getFormat().getValueFormat(status)));
@@ -50,14 +43,14 @@ public class ButtonSimple extends ButtonBase {
     @Override
     public void construct(HelloIoTAppPublic app) {
         super.construct(app);
-        device.subscribeStatus(this);
+        device.subscribeStatus(messageHandler);
         updateStatus(null);
     }
 
     @Override
     public void destroy() {
         super.destroy();
-        device.unsubscribeStatus(this);
+        device.unsubscribeStatus(messageHandler);
     }
 
     public void setDevice(DeviceSimple device) {

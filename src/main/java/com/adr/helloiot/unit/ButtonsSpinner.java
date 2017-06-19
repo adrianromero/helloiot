@@ -21,10 +21,7 @@ package com.adr.helloiot.unit;
 import com.adr.fonticon.FontAwesome;
 import com.adr.fonticon.IconBuilder;
 import com.adr.helloiot.device.DeviceSimple;
-import com.adr.helloiot.EventMessage;
 import com.adr.helloiot.HelloIoTAppPublic;
-import com.google.common.eventbus.Subscribe;
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -46,6 +43,7 @@ public class ButtonsSpinner extends Tile {
     private Label level;
 
     private DeviceSimple device = null;
+    private final Object messageHandler = Units.messageHandler(this::updateStatus);
 
     @Override
     public Node constructContent() {
@@ -65,11 +63,6 @@ public class ButtonsSpinner extends Tile {
         level.setText(null);
     }
 
-    @Subscribe
-    public void receivedStatus(EventMessage message) {
-        Platform.runLater(() -> updateStatus(message.getMessage()));
-    }
-
     private void updateStatus(byte[] status) {
         level.setText(device.getFormat().format(status));
         goup.setDisable(!device.hasNextStatus());
@@ -79,14 +72,14 @@ public class ButtonsSpinner extends Tile {
     @Override
     public void construct(HelloIoTAppPublic app) {
         super.construct(app);
-        device.subscribeStatus(this);
+        device.subscribeStatus(messageHandler);
         updateStatus(null);
     }
 
     @Override
     public void destroy() {
         super.destroy();
-        device.unsubscribeStatus(this);
+        device.unsubscribeStatus(messageHandler);
     }
 
     public void setDevice(DeviceSimple device) {

@@ -19,12 +19,9 @@
 
 package com.adr.helloiot.unit;
 
-import com.adr.helloiot.EventMessage;
 import com.adr.helloiot.device.DeviceNumber;
-import com.google.common.eventbus.Subscribe;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.chart.XYChart;
@@ -39,6 +36,7 @@ public class ViewChartSerie {
 
     private String label = null;
     private DeviceNumber device = null;
+    private final Object messageHandler = Units.messageHandler(this::updateStatus);      
     private final ObservableList<XYChart.Data<Number, Number>> data = FXCollections.observableArrayList();
     
     private double current = 0.0;
@@ -66,21 +64,16 @@ public class ViewChartSerie {
     }
     
     public void construct() {
-        device.subscribeStatus(this);
+        device.subscribeStatus(messageHandler);
         updateStatus(null);
     }
 
     public void destroy() {
-        device.unsubscribeStatus(this);
+        device.unsubscribeStatus(messageHandler);
     }
     
     public XYChart.Series<Number, Number> createSerie() {
         return new XYChart.Series<>(label, data);
-    }
-    
-    @Subscribe
-    public void receivedStatus(EventMessage message) {
-        Platform.runLater(() -> updateStatus(message.getMessage()));
     }
 
     private void updateStatus(byte[] status) {
