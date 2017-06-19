@@ -18,6 +18,7 @@
 //
 package com.adr.helloiot.device.format;
 
+import com.google.common.base.Joiner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.geometry.Pos;
@@ -117,6 +118,6 @@ public class StringFormatHex extends StringFormat {
     }
 
     public static String fixedSplit(String s) {
-        return String.join("\n", s.split("(?<=\\G.{76})"));
+        return Joiner.on('\n').join(s.split("(?<=\\G.{76})"));
     }
 }
