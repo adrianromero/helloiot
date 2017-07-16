@@ -45,7 +45,12 @@ public class IconBrightness extends IconStatus {
 
     @Override
     public Node buildIcon(ValueFormatValue value) {
-        Color c = Color.hsb(color.getHue(), color.getSaturation(), value.getValue().asDouble());   
-        return IconBuilder.create(icon, 48.0).color(c).shine(c).build();
+
+        ImageIntensity img = new ImageIntensity(IconBuilder.create(icon, 56.0).color(color).shine(color).build());
+        img.setBarFill(Color.BLUE);
+        img.setWidth(value.getValue().asDouble());
+        
+        return img;
+        
     }
 }

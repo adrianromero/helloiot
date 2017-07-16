@@ -63,8 +63,8 @@ public abstract class MainApp extends Application {
         // Locale.setDefault(Locale.forLanguageTag("en-US"));     
         // Main, dark or standard
 //        return "/com/adr/helloiot/styles/empty";
-        return "/com/adr/helloiot/styles/main";
-//        return "/com/adr/helloiot/styles/main-dark";        
+//        return "/com/adr/helloiot/styles/main";
+        return "/com/adr/helloiot/styles/main-dark";        
     }
 
     @Override
@@ -80,18 +80,20 @@ public abstract class MainApp extends Application {
         root.getStyleClass().add("maincontainer");
         root.getStylesheets().add(getClass().getResource(styleroot + ".css").toExternalForm());
         root.getStylesheets().add(getClass().getResource(stylename + ".css").toExternalForm());
-
+        
         MessageUtils.setDialogRoot(root, true);
         
         // Construct root graph scene
         Scene scene;       
         if (HelloPlatform.getInstance().isFullScreen() || isAppFullScreen()) {
+            root.getStylesheets().add(getClass().getResource("/com/adr/helloiot/styles/fullscreen.css").toExternalForm());
             Rectangle2D dimension = Screen.getPrimary().getVisualBounds();
             scene = new Scene(root, dimension.getWidth(), dimension.getHeight());
             scene.setCursor(Cursor.NONE);
-            root.getStylesheets().add(getClass().getResource("/com/adr/helloiot/styles/fullscreen.css").toExternalForm());
+            
         } else {
-            // Dimension properties only managed if not fullscreen
+            root.getStylesheets().add(getClass().getResource(stylename + ".hover.css").toExternalForm());
+             // Dimension properties only managed if not fullscreen
             scene = new Scene(root);
             boolean maximized = Boolean.parseBoolean(appproperties.getProperty("window.maximized"));
             if (maximized) {
@@ -100,7 +102,7 @@ public abstract class MainApp extends Application {
                 stage.setWidth(Double.parseDouble(appproperties.getProperty("window.width")));
                 stage.setHeight(Double.parseDouble(appproperties.getProperty("window.height")));
             }
-        }
+       }
         stage.setScene(scene);
         
         // hack to avoid slider to get the focus.

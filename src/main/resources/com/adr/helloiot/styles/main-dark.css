@@ -30,6 +30,21 @@
 } 
 
 .root {
+    /* A light grey that is the base color for objects.  Instead of using
+     * -fx-base directly, the sections in this file will typically use -fx-color.
+     */
+    -fx-base: #353535;
+    /* A very light grey used for the background of windows.  See also
+     * -fx-text-background-color, which should be used as the -fx-text-fill
+     * value for text painted on top of backgrounds colored with -fx-background.
+     */
+    -fx-background: derive(-fx-base, 0.0%);
+    /* Used for the inside of text boxes, password boxes, lists, trees, and
+     * tables.  See also -fx-text-inner-color, which should be used as the
+     * -fx-text-fill value for text painted on top of backgrounds colored
+     * with -fx-control-inner-background.
+     */
+    -fx-control-inner-background: derive(-fx-base, 20.0%);
 }
 
 .maincontainer {
@@ -49,11 +64,9 @@
     -fx-selected-fill: #203280;
     
     -fx-info-fill: #d0d0d0;
-    -fx-main-fill: white;
     
     -fx-border-unit: #505050;
     -fx-background-unit: #444444;
-    
 }
 
 .header {
@@ -77,20 +90,12 @@
     -fx-padding: 8px 12px 8px 12px; 
 }
 
-.headerbutton:hover {
-    -fx-background-color: -fx-border-fill,  -fx-hover-fill; 
-}
-
 .headerbutton:armed {
     -fx-background-color: -fx-border-fill,  -fx-armed-fill;  
 }
 
 .menubutton {
-    -fx-background-color:  -fx-button-fill;       
-}
-
-.menubutton:hover {
-    -fx-background-color:  -fx-hover-fill;       
+    -fx-background-color:  transparent;     
 }
 
 .menubutton:armed  {
@@ -114,9 +119,7 @@
     -fx-background-radius: 6,5;
     -fx-background-insets: 0, 1;
     -fx-background-color: -fx-border-unit, -fx-background-unit;      
-    -fx-effect: dropshadow(three-pass-box, derive(-fx-border-unit, -20%), 4, 0, 0, 0);
-    
-    -fx-value-color: -fx-main-fill;
+    -fx-effect: dropshadow(one-pass-box, derive(-fx-border-unit, -20%), 4, 0, 0, 0);
 }
 
 .labelsection {
@@ -126,10 +129,6 @@
     -fx-background-insets: 0, 0 5 4 5, 0 5 5 5;
     -fx-background-color:  -fx-background-container, -fx-separator-fill, -fx-background-container;    
     -fx-padding: 10px 10px 5px 10px;      
-}
-
-.icon-fill {
-    -fx-fill: -fx-main-fill;
 }
 
 .fieldlabel {
@@ -169,20 +168,7 @@
 .levelbase {
     -fx-font-family: 'ROBOTO BOLD';
     -fx-font-size: 36px;
-    -fx-text-fill: -fx-main-fill;   
 }
-
-/*
-.list-cell {
-   -fx-font-family: 'ROBOTO REGULAR';
-   -fx-font-size: 18px; 
-}
-.list-cell:filled:selected:focused, .list-cell:filled:selected {
-    -fx-background-color: -fx-focus-color;
-    -fx-text-fill: white;
-}
-*/
-
 
 .emptypanel {
     -fx-font-size: 48px;
@@ -206,9 +192,6 @@
     -fx-background-color:  -fx-border-fill, -fx-button-fill;  
     -fx-background-insets: 0, 1;
     -fx-alignment: center; 
-}
-.keypadbutton:hover {
-    -fx-background-color: -fx-border-fill,  -fx-hover-fill;         
 }
 .keypadbutton:armed {
     -fx-background-color: -fx-border-fill,  -fx-armed-fill;             
@@ -239,9 +222,6 @@
     -fx-background-insets: 0, 1;
     -fx-alignment: center;
 }
-.unitbutton:hover {
-    -fx-background-color: -fx-border-fill,  -fx-hover-fill;         
-}
 .unitbutton:armed {
     -fx-background-color: -fx-border-fill,  -fx-armed-fill;             
 }
@@ -255,9 +235,6 @@
     -fx-background-insets: 0, 1;
     -fx-alignment: center;    
 }
-.buttonbase:hover {
-    -fx-background-color: -fx-border-fill, -fx-hover-fill;         
-}
 .buttonbase:armed {
     -fx-background-color: -fx-border-fill, -fx-armed-fill;             
 }
@@ -270,18 +247,8 @@
 .dialog-body {
     -fx-background-color: -fx-background-container;  
 }
-.dialog-close-button:hover {
-    -fx-background-color: -fx-hover-fill;
-}
-
 .dialog-close-button:armed {
     -fx-background-color: -fx-armed-fill;
-}
-.dialog-close-icon {
-    -fx-fill: -fx-main-fill;
-}
-.dialog-button-icon {
-    -fx-fill: -fx-main-fill;    
 }
 .dialog-title-text {
     -fx-font-size: 14;
@@ -303,18 +270,11 @@
     -fx-background-insets: 0, 1;
     -fx-alignment: center;        
 }
-.dialog-buttonlist .button:hover {
-    -fx-background-color: -fx-border-fill, -fx-hover-fill;         
-}
 .dialog-buttonlist .button:armed {
     -fx-background-color: -fx-border-fill, -fx-armed-fill;             
 }
 .dialog-buttonlist .button:default {
     -fx-background-color: -fx-border-fill, -fx-selected-fill;    
-}
-
-.dialog-buttonlist .button:default:hover {
-    -fx-background-color: -fx-border-fill, derive(-fx-selected-fill, 25%);         
 }
 .dialog-buttonlist .button:default:armed {
     -fx-background-color: -fx-border-fill, derive(-fx-selected-fill, 40%);         
@@ -325,8 +285,6 @@
     -fx-font-size: 20px;    
 }
 
-
-
 /* Slider styles */
 .slider .thumb {
     -fx-background-color: -fx-border-fill, -fx-button-fill;
@@ -334,9 +292,6 @@
     -fx-background-radius: 1.5em; /* makes sure this remains circular */
     -fx-padding: 1.5em /*1.583333em*/;    
     /*-fx-effect: dropshadow(two-pass-box , rgba(0, 0, 0, 0.1), 5, 0.0 , 0, 2);*/
-}
-.slider .thumb:hover {
-    -fx-background-color: -fx-border-fill, -fx-hover-fill;
 }
 .slider .thumb:pressed {
     -fx-background-color: -fx-border-fill, -fx-armed-fill;

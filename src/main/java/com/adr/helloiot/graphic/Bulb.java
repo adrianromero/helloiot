@@ -43,11 +43,11 @@ public class Bulb extends IconSwitch {
 
     @Override
     protected Node buildIconOn() {
-        return IconBuilder.create(icon, 48.0).apply(new LightOn()).build();
+        return IconBuilder.create(icon, 56.0).apply(new LightOn()).build();
     }
 
     @Override
     protected Node buildIconOff() {
-        return IconBuilder.create(icon, 48.0).apply(new LightOff()).build();
+        return IconBuilder.create(icon, 56.0).apply(new LightOff()).build();
     }
 }

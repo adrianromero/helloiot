@@ -53,15 +53,18 @@
 }
 
 .icon-fill {
-    -fx-fill: black;
+    -fx-fill: -fx-text-base-color;
+}
+
+.levelbase {
+    -fx-text-fill: -fx-text-base-color;
 }
 
 .unitbase {
     -fx-background-insets: 0, 1;
     -fx-background-color: derive(-fx-box-border, 25%), -fx-background;      
     -fx-padding: 4px 6px 4px 6px;
-    
-    -fx-value-color: -fx-text-base-color;;    
+    -fx-value-color:  -fx-text-base-color;    
 }
 .noneditable {
     -fx-focus-color: transparent;
@@ -114,7 +117,10 @@
     -fx-background-color: #a4a4a4;
 }
 .dialog-close-icon {
-    -fx-fill: black;
+    -fx-fill: -fx-text-base-color;
+}
+.dialog-button-icon {
+    -fx-fill: -fx-text-base-color;  
 }
 .dialog-title-text {
     -fx-font-size: 14;

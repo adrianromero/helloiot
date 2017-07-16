@@ -214,7 +214,7 @@ public class HelloIoTApp {
         }
         // Add "main" unit page if needed
         if (!existsUnitPageMain()) {
-            UnitPage main = new UnitPage("main", IconBuilder.create(FontAwesome.FA_HOME, 24.0).build(), resources.getString("page.main"));
+            UnitPage main = new UnitPage("main", IconBuilder.create(FontAwesome.FA_HOME, 24.0).styleClass("icon-fill").build(), resources.getString("page.main"));
             main.setOrder(0);
             appunitpages.add(main);
         }

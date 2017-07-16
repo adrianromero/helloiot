@@ -368,7 +368,7 @@ public final class MQTTMainNode {
     private UnitPage buildUnitPage(String name) {
         UnitPage unitpage = unitpages.get(Strings.isNullOrEmpty(name) ? "main" : name);
         if (unitpage == null) {
-            unitpage = new UnitPage(name, IconBuilder.create(FontAwesome.FA_CUBES, 24.0).build(), name);
+            unitpage = new UnitPage(name, IconBuilder.create(FontAwesome.FA_CUBES, 24.0).styleClass("icon-fill").build(), name);
             addUnitPage(unitpage);
         }
         return unitpage;

@@ -103,7 +103,7 @@ public class MainManagerClient implements MainManager {
     private void showApplication() throws HelloIoTException {
 
         configprops.clear();
-
+        
         configprops.setProperty("mqtt.host", clientlogin.getHost());
         configprops.setProperty("mqtt.port", clientlogin.getPort());
         configprops.setProperty("mqtt.ssl", Boolean.toString(clientlogin.isSSL()));
@@ -159,7 +159,7 @@ public class MainManagerClient implements MainManager {
             ResourceBundle resources = ResourceBundle.getBundle("com/adr/helloiot/fxml/main");
 
             if (clientlogin.getBrokerPane() == 1) {
-                UnitPage info = new UnitPage("info", IconBuilder.create(FontAwesome.FA_INFO, 24.0).build(), resources.getString("page.info"));
+                UnitPage info = new UnitPage("info", IconBuilder.create(FontAwesome.FA_INFO, 24.0).styleClass("icon-fill").build(), resources.getString("page.info"));
                 helloiotapp.addUnitPages(Arrays.asList(info));
                 helloiotapp.addFXMLFileDevicesUnits("local:com/adr/helloiot/panes/mosquitto");
             }
@@ -172,14 +172,14 @@ public class MainManagerClient implements MainManager {
             }        
 
             helloiotapp.addUnitPages(Arrays.asList(
-                    new UnitPage("Lights", IconBuilder.create(FontAwesome.FA_LIGHTBULB_O, 24.0).build(), resources.getString("page.lights")))
+                    new UnitPage("Lights", IconBuilder.create(FontAwesome.FA_LIGHTBULB_O, 24.0).styleClass("icon-fill").build(), resources.getString("page.lights")))
             );
             helloiotapp.addUnitPages(Arrays.asList(
-                    new UnitPage("Temperature", IconBuilder.create(FontAwesome.FA_DASHBOARD, 24.0).build(), resources.getString("page.temperature")))
+                    new UnitPage("Temperature", IconBuilder.create(FontAwesome.FA_DASHBOARD, 24.0).styleClass("icon-fill").build(), resources.getString("page.temperature")))
             );        
     //        helloiotapp.addFXMLFileDevicesUnits("local:com/adr/helloiot/panes/samplelights");
     //        helloiotapp.addUnitPages(Arrays.asList(
-    //                new UnitPage("temperature", IconBuilder.create(FontAwesome.FA_DASHBOARD, 24.0).build(), resources.getString("page.temperature")))
+    //                new UnitPage("temperature", IconBuilder.create(FontAwesome.FA_DASHBOARD, 24.0).styleClass("icon-fill").build(), resources.getString("page.temperature")))
     //        );
     //        helloiotapp.addFXMLFileDevicesUnits("local:com/adr/helloiot/panes/sampletemperature");
     //

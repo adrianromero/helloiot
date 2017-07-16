@@ -122,13 +122,13 @@ public class TopicInfoEditNode implements TopicInfoNode {
             updateCurrentTopic();
         });
 
-        clearcolor.setGraphic(IconBuilder.create(FontAwesome.FA_TRASH, 14.0).build());
+        clearcolor.setGraphic(IconBuilder.create(FontAwesome.FA_TRASH, 14.0).styleClass("icon-fill").build());
         editcolor.setValue(null);
         editcolor.valueProperty().addListener((ObservableValue<? extends Color> observable, Color oldValue, Color newValue) -> {
             updateCurrentTopic();
         });
 
-        clearbackground.setGraphic(IconBuilder.create(FontAwesome.FA_TRASH, 14.0).build());
+        clearbackground.setGraphic(IconBuilder.create(FontAwesome.FA_TRASH, 14.0).styleClass("icon-fill").build());
         editbackground.setValue(null);
         editbackground.valueProperty().addListener((ObservableValue<? extends Color> observable, Color oldValue, Color newValue) -> {
             updateCurrentTopic();
