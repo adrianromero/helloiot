@@ -256,7 +256,7 @@ public final class MQTTManager implements MqttCallback {
         mm.setQos(qos < 0 ? defaultqos : qos);
         mm.setRetained(isRetained);
         if (topic.startsWith(LOCAL_PREFIX)) {
-            logger.log(Level.INFO, "Publishing message to local.");
+            logger.log(Level.INFO, "Publishing message to local. {0}", topic);
             CompletableAsync.runAsync(() -> {
                 try {
                     if (isRetained) {
@@ -264,17 +264,17 @@ public final class MQTTManager implements MqttCallback {
                     }
                     messageArrived(topicprefix + topic, mm);
                 } catch (Exception ex) {
-                    logger.log(Level.SEVERE, "Cannot publish locally.", ex);
+                    logger.log(Level.SEVERE, "Cannot publish message to local. " + topic, ex);
                 }
             });
 
         } else {
-            logger.log(Level.INFO, "Publishing message to broker.");
+            logger.log(Level.INFO, "Publishing message to broker. {0}", topic);
             try {
                 mqttClient.publish(topicprefix + topic, mm);
             } catch (MqttException ex) {
-                // TODO: Review in cas of paho exception too much publications              
-                logger.log(Level.WARNING, "Cannot publish message", ex);
+                // TODO: Review in case of paho exception too much publications              
+                logger.log(Level.WARNING, "Cannot publish message to broker. " + topic, ex);
                 // throw new RuntimeException(ex); 
             }
         }
@@ -322,7 +322,7 @@ public final class MQTTManager implements MqttCallback {
         } else if (topic.startsWith(SYS_PREFIX)) {
             distributeMessage(topic, mm.getPayload());
         } else {
-            throw new RuntimeException("Bad topic prefix.");
+            throw new RuntimeException("Bad topic prefix. " + topic);
         }
     }
 
