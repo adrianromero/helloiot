@@ -18,7 +18,7 @@
 //
 package com.adr.helloiot.device;
 
-import com.adr.helloiot.MQTTManager;
+import com.adr.helloiot.TopicsManager;
 import com.adr.helloiot.device.format.StringFormat;
 import com.adr.helloiot.device.format.StringFormatIdentity;
 import java.util.Properties;
@@ -100,7 +100,7 @@ public abstract class Device {
     }
 
     // Runtime methods
-    public abstract void construct(MQTTManager mqttHelper);
+    public abstract void construct(TopicsManager mqttHelper);
 
     public abstract void destroy();
 }

@@ -18,7 +18,7 @@
 //
 package com.adr.helloiot.device;
 
-import com.adr.helloiot.MQTTManager;
+import com.adr.helloiot.TopicsManager;
 import com.adr.helloiot.util.CompletableAsync;
 import java.util.concurrent.ScheduledFuture;
 
@@ -28,7 +28,7 @@ import java.util.concurrent.ScheduledFuture;
  */
 public class TreePublish extends Device {
 
-    protected MQTTManager mqttManager;
+    protected TopicsManager mqttManager;
     private ScheduledFuture<?> sf = null;
     private final Object sflock = new Object();
 
@@ -42,7 +42,7 @@ public class TreePublish extends Device {
     }
 
     @Override
-    public void construct(MQTTManager mqttManager) {
+    public void construct(TopicsManager mqttManager) {
         this.mqttManager = mqttManager;
     }
 

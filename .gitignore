@@ -1,5 +1,6 @@
 # build application files
 /helloiot.properties
+/Californium.properties
 target/
 /nbproject/
 /.gradle/

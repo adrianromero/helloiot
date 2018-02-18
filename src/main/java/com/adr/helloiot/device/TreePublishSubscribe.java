@@ -19,7 +19,7 @@
 package com.adr.helloiot.device;
 
 import com.adr.helloiot.EventMessage;
-import com.adr.helloiot.MQTTManager;
+import com.adr.helloiot.TopicsManager;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -29,7 +29,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class TreePublishSubscribe extends TreePublish {
 
-    private MQTTManager.Subscription mqttstatus = null;
+    private TopicsManager.Subscription mqttstatus = null;
     private final Map<String, byte[]> status = new ConcurrentHashMap<>();
 
     public TreePublishSubscribe() {
@@ -47,7 +47,7 @@ public class TreePublishSubscribe extends TreePublish {
     }
 
     @Override
-    public void construct(MQTTManager mqttManager) {
+    public void construct(TopicsManager mqttManager) {
         super.construct(mqttManager);
         mqttstatus = mqttManager.subscribe(getTopic() + "/#", getQos());
         mqttstatus.setConsumer(this::consumeMessage);

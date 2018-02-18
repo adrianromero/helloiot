@@ -18,7 +18,7 @@
 //
 package com.adr.helloiot.device;
 
-import com.adr.helloiot.MQTTManager;
+import com.adr.helloiot.TopicsManager;
 import com.adr.helloiot.device.format.MiniVar;
 
 /**
@@ -27,10 +27,10 @@ import com.adr.helloiot.device.format.MiniVar;
  */
 public class TransmitterSimple extends Device implements DeviceSend {
     
-    protected MQTTManager mqttHelper;
+    protected TopicsManager mqttHelper;
     
     @Override
-    public final void construct(MQTTManager mqttManager) {
+    public final void construct(TopicsManager mqttManager) {
         this.mqttHelper = mqttManager;
     }
 

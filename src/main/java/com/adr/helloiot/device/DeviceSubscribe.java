@@ -19,7 +19,7 @@
 package com.adr.helloiot.device;
 
 import com.adr.helloiot.EventMessage;
-import com.adr.helloiot.MQTTManager;
+import com.adr.helloiot.TopicsManager;
 import com.adr.helloiot.graphic.IconStatus;
 import com.adr.helloiot.graphic.IconText;
 import com.google.common.eventbus.EventBus;
@@ -30,8 +30,8 @@ import com.google.common.eventbus.EventBus;
  */
 public abstract class DeviceSubscribe extends Device {
 
-    protected MQTTManager mqttHelper;
-    private MQTTManager.Subscription mqttstatus = null;
+    protected TopicsManager mqttHelper;
+    private TopicsManager.Subscription mqttstatus = null;
 
     private final EventBus statusbus = new EventBus();
 
@@ -43,7 +43,7 @@ public abstract class DeviceSubscribe extends Device {
     }
 
     @Override
-    public final void construct(MQTTManager mqttHelper) {
+    public final void construct(TopicsManager mqttHelper) {
         this.mqttHelper = mqttHelper;
         mqttstatus = mqttHelper.subscribe(getTopic(), getQos());
         mqttstatus.setConsumer((message) -> {

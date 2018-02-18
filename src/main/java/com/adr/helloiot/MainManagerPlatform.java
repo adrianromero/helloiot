@@ -1,5 +1,5 @@
 //    HelloIoT is a dashboard creator for MQTT
-//    Copyright (C) 2017 Adrián Romero Corchado.
+//    Copyright (C) 2017-2018 Adrián Romero Corchado.
 //
 //    This file is part of HelloIot.
 //
@@ -52,8 +52,12 @@ public class MainManagerPlatform implements MainManager {
         config.mqtt_defaultqos = Integer.parseInt(configprops.getProperty("mqtt.defaultqos", "1"));
         config.mqtt_version = Integer.parseInt(configprops.getProperty("mqtt.version", Integer.toString(MqttConnectOptions.MQTT_VERSION_DEFAULT))); // MQTT_VERSION_DEFAULT = 0; MQTT_VERSION_3_1 = 3; MQTT_VERSION_3_1_1 = 4;
         config.mqtt_cleansession = Boolean.parseBoolean(configprops.getProperty("mqtt.cleansession", Boolean.toString(MqttConnectOptions.CLEAN_SESSION_DEFAULT)));
-        config.mqtt_topicprefix = configprops.getProperty("mqtt.topicprefix", "");;
-        config.mqtt_topicapp = configprops.getProperty("mqtt.topicapp", "_LOCAL_/_sys_helloIoT/mainapp");
+        
+        config.tradfri_host = configprops.getProperty("tradfri.host", "");
+        config.tradfri_psk = configprops.getProperty("tradfri.psk", "");
+
+        config.topicapp = configprops.getProperty("client.topicapp", "_LOCAL_/mainapp");
+        config.topicsys = configprops.getProperty("client.topicsys", "system");
 
         config.app_clock = Boolean.parseBoolean(configprops.getProperty("app.clock", "true"));
         config.app_exitbutton = Boolean.parseBoolean(configprops.getProperty("app.exitbutton", "true"));

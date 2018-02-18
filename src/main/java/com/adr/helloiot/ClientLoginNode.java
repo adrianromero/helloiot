@@ -1,5 +1,5 @@
 //    HelloIoT is a dashboard creator for MQTT
-//    Copyright (C) 2017 Adrián Romero Corchado.
+//    Copyright (C) 2017-2018 Adrián Romero Corchado.
 //
 //    This file is part of HelloIot.
 //
@@ -122,7 +122,10 @@ public class ClientLoginNode {
     private TopicInfoBuilder topicinfobuilder;
     
     private String topicapp;
-    private String topicprefix;
+    private String topicsys;
+    private String tradfrihost;
+    private String tradfripsk;
+    
     private boolean updating = false;
 
     ClientLoginNode() {
@@ -396,20 +399,36 @@ public class ClientLoginNode {
         }
     }
 
-    public String getTopicPrefix() {
-        return topicprefix;
-    }
-
-    public void setTopicPrefix(String value) {
-        topicprefix = value;
-    }
-
     public String getTopicApp() {
         return topicapp;
     }
 
     public void setTopicApp(String value) {
         topicapp = value;
+    }
+
+    public String getTopicSys() {
+        return topicsys;
+    }
+
+    public void setTopicSys(String value) {
+        topicsys = value;
+    }
+
+    public String getTradfriHost() {
+        return tradfrihost;
+    }
+
+    public void setTradfriHost(String value) {
+        tradfrihost = value;
+    }
+
+    public String getTradfriPsk() {
+        return tradfripsk;
+    }
+
+    public void setTradfriPsk(String value) {
+        tradfripsk = value;
     }
 
     public int getBrokerPane() {

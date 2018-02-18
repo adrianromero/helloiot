@@ -1,5 +1,5 @@
 //    HelloIoT is a dashboard creator for MQTT
-//    Copyright (C) 2017 Adrián Romero Corchado.
+//    Copyright (C) 2017-2018 Adrián Romero Corchado.
 //
 //    This file is part of HelloIot.
 //
@@ -66,9 +66,12 @@ public class MainManagerClient implements MainManager {
         clientlogin.setDefaultQoS(Integer.parseInt(configprops.getProperty("mqtt.defaultqos", "1")));
         clientlogin.setVersion(Integer.parseInt(configprops.getProperty("mqtt.version", Integer.toString(MqttConnectOptions.MQTT_VERSION_DEFAULT))));
         clientlogin.setCleanSession(Boolean.parseBoolean(configprops.getProperty("mqtt.cleansession", Boolean.toString(MqttConnectOptions.CLEAN_SESSION_DEFAULT))));
-        clientlogin.setTopicPrefix(configprops.getProperty("mqtt.topicprefix", ""));
-        clientlogin.setTopicApp(configprops.getProperty("mqtt.topicapp", "_LOCAL_/_sys_helloIoT/mainapp"));
-
+        
+        clientlogin.setTradfriHost(configprops.getProperty("tradfri.host", ""));
+        clientlogin.setTradfriPsk(configprops.getProperty("tradfri.psk", ""));
+        
+        clientlogin.setTopicApp(configprops.getProperty("client.topicapp", "_LOCAL_/mainapp"));
+        clientlogin.setTopicSys(configprops.getProperty("client.topicsys", "system"));
         clientlogin.setBrokerPane(Integer.parseInt(configprops.getProperty("client.broker", "0"))); //none
 
         int i = 0;
@@ -115,9 +118,12 @@ public class MainManagerClient implements MainManager {
         configprops.setProperty("mqtt.defaultqos", Integer.toString(clientlogin.getDefaultQoS()));
         configprops.setProperty("mqtt.version", Integer.toString(clientlogin.getVersion()));
         configprops.setProperty("mqtt.cleansession", Boolean.toString(clientlogin.isCleanSession()));
-        configprops.setProperty("mqtt.topicprefix", clientlogin.getTopicPrefix());
-        configprops.setProperty("mqtt.topicapp", clientlogin.getTopicApp());
-
+        
+        configprops.setProperty("tradfri.host", clientlogin.getTradfriHost());
+        configprops.setProperty("tradfri.psk", clientlogin.getTradfriPsk());
+        
+        configprops.setProperty("client.topicapp", clientlogin.getTopicApp());
+        configprops.setProperty("client.topicsys", clientlogin.getTopicSys());
         configprops.setProperty("client.broker", Integer.toString(clientlogin.getBrokerPane()));
 
         List<TopicInfo> topicinfolist = clientlogin.getTopicInfoList();
@@ -145,8 +151,12 @@ public class MainManagerClient implements MainManager {
         config.mqtt_defaultqos = clientlogin.getDefaultQoS();
         config.mqtt_version = clientlogin.getVersion();
         config.mqtt_cleansession = clientlogin.isCleanSession();
-        config.mqtt_topicprefix = configprops.getProperty("mqtt.topicprefix", "");
-        config.mqtt_topicapp = configprops.getProperty("mqtt.topicapp", "_LOCAL_/_sys_helloIoT/mainapp");
+        
+        config.tradfri_host = clientlogin.getTradfriHost();
+        config.tradfri_psk = clientlogin.getTradfriPsk();
+        
+        config.topicapp = clientlogin.getTopicApp();
+        config.topicsys = clientlogin.getTopicSys();
 
         config.app_clock = true;
         config.app_exitbutton = false;

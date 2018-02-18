@@ -1,5 +1,5 @@
 //    HelloIoT is a dashboard creator for MQTT
-//    Copyright (C) 2017 Adrián Romero Corchado.
+//    Copyright (C) 2017-2018 Adrián Romero Corchado.
 //
 //    This file is part of HelloIot.
 //
@@ -29,6 +29,7 @@ import com.adr.helloiot.device.TreePublish;
 import com.adr.helloiot.device.TreePublishSubscribe;
 import com.adr.helloiot.media.SilentClipFactory;
 import com.adr.helloiot.media.StandardClipFactory;
+import com.adr.helloiot.tradfri.ManagerTradfri;
 import com.adr.helloiot.unit.UnitPage;
 import com.adr.helloiot.util.CompletableAsync;
 import com.google.common.util.concurrent.FutureCallback;
@@ -64,10 +65,7 @@ public class HelloIoTApp {
 
     private final static Logger LOGGER = Logger.getLogger(HelloIoTApp.class.getName());
 
-    public final static String SYS_HELLOIOT = "_sys_helloIoT/";
-    public final static String SYS_VALUE_TOPIC = SYS_HELLOIOT + "sysvalue";
     public final static String SYS_VALUE_ID = "SYSVALUESID";
-    public final static String SYS_EVENT_TOPIC = SYS_HELLOIOT + "sysevent";
     public final static String SYS_EVENT_ID = "SYSEVENTSID";
 
     public final static String SYS_UNITPAGE_ID = "SYSUNITPAGEID";
@@ -79,7 +77,7 @@ public class HelloIoTApp {
     private final List<Device> appdevices = new ArrayList<>();
 
     private final ApplicationConfig config;
-    private final MQTTManager mqttmanager;
+    private final TopicsManager mqttmanager;
     private final MQTTMainNode mqttnode;
     private final ResourceBundle resources;
 
@@ -98,22 +96,30 @@ public class HelloIoTApp {
         // Load resources
         resources = ResourceBundle.getBundle("com/adr/helloiot/fxml/main");
 
-        // System devices units
-        addSystemDevicesUnits(config.mqtt_topicapp);
+        // System and Application devices units
+        addSystemDevicesUnits(config.topicsys);
+        addAppDevicesUnits(config.topicapp);
 
         // MQTT Manager   
-        mqttmanager = new MQTTManager(
-                config.mqtt_url,
-                config.mqtt_username,
-                config.mqtt_password,
-                config.mqtt_clientid,
-                config.mqtt_connectiontimeout,
-                config.mqtt_keepaliveinterval,
-                config.mqtt_defaultqos,
-                config.mqtt_version,
-                config.mqtt_cleansession,
-                null,
-                config.mqtt_topicprefix);
+        mqttmanager = new TopicsManager(
+                new ManagerComposed(
+                        new ManagerLocal(
+                                config.topicapp),
+                        new ManagerTradfri(
+                                config.tradfri_host, 
+                                config.tradfri_psk),
+                        new ManagerMQTT(
+                                config.mqtt_url,
+                                config.mqtt_username,
+                                config.mqtt_password,
+                                config.mqtt_clientid,
+                                config.mqtt_connectiontimeout,
+                                config.mqtt_keepaliveinterval,
+                                config.mqtt_defaultqos,
+                                config.mqtt_version,
+                                config.mqtt_cleansession,
+                                null)));
+        
         mqttmanager.setOnConnectionLost(t -> {
             LOGGER.log(Level.WARNING, "Connection lost to broker.", t);
             Platform.runLater(() -> {
@@ -147,14 +153,7 @@ public class HelloIoTApp {
         }
     }
 
-    private void addSystemDevicesUnits(String topicapp) {
-        TreePublish sysevents = new TreePublish();
-        sysevents.setTopic(SYS_EVENT_TOPIC);
-        sysevents.setId(SYS_EVENT_ID);
-
-        TreePublishSubscribe sysstatus = new TreePublishSubscribe();
-        sysstatus.setTopic(SYS_VALUE_TOPIC);
-        sysstatus.setId(SYS_VALUE_ID);
+    private void addAppDevicesUnits(String topicapp) {
 
         DeviceSimple unitpage = new DeviceSimple();
         unitpage.setTopic(topicapp + "/unitpage");
@@ -168,7 +167,19 @@ public class HelloIoTApp {
         buzzer.setTopic(topicapp + "/buzzer");
         buzzer.setId(SYS_BUZZER_ID);
 
-        addDevicesUnits(Arrays.asList(sysevents, sysstatus, unitpage, beeper, buzzer), Collections.emptyList());
+        addDevicesUnits(Arrays.asList(unitpage, beeper, buzzer), Collections.emptyList());
+    }
+
+    private void addSystemDevicesUnits(String topicsys) {
+        TreePublish sysevents = new TreePublish();
+        sysevents.setTopic(topicsys + "/events");
+        sysevents.setId(SYS_EVENT_ID);
+
+        TreePublishSubscribe sysstatus = new TreePublishSubscribe();
+        sysstatus.setTopic(topicsys + "/status");
+        sysstatus.setId(SYS_VALUE_ID);
+
+        addDevicesUnits(Arrays.asList(sysevents, sysstatus), Collections.emptyList());
     }
 
     public void addFXMLFileDevicesUnits(String filedescriptor) throws HelloIoTException {
@@ -298,9 +309,6 @@ public class HelloIoTApp {
     }
 
     private void startUnits() {
-        if (mqttmanager.isNewConnection()) {
-            getUnitPage().sendStatus("main");
-        }
         for (Unit s : appunits) {
             s.start();
         }

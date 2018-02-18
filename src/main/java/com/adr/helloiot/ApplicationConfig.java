@@ -1,5 +1,5 @@
 //    HelloIoT is a dashboard creator for MQTT
-//    Copyright (C) 2017 Adrián Romero Corchado.
+//    Copyright (C) 2017-2018 Adrián Romero Corchado.
 //
 //    This file is part of HelloIot.
 //
@@ -39,6 +39,10 @@ public class ApplicationConfig {
     public int mqtt_defaultqos = 1;
     public int mqtt_version = MqttConnectOptions.MQTT_VERSION_DEFAULT; // 0
     public boolean mqtt_cleansession = MqttConnectOptions.CLEAN_SESSION_DEFAULT;
-    public String mqtt_topicprefix = "";
-    public String mqtt_topicapp = "_LOCAL_/_sys_helloIoT/mainapp";
+    
+    public String tradfri_host = "";
+    public String tradfri_psk = "";
+    
+    public String topicapp = "_LOCAL_/mainapp";
+    public String topicsys = "system";
 }
