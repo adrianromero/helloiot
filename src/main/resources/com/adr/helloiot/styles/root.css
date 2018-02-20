@@ -52,6 +52,10 @@
     -fx-background-color:  -fx-background, -fx-separator-fill, -fx-background;      
 }
 
+.formsubsection {
+    -fx-font-weight: bold;
+}
+
 .icon-fill {
     -fx-fill: -fx-text-base-color;
 }

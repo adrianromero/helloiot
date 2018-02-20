@@ -59,7 +59,6 @@ public class MainManagerClient implements MainManager {
         clientlogin.setPort(configprops.getProperty("mqtt.port", "1883"));
         clientlogin.setSSL(Boolean.parseBoolean(configprops.getProperty("mqtt.ssl", "false")));
         clientlogin.setWebSockets(Boolean.parseBoolean(configprops.getProperty("mqtt.websockets", "false")));
-        clientlogin.setUserName(configprops.getProperty("mqtt.username", ""));
         clientlogin.setClientID(configprops.getProperty("mqtt.clientid", ""));
         clientlogin.setConnectionTimeout(Integer.parseInt(configprops.getProperty("mqtt.connectiontimeout", Integer.toString(MqttConnectOptions.CONNECTION_TIMEOUT_DEFAULT))));
         clientlogin.setKeepAliveInterval(Integer.parseInt(configprops.getProperty("mqtt.keepaliveinterval", Integer.toString(MqttConnectOptions.KEEP_ALIVE_INTERVAL_DEFAULT))));
@@ -68,7 +67,6 @@ public class MainManagerClient implements MainManager {
         clientlogin.setCleanSession(Boolean.parseBoolean(configprops.getProperty("mqtt.cleansession", Boolean.toString(MqttConnectOptions.CLEAN_SESSION_DEFAULT))));
         
         clientlogin.setTradfriHost(configprops.getProperty("tradfri.host", ""));
-        clientlogin.setTradfriPsk(configprops.getProperty("tradfri.psk", ""));
         
         clientlogin.setTopicApp(configprops.getProperty("client.topicapp", "_LOCAL_/mainapp"));
         clientlogin.setTopicSys(configprops.getProperty("client.topicsys", "system"));
@@ -111,7 +109,6 @@ public class MainManagerClient implements MainManager {
         configprops.setProperty("mqtt.port", clientlogin.getPort());
         configprops.setProperty("mqtt.ssl", Boolean.toString(clientlogin.isSSL()));
         configprops.setProperty("mqtt.websockets", Boolean.toString(clientlogin.isWebSockets()));
-        configprops.setProperty("mqtt.username", clientlogin.getUserName());
         configprops.setProperty("mqtt.clientid", clientlogin.getClientID());
         configprops.setProperty("mqtt.connectiontimeout", Integer.toString(clientlogin.getConnectionTimeout()));
         configprops.setProperty("mqtt.keepaliveinterval", Integer.toString(clientlogin.getKeepAliveInterval()));
@@ -120,7 +117,6 @@ public class MainManagerClient implements MainManager {
         configprops.setProperty("mqtt.cleansession", Boolean.toString(clientlogin.isCleanSession()));
         
         configprops.setProperty("tradfri.host", clientlogin.getTradfriHost());
-        configprops.setProperty("tradfri.psk", clientlogin.getTradfriPsk());
         
         configprops.setProperty("client.topicapp", clientlogin.getTopicApp());
         configprops.setProperty("client.topicsys", clientlogin.getTopicSys());
@@ -161,6 +157,8 @@ public class MainManagerClient implements MainManager {
         config.app_clock = true;
         config.app_exitbutton = false;
         config.app_retryconnection = false;
+        
+        clientlogin.clearSensitiveInfo();
 
         helloiotapp = new HelloIoTApp(config);
 

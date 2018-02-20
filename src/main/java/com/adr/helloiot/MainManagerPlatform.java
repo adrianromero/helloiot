@@ -20,6 +20,7 @@ package com.adr.helloiot;
 
 import com.google.common.base.Strings;
 import java.io.IOException;
+import java.util.Map;
 import javafx.application.Application.Parameters;
 import javafx.scene.layout.StackPane;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
@@ -42,10 +43,12 @@ public class MainManagerPlatform implements MainManager {
             throw new RuntimeException("Configuration file cannot be loaded.", ex);
         }
 
+        Map<String, String> namedParams = params.getNamed();
+        
         ApplicationConfig config = new ApplicationConfig();
         config.mqtt_url = configprops.getProperty("mqtt.url", "tcp://localhost:1883");
-        config.mqtt_username = configprops.getProperty("mqtt.username", "");
-        config.mqtt_password = configprops.getProperty("mqtt.password", "");
+        config.mqtt_username = namedParams.getOrDefault("mqtt-username", "");
+        config.mqtt_password = namedParams.getOrDefault("mqtt-password", "");
         config.mqtt_clientid = configprops.getProperty("mqtt.clientid", "");
         config.mqtt_connectiontimeout = Integer.parseInt(configprops.getProperty("mqtt.connectiontimeout", Integer.toString(MqttConnectOptions.CONNECTION_TIMEOUT_DEFAULT)));
         config.mqtt_keepaliveinterval = Integer.parseInt(configprops.getProperty("mqtt.keepaliveinterval", Integer.toString(MqttConnectOptions.KEEP_ALIVE_INTERVAL_DEFAULT)));
@@ -54,7 +57,7 @@ public class MainManagerPlatform implements MainManager {
         config.mqtt_cleansession = Boolean.parseBoolean(configprops.getProperty("mqtt.cleansession", Boolean.toString(MqttConnectOptions.CLEAN_SESSION_DEFAULT)));
         
         config.tradfri_host = configprops.getProperty("tradfri.host", "");
-        config.tradfri_psk = configprops.getProperty("tradfri.psk", "");
+        config.tradfri_psk = namedParams.getOrDefault("tradfri-psk", "");
 
         config.topicapp = configprops.getProperty("client.topicapp", "_LOCAL_/mainapp");
         config.topicsys = configprops.getProperty("client.topicsys", "system");

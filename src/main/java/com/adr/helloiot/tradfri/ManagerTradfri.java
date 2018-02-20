@@ -123,7 +123,7 @@ public class ManagerTradfri implements ManagerProtocol {
                 this.subscribeCOAP(GROUPS + "/" + g.getAsInt());
             }
         } catch (TradfriException | JsonParseException ex) {
-            throw new RuntimeException(ex);
+            throw new RuntimeException(ex.getLocalizedMessage(), ex);
         }   
     }   
     

@@ -102,6 +102,9 @@ public class ClientLoginNode {
     private RadioButton brokernone;
     @FXML
     private RadioButton brokermosquitto;
+    
+    @FXML private TextField tradfrihost;
+    @FXML private TextField tradfripsk;
 
     @FXML
     private CheckBox mainpage;
@@ -123,8 +126,6 @@ public class ClientLoginNode {
     
     private String topicapp;
     private String topicsys;
-    private String tradfrihost;
-    private String tradfripsk;
     
     private boolean updating = false;
 
@@ -299,6 +300,13 @@ public class ClientLoginNode {
     public void setOnNextAction(EventHandler<ActionEvent> exitevent) {
         nextbutton.setOnAction(exitevent);
     }
+    
+    public void clearSensitiveInfo() {
+        username.setText("");
+        password.setText("");
+        tradfripsk.setText("");
+    }
+            
 
     public String getHost() {
         return host.getText();
@@ -341,10 +349,6 @@ public class ClientLoginNode {
                 ? (ssl.isSelected() ? "wss" : "ws")
                 : (ssl.isSelected() ? "ssl" : "tcp");
         return protocol + "://" + host.getText() + ":" + port.getText();
-    }
-
-    public void setUserName(String value) {
-        username.setText(value);
     }
 
     public String getPassword() {
@@ -416,19 +420,15 @@ public class ClientLoginNode {
     }
 
     public String getTradfriHost() {
-        return tradfrihost;
+        return tradfrihost.getText();
     }
 
     public void setTradfriHost(String value) {
-        tradfrihost = value;
+        tradfrihost.setText(value);
     }
 
     public String getTradfriPsk() {
-        return tradfripsk;
-    }
-
-    public void setTradfriPsk(String value) {
-        tradfripsk = value;
+        return tradfripsk.getText();
     }
 
     public int getBrokerPane() {
