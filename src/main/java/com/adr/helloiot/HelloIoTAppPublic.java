@@ -19,7 +19,6 @@
 package com.adr.helloiot;
 
 import com.adr.helloiot.device.Device;
-import com.adr.helloiot.device.DeviceBasic;
 import com.adr.helloiot.device.DeviceSimple;
 import com.adr.helloiot.device.DeviceSwitch;
 import com.adr.helloiot.device.ListDevice;

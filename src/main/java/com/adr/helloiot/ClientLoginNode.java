@@ -300,14 +300,7 @@ public class ClientLoginNode {
     public void setOnNextAction(EventHandler<ActionEvent> exitevent) {
         nextbutton.setOnAction(exitevent);
     }
-    
-    public void clearSensitiveInfo() {
-        username.setText("");
-        password.setText("");
-        tradfripsk.setText("");
-    }
-            
-
+      
     public String getHost() {
         return host.getText();
     }
@@ -340,10 +333,6 @@ public class ClientLoginNode {
         websockets.setSelected(value);
     }
 
-    public String getUserName() {
-        return username.getText();
-    }
-
     public String getURL() {
         String protocol = websockets.isSelected()
                 ? (ssl.isSelected() ? "wss" : "ws")
@@ -351,8 +340,20 @@ public class ClientLoginNode {
         return protocol + "://" + host.getText() + ":" + port.getText();
     }
 
+    public String getUserName() {
+        return username.getText();
+    }
+    
+    public void setUserName(String value) {
+        username.setText(value);
+    }
+    
     public String getPassword() {
         return password.getText();
+    }
+    
+    public void setPassword(String value) {
+        password.setText(value);
     }
 
     public String getClientID() {
@@ -429,6 +430,10 @@ public class ClientLoginNode {
 
     public String getTradfriPsk() {
         return tradfripsk.getText();
+    }
+    
+    public void setTradfriPsk(String value) {
+        tradfripsk.setText(value);
     }
 
     public int getBrokerPane() {

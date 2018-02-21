@@ -1,5 +1,5 @@
 //    HelloIoT is a dashboard creator for MQTT
-//    Copyright (C) 2017 Adrián Romero Corchado.
+//    Copyright (C) 2017-2018 Adrián Romero Corchado.
 //
 //    This file is part of HelloIot.
 //
@@ -23,7 +23,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Collections;
 import java.util.Enumeration;
-import java.util.Map;
 import java.util.Properties;
 import java.util.TreeSet;
 
@@ -31,31 +30,26 @@ import java.util.TreeSet;
  *
  * @author adrian
  */
-public abstract class ConfigProperties {
+public class ConfigProperties {
 
     private final Properties config;
  
     public ConfigProperties() {
         config = new Properties();
     }
-    
-    protected abstract Map<String, String> getParameters();
-    protected abstract InputStream openInputStream() throws IOException;
-    protected abstract OutputStream openOutputStream() throws IOException;
 
     public void clear() {
         config.clear();
     }
 
-    public void load() throws IOException {
+    public void load(IOSupplier<InputStream> supplierin) throws IOException {
         config.clear();
-        try (InputStream in = openInputStream()) {
+        try (InputStream in = supplierin.get()) {
             config.load(in);
         }
-        config.putAll(getParameters());
     }
 
-    public void save() throws IOException {
+    public void save(IOSupplier<OutputStream> supplierout) throws IOException {
 
         // Hack to save properties ordered.
         Properties tmp = new Properties() {
@@ -65,7 +59,7 @@ public abstract class ConfigProperties {
             }
         };
         tmp.putAll(config);
-        try (OutputStream out = openOutputStream()) {
+        try (OutputStream out = supplierout.get()) {
             tmp.store(out, "HelloIoT");
         }
     }

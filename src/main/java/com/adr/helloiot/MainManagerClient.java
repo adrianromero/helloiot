@@ -23,6 +23,10 @@ import com.adr.fonticon.IconBuilder;
 import com.adr.hellocommon.dialog.MessageUtils;
 import com.adr.helloiot.unit.StartFlow;
 import com.adr.helloiot.unit.UnitPage;
+import com.google.common.base.Strings;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -45,20 +49,31 @@ import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 public class MainManagerClient implements MainManager {
 
     private static final Logger LOGGER = Logger.getLogger(MainManagerClient.class.getName());
-
+    private static final String CONFIG_PROPERTIES = ".helloiot-config.properties";
+    
     private HelloIoTApp helloiotapp = null;
     private ClientLoginNode clientlogin = null;
 
-    private ConfigProperties configprops = null;
+    private File configfile;
     private StackPane root = null;
 
     private void showLogin() {
+        
+        ConfigProperties configprops = new ConfigProperties();            
+        try {
+            configprops.load(() -> new FileInputStream(configfile));
+        } catch (IOException ex) {
+            // No properties file found, then use defaults and continue
+            LOGGER.log(Level.WARNING, "No properties file found, then use defaults and continue.", ex);
+        }        
 
         clientlogin = new ClientLoginNode();
         clientlogin.setHost(configprops.getProperty("mqtt.host", "localhost"));
         clientlogin.setPort(configprops.getProperty("mqtt.port", "1883"));
         clientlogin.setSSL(Boolean.parseBoolean(configprops.getProperty("mqtt.ssl", "false")));
         clientlogin.setWebSockets(Boolean.parseBoolean(configprops.getProperty("mqtt.websockets", "false")));
+        clientlogin.setUserName("");
+        clientlogin.setPassword("");
         clientlogin.setClientID(configprops.getProperty("mqtt.clientid", ""));
         clientlogin.setConnectionTimeout(Integer.parseInt(configprops.getProperty("mqtt.connectiontimeout", Integer.toString(MqttConnectOptions.CONNECTION_TIMEOUT_DEFAULT))));
         clientlogin.setKeepAliveInterval(Integer.parseInt(configprops.getProperty("mqtt.keepaliveinterval", Integer.toString(MqttConnectOptions.KEEP_ALIVE_INTERVAL_DEFAULT))));
@@ -67,6 +82,7 @@ public class MainManagerClient implements MainManager {
         clientlogin.setCleanSession(Boolean.parseBoolean(configprops.getProperty("mqtt.cleansession", Boolean.toString(MqttConnectOptions.CLEAN_SESSION_DEFAULT))));
         
         clientlogin.setTradfriHost(configprops.getProperty("tradfri.host", ""));
+        clientlogin.setTradfriPsk("");
         
         clientlogin.setTopicApp(configprops.getProperty("client.topicapp", "_LOCAL_/mainapp"));
         clientlogin.setTopicSys(configprops.getProperty("client.topicsys", "system"));
@@ -103,7 +119,7 @@ public class MainManagerClient implements MainManager {
 
     private void showApplication() throws HelloIoTException {
 
-        configprops.clear();
+        ConfigProperties configprops = new ConfigProperties();   
         
         configprops.setProperty("mqtt.host", clientlogin.getHost());
         configprops.setProperty("mqtt.port", clientlogin.getPort());
@@ -132,7 +148,7 @@ public class MainManagerClient implements MainManager {
         }
 
         try {
-            configprops.save();
+            configprops.save(() -> new FileOutputStream(configfile));
         } catch (IOException ex) {
             LOGGER.log(Level.WARNING, "Cannot save configuration properties.", ex);
         }
@@ -158,7 +174,10 @@ public class MainManagerClient implements MainManager {
         config.app_exitbutton = false;
         config.app_retryconnection = false;
         
-        clientlogin.clearSensitiveInfo();
+        // Clear sensitive info
+        clientlogin.setUserName("");
+        clientlogin.setPassword("");
+        clientlogin.setTradfriPsk("");
 
         helloiotapp = new HelloIoTApp(config);
 
@@ -238,15 +257,18 @@ public class MainManagerClient implements MainManager {
 
     @Override
     public void construct(StackPane root, Parameters params) {
-        this.configprops = new ConfigPropertiesClient(params);
         this.root = root;
-        try {
-            this.configprops.load();
-        } catch (IOException ex) {
-            // No properties file found, then use defaults and continue
-            LOGGER.log(Level.WARNING, "No properties file found, then use defaults and continue.", ex);
+        List<String> unnamed = params.getUnnamed();
+        if (unnamed.isEmpty()) {
+            configfile = HelloPlatform.getInstance().getFile(CONFIG_PROPERTIES);
+        } else {
+            String param = unnamed.get(0);
+            if (Strings.isNullOrEmpty(param)) {
+                configfile = HelloPlatform.getInstance().getFile(CONFIG_PROPERTIES);
+            } else {
+                configfile = new File(param);
+            }
         }
-
         showLogin();
     }
 

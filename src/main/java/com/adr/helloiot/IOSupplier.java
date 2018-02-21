@@ -1,5 +1,5 @@
 //    HelloIoT is a dashboard creator for MQTT
-//    Copyright (C) 2017 Adrián Romero Corchado.
+//    Copyright (C) 2018 Adrián Romero Corchado.
 //
 //    This file is part of HelloIot.
 //
@@ -19,30 +19,12 @@
 package com.adr.helloiot;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.Collections;
-import java.util.Map;
 
 /**
  *
  * @author adrian
  */
-public class ConfigPropertiesPlatform extends ConfigProperties {
-
-    @Override
-    protected Map<String, String> getParameters() {
-        return Collections.emptyMap();
-    }
-
-    @Override
-    protected InputStream openInputStream() throws IOException {
-        return ConfigPropertiesPlatform.class.getResourceAsStream("/META-INF/.helloiot-config.properties");
-    }
-
-    @Override
-    protected OutputStream openOutputStream() throws IOException {
-        throw new UnsupportedOperationException("Not supported."); // Platform does not allow to save properties
-    }
-    
+@FunctionalInterface
+public interface IOSupplier<T> {
+    T get() throws IOException;
 }

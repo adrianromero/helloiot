@@ -36,9 +36,9 @@ public class MainManagerPlatform implements MainManager {
     @Override
     public void construct(StackPane root, Parameters params) {
 
-        ConfigProperties configprops = new ConfigPropertiesPlatform();
+        ConfigProperties configprops = new ConfigProperties();
         try {
-            configprops.load();
+            configprops.load(() -> getClass().getResourceAsStream("/META-INF/.helloiot-config.properties"));
         } catch (IOException ex) {
             throw new RuntimeException("Configuration file cannot be loaded.", ex);
         }
@@ -47,8 +47,8 @@ public class MainManagerPlatform implements MainManager {
         
         ApplicationConfig config = new ApplicationConfig();
         config.mqtt_url = configprops.getProperty("mqtt.url", "tcp://localhost:1883");
-        config.mqtt_username = namedParams.getOrDefault("mqtt-username", "");
-        config.mqtt_password = namedParams.getOrDefault("mqtt-password", "");
+        config.mqtt_username = namedParams.getOrDefault("mqtt.username", "");
+        config.mqtt_password = namedParams.getOrDefault("mqtt.password", "");
         config.mqtt_clientid = configprops.getProperty("mqtt.clientid", "");
         config.mqtt_connectiontimeout = Integer.parseInt(configprops.getProperty("mqtt.connectiontimeout", Integer.toString(MqttConnectOptions.CONNECTION_TIMEOUT_DEFAULT)));
         config.mqtt_keepaliveinterval = Integer.parseInt(configprops.getProperty("mqtt.keepaliveinterval", Integer.toString(MqttConnectOptions.KEEP_ALIVE_INTERVAL_DEFAULT)));
@@ -57,7 +57,7 @@ public class MainManagerPlatform implements MainManager {
         config.mqtt_cleansession = Boolean.parseBoolean(configprops.getProperty("mqtt.cleansession", Boolean.toString(MqttConnectOptions.CLEAN_SESSION_DEFAULT)));
         
         config.tradfri_host = configprops.getProperty("tradfri.host", "");
-        config.tradfri_psk = namedParams.getOrDefault("tradfri-psk", "");
+        config.tradfri_psk = namedParams.getOrDefault("tradfri.psk", "");
 
         config.topicapp = configprops.getProperty("client.topicapp", "_LOCAL_/mainapp");
         config.topicsys = configprops.getProperty("client.topicsys", "system");
