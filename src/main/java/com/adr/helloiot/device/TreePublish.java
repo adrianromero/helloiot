@@ -28,7 +28,7 @@ import java.util.concurrent.ScheduledFuture;
  */
 public class TreePublish extends Device {
 
-    protected TopicsManager mqttManager;
+    protected TopicsManager manager;
     private ScheduledFuture<?> sf = null;
     private final Object sflock = new Object();
 
@@ -42,8 +42,8 @@ public class TreePublish extends Device {
     }
 
     @Override
-    public void construct(TopicsManager mqttManager) {
-        this.mqttManager = mqttManager;
+    public void construct(TopicsManager manager) {
+        this.manager = manager;
     }
 
     @Override
@@ -52,7 +52,7 @@ public class TreePublish extends Device {
 
     public final void sendMessage(String branch, byte[] message) {
         cancelTimer();
-        mqttManager.publish(getTopicPublish() + "/" + branch, getQos(), message, isRetained());
+        manager.publish(getTopicPublish() + "/" + branch, getQos(), message, isRetained());
     }
 
     public final void sendMessage(String branch, String message) {

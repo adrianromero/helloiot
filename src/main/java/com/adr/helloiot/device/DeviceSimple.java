@@ -75,7 +75,7 @@ public class DeviceSimple extends DeviceBasic implements DeviceSend {
     @Override
     public void sendStatus(byte[] status) {
         cancelTimer();
-        mqttHelper.publish(getTopicPublish(), getQos(), status, isRetained());
+        manager.publish(getTopicPublish(), getQos(), status, isRetained());
     }
     
     @Override

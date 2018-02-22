@@ -100,7 +100,7 @@ public abstract class Device {
     }
 
     // Runtime methods
-    public abstract void construct(TopicsManager mqttHelper);
+    public abstract void construct(TopicsManager manager);
 
     public abstract void destroy();
 }

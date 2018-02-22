@@ -1,5 +1,5 @@
 //    HelloIoT is a dashboard creator for MQTT
-//    Copyright (C) 2017 Adrián Romero Corchado.
+//    Copyright (C) 2017-2018 Adrián Romero Corchado.
 //
 //    This file is part of HelloIot.
 //
@@ -66,7 +66,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
 
-public final class MQTTMainNode {
+public final class MainNode {
 
 //    @FXML private URL url;
     @FXML
@@ -111,7 +111,7 @@ public final class MQTTMainNode {
     private final boolean appclock;
     private final boolean appexitbutton;
     
-    public MQTTMainNode(
+    public MainNode(
             HelloIoTApp app,
             ClipFactory factory,
             boolean appclock,

@@ -85,7 +85,7 @@ public class MainManagerPlatform implements MainManager {
             root.getScene().getWindow().hide();
         });
 
-        root.getChildren().add(helloiotapp.getMQTTNode().getNode());
+        root.getChildren().add(helloiotapp.getMainNode().getNode());
         helloiotapp.startAndConstruct();
     }
 

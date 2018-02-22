@@ -30,8 +30,8 @@ import com.google.common.eventbus.EventBus;
  */
 public abstract class DeviceSubscribe extends Device {
 
-    protected TopicsManager mqttHelper;
-    private TopicsManager.Subscription mqttstatus = null;
+    protected TopicsManager manager;
+    private TopicsManager.Subscription status = null;
 
     private final EventBus statusbus = new EventBus();
 
@@ -43,10 +43,10 @@ public abstract class DeviceSubscribe extends Device {
     }
 
     @Override
-    public final void construct(TopicsManager mqttHelper) {
-        this.mqttHelper = mqttHelper;
-        mqttstatus = mqttHelper.subscribe(getTopic(), getQos());
-        mqttstatus.setConsumer((message) -> {
+    public final void construct(TopicsManager manager) {
+        this.manager = manager;
+        status = manager.subscribe(getTopic(), getQos());
+        status.setConsumer((message) -> {
             consumeMessage(message);
             statusbus.post(message);
         });
@@ -54,8 +54,8 @@ public abstract class DeviceSubscribe extends Device {
 
     @Override
     public void destroy() {
-        mqttHelper.unsubscribe(mqttstatus);
-        mqttstatus = null;
+        manager.unsubscribe(status);
+        status = null;
     }
 
     public void subscribeStatus(Object observer) {

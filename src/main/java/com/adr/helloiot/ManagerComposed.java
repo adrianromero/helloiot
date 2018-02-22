@@ -18,68 +18,66 @@
 //
 package com.adr.helloiot;
 
-import com.adr.helloiot.tradfri.ManagerTradfri;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.function.Consumer;
+import java.util.logging.Logger;
+import javafx.util.Pair;
 
 /**
  *
  * @author adrian
  */
-public class ManagerComposed implements ManagerProtocol {
+public class ManagerComposed implements ManagerProtocol {  
+    
+    private final static Logger LOGGER = Logger.getLogger(ManagerComposed.class.getName());
+    
+    private final List<Pair<String, ManagerProtocol>> managers = new LinkedList<>();
 
-    public final static String LOCAL_PREFIX = "_LOCAL_/";
-    public final static String TRADFRI_PREFIX = "TRÅDFRI/";
-
-    private final ManagerLocal managerlocal;
-    private final ManagerTradfri managertradfri;
-    private final ManagerMQTT managermqtt;
-
-    public ManagerComposed(ManagerLocal managerlocal, ManagerTradfri managertradfri, ManagerMQTT managermqtt) {
-        this.managerlocal = managerlocal;
-        this.managertradfri = managertradfri;
-        this.managermqtt = managermqtt;
+    public void addManagerProtocol(String prefix, ManagerProtocol manager) {
+        managers.add(new Pair<String, ManagerProtocol>(prefix, manager));
     }
 
     @Override
     public void registerTopicsManager(GroupManagers group, Consumer<Throwable> lost) {
-        managerlocal.registerTopicsManager(group, lost);
-        managertradfri.registerTopicsManager(group, lost);
-        managermqtt.registerTopicsManager(group, lost);
+        for (Pair<String, ManagerProtocol> managerpair : managers) {
+            managerpair.getValue().registerTopicsManager(group, lost);
+        }
     }
 
     @Override
     public void registerSubscription(String topic, int qos) {
-        if (topic.startsWith(LOCAL_PREFIX)) {
-            managerlocal.registerSubscription(topic, qos);
-        } else if (topic.startsWith(TRADFRI_PREFIX)) {
-            managertradfri.registerSubscription(topic, qos);
-        } else {
-            managermqtt.registerSubscription(topic, qos);
-        }
+        for (Pair<String, ManagerProtocol> managerpair : managers) {
+            if (topic.startsWith(managerpair.getKey())) {
+                managerpair.getValue().registerSubscription(topic, qos);
+                return;
+            }
+        }        
+        LOGGER.warning(() -> String.format("Topic not registered. It does not exist any topic manager for topic \"%s\"", topic));
     }
 
     @Override
     public void connect() {
-        managermqtt.connect();
-        managertradfri.connect();
-        managerlocal.connect();
+        for (Pair<String, ManagerProtocol> managerpair : managers) {
+            managerpair.getValue().connect();
+        }
     }
 
     @Override
     public void disconnect() {
-        managermqtt.disconnect();
-        managertradfri.disconnect();
-        managerlocal.disconnect();
+        for (Pair<String, ManagerProtocol> managerpair : managers) {
+            managerpair.getValue().disconnect();
+        }
     }
 
     @Override
     public void publish(String topic, int qos, byte[] message, boolean isRetained) {
-        if (topic.startsWith(LOCAL_PREFIX)) {
-            managerlocal.publish(topic, qos, message, isRetained);
-        } else if (topic.startsWith(TRADFRI_PREFIX)) {
-            managertradfri.publish(topic, qos, message, isRetained);
-        } else {
-            managermqtt.publish(topic, qos, message, isRetained);
-        }
+        for (Pair<String, ManagerProtocol> managerpair : managers) {
+            if (topic.startsWith(managerpair.getKey())) {
+                managerpair.getValue().publish(topic, qos, message, isRetained);
+                return;
+            }
+        } 
+        LOGGER.warning(() -> String.format("Message not published. It does not exist any topic manager for topic \"%s\"", topic));
     }
 }

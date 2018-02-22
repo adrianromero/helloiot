@@ -29,8 +29,8 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class TreePublishSubscribe extends TreePublish {
 
-    private TopicsManager.Subscription mqttstatus = null;
-    private final Map<String, byte[]> status = new ConcurrentHashMap<>();
+    private TopicsManager.Subscription status = null;
+    private final Map<String, byte[]> statusmap = new ConcurrentHashMap<>();
 
     public TreePublishSubscribe() {
         super();
@@ -43,25 +43,25 @@ public class TreePublishSubscribe extends TreePublish {
     }
 
     protected void consumeMessage(EventMessage message) {
-        status.put(message.getTopic(), message.getMessage());
+        statusmap.put(message.getTopic(), message.getMessage());
     }
 
     @Override
-    public void construct(TopicsManager mqttManager) {
-        super.construct(mqttManager);
-        mqttstatus = mqttManager.subscribe(getTopic() + "/#", getQos());
-        mqttstatus.setConsumer(this::consumeMessage);
+    public void construct(TopicsManager manager) {
+        super.construct(manager);
+        status = manager.subscribe(getTopic() + "/#", getQos());
+        status.setConsumer(this::consumeMessage);
     }
 
     @Override
     public void destroy() {
         super.destroy();
-        mqttManager.unsubscribe(mqttstatus);
-        mqttstatus = null;
+        manager.unsubscribe(status);
+        status = null;
     }
 
     public byte[] readMessage(String branch) {
-        return status.get(getTopic() + "/" + branch);
+        return statusmap.get(getTopic() + "/" + branch);
     }
 
     public String loadMessage(String branch) {

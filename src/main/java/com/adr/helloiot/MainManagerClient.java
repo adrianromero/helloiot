@@ -236,21 +236,21 @@ public class MainManagerClient implements MainManager {
                 hideApplication();
             });
             helloiotapp.setOnDisconnectAction(showloginevent);
-            helloiotapp.getMQTTNode().setToolbarButton(showloginevent, IconBuilder.create(FontAwesome.FA_SIGN_OUT, 18.0).styleClass("icon-fill").build(), resources.getString("label.disconnect"));
+            helloiotapp.getMainNode().setToolbarButton(showloginevent, IconBuilder.create(FontAwesome.FA_SIGN_OUT, 18.0).styleClass("icon-fill").build(), resources.getString("label.disconnect"));
         } catch (HelloIoTException ex) {
             helloiotapp = null;
             throw ex;
         }               
           
         // ALL the job is done
-        root.getChildren().add(helloiotapp.getMQTTNode().getNode());
+        root.getChildren().add(helloiotapp.getMainNode().getNode());
         helloiotapp.startAndConstruct();
     }
 
     private void hideApplication() {
         if (helloiotapp != null) {
             helloiotapp.stopAndDestroy();
-            root.getChildren().remove(helloiotapp.getMQTTNode().getNode());
+            root.getChildren().remove(helloiotapp.getMainNode().getNode());
             helloiotapp = null;
         }
     }

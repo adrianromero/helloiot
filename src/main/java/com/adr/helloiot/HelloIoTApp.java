@@ -18,6 +18,7 @@
 //
 package com.adr.helloiot;
 
+import com.adr.helloiot.mqtt.ManagerMQTT;
 import com.adr.fonticon.FontAwesome;
 import com.adr.fonticon.IconBuilder;
 import com.adr.hellocommon.dialog.MessageUtils;
@@ -77,8 +78,8 @@ public class HelloIoTApp {
     private final List<Device> appdevices = new ArrayList<>();
 
     private final ApplicationConfig config;
-    private final TopicsManager mqttmanager;
-    private final MQTTMainNode mqttnode;
+    private final TopicsManager topicsmanager;
+    private final MainNode mainnode;
     private final ResourceBundle resources;
 
     private HelloIoTAppPublic apppublic = null;
@@ -100,15 +101,19 @@ public class HelloIoTApp {
         addSystemDevicesUnits(config.topicsys);
         addAppDevicesUnits(config.topicapp);
 
-        // MQTT Manager   
-        mqttmanager = new TopicsManager(
-                new ManagerComposed(
-                        new ManagerLocal(
-                                config.topicapp),
-                        new ManagerTradfri(
-                                config.tradfri_host, 
-                                config.tradfri_psk),
-                        new ManagerMQTT(
+        ManagerComposed manager = new ManagerComposed();
+        manager.addManagerProtocol(
+                "_LOCAL_/",
+                new ManagerLocal(
+                        config.topicapp));
+        manager.addManagerProtocol(
+                "TRÅDFRI/",
+                new ManagerTradfri(
+                                config.tradfri_host,
+                                config.tradfri_psk));
+        manager.addManagerProtocol(
+                "",
+                new ManagerMQTT(
                                 config.mqtt_url,
                                 config.mqtt_username,
                                 config.mqtt_password,
@@ -118,9 +123,11 @@ public class HelloIoTApp {
                                 config.mqtt_defaultqos,
                                 config.mqtt_version,
                                 config.mqtt_cleansession,
-                                null)));
-        
-        mqttmanager.setOnConnectionLost(t -> {
+                                null));
+
+        topicsmanager = new TopicsManager(manager);
+
+        topicsmanager.setOnConnectionLost(t -> {
             LOGGER.log(Level.WARNING, "Connection lost to broker.", t);
             Platform.runLater(() -> {
                 stopUnits();
@@ -130,7 +137,7 @@ public class HelloIoTApp {
 
         styleConnection = config.app_retryconnection ? this::tryConnection : this::oneConnection;
 
-        mqttnode = new MQTTMainNode(
+        mainnode = new MainNode(
                 this,
                 Platform.isSupported(ConditionalFeature.MEDIA) ? new StandardClipFactory() : new SilentClipFactory(),
                 config.app_clock,
@@ -229,14 +236,14 @@ public class HelloIoTApp {
             main.setOrder(0);
             appunitpages.add(main);
         }
-        mqttnode.construct(appunitpages);
+        mainnode.construct(appunitpages);
 
         // Construct All
         for (Unit s : appunits) {
             s.construct(this.getAppPublic());
         }
         for (Device d : appdevices) {
-            d.construct(mqttmanager);
+            d.construct(topicsmanager);
         }
 
         connection();
@@ -253,22 +260,22 @@ public class HelloIoTApp {
 
     private void connection() {
         // connect !!!
-        mqttnode.showConnecting();
+        mainnode.showConnecting();
         styleConnection.run();
     }
 
     private void oneConnection() {
-        Futures.addCallback(mqttmanager.open(), new FutureCallback<Object>() {
+        Futures.addCallback(topicsmanager.open(), new FutureCallback<Object>() {
             @Override
             public void onSuccess(Object v) {
-                mqttnode.hideConnecting();
+                mainnode.hideConnecting();
                 startUnits();
             }
 
             @Override
             public void onFailure(Throwable ex) {
-                mqttnode.hideConnecting();
-                MessageUtils.showException(MessageUtils.getRoot(mqttnode.getNode()), resources.getString("title.errorconnection"), ex.getLocalizedMessage(), ex, ev -> {
+                mainnode.hideConnecting();
+                MessageUtils.showException(MessageUtils.getRoot(mainnode.getNode()), resources.getString("title.errorconnection"), ex.getLocalizedMessage(), ex, ev -> {
                     exitevent.handle(new ActionEvent());
                 });
             }
@@ -277,10 +284,10 @@ public class HelloIoTApp {
 
     private void tryConnection() {
 
-        Futures.addCallback(mqttmanager.open(), new FutureCallback<Object>() {
+        Futures.addCallback(topicsmanager.open(), new FutureCallback<Object>() {
             @Override
             public void onSuccess(Object v) {
-                mqttnode.hideConnecting();
+                mainnode.hideConnecting();
                 startUnits();
             }
 
@@ -295,7 +302,7 @@ public class HelloIoTApp {
 
     public void stopAndDestroy() {
         stopUnits();
-        mqttmanager.close();
+        topicsmanager.close();
 
         // Destroy all units
         for (Unit s : appunits) {
@@ -305,7 +312,7 @@ public class HelloIoTApp {
             d.destroy();
         }
 
-        mqttnode.destroy();
+        mainnode.destroy();
     }
 
     private void startUnits() {
@@ -320,8 +327,8 @@ public class HelloIoTApp {
         }
     }
 
-    public MQTTMainNode getMQTTNode() {
-        return mqttnode;
+    public MainNode getMainNode() {
+        return mainnode;
     }
 
     public DeviceSimple getUnitPage() {

@@ -16,8 +16,10 @@
 //    You should have received a copy of the GNU General Public License
 //    along with HelloIot.  If not, see <http://www.gnu.org/licenses/>.
 //
-package com.adr.helloiot;
+package com.adr.helloiot.mqtt;
 
+import com.adr.helloiot.GroupManagers;
+import com.adr.helloiot.ManagerProtocol;
 import com.google.common.base.Strings;
 import java.util.ArrayList;
 import java.util.List;

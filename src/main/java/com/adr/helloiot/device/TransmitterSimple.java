@@ -27,11 +27,11 @@ import com.adr.helloiot.device.format.MiniVar;
  */
 public class TransmitterSimple extends Device implements DeviceSend {
     
-    protected TopicsManager mqttHelper;
+    protected TopicsManager manager;
     
     @Override
-    public final void construct(TopicsManager mqttManager) {
-        this.mqttHelper = mqttManager;
+    public final void construct(TopicsManager manager) {
+        this.manager = manager;
     }
 
     @Override
@@ -45,7 +45,7 @@ public class TransmitterSimple extends Device implements DeviceSend {
 
     @Override
     public void sendStatus(byte[] event) {
-        mqttHelper.publish(getTopicPublish(), getQos(), event, isRetained());
+        manager.publish(getTopicPublish(), getQos(), event, isRetained());
     }
 
     @Override
