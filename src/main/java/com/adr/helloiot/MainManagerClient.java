@@ -69,11 +69,11 @@ public class MainManagerClient implements MainManager {
 
         clientlogin = new ClientLoginNode();
         clientlogin.setHost(configprops.getProperty("mqtt.host", "localhost"));
-        clientlogin.setPort(configprops.getProperty("mqtt.port", "1883"));
+        clientlogin.setPort(Integer.parseInt(configprops.getProperty("mqtt.port", "1883")));
         clientlogin.setSSL(Boolean.parseBoolean(configprops.getProperty("mqtt.ssl", "false")));
         clientlogin.setWebSockets(Boolean.parseBoolean(configprops.getProperty("mqtt.websockets", "false")));
-        clientlogin.setUserName("");
-        clientlogin.setPassword("");
+        clientlogin.setUserName(configprops.getProperty("mqtt.username", ""));
+        clientlogin.setPassword(configprops.getProperty("mqtt.password", ""));
         clientlogin.setClientID(configprops.getProperty("mqtt.clientid", ""));
         clientlogin.setConnectionTimeout(Integer.parseInt(configprops.getProperty("mqtt.connectiontimeout", Integer.toString(MqttConnectOptions.CONNECTION_TIMEOUT_DEFAULT))));
         clientlogin.setKeepAliveInterval(Integer.parseInt(configprops.getProperty("mqtt.keepaliveinterval", Integer.toString(MqttConnectOptions.KEEP_ALIVE_INTERVAL_DEFAULT))));
@@ -82,7 +82,7 @@ public class MainManagerClient implements MainManager {
         clientlogin.setCleanSession(Boolean.parseBoolean(configprops.getProperty("mqtt.cleansession", Boolean.toString(MqttConnectOptions.CLEAN_SESSION_DEFAULT))));
         
         clientlogin.setTradfriHost(configprops.getProperty("tradfri.host", ""));
-        clientlogin.setTradfriPsk("");
+        clientlogin.setTradfriPsk(configprops.getProperty("tradfri.psk", ""));
         
         clientlogin.setTopicApp(configprops.getProperty("client.topicapp", "_LOCAL_/mainapp"));
         clientlogin.setTopicSys(configprops.getProperty("client.topicsys", "system"));
@@ -119,10 +119,16 @@ public class MainManagerClient implements MainManager {
 
     private void showApplication() throws HelloIoTException {
 
-        ConfigProperties configprops = new ConfigProperties();   
+        ConfigProperties configprops = new ConfigProperties();           
+        try {
+            configprops.load(() -> new FileInputStream(configfile));
+        } catch (IOException ex) {
+            // No properties file found, then use defaults and continue
+            LOGGER.log(Level.WARNING, "No properties file found, then use defaults and continue.", ex);
+        }   
         
         configprops.setProperty("mqtt.host", clientlogin.getHost());
-        configprops.setProperty("mqtt.port", clientlogin.getPort());
+        configprops.setProperty("mqtt.port", Integer.toString(clientlogin.getPort()));
         configprops.setProperty("mqtt.ssl", Boolean.toString(clientlogin.isSSL()));
         configprops.setProperty("mqtt.websockets", Boolean.toString(clientlogin.isWebSockets()));
         configprops.setProperty("mqtt.clientid", clientlogin.getClientID());
@@ -154,7 +160,10 @@ public class MainManagerClient implements MainManager {
         }
 
         ApplicationConfig config = new ApplicationConfig();
-        config.mqtt_url = clientlogin.getURL();
+        config.mqtt_host = clientlogin.getHost();
+        config.mqtt_port = clientlogin.getPort();
+        config.mqtt_ssl = clientlogin.isSSL();
+        config.mqtt_websockets = clientlogin.isWebSockets();
         config.mqtt_username = clientlogin.getUserName();
         config.mqtt_password = clientlogin.getPassword();
         config.mqtt_clientid = clientlogin.getClientID();

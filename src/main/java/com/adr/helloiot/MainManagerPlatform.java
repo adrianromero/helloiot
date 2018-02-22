@@ -46,7 +46,10 @@ public class MainManagerPlatform implements MainManager {
         Map<String, String> namedParams = params.getNamed();
         
         ApplicationConfig config = new ApplicationConfig();
-        config.mqtt_url = configprops.getProperty("mqtt.url", "tcp://localhost:1883");
+        config.mqtt_host = configprops.getProperty("mqtt.host", "localhost");
+        config.mqtt_port = Integer.parseInt(configprops.getProperty("mqtt.port", "1883"));
+        config.mqtt_ssl = Boolean.parseBoolean(configprops.getProperty("mqtt.ssl", "false"));
+        config.mqtt_websockets = Boolean.parseBoolean(configprops.getProperty("mqtt.websockets", "false"));
         config.mqtt_username = namedParams.getOrDefault("mqtt.username", "");
         config.mqtt_password = namedParams.getOrDefault("mqtt.password", "");
         config.mqtt_clientid = configprops.getProperty("mqtt.clientid", "");

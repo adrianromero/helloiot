@@ -64,46 +64,39 @@ public class ClientLoginNode {
     @FXML
     private Button nextbutton;
 
-    @FXML
-    private TextField host;
-    @FXML
-    private TextField port;
-    @FXML
-    private CheckBox ssl;
-    @FXML
-    private CheckBox websockets;
-
-    @FXML
-    private TextField username;
-    @FXML
-    private PasswordField password;
-    @FXML
-    private TextField clientid;
-    @FXML
-    private RadioButton versiondefault;
-    @FXML
-    private RadioButton version311;
-    @FXML
-    private RadioButton version31;
-    @FXML
-    private CheckBox cleansession;
-
-    @FXML
-    private TextField timeout;
-    @FXML
-    private TextField keepalive;
-    @FXML
-    private RadioButton qos0;
-    @FXML
-    private RadioButton qos1;
-    @FXML
-    private RadioButton qos2;
-    @FXML
-    private RadioButton brokernone;
-    @FXML
-    private RadioButton brokermosquitto;
+    @FXML private Label labelhost;
+    @FXML private TextField host;
+    @FXML private Label labelport;
+    @FXML private TextField port;
+    @FXML private CheckBox ssl;
+    @FXML private CheckBox websockets;
+    @FXML private Label labelusername;
+    @FXML private TextField username;
+    @FXML private Label labelpassword;
+    @FXML private PasswordField password;
+    @FXML private Label labelclientid;
+    @FXML private TextField clientid;
+    @FXML private Label labelversion;
+    @FXML private RadioButton versiondefault;
+    @FXML private RadioButton version311;
+    @FXML private RadioButton version31;
+    @FXML private CheckBox cleansession;
+    @FXML private Label labelextendedproperties;
+    @FXML private Label labeltimeout;
+    @FXML private TextField timeout;
+    @FXML private Label labelkeepalive;
+    @FXML private TextField keepalive;
+    @FXML private Label labeldefaultqos;
+    @FXML private RadioButton qos0;
+    @FXML private RadioButton qos1;
+    @FXML private RadioButton qos2;
+    @FXML private Label labelbrokerpane;
+    @FXML private RadioButton brokernone;
+    @FXML private RadioButton brokermosquitto;
     
+    @FXML private Label labeltradfrihost;
     @FXML private TextField tradfrihost;
+    @FXML private Label labeltradfripsk;
     @FXML private TextField tradfripsk;
 
     @FXML
@@ -142,6 +135,11 @@ public class ClientLoginNode {
         removedeviceunit.setGraphic(IconBuilder.create(FontAwesome.FA_MINUS, 18.0).styleClass("icon-fill").build());
         updeviceunit.setGraphic(IconBuilder.create(FontAwesome.FA_CHEVRON_UP, 18.0).styleClass("icon-fill").build());
         downdeviceunit.setGraphic(IconBuilder.create(FontAwesome.FA_CHEVRON_DOWN, 18.0).styleClass("icon-fill").build());
+        
+        host.textProperty().addListener((ov, old_val, new_val) ->  disableMQTT(new_val.isEmpty()));
+        disableMQTT(host.getText().isEmpty());
+        tradfrihost.textProperty().addListener((ov, old_val, new_val) ->  disableTradfri(new_val.isEmpty()));
+        disableTradfri(tradfrihost.getText().isEmpty());
 
         edittype.setItems(FXCollections.observableArrayList("Publication/Subscription", "Subscription", "Publication", "Code"));
         edittype.getSelectionModel().clearSelection();
@@ -171,6 +169,41 @@ public class ClientLoginNode {
         updateDevicesUnitsList();
 
         Platform.runLater(host::requestFocus);
+    }
+    
+    private void disableMQTT(boolean value) {
+        labelport.setDisable(value);
+        port.setDisable(value);
+        ssl.setDisable(value);
+        websockets.setDisable(value);
+        labelusername.setDisable(value);
+        username.setDisable(value);
+        labelpassword.setDisable(value);
+        password.setDisable(value);
+        labelclientid.setDisable(value);
+        clientid.setDisable(value);
+        cleansession.setDisable(value);
+        labelversion.setDisable(value);
+        versiondefault.setDisable(value);
+        version31.setDisable(value);
+        version311.setDisable(value);
+        labelextendedproperties.setDisable(value);
+        labeltimeout.setDisable(value);
+        timeout.setDisable(value);
+        labelkeepalive.setDisable(value);
+        keepalive.setDisable(value);
+        labeldefaultqos.setDisable(value);
+        qos0.setDisable(value);
+        qos1.setDisable(value);
+        qos2.setDisable(value);
+        labelbrokerpane.setDisable(value);
+        brokernone.setDisable(value);
+        brokermosquitto.setDisable(value);
+    }
+    
+    private void disableTradfri(boolean value) {
+        labeltradfripsk.setDisable(value);
+        tradfripsk.setDisable(value);
     }
     
     private void constructSampleButtons() {
@@ -309,12 +342,12 @@ public class ClientLoginNode {
         host.setText(value);
     }
 
-    public String getPort() {
-        return port.getText();
+    public int getPort() {
+        return Integer.parseInt(port.getText());
     }
 
-    public void setPort(String value) {
-        port.setText(value);
+    public void setPort(int value) {
+        port.setText(Integer.toString(value));
     }
 
     public boolean isSSL() {
@@ -331,13 +364,6 @@ public class ClientLoginNode {
 
     public void setWebSockets(boolean value) {
         websockets.setSelected(value);
-    }
-
-    public String getURL() {
-        String protocol = websockets.isSelected()
-                ? (ssl.isSelected() ? "wss" : "ws")
-                : (ssl.isSelected() ? "ssl" : "tcp");
-        return protocol + "://" + host.getText() + ":" + port.getText();
     }
 
     public String getUserName() {

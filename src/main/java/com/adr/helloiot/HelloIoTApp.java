@@ -33,6 +33,7 @@ import com.adr.helloiot.media.StandardClipFactory;
 import com.adr.helloiot.tradfri.ManagerTradfri;
 import com.adr.helloiot.unit.UnitPage;
 import com.adr.helloiot.util.CompletableAsync;
+import com.google.common.base.Strings;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
 import java.io.File;
@@ -106,24 +107,32 @@ public class HelloIoTApp {
                 "_LOCAL_/",
                 new ManagerLocal(
                         config.topicapp));
-        manager.addManagerProtocol(
-                "TRÅDFRI/",
-                new ManagerTradfri(
-                                config.tradfri_host,
-                                config.tradfri_psk));
-        manager.addManagerProtocol(
-                "",
-                new ManagerMQTT(
-                                config.mqtt_url,
-                                config.mqtt_username,
-                                config.mqtt_password,
-                                config.mqtt_clientid,
-                                config.mqtt_connectiontimeout,
-                                config.mqtt_keepaliveinterval,
-                                config.mqtt_defaultqos,
-                                config.mqtt_version,
-                                config.mqtt_cleansession,
-                                null));
+        if (!config.tradfri_host.isEmpty()) {
+            manager.addManagerProtocol(
+                    "TRÅDFRI/",
+                    new ManagerTradfri(
+                                    config.tradfri_host,
+                                    config.tradfri_psk));
+        }
+        if (!config.mqtt_host.isEmpty()) {
+            String protocol = config.mqtt_websockets
+                    ? (config.mqtt_ssl ? "wss" : "ws")
+                    : (config.mqtt_ssl ? "ssl" : "tcp");
+            String mqtturl = protocol + "://" + config.mqtt_host  + ":" + Integer.toString(config.mqtt_port);     
+            manager.addManagerProtocol(
+                    "",
+                    new ManagerMQTT(
+                                    mqtturl,
+                                    config.mqtt_username,
+                                    config.mqtt_password,
+                                    config.mqtt_clientid,
+                                    config.mqtt_connectiontimeout,
+                                    config.mqtt_keepaliveinterval,
+                                    config.mqtt_defaultqos,
+                                    config.mqtt_version,
+                                    config.mqtt_cleansession,
+                                    null));
+        }
 
         topicsmanager = new TopicsManager(manager);
 

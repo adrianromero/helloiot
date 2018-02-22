@@ -29,8 +29,11 @@ public class ApplicationConfig {
     public boolean app_exitbutton = false;
     public boolean app_clock = true;
     public boolean app_retryconnection = false;
-
-    public String mqtt_url = "tcp://localhost:1883";
+    
+    public String mqtt_host = "localhost";
+    public int mqtt_port = 1883;
+    public boolean mqtt_ssl = false;
+    public boolean mqtt_websockets = false;
     public String mqtt_username = "";
     public String mqtt_password = "";
     public String mqtt_clientid = "";

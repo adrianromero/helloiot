@@ -63,8 +63,8 @@ public abstract class MainApp extends Application {
         // Locale.setDefault(Locale.forLanguageTag("en-US"));     
         // Main, dark or standard
 //        return "/com/adr/helloiot/styles/empty";
-        return "/com/adr/helloiot/styles/main";
-//        return "/com/adr/helloiot/styles/main-dark";        
+//        return "/com/adr/helloiot/styles/main";
+        return "/com/adr/helloiot/styles/main-dark";        
     }
 
     @Override
