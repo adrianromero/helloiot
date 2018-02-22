@@ -82,9 +82,9 @@
                           </rowConstraints>
                            <children>
                               <Label maxWidth="1.7976931348623157E308" styleClass="formsection" text="%label.mqttbroker" GridPane.columnSpan="2147483647" />
-                              <Label text="%label.host" GridPane.rowIndex="1" />
+                              <Label fx:id="labelhost" text="%label.host" GridPane.rowIndex="1" />
                               <TextField fx:id="host" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                              <Label text="%label.version" GridPane.rowIndex="4" />
+                              <Label fx:id="labelversion" text="%label.version" GridPane.rowIndex="4" />
                               <HBox alignment="CENTER_LEFT" spacing="10.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="4">
                                  <children>
                                     <RadioButton fx:id="versiondefault" mnemonicParsing="false" selected="true" text="%label.default">
@@ -100,17 +100,17 @@
                                     </RadioButton>
                                  </children>
                               </HBox>
-                              <Label text="%label.username" GridPane.rowIndex="2" />
+                              <Label fx:id="labelusername" text="%label.username" GridPane.rowIndex="2" />
                               <TextField fx:id="username" prefWidth="171.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                               <CheckBox fx:id="cleansession" mnemonicParsing="false" selected="true" text="%label.cleansession" GridPane.columnIndex="2" GridPane.columnSpan="2147483647" GridPane.rowIndex="3" />
-                              <Label text="%label.password" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                              <Label fx:id="labelpassword" text="%label.password" GridPane.columnIndex="2" GridPane.rowIndex="2" />
                               <PasswordField fx:id="password" prefWidth="171.0" GridPane.columnIndex="3" GridPane.rowIndex="2" />
-                              <Label maxWidth="1.7976931348623157E308" styleClass="formsubsection" text="%label.extendedproperties" GridPane.columnSpan="2147483647" GridPane.rowIndex="5" />
-                              <Label text="%label.timeout" GridPane.rowIndex="6" />
+                              <Label fx:id="labelextendedproperties" maxWidth="1.7976931348623157E308" styleClass="formsubsection" text="%label.extendedproperties" GridPane.columnSpan="2147483647" GridPane.rowIndex="5" />
+                              <Label fx:id="labeltimeout" text="%label.timeout" GridPane.rowIndex="6" />
                               <TextField fx:id="timeout" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-                              <Label text="%label.keepalive" GridPane.columnIndex="2" GridPane.rowIndex="6" />
+                              <Label fx:id="labelkeepalive" text="%label.keepalive" GridPane.columnIndex="2" GridPane.rowIndex="6" />
                               <TextField fx:id="keepalive" GridPane.columnIndex="3" GridPane.rowIndex="6" />
-                              <Label text="%label.defaultqos" GridPane.rowIndex="7" />
+                              <Label fx:id="labeldefaultqos" text="%label.defaultqos" GridPane.rowIndex="7" />
                               <HBox alignment="CENTER_LEFT" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="7">
                                  <children>
                                     <RadioButton fx:id="qos0" mnemonicParsing="false" selected="true" text="0">
@@ -122,7 +122,7 @@
                                     <RadioButton fx:id="qos2" mnemonicParsing="false" text="2" toggleGroup="$qos" />
                                  </children>
                               </HBox>
-                              <Label text="%label.brokerpane" GridPane.rowIndex="8" />
+                              <Label fx:id="labelbrokerpane" text="%label.brokerpane" GridPane.rowIndex="8" />
                               <HBox alignment="CENTER_LEFT" spacing="10.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="8" GridPane.valignment="BASELINE">
                                  <children>
                                     <RadioButton fx:id="brokernone" mnemonicParsing="false" selected="true" text="%label.brokernone">
@@ -133,20 +133,20 @@
                                     <RadioButton fx:id="brokermosquitto" mnemonicParsing="false" text="%label.brokermosquitto" toggleGroup="$broker" />
                                  </children>
                               </HBox>
-                              <Label text="%label.clientid" GridPane.rowIndex="3" />
+                              <Label fx:id="labelclientid" text="%label.clientid" GridPane.rowIndex="3" />
                               <TextField fx:id="clientid" promptText="%label.generateid" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                               <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="2" GridPane.columnSpan="3" GridPane.rowIndex="1">
                                  <children>
-                                    <Label text="%label.port" />
+                                    <Label fx:id="labelport" text="%label.port" />
                                     <TextField fx:id="port" prefWidth="60.0" />
                                     <CheckBox fx:id="ssl" mnemonicParsing="false" text="%label.ssl" />
                                     <CheckBox fx:id="websockets" mnemonicParsing="false" text="%label.websockets" />
                                  </children>
                               </HBox>
                               <Label maxWidth="1.7976931348623157E308" styleClass="formsection" text="%label.tradfribridge" GridPane.columnSpan="2147483647" GridPane.rowIndex="9" />
-                              <Label text="%label.host" GridPane.rowIndex="10" />
+                              <Label fx:id="labeltradfihost" text="%label.host" GridPane.rowIndex="10" />
                               <TextField fx:id="tradfrihost" GridPane.columnIndex="1" GridPane.rowIndex="10" />
-                              <Label text="%label.psk" GridPane.columnIndex="2" GridPane.rowIndex="10" />
+                              <Label fx:id="labeltradfripsk" text="%label.psk" GridPane.columnIndex="2" GridPane.rowIndex="10" />
                               <TextField fx:id="tradfripsk" GridPane.columnIndex="3" GridPane.rowIndex="10" />
                            </children>
                            <padding>
