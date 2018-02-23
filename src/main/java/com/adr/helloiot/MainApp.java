@@ -1,5 +1,5 @@
 //    HelloIoT is a dashboard creator for MQTT
-//    Copyright (C) 2017 Adrián Romero Corchado.
+//    Copyright (C) 2017-2018 Adrián Romero Corchado.
 //
 //    This file is part of HelloIot.
 //
@@ -41,7 +41,7 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 public abstract class MainApp extends Application {
-    
+
     private final static String APP_PROPERTIES = ".helloiot-app.properties";
 
     private MainManager manager;
@@ -64,7 +64,7 @@ public abstract class MainApp extends Application {
         // Main, dark or standard
 //        return "/com/adr/helloiot/styles/empty";
 //        return "/com/adr/helloiot/styles/main";
-        return "/com/adr/helloiot/styles/main-dark";        
+        return "/com/adr/helloiot/styles/main-dark";
     }
 
     @Override
@@ -78,22 +78,20 @@ public abstract class MainApp extends Application {
         this.stage = stage;
         StackPane root = new StackPane();
         root.getStyleClass().add("maincontainer");
-        root.getStylesheets().add(getClass().getResource(styleroot + ".css").toExternalForm());
-        root.getStylesheets().add(getClass().getResource(stylename + ".css").toExternalForm());
-        
+
         MessageUtils.setDialogRoot(root, true);
-        
+
         // Construct root graph scene
-        Scene scene;       
+        Scene scene;
         if (HelloPlatform.getInstance().isFullScreen() || isAppFullScreen()) {
             root.getStylesheets().add(getClass().getResource("/com/adr/helloiot/styles/fullscreen.css").toExternalForm());
             Rectangle2D dimension = Screen.getPrimary().getVisualBounds();
             scene = new Scene(root, dimension.getWidth(), dimension.getHeight());
             scene.setCursor(Cursor.NONE);
-            
+
         } else {
             root.getStylesheets().add(getClass().getResource(stylename + ".hover.css").toExternalForm());
-             // Dimension properties only managed if not fullscreen
+            // Dimension properties only managed if not fullscreen
             scene = new Scene(root);
             boolean maximized = Boolean.parseBoolean(appproperties.getProperty("window.maximized"));
             if (maximized) {
@@ -102,9 +100,14 @@ public abstract class MainApp extends Application {
                 stage.setWidth(Double.parseDouble(appproperties.getProperty("window.width")));
                 stage.setHeight(Double.parseDouble(appproperties.getProperty("window.height")));
             }
-       }
+        }
+
+        // hover pseudoclass definiton must go before armed pseudoclass definition
+        root.getStylesheets().add(getClass().getResource(styleroot + ".css").toExternalForm());
+        root.getStylesheets().add(getClass().getResource(stylename + ".css").toExternalForm());
+
         stage.setScene(scene);
-        
+
         // hack to avoid slider to get the focus.
         scene.focusOwnerProperty().addListener((ObservableValue<? extends Node> observable, Node oldValue, Node newValue) -> {
             if (newValue != null && (newValue instanceof Slider || newValue instanceof ScrollPane)) {
