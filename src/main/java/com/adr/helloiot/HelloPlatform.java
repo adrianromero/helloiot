@@ -20,6 +20,7 @@ package com.adr.helloiot;
 
 import com.adr.helloiot.scripting.Script;
 import java.io.File;
+import java.lang.reflect.InvocationTargetException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -28,35 +29,42 @@ import java.util.logging.Logger;
  * @author adrian
  */
 public abstract class HelloPlatform {
-    
+
     private static HelloPlatform instance = null;
-    
+
     private static void initInstance() {
-        
+
         String name;
         if ("android".equals(System.getProperty("javafx.platform"))) {
             name = "com.adr.helloiot.HelloPlatformAndroid";
         } else {
             name = "com.adr.helloiot.HelloPlatformDefault";
-        }   
-         
+        }
+
         try {
-            instance = (HelloPlatform) Class.forName(name).newInstance();
-        } catch (InstantiationException | IllegalAccessException | ClassNotFoundException ex) {
+            instance = (HelloPlatform) Class.forName(name).getDeclaredConstructor().newInstance();
+        } catch (InvocationTargetException
+                | IllegalArgumentException
+                | NoSuchMethodException
+                | SecurityException
+                | InstantiationException
+                | IllegalAccessException
+                | ClassNotFoundException ex) {
             Logger.getLogger(HelloPlatform.class.getName()).log(Level.SEVERE, null, ex);
             throw new RuntimeException(ex);
         }
     }
-    
-    
+
     public static final HelloPlatform getInstance() {
         if (instance == null) {
             initInstance();
         }
         return instance;
     }
-    
+
     public abstract File getFile(String file);
+
     public abstract boolean isFullScreen();
+
     public abstract Script getNewScript();
 }
