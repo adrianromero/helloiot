@@ -76,20 +76,10 @@ public class ManagerTradfri implements ManagerProtocol {
     private final Map<String, Integer> name2id = new HashMap<>();
     private final List<CoapObserveRelation> watching = new ArrayList<>();
     
-    public ManagerTradfri(String ip, String psk) {
-        
+    public ManagerTradfri(String ip, String psk) {        
         // Create COAP connection
         this.coapIP = ip;
         this.psk = psk;
-
-//        // Reconnect
-//        ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
-//        Runnable command = () -> {
-//            for (CoapObserveRelation rel : watching) {
-//                rel.reregister();
-//            }
-//        };
-//        executor.scheduleAtFixedRate(command, 120, 120, TimeUnit.SECONDS);
     } 
 
     @Override
@@ -110,17 +100,16 @@ public class ManagerTradfri implements ManagerProtocol {
         DTLSConnector dtlsConnector = new DTLSConnector(builder.build());
         coapEndPoint = new CoapEndpoint(dtlsConnector, NetworkConfig.getStandard());  
         
-        //bulbs
         try {
             String response = requestCOAP(TradfriConstants.DEVICES);
             JsonArray devices = gsonparser.parse(response).getAsJsonArray();
             for (JsonElement d : devices) {
-                this.subscribeCOAP(DEVICES + "/" + d.getAsInt());
+                subscribeCOAP(DEVICES + "/" + d.getAsInt());
             }
             response = requestCOAP(GROUPS);
             JsonArray groups = gsonparser.parse(response).getAsJsonArray();
             for (JsonElement g : groups) {
-                this.subscribeCOAP(GROUPS + "/" + g.getAsInt());
+                subscribeCOAP(GROUPS + "/" + g.getAsInt());
             }
         } catch (TradfriException | JsonParseException ex) {
             throw new RuntimeException(ex.getLocalizedMessage(), ex);
@@ -138,19 +127,25 @@ public class ManagerTradfri implements ManagerProtocol {
     @Override
     public void publish(String topic, int qos, byte[] message, boolean isRetained) {
         
-        LOGGER.log(Level.FINE, "Receiving MQTT: {0}, {1}", new Object[]{topic, message});
-
-        String payload = new String(message, StandardCharsets.UTF_8);
+        LOGGER.log(Level.FINE, "Publishing: {0}, {1}", new Object[]{topic, message});
+        
         String[] parts = topic.split("/");
-
+        if (parts.length < 4) {
+            LOGGER.log(Level.WARNING, "Topic not valid for Tradfri: {0}", topic);
+            return;
+        }
+        
         String type = parts[1];
-        String command = parts[4];
-        Integer id = name2id.get(parts[2]);
+        String device = parts[2];
+        String command = parts[3];
+        
+        Integer id =  name2id.get(device);
         if (id == null) {
             LOGGER.log(Level.WARNING, "ID not registered for name: {0}", parts[2]);
             return;
         }
-
+        
+        String payload = new String(message, StandardCharsets.UTF_8);
         JsonObject json = new JsonObject();
         if ("bulb".equals(type)) { // single bulb
             JsonObject settings = new JsonObject();
@@ -178,16 +173,24 @@ public class ManagerTradfri implements ManagerProtocol {
                 }
             } else if (command.equals("on")) {
                 settings.addProperty(ONOFF, payload.equals("0") ? 0 : 1);
+            } else {
+                LOGGER.log(Level.WARNING, "Command not supported: {0}", command);
+                return;                  
             }
             sendCOAP(DEVICES + "/" + id, json.toString());
-        } else { // whole group
+        } else if ("group".equals(type)) { // whole group
             if (command.equals("dim")) {
                 json.addProperty(DIMMER, parseDim(payload));
                 json.addProperty(TRANSITION_TIME, 3);
-            } else {
+            } else if (command.equals("on")) {
                 json.addProperty(ONOFF, payload.equals("0") ? 0 : 1);
+            } else {
+                LOGGER.log(Level.WARNING, "Command not supported: {0}", command);
+                return;                
             }
             sendCOAP(GROUPS + "/" + id, json.toString());
+        } else {
+            LOGGER.log(Level.WARNING, "Type not supported: {0}", type);          
         }        
     }
     
@@ -201,7 +204,6 @@ public class ManagerTradfri implements ManagerProtocol {
             if (response == null || !response.isSuccess()) {
                 LOGGER.log(Level.WARNING, "COAP SEND error: {0}", response.getResponseText());
             }
-            System.out.println(response.getResponseText());
             client.shutdown();
         } catch (URISyntaxException ex) {
             LOGGER.log(Level.WARNING, "COAP SEND error: {0}", ex.getMessage());
@@ -216,10 +218,9 @@ public class ManagerTradfri implements ManagerProtocol {
             CoapResponse response = client.get();
             if (response == null || !response.isSuccess()) {
                 LOGGER.log(Level.WARNING, "COAP GET error: Response error.");
-                throw new TradfriException("Connection to gateway failed. Check IP address or increase the ACK_TIMEOUT in the Californium.properties file");
+                throw new TradfriException("Connection to gateway failed. Check host and PSK.");
             }
             String result = response.getResponseText();
-            System.out.println(response.getResponseText());
             client.shutdown();
             return result;
         } catch (URISyntaxException ex) {
@@ -257,7 +258,17 @@ public class ManagerTradfri implements ManagerProtocol {
         LOGGER.log(Level.FINE, "Receiving COAP: {0}, {1}", new Object[]{topic, payload});
 
         JsonObject json = gsonparser.parse(payload).getAsJsonObject();
-        //TODO change this test to something based on 5750 values
+        
+        String name = json.get(NAME).getAsString();
+        boolean register;
+        if (!name2id.containsKey(name)) {
+            name2id.put(name, json.get(INSTANCE_ID).getAsInt());
+            register = true;                    
+        } else {
+            register = false;
+        }
+
+        //TODO change this test to something based on TYPE(5750) values
         // 2 = light?
         // 0 = remote/dimmer?
         if (json.has(LIGHT) && (json.has(TYPE) && json.get(TYPE).getAsInt() == 2)) { // single bulb
@@ -269,24 +280,32 @@ public class ManagerTradfri implements ManagerProtocol {
                 return; // skip this lamp for now
             }
 
-            String name = json.get(NAME).getAsString();
-            name2id.put(name, json.get(INSTANCE_ID).getAsInt());
-System.out.println("light " + name);
-System.out.println("light " + payload);
-            group.distributeMessage("TRÅDFRI/bulb/" + name + "/state/on", Integer.toString(light.get(ONOFF).getAsInt()).getBytes(StandardCharsets.UTF_8));
+            if (register) {
+                group.distributeMessage("TRÅDFRI/registry", ("TRÅDFRI/bulb/" + name + "/on").getBytes(StandardCharsets.UTF_8));
+            }            
+            group.distributeMessage("TRÅDFRI/bulb/" + name + "/on", Integer.toString(light.get(ONOFF).getAsInt()).getBytes(StandardCharsets.UTF_8));
             if (light.has(DIMMER)) {
-                group.distributeMessage("TRÅDFRI/bulb/" + name + "/state/dim", Integer.toString(light.get(DIMMER).getAsInt()).getBytes(StandardCharsets.UTF_8));
+                if (register) {
+                    group.distributeMessage("TRÅDFRI/registry", ("TRÅDFRI/bulb/" + name + "/dim").getBytes(StandardCharsets.UTF_8));
+                }                
+                group.distributeMessage("TRÅDFRI/bulb/" + name + "/dim", Integer.toString(light.get(DIMMER).getAsInt()).getBytes(StandardCharsets.UTF_8));
             }
             if (light.has(COLOR)) {
-                group.distributeMessage("TRÅDFRI/bulb/" + name + "/state/temperature",  light.get(COLOR).getAsString().getBytes(StandardCharsets.UTF_8));
+                if (register) {
+                    group.distributeMessage("TRÅDFRI/registry", ("TRÅDFRI/bulb/" + name + "/temperature").getBytes(StandardCharsets.UTF_8));
+                }                
+                group.distributeMessage("TRÅDFRI/bulb/" + name + "/temperature",  light.get(COLOR).getAsString().getBytes(StandardCharsets.UTF_8));
             }
         } else if (json.has(HS_ACCESSORY_LINK)) { // groups have this entry
-            String name = json.get(NAME).getAsString();
-            name2id.put(json.get(NAME).getAsString(), json.get(INSTANCE_ID).getAsInt());
-
-            group.distributeMessage("TRÅDFRI/room/" + name + "/state/on",  Integer.toString(json.get(ONOFF).getAsInt()).getBytes(StandardCharsets.UTF_8));
+            if (register) {
+                group.distributeMessage("TRÅDFRI/registry", ("TRÅDFRI/group/" + name + "/on").getBytes(StandardCharsets.UTF_8));
+            }            
+            group.distributeMessage("TRÅDFRI/group/" + name + "/on",  Integer.toString(json.get(ONOFF).getAsInt()).getBytes(StandardCharsets.UTF_8));
             if (json.has(DIMMER)) {
-                group.distributeMessage("TRÅDFRI/room/" + name + "/state/dim",  Integer.toString(json.get(DIMMER).getAsInt()).getBytes(StandardCharsets.UTF_8));
+                if (register) {
+                    group.distributeMessage("TRÅDFRI/registry", ("TRÅDFRI/group/" + name + "/dim").getBytes(StandardCharsets.UTF_8));
+                }                  
+                group.distributeMessage("TRÅDFRI/group/" + name + "/dim",  Integer.toString(json.get(DIMMER).getAsInt()).getBytes(StandardCharsets.UTF_8));
             }
         } else {
             LOGGER.log(Level.WARNING, "COAP reponse not supported: {0}", json.toString());
