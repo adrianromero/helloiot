@@ -35,7 +35,6 @@ import java.util.Map;
 import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.eclipse.californium.core.CaliforniumLogger;
 import org.eclipse.californium.core.CoapClient;
 import org.eclipse.californium.core.CoapHandler;
 import org.eclipse.californium.core.CoapObserveRelation;
@@ -44,7 +43,6 @@ import org.eclipse.californium.core.coap.MediaTypeRegistry;
 import org.eclipse.californium.core.network.CoapEndpoint;
 import org.eclipse.californium.core.network.config.NetworkConfig;
 import org.eclipse.californium.scandium.DTLSConnector;
-import org.eclipse.californium.scandium.ScandiumLogger;
 import org.eclipse.californium.scandium.config.DtlsConnectorConfig;
 import org.eclipse.californium.scandium.dtls.pskstore.StaticPskStore;
 
@@ -58,12 +56,12 @@ public class ManagerTradfri implements ManagerProtocol {
     private final static Logger LOGGER = Logger.getLogger(ManagerTradfri.class.getName());
     private final JsonParser gsonparser = new JsonParser();
        
-    static {
-        CaliforniumLogger.disableLogging();
-        ScandiumLogger.disable();
-//		ScandiumLogger.initialize();
-//		ScandiumLogger.setLevel(Level.FINE);
-    }
+//    static {
+//        CaliforniumLogger.disableLogging();
+//        ScandiumLogger.disable();
+////		ScandiumLogger.initialize();
+////		ScandiumLogger.setLevel(Level.FINE);
+//    }
     
     // Manager
     private GroupManagers group;   
@@ -95,10 +93,15 @@ public class ManagerTradfri implements ManagerProtocol {
     
     @Override
     public void connect() {
-        DtlsConnectorConfig.Builder builder = new DtlsConnectorConfig.Builder(new InetSocketAddress(0));
+        
+        DtlsConnectorConfig.Builder builder = new DtlsConnectorConfig.Builder();
+        builder.setAddress(new InetSocketAddress(0));
         builder.setPskStore(new StaticPskStore("", psk.getBytes()));
         DTLSConnector dtlsConnector = new DTLSConnector(builder.build());
-        coapEndPoint = new CoapEndpoint(dtlsConnector, NetworkConfig.getStandard());  
+        CoapEndpoint.CoapEndpointBuilder coapbuilder =new CoapEndpoint.CoapEndpointBuilder();
+        coapbuilder.setConnector(dtlsConnector);
+        coapbuilder.setNetworkConfig(NetworkConfig.getStandard());
+        coapEndPoint = coapbuilder.build();
         
         try {
             String response = requestCOAP(TradfriConstants.DEVICES);

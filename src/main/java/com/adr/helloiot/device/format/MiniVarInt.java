@@ -1,5 +1,5 @@
 //    HelloIoT is a dashboard creator for MQTT
-//    Copyright (C) 2017 Adrián Romero Corchado.
+//    Copyright (C) 2018 Adrián Romero Corchado.
 //
 //    This file is part of HelloIot.
 //
@@ -22,10 +22,38 @@ package com.adr.helloiot.device.format;
  *
  * @author adrian
  */
-public interface MiniVar {
-    public boolean isEmpty();
-    public String asString();
-    public int asInt();
-    public double asDouble();
-    public boolean asBoolean();
+public class MiniVarInt implements MiniVar {
+
+    public final static MiniVar NULL = new MiniVarInt(null);
+    
+    public final Integer value;
+    
+    public MiniVarInt(Integer value) {
+        this.value = value;
+    }
+
+    @Override
+    public String asString() {
+        return value == null ? "" : value.toString();
+    }
+
+    @Override
+    public double asDouble() {
+        return value == null ? 0.0 : value.doubleValue();
+    }
+    
+    @Override
+    public int asInt() {
+        return value == null ? 0 : value;
+    }    
+
+    @Override
+    public boolean asBoolean() {
+        throw new UnsupportedOperationException("Not supported.");
+    }
+    
+    @Override
+    public boolean isEmpty() {
+        return value == null;
+    }        
 }

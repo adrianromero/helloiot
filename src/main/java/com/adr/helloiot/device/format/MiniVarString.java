@@ -41,6 +41,11 @@ public class MiniVarString implements MiniVar {
     public double asDouble() {
         throw new UnsupportedOperationException("Not supported.");
     }
+    
+    @Override
+    public int asInt() {
+        throw new UnsupportedOperationException("Not supported.");
+    }     
 
     @Override
     public boolean asBoolean() {
@@ -49,6 +54,6 @@ public class MiniVarString implements MiniVar {
     
     @Override
     public boolean isEmpty() {
-        return value == null;
+        return value == null || value.isEmpty();
     }        
 }

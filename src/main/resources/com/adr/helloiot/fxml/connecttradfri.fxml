@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<GridPane fx:id="root" hgap="10.0" vgap="10.0" xmlns="http://javafx.com/javafx/8.0.161" xmlns:fx="http://javafx.com/fxml/1">
+   <columnConstraints>
+      <ColumnConstraints minWidth="150.0" prefWidth="150.0" />
+      <ColumnConstraints minWidth="200.0" prefWidth="200.0" />
+      <ColumnConstraints minWidth="150.0" prefWidth="150.0" />
+      <ColumnConstraints minWidth="200.0" prefWidth="200.0" />
+      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="10.0" />
+   </columnConstraints>
+   <rowConstraints>
+      <RowConstraints minHeight="10.0" prefHeight="30.0" />
+      <RowConstraints minHeight="10.0" prefHeight="30.0" />
+   </rowConstraints>
+   <children>
+      <Label maxWidth="1.7976931348623157E308" styleClass="formsection" text="%label.tradfribridge" GridPane.columnSpan="2147483647" />
+      <Label fx:id="labeltradfihost" text="%label.host" GridPane.rowIndex="1" />
+      <TextField fx:id="tradfrihost" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+      <Label fx:id="labeltradfripsk" text="%label.psk" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+      <TextField fx:id="tradfripsk" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+   </children>
+   <padding>
+      <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+   </padding>
+</GridPane>

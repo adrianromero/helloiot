@@ -43,6 +43,11 @@ public class MiniVarBoolean implements MiniVar {
     public double asDouble() {
         throw new UnsupportedOperationException("Not supported.");
     }
+    
+    @Override
+    public int asInt() {
+        throw new UnsupportedOperationException("Not supported.");
+    }
 
     @Override
     public boolean asBoolean() {

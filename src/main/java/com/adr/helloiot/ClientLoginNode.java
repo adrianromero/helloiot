@@ -27,7 +27,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.application.Platform;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -41,14 +40,11 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.RadioButton;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextField;
 import javafx.scene.control.ToolBar;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
-import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
+import javafx.scene.layout.VBox;
 
 /**
  *
@@ -56,51 +52,11 @@ import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
  */
 public class ClientLoginNode {
 
-    @FXML
-    private ResourceBundle resources;
-
-    @FXML
-    private BorderPane rootpane;
-    @FXML
-    private Button nextbutton;
-
-    @FXML private Label labelhost;
-    @FXML private TextField host;
-    @FXML private Label labelport;
-    @FXML private TextField port;
-    @FXML private CheckBox ssl;
-    @FXML private CheckBox websockets;
-    @FXML private Label labelusername;
-    @FXML private TextField username;
-    @FXML private Label labelpassword;
-    @FXML private PasswordField password;
-    @FXML private Label labelclientid;
-    @FXML private TextField clientid;
-    @FXML private Label labelversion;
-    @FXML private RadioButton versiondefault;
-    @FXML private RadioButton version311;
-    @FXML private RadioButton version31;
-    @FXML private CheckBox cleansession;
-    @FXML private Label labelextendedproperties;
-    @FXML private Label labeltimeout;
-    @FXML private TextField timeout;
-    @FXML private Label labelkeepalive;
-    @FXML private TextField keepalive;
-    @FXML private Label labeldefaultqos;
-    @FXML private RadioButton qos0;
-    @FXML private RadioButton qos1;
-    @FXML private RadioButton qos2;
-    @FXML private Label labelbrokerpane;
-    @FXML private RadioButton brokernone;
-    @FXML private RadioButton brokermosquitto;
-    
-    @FXML private Label labeltradfrihost;
-    @FXML private TextField tradfrihost;
-    @FXML private Label labeltradfripsk;
-    @FXML private TextField tradfripsk;
-
-    @FXML
-    private CheckBox mainpage;
+    @FXML private ResourceBundle resources;
+    @FXML private BorderPane rootpane;
+    @FXML private Button nextbutton;
+    @FXML private VBox connections;
+    @FXML private CheckBox mainpage;
 
     @FXML Button adddeviceunit;
     @FXML Button removedeviceunit;
@@ -122,8 +78,12 @@ public class ClientLoginNode {
     
     private boolean updating = false;
 
-    ClientLoginNode() {
+    public ClientLoginNode() {
         FXMLUtil.load(this, "/com/adr/helloiot/fxml/clientlogin.fxml", "com/adr/helloiot/fxml/clientlogin");
+    }
+    
+    public void appendConnectNode(Node n) {
+        connections.getChildren().add(n);
     }
 
     @FXML
@@ -135,11 +95,6 @@ public class ClientLoginNode {
         removedeviceunit.setGraphic(IconBuilder.create(FontAwesome.FA_MINUS, 18.0).styleClass("icon-fill").build());
         updeviceunit.setGraphic(IconBuilder.create(FontAwesome.FA_CHEVRON_UP, 18.0).styleClass("icon-fill").build());
         downdeviceunit.setGraphic(IconBuilder.create(FontAwesome.FA_CHEVRON_DOWN, 18.0).styleClass("icon-fill").build());
-        
-        host.textProperty().addListener((ov, old_val, new_val) ->  disableMQTT(new_val.isEmpty()));
-        disableMQTT(host.getText().isEmpty());
-        tradfrihost.textProperty().addListener((ov, old_val, new_val) ->  disableTradfri(new_val.isEmpty()));
-        disableTradfri(tradfrihost.getText().isEmpty());
 
         edittype.setItems(FXCollections.observableArrayList("Publication/Subscription", "Subscription", "Publication", "Code"));
         edittype.getSelectionModel().clearSelection();
@@ -168,44 +123,9 @@ public class ClientLoginNode {
         });
         updateDevicesUnitsList();
 
-        Platform.runLater(host::requestFocus);
+//        Platform.runLater(host::requestFocus);
     }
-    
-    private void disableMQTT(boolean value) {
-        labelport.setDisable(value);
-        port.setDisable(value);
-        ssl.setDisable(value);
-        websockets.setDisable(value);
-        labelusername.setDisable(value);
-        username.setDisable(value);
-        labelpassword.setDisable(value);
-        password.setDisable(value);
-        labelclientid.setDisable(value);
-        clientid.setDisable(value);
-        cleansession.setDisable(value);
-        labelversion.setDisable(value);
-        versiondefault.setDisable(value);
-        version31.setDisable(value);
-        version311.setDisable(value);
-        labelextendedproperties.setDisable(value);
-        labeltimeout.setDisable(value);
-        timeout.setDisable(value);
-        labelkeepalive.setDisable(value);
-        keepalive.setDisable(value);
-        labeldefaultqos.setDisable(value);
-        qos0.setDisable(value);
-        qos1.setDisable(value);
-        qos2.setDisable(value);
-        labelbrokerpane.setDisable(value);
-        brokernone.setDisable(value);
-        brokermosquitto.setDisable(value);
-    }
-    
-    private void disableTradfri(boolean value) {
-        labeltradfripsk.setDisable(value);
-        tradfripsk.setDisable(value);
-    }
-    
+
     private void constructSampleButtons() {
         unitstoolbar.getItems().addAll(
                 new Label(resources.getString("label.samplestitle")),
@@ -333,102 +253,6 @@ public class ClientLoginNode {
     public void setOnNextAction(EventHandler<ActionEvent> exitevent) {
         nextbutton.setOnAction(exitevent);
     }
-      
-    public String getHost() {
-        return host.getText();
-    }
-
-    public void setHost(String value) {
-        host.setText(value);
-    }
-
-    public int getPort() {
-        return Integer.parseInt(port.getText());
-    }
-
-    public void setPort(int value) {
-        port.setText(Integer.toString(value));
-    }
-
-    public boolean isSSL() {
-        return ssl.isSelected();
-    }
-
-    public void setSSL(boolean value) {
-        ssl.setSelected(value);
-    }
-
-    public boolean isWebSockets() {
-        return websockets.isSelected();
-    }
-
-    public void setWebSockets(boolean value) {
-        websockets.setSelected(value);
-    }
-
-    public String getUserName() {
-        return username.getText();
-    }
-    
-    public void setUserName(String value) {
-        username.setText(value);
-    }
-    
-    public String getPassword() {
-        return password.getText();
-    }
-    
-    public void setPassword(String value) {
-        password.setText(value);
-    }
-
-    public String getClientID() {
-        return clientid.getText();
-    }
-
-    public void setClientID(String value) {
-        clientid.setText(value);
-    }
-
-    public int getConnectionTimeout() {
-        return Integer.parseInt(timeout.getText());
-    }
-
-    public void setConnectionTimeout(int value) {
-        timeout.setText(Integer.toString(value));
-    }
-
-    public int getKeepAliveInterval() {
-        return Integer.parseInt(keepalive.getText());
-    }
-
-    public void setKeepAliveInterval(int value) {
-        keepalive.setText(Integer.toString(value));
-    }
-
-    public int getDefaultQoS() {
-        if (qos1.isSelected()) {
-            return 1;
-        } else if (qos2.isSelected()) {
-            return 2;
-        } else {
-            return 0;
-        }
-    }
-
-    public void setDefaultQoS(int value) {
-        switch (value) {
-        case 1:
-            qos1.setSelected(true);
-            break;
-        case 2:
-            qos2.setSelected(true);
-            break;
-        default:
-            qos0.setSelected(true);
-            break;
-        }
-    }
 
     public String getTopicApp() {
         return topicapp;
@@ -446,63 +270,6 @@ public class ClientLoginNode {
         topicsys = value;
     }
 
-    public String getTradfriHost() {
-        return tradfrihost.getText();
-    }
-
-    public void setTradfriHost(String value) {
-        tradfrihost.setText(value);
-    }
-
-    public String getTradfriPsk() {
-        return tradfripsk.getText();
-    }
-    
-    public void setTradfriPsk(String value) {
-        tradfripsk.setText(value);
-    }
-
-    public int getBrokerPane() {
-        if (brokermosquitto.isSelected()) {
-            return 1;
-        } else {
-            return 0;
-        }
-    }
-
-    public void setBrokerPane(int value) {
-        switch (value) {
-        case 1:
-            brokermosquitto.setSelected(true);
-            break;
-        default:
-            brokernone.setSelected(true);
-        }
-    }
-
-    public int getVersion() {
-        if (version311.isSelected()) {
-            return MqttConnectOptions.MQTT_VERSION_3_1_1;
-        } else if (version31.isSelected()) {
-            return MqttConnectOptions.MQTT_VERSION_3_1;
-        } else {
-            return MqttConnectOptions.MQTT_VERSION_DEFAULT;
-        }
-    }
-
-    public void setVersion(int value) {
-        switch (value) {
-        case MqttConnectOptions.MQTT_VERSION_3_1_1:
-            version311.setSelected(true);
-            break;
-        case MqttConnectOptions.MQTT_VERSION_3_1:
-            version31.setSelected(true);
-            break;
-        default:
-            versiondefault.setSelected(true);
-        }
-    }
-
     public ObservableList<TopicInfo> getTopicInfoList() {
         return devicesunitslist.getItems();
     }
@@ -513,14 +280,6 @@ public class ClientLoginNode {
         if (list.size() > 0) {
             devicesunitslist.getSelectionModel().select(0);
         }
-    }
-
-    public boolean isCleanSession() {
-        return cleansession.isSelected();
-    }
-
-    public void setCleanSession(boolean value) {
-        cleansession.setSelected(value);
     }
 
     public boolean isMainPage() {

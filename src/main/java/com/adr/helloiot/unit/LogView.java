@@ -58,6 +58,7 @@ public class LogView extends Tile {
         super.construct(app);
         device.subscribeStatus(messageHandler);
         // updateStatus(null);
+        statusview.setText("");
     }
 
     @Override

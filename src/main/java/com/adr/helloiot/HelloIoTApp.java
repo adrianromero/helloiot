@@ -28,12 +28,12 @@ import com.adr.helloiot.device.DeviceSimple;
 import com.adr.helloiot.device.DeviceSwitch;
 import com.adr.helloiot.device.TreePublish;
 import com.adr.helloiot.device.TreePublishSubscribe;
+import com.adr.helloiot.device.format.MiniVar;
 import com.adr.helloiot.media.SilentClipFactory;
 import com.adr.helloiot.media.StandardClipFactory;
 import com.adr.helloiot.tradfri.ManagerTradfri;
 import com.adr.helloiot.unit.UnitPage;
 import com.adr.helloiot.util.CompletableAsync;
-import com.google.common.base.Strings;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
 import java.io.File;
@@ -45,6 +45,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 import java.util.ServiceLoader;
@@ -78,7 +79,6 @@ public class HelloIoTApp {
     private final List<Unit> appunits = new ArrayList<>();
     private final List<Device> appdevices = new ArrayList<>();
 
-    private final ApplicationConfig config;
     private final TopicsManager topicsmanager;
     private final MainNode mainnode;
     private final ResourceBundle resources;
@@ -91,46 +91,46 @@ public class HelloIoTApp {
     private EventHandler<ActionEvent> exitevent = null;
     private final Runnable styleConnection;
 
-    public HelloIoTApp(ApplicationConfig config) {
-
-        this.config = config;
+    public HelloIoTApp(Map<String, MiniVar> config) {
 
         // Load resources
         resources = ResourceBundle.getBundle("com/adr/helloiot/fxml/main");
 
         // System and Application devices units
-        addSystemDevicesUnits(config.topicsys);
-        addAppDevicesUnits(config.topicapp);
+        addSystemDevicesUnits(config.get("client.topicsys").asString());
+        addAppDevicesUnits(config.get("client.topicapp").asString());
 
         ManagerComposed manager = new ManagerComposed();
         manager.addManagerProtocol(
                 "_LOCAL_/",
                 new ManagerLocal(
-                        config.topicapp));
-        if (!config.tradfri_host.isEmpty()) {
+                        config.get("client.topicapp").asString()));
+        
+        if (!config.get("tradfri.host").isEmpty()) {
             manager.addManagerProtocol(
                     "TRÅDFRI/",
                     new ManagerTradfri(
-                                    config.tradfri_host,
-                                    config.tradfri_psk));
+                                    config.get("tradfri.host").asString(),
+                                    config.get("tradfri.psk").asString()));
         }
-        if (!config.mqtt_host.isEmpty()) {
-            String protocol = config.mqtt_websockets
-                    ? (config.mqtt_ssl ? "wss" : "ws")
-                    : (config.mqtt_ssl ? "ssl" : "tcp");
-            String mqtturl = protocol + "://" + config.mqtt_host  + ":" + Integer.toString(config.mqtt_port);     
+        
+        if (!config.get("mqtt.host").isEmpty()) {
+            String protocol = config.get("mqtt.websockets").asBoolean()
+                    ? (config.get("mqtt.ssl").asBoolean() ? "wss" : "ws")
+                    : (config.get("mqtt.ssl").asBoolean() ? "ssl" : "tcp");
+            String mqtturl = protocol + "://" + config.get("mqtt.host").asString()  + ":" + Integer.toString(config.get("mqtt.port").asInt());     
             manager.addManagerProtocol(
                     "",
                     new ManagerMQTT(
                                     mqtturl,
-                                    config.mqtt_username,
-                                    config.mqtt_password,
-                                    config.mqtt_clientid,
-                                    config.mqtt_connectiontimeout,
-                                    config.mqtt_keepaliveinterval,
-                                    config.mqtt_defaultqos,
-                                    config.mqtt_version,
-                                    config.mqtt_cleansession,
+                                    config.get("mqtt.username").asString(),
+                                    config.get("mqtt.password").asString(),
+                                    config.get("mqtt.clientid").asString(),
+                                    config.get("mqtt.connectiontimeout").asInt(),
+                                    config.get("mqtt.keepaliveinterval").asInt(),
+                                    config.get("mqtt.defaultqos").asInt(),
+                                    config.get("mqtt.version").asInt(),
+                                    config.get("mqtt.cleansession").asBoolean(),
                                     null));
         }
 
@@ -144,13 +144,13 @@ public class HelloIoTApp {
             });
         });
 
-        styleConnection = config.app_retryconnection ? this::tryConnection : this::oneConnection;
+        styleConnection = config.get("app.retryconnection").asBoolean() ? this::tryConnection : this::oneConnection;
 
         mainnode = new MainNode(
                 this,
                 Platform.isSupported(ConditionalFeature.MEDIA) ? new StandardClipFactory() : new SilentClipFactory(),
-                config.app_clock,
-                config.app_exitbutton);
+                config.get("app.clock").asBoolean(),
+                config.get("app.exitbutton").asBoolean());
     }
 
     public void addUnitPages(List<UnitPage> unitpages) {
@@ -248,23 +248,18 @@ public class HelloIoTApp {
         mainnode.construct(appunitpages);
 
         // Construct All
-        for (Unit s : appunits) {
+        appunits.forEach((s) -> {
             s.construct(this.getAppPublic());
-        }
-        for (Device d : appdevices) {
+        });
+        appdevices.forEach((d) -> {
             d.construct(topicsmanager);
-        }
+        });
 
         connection();
     }
 
     private boolean existsUnitPageMain() {
-        for (UnitPage p : appunitpages) {
-            if ("main".equals(p.getName())) {
-                return true;
-            }
-        }
-        return false;
+        return appunitpages.stream().anyMatch((p) -> ("main".equals(p.getName()))); 
     }
 
     private void connection() {
@@ -314,26 +309,18 @@ public class HelloIoTApp {
         topicsmanager.close();
 
         // Destroy all units
-        for (Unit s : appunits) {
-            s.destroy();
-        }
-        for (Device d : appdevices) {
-            d.destroy();
-        }
+        appunits.forEach(Unit::destroy);
+        appdevices.forEach(Device::destroy);
 
         mainnode.destroy();
     }
 
     private void startUnits() {
-        for (Unit s : appunits) {
-            s.start();
-        }
+        appunits.forEach(Unit::start);
     }
 
     private void stopUnits() {
-        for (Unit s : appunits) {
-            s.stop();
-        }
+        appunits.forEach(Unit::stop);
     }
 
     public MainNode getMainNode() {

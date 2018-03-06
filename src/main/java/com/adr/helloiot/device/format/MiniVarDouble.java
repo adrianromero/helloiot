@@ -41,6 +41,11 @@ public class MiniVarDouble implements MiniVar {
     public double asDouble() {
         return value == null ? 0.0 : value;
     }
+    
+    @Override
+    public int asInt() {
+        return value == null ? 0 : value.intValue();
+    }    
 
     @Override
     public boolean asBoolean() {

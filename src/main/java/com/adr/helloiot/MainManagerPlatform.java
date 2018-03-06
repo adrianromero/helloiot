@@ -18,8 +18,13 @@
 //
 package com.adr.helloiot;
 
+import com.adr.helloiot.device.format.MiniVar;
+import com.adr.helloiot.device.format.MiniVarBoolean;
+import com.adr.helloiot.device.format.MiniVarInt;
+import com.adr.helloiot.device.format.MiniVarString;
 import com.google.common.base.Strings;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 import javafx.application.Application.Parameters;
 import javafx.scene.layout.StackPane;
@@ -45,29 +50,29 @@ public class MainManagerPlatform implements MainManager {
 
         Map<String, String> namedParams = params.getNamed();
         
-        ApplicationConfig config = new ApplicationConfig();
-        config.mqtt_host = configprops.getProperty("mqtt.host", "localhost");
-        config.mqtt_port = Integer.parseInt(configprops.getProperty("mqtt.port", "1883"));
-        config.mqtt_ssl = Boolean.parseBoolean(configprops.getProperty("mqtt.ssl", "false"));
-        config.mqtt_websockets = Boolean.parseBoolean(configprops.getProperty("mqtt.websockets", "false"));
-        config.mqtt_username = namedParams.getOrDefault("mqtt.username", "");
-        config.mqtt_password = namedParams.getOrDefault("mqtt.password", "");
-        config.mqtt_clientid = configprops.getProperty("mqtt.clientid", "");
-        config.mqtt_connectiontimeout = Integer.parseInt(configprops.getProperty("mqtt.connectiontimeout", Integer.toString(MqttConnectOptions.CONNECTION_TIMEOUT_DEFAULT)));
-        config.mqtt_keepaliveinterval = Integer.parseInt(configprops.getProperty("mqtt.keepaliveinterval", Integer.toString(MqttConnectOptions.KEEP_ALIVE_INTERVAL_DEFAULT)));
-        config.mqtt_defaultqos = Integer.parseInt(configprops.getProperty("mqtt.defaultqos", "1"));
-        config.mqtt_version = Integer.parseInt(configprops.getProperty("mqtt.version", Integer.toString(MqttConnectOptions.MQTT_VERSION_DEFAULT))); // MQTT_VERSION_DEFAULT = 0; MQTT_VERSION_3_1 = 3; MQTT_VERSION_3_1_1 = 4;
-        config.mqtt_cleansession = Boolean.parseBoolean(configprops.getProperty("mqtt.cleansession", Boolean.toString(MqttConnectOptions.CLEAN_SESSION_DEFAULT)));
+        Map<String, MiniVar> config = new HashMap<>();
+        config.put("mqtt.host", new MiniVarString(configprops.getProperty("mqtt.host", "localhost")));
+        config.put("mqtt.port", new MiniVarInt(Integer.parseInt(configprops.getProperty("mqtt.port", "1883"))));
+        config.put("mqtt.ssl", new MiniVarBoolean(Boolean.parseBoolean(configprops.getProperty("mqtt.ssl", "false"))));
+        config.put("mqtt.websockets", new MiniVarBoolean(Boolean.parseBoolean(configprops.getProperty("mqtt.websockets", "false"))));
+        config.put("mqtt.username", new MiniVarString(namedParams.getOrDefault("mqtt.username", "")));
+        config.put("mqtt.password", new MiniVarString(namedParams.getOrDefault("mqtt.password", "")));
+        config.put("mqtt.clientid", new MiniVarString(configprops.getProperty("mqtt.clientid", "")));
+        config.put("mqtt.connectiontimeout", new MiniVarInt(Integer.parseInt(configprops.getProperty("mqtt.connectiontimeout", Integer.toString(MqttConnectOptions.CONNECTION_TIMEOUT_DEFAULT)))));
+        config.put("mqtt.keepaliveinterval", new MiniVarInt(Integer.parseInt(configprops.getProperty("mqtt.keepaliveinterval", Integer.toString(MqttConnectOptions.KEEP_ALIVE_INTERVAL_DEFAULT)))));
+        config.put("mqtt.defaultqos", new MiniVarInt(Integer.parseInt(configprops.getProperty("mqtt.defaultqos", "1"))));
+        config.put("mqtt.version", new MiniVarInt(Integer.parseInt(configprops.getProperty("mqtt.version", Integer.toString(MqttConnectOptions.MQTT_VERSION_DEFAULT))))); // MQTT_VERSION_DEFAULT = 0; MQTT_VERSION_3_1 = 3; MQTT_VERSION_3_1_1 = 4;
+        config.put("mqtt.cleansession", new MiniVarBoolean(Boolean.parseBoolean(configprops.getProperty("mqtt.cleansession", Boolean.toString(MqttConnectOptions.CLEAN_SESSION_DEFAULT)))));
         
-        config.tradfri_host = configprops.getProperty("tradfri.host", "");
-        config.tradfri_psk = namedParams.getOrDefault("tradfri.psk", "");
+        config.put("tradfri.host", new MiniVarString(configprops.getProperty("tradfri.host", "")));
+        config.put("tradfri.psk", new MiniVarString(namedParams.getOrDefault("tradfri.psk", "")));
 
-        config.topicapp = configprops.getProperty("client.topicapp", "_LOCAL_/mainapp");
-        config.topicsys = configprops.getProperty("client.topicsys", "system");
+        config.put("client.topicapp", new MiniVarString(configprops.getProperty("client.topicapp", "_LOCAL_/mainapp")));
+        config.put("client.topicsys", new MiniVarString(configprops.getProperty("client.topicsys", "system")));
 
-        config.app_clock = Boolean.parseBoolean(configprops.getProperty("app.clock", "true"));
-        config.app_exitbutton = Boolean.parseBoolean(configprops.getProperty("app.exitbutton", "true"));
-        config.app_retryconnection = true;
+        config.put("app.clock", new MiniVarBoolean(Boolean.parseBoolean(configprops.getProperty("app.clock", "true"))));
+        config.put("app.exitbutton", new MiniVarBoolean(Boolean.parseBoolean(configprops.getProperty("app.exitbutton", "true"))));
+        config.put("app.retryconnection", MiniVarBoolean.TRUE);
 
         helloiotapp = new HelloIoTApp(config);
 

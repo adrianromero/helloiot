@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<GridPane fx:id="root" hgap="10.0" vgap="10.0" xmlns="http://javafx.com/javafx/8.0.161" xmlns:fx="http://javafx.com/fxml/1">
+   <columnConstraints>
+      <ColumnConstraints minWidth="150.0" prefWidth="150.0" />
+      <ColumnConstraints minWidth="200.0" prefWidth="200.0" />
+      <ColumnConstraints minWidth="150.0" prefWidth="150.0" />
+      <ColumnConstraints minWidth="200.0" prefWidth="200.0" />
+      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="10.0" />
+   </columnConstraints>
+   <rowConstraints>
+      <RowConstraints minHeight="10.0" prefHeight="30.0" />
+      <RowConstraints minHeight="10.0" prefHeight="30.0" />
+      <RowConstraints minHeight="10.0" prefHeight="30.0" />
+      <RowConstraints minHeight="10.0" prefHeight="30.0" />
+      <RowConstraints minHeight="10.0" prefHeight="30.0" />
+      <RowConstraints minHeight="10.0" prefHeight="30.0" />
+      <RowConstraints minHeight="10.0" prefHeight="30.0" />
+      <RowConstraints minHeight="10.0" prefHeight="30.0" />
+      <RowConstraints minHeight="10.0" prefHeight="30.0" />
+   </rowConstraints>
+   <children>
+      <Label maxWidth="1.7976931348623157E308" styleClass="formsection" text="%label.mqttbroker" GridPane.columnSpan="2147483647" />
+      <Label fx:id="labelhost" text="%label.host" GridPane.rowIndex="1" />
+      <TextField fx:id="host" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+      <Label fx:id="labelversion" text="%label.version" GridPane.rowIndex="4" />
+      <HBox alignment="CENTER_LEFT" spacing="10.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="4">
+         <children>
+            <RadioButton fx:id="versiondefault" mnemonicParsing="false" selected="true" text="%label.default">
+               <toggleGroup>
+                  <ToggleGroup fx:id="version" />
+               </toggleGroup>
+            </RadioButton>
+            <RadioButton fx:id="version31" mnemonicParsing="false" text="3.1" toggleGroup="$version" />
+            <RadioButton fx:id="version311" mnemonicParsing="false" text="3.1.1" toggleGroup="$version" />
+         </children>
+      </HBox>
+      <Label fx:id="labelusername" text="%label.username" GridPane.rowIndex="2" />
+      <TextField fx:id="username" prefWidth="171.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+      <CheckBox fx:id="cleansession" mnemonicParsing="false" selected="true" text="%label.cleansession" GridPane.columnIndex="2" GridPane.columnSpan="2147483647" GridPane.rowIndex="3" />
+      <Label fx:id="labelpassword" text="%label.password" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+      <PasswordField fx:id="password" prefWidth="171.0" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+      <Label fx:id="labelextendedproperties" maxWidth="1.7976931348623157E308" styleClass="formsubsection" text="%label.extendedproperties" GridPane.columnSpan="2147483647" GridPane.rowIndex="5" />
+      <Label fx:id="labeltimeout" text="%label.timeout" GridPane.rowIndex="6" />
+      <TextField fx:id="timeout" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+      <Label fx:id="labelkeepalive" text="%label.keepalive" GridPane.columnIndex="2" GridPane.rowIndex="6" />
+      <TextField fx:id="keepalive" GridPane.columnIndex="3" GridPane.rowIndex="6" />
+      <Label fx:id="labeldefaultqos" text="%label.defaultqos" GridPane.rowIndex="7" />
+      <HBox alignment="CENTER_LEFT" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="7">
+         <children>
+            <RadioButton fx:id="qos0" mnemonicParsing="false" selected="true" text="0">
+               <toggleGroup>
+                  <ToggleGroup fx:id="qos" />
+               </toggleGroup>
+            </RadioButton>
+            <RadioButton fx:id="qos1" mnemonicParsing="false" text="1" toggleGroup="$qos" />
+            <RadioButton fx:id="qos2" mnemonicParsing="false" text="2" toggleGroup="$qos" />
+         </children>
+      </HBox>
+      <Label fx:id="labelbrokerpane" text="%label.brokerpane" GridPane.rowIndex="8" />
+      <HBox alignment="CENTER_LEFT" spacing="10.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="8" GridPane.valignment="BASELINE">
+         <children>
+            <RadioButton fx:id="brokernone" mnemonicParsing="false" selected="true" text="%label.brokernone">
+               <toggleGroup>
+                  <ToggleGroup fx:id="broker" />
+               </toggleGroup>
+            </RadioButton>
+            <RadioButton fx:id="brokermosquitto" mnemonicParsing="false" text="%label.brokermosquitto" toggleGroup="$broker" />
+         </children>
+      </HBox>
+      <Label fx:id="labelclientid" text="%label.clientid" GridPane.rowIndex="3" />
+      <TextField fx:id="clientid" promptText="%label.generateid" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+      <HBox alignment="CENTER_LEFT" spacing="10.0" GridPane.columnIndex="2" GridPane.columnSpan="3" GridPane.rowIndex="1">
+         <children>
+            <Label fx:id="labelport" text="%label.port" />
+            <TextField fx:id="port" prefWidth="60.0" />
+            <CheckBox fx:id="ssl" mnemonicParsing="false" text="%label.ssl" />
+            <CheckBox fx:id="websockets" mnemonicParsing="false" text="%label.websockets" />
+         </children>
+      </HBox>
+   </children>
+   <padding>
+      <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+   </padding>
+</GridPane>
