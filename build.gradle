@@ -108,6 +108,11 @@ jfxmobile {
         compileSdkVersion = '24'
         minSdkVersion = '24'        
         manifest = 'src/android/AndroidManifest.xml'
+        packagingOptions {
+            exclude 'epl-v10.html'
+            exclude 'edl-v10.html'
+            exclude 'notice.html'
+        }        
         signingConfig {
             // keytool -genkey -v -keystore my-release-key.jks -keyalg RSA -keysize 2048 -validity 10000 -alias app
             storeFile file('my-release-key.jks')
@@ -115,6 +120,7 @@ jfxmobile {
             keyAlias 'app'
             keyPassword '123456'
         }
+        
     }    
     embedded {
         remotePlatforms {

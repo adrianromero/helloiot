@@ -53,7 +53,7 @@ public class ManagerComposed implements ManagerProtocol {
                 return;
             }
         }        
-        LOGGER.warning(() -> String.format("Topic not registered. It does not exist any topic manager for topic \"%s\"", topic));
+        LOGGER.warning(String.format("Topic not registered. It does not exist any topic manager for topic \"%s\"", topic));
     }
 
     @Override
@@ -78,6 +78,6 @@ public class ManagerComposed implements ManagerProtocol {
                 return;
             }
         } 
-        LOGGER.warning(() -> String.format("Message not published. It does not exist any topic manager for topic \"%s\"", topic));
+        LOGGER.warning(String.format("Message not published. It does not exist any topic manager for topic \"%s\"", topic));
     }
 }
