@@ -1,5 +1,5 @@
 //    HelloIoT is a dashboard creator for MQTT
-//    Copyright (C) 2017 Adrián Romero Corchado.
+//    Copyright (C) 2017-2018 Adrián Romero Corchado.
 //
 //    This file is part of HelloIot.
 //
@@ -31,7 +31,7 @@ apply plugin: 'application'
 apply plugin: 'org.javafxports.jfxmobile'
 
 group = 'com.github.adrianromero'
-version = '1.0.17'
+version = '1.0.20'
 
 mainClassName = 'com.adr.helloiot.MainAppClient'
 ext.mainClass = 'com.adr.helloiot.MainAppClient'
@@ -103,7 +103,6 @@ install {
 }
 
 jfxmobile {
-    javafxportsVersion = '8.60.9'
     android {
         compileSdkVersion = '24'
         minSdkVersion = '24'        
