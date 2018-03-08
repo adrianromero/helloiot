@@ -10,6 +10,14 @@ HelloIoT is a Java multiplatform application and it can run on Windows, MacOS or
 Getting started
 ===============
 
+Install and execute HelloIoT
+----------------------------
+
+To run HelloIoT just download and install the appropiate release file:
+
+* [helloiot-1.0.20.zip](https://github.com/adrianromero/helloiot/releases/download/1.0.20/helloiot-1.0.20.zip) Windows / Mac / Linux
+* [helloiot-1.0.20.apk](https://github.com/adrianromero/helloiot/releases/download/1.0.20/helloiot-1.0.20.apk) Android
+
 Install a MQTT Broker
 ----------------------
 
@@ -26,8 +34,8 @@ Install Java
 You need to install the [Java SE 8 JDK](http://www.oracle.com/technetwork/es/java/javase/downloads/index.html) or later version, not the JRE, 
 or the [OpenJDK 8](http://openjdk.java.net/install/) or later.
 
-Execute HelloIoT
-----------------
+Execute HelloIoT from sources
+-----------------------------
 
 Download the latests binaries from [Releases](https://github.com/adrianromero/helloiot/releases), uncompress to a folder and execute. By default HelloIoT is configured to be connected to a MQTT broker installed locally, listening on port 1883, with no security configured. 
 The standard installation of the Mosquitto broker will work. In the 'bin' folder there is 'helloiot' script for MacOS and Linux and a 'helloiot.bat' script for Windows.
