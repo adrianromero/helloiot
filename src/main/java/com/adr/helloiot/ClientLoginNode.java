@@ -20,6 +20,7 @@ package com.adr.helloiot;
 
 import com.adr.fonticon.FontAwesome;
 import com.adr.fonticon.IconBuilder;
+import com.adr.hellocommon.dialog.MessageUtils;
 import com.adr.hellocommon.utils.FXMLUtil;
 import com.google.common.io.Resources;
 import java.io.IOException;
@@ -69,6 +70,9 @@ public class ClientLoginNode {
     @FXML StackPane topicinfocontainer;
     @FXML ToolBar unitstoolbar;
     
+    @FXML private ChoiceBox<Style> skins;
+    @FXML private CheckBox clock;
+        
     TopicInfoNode editnode = null;
  
     private TopicInfoBuilder topicinfobuilder;
@@ -122,6 +126,13 @@ public class ClientLoginNode {
             updateDevicesUnitsList();
         });
         updateDevicesUnitsList();
+        
+        skins.getItems().addAll(Style.values());
+        skins.getSelectionModel().selectedItemProperty().addListener((ov, old_val, new_val) -> {
+            if (!updating) {
+                Style.changeStyle(MessageUtils.getRoot(rootpane), new_val);
+            }
+        });
 
 //        Platform.runLater(host::requestFocus);
     }
@@ -249,7 +260,7 @@ public class ClientLoginNode {
         devicesunitslist.getItems().add(index + 1, topic);
         devicesunitslist.getSelectionModel().select(index + 1);
     }
-    
+  
     public void setOnNextAction(EventHandler<ActionEvent> exitevent) {
         nextbutton.setOnAction(exitevent);
     }
@@ -268,6 +279,24 @@ public class ClientLoginNode {
 
     public void setTopicSys(String value) {
         topicsys = value;
+    }
+    
+    public void setStyle(Style value) {
+        updating = true;
+        skins.getSelectionModel().select(value);
+        updating = false;
+    }
+    
+    public Style getStyle() {
+        return skins.getSelectionModel().getSelectedItem();
+    }
+    
+    public void setClock(boolean value) {
+        clock.setSelected(value);
+    }
+    
+    public boolean isClock() {
+        return clock.isSelected();
     }
 
     public ObservableList<TopicInfo> getTopicInfoList() {

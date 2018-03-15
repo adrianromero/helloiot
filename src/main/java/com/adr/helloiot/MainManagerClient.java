@@ -74,6 +74,11 @@ public class MainManagerClient implements MainManager {
             // No properties file found, then use defaults and continue
             LOGGER.log(Level.WARNING, "No properties file found, then use defaults and continue.", ex);
         }        
+        
+//        Style.changeStyle(root, "/com/adr/helloiot/styles/empty");
+//        Style.changeStyle(root, "/com/adr/helloiot/styles/main");
+//        Style.changeStyle(root, "/com/adr/helloiot/styles/main-dark");
+        Style.changeStyle(root, Style.valueOf(configprops.getProperty("app.style", Style.DEFAULT.name())));        
 
         clientlogin = new ClientLoginNode();
         
@@ -87,6 +92,8 @@ public class MainManagerClient implements MainManager {
         
         clientlogin.setTopicApp(configprops.getProperty("client.topicapp", "_LOCAL_/mainapp"));
         clientlogin.setTopicSys(configprops.getProperty("client.topicsys", "system"));
+        clientlogin.setStyle(Style.valueOf(configprops.getProperty("app.style", Style.DEFAULT.getStyleURL())));  
+        clientlogin.setClock(Boolean.parseBoolean(configprops.getProperty("app.clock", "true")));
 
         int i = 0;
         List<TopicInfo> topicinfolist = new ArrayList<>();
@@ -97,7 +104,7 @@ public class MainManagerClient implements MainManager {
         }
         clientlogin.setTopicInfoList(topicinfobuilder, FXCollections.observableList(topicinfolist));
 
-        clientlogin.setOnNextAction(e -> {           
+        clientlogin.setOnNextAction(e -> {    
             try {
                 showApplication();
                 hideLogin();
@@ -132,6 +139,8 @@ public class MainManagerClient implements MainManager {
         
         configprops.setProperty("client.topicapp", clientlogin.getTopicApp());
         configprops.setProperty("client.topicsys", clientlogin.getTopicSys());
+        configprops.setProperty("app.style", clientlogin.getStyle().name());
+        configprops.setProperty("app.clock", Boolean.toString(clientlogin.isClock()));
 
         List<TopicInfo> topicinfolist = clientlogin.getTopicInfoList();
         configprops.setProperty("topicinfo.size", Integer.toString(topicinfolist.size()));
@@ -155,7 +164,7 @@ public class MainManagerClient implements MainManager {
         config.put("client.topicapp", new MiniVarString(clientlogin.getTopicApp()));
         config.put("client.topicsys", new MiniVarString(clientlogin.getTopicSys()));
 
-        config.put("app.clock", MiniVarBoolean.TRUE);
+        config.put("app.clock", new MiniVarBoolean(clientlogin.isClock()));
         config.put("app.exitbutton", MiniVarBoolean.FALSE);
         config.put("app.retryconnection", MiniVarBoolean.FALSE);
 
@@ -222,7 +231,7 @@ public class MainManagerClient implements MainManager {
             } else {
                 configfile = new File(param);
             }
-        }
+        }       
         showLogin();
     }
 

@@ -56,6 +56,8 @@ public class ManagerMQTT implements MqttCallback, ManagerProtocol {
     private final int defaultqos;
     private final int version;
     private final boolean cleansession;
+    private final int maxinflight;
+    private boolean automaticreconnect;
     
     // Manager
     private GroupManagers group;   
@@ -67,10 +69,10 @@ public class ManagerMQTT implements MqttCallback, ManagerProtocol {
     private final ResourceBundle resources;
         
     public ManagerMQTT(String url) {
-        this(url, null, null, null, MqttConnectOptions.CONNECTION_TIMEOUT_DEFAULT, MqttConnectOptions.KEEP_ALIVE_INTERVAL_DEFAULT, 1, MqttConnectOptions.MQTT_VERSION_DEFAULT, MqttConnectOptions.CLEAN_SESSION_DEFAULT, null);
+        this(url, null, null, null, MqttConnectOptions.CONNECTION_TIMEOUT_DEFAULT, MqttConnectOptions.KEEP_ALIVE_INTERVAL_DEFAULT, 1, MqttConnectOptions.MQTT_VERSION_DEFAULT, MqttConnectOptions.CLEAN_SESSION_DEFAULT, MqttConnectOptions.MAX_INFLIGHT_DEFAULT, true, null);
     }
     
-    public ManagerMQTT(String url, String username, String password, String clientid, int timeout, int keepalive, int defaultqos, int version, boolean cleansession, Properties sslproperties) {
+    public ManagerMQTT(String url, String username, String password, String clientid, int timeout, int keepalive, int defaultqos, int version, boolean cleansession, int maxinflight, boolean automaticreconnect, Properties sslproperties) {
 
         this.url = url;
         this.username = username;
@@ -81,6 +83,8 @@ public class ManagerMQTT implements MqttCallback, ManagerProtocol {
         this.defaultqos = defaultqos;
         this.version = version;
         this.cleansession = cleansession;
+        this.maxinflight = maxinflight;
+        this.automaticreconnect = automaticreconnect;
         this.sslproperties = sslproperties;
 
         this.mqttClient = null;   
@@ -120,6 +124,8 @@ public class ManagerMQTT implements MqttCallback, ManagerProtocol {
             options.setKeepAliveInterval(keepalive);
             options.setMqttVersion(version);
             options.setCleanSession(cleansession);
+            options.setAutomaticReconnect(automaticreconnect);
+            options.setMaxInflight(maxinflight);
             options.setSSLProperties(sslproperties);
             mqttClient.connect(options).waitForCompletion(1000);
             mqttClient.setCallback(this);

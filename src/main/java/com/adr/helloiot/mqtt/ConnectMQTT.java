@@ -20,14 +20,17 @@ package com.adr.helloiot.mqtt;
 
 import com.adr.hellocommon.utils.FXMLUtil;
 import com.adr.helloiot.ConfigProperties;
+import com.adr.helloiot.SSLProtocol;
 import com.adr.helloiot.device.format.MiniVar;
 import com.adr.helloiot.device.format.MiniVarBoolean;
 import com.adr.helloiot.device.format.MiniVarInt;
 import com.adr.helloiot.device.format.MiniVarString;
 import java.util.Map;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.RadioButton;
@@ -40,7 +43,7 @@ import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
  * @author adrian
  */
 public class ConnectMQTT {
-    
+
     @FXML private GridPane root;
     @FXML private Label labelhost;
     @FXML private TextField host;
@@ -48,6 +51,17 @@ public class ConnectMQTT {
     @FXML private TextField port;
     @FXML private CheckBox ssl;
     @FXML private CheckBox websockets;
+    @FXML private Label labelprotocol;
+    @FXML private ChoiceBox<SSLProtocol> protocol;
+    @FXML private Label labelkeystore;
+    @FXML private TextField keystore;
+    @FXML private Label labelkeystorepassword;
+    @FXML private PasswordField keystorepassword;
+    @FXML private Label labeltruststore;
+    @FXML private Label labeltruststorepassword;
+    @FXML private TextField truststore;
+    @FXML private PasswordField truststorepassword;   
+    @FXML private Label labelcredentials;
     @FXML private Label labelusername;
     @FXML private TextField username;
     @FXML private Label labelpassword;
@@ -64,35 +78,46 @@ public class ConnectMQTT {
     @FXML private TextField timeout;
     @FXML private Label labelkeepalive;
     @FXML private TextField keepalive;
+    @FXML private Label labelmaxinflight;
+    @FXML private TextField maxinflight;
+    @FXML private CheckBox automaticreconnect;
     @FXML private Label labeldefaultqos;
     @FXML private RadioButton qos0;
     @FXML private RadioButton qos1;
     @FXML private RadioButton qos2;
     @FXML private Label labelbrokerpane;
     @FXML private RadioButton brokernone;
-    @FXML private RadioButton brokermosquitto;    
- 
-    
+    @FXML private RadioButton brokermosquitto;
+
     public ConnectMQTT() {
         FXMLUtil.load(this, "/com/adr/helloiot/fxml/connectmqtt.fxml", "com/adr/helloiot/fxml/connectmqtt");
-    }    
-    
-    @FXML
-    public void initialize() {
-        host.textProperty().addListener((ov, old_val, new_val) ->  disableMQTT(new_val.isEmpty()));
-        disableMQTT(host.getText().isEmpty());
     }
-    
+
+    @FXML 
+    public void initialize() {
+        protocol.setItems(FXCollections.observableArrayList(SSLProtocol.values()));
+        host.textProperty().addListener((ov, old_val, new_val) -> disableMQTT(new_val.isEmpty(), ssl.isSelected()));
+        ssl.selectedProperty().addListener((ov, old_val, new_val) -> disableMQTT(host.getText().isEmpty(), new_val));
+        disableMQTT(host.getText().isEmpty(), ssl.isSelected());
+    }
+
     public void loadConfig(ConfigProperties configprops) {
         host.setText(configprops.getProperty("mqtt.host", "localhost"));
         port.setText(configprops.getProperty("mqtt.port", "1883"));
         ssl.setSelected(Boolean.parseBoolean(configprops.getProperty("mqtt.ssl", "false")));
         websockets.setSelected(Boolean.parseBoolean(configprops.getProperty("mqtt.websockets", "false")));
+        protocol.getSelectionModel().select(SSLProtocol.valueOf(configprops.getProperty("mqtt.protocol", "TSLv12")));
+        keystore.setText(configprops.getProperty("mqtt.keystore", ""));
+        keystorepassword.setText(configprops.getProperty("mqtt.keystorepassword"));
+        truststore.setText(configprops.getProperty("mqtt.truststore"));
+        truststorepassword.setText(configprops.getProperty("mqtt.truststorepassword"));
         username.setText(configprops.getProperty("mqtt.username", ""));
         password.setText(configprops.getProperty("mqtt.password", ""));
         clientid.setText(configprops.getProperty("mqtt.clientid", ""));
         timeout.setText(configprops.getProperty("mqtt.connectiontimeout", Integer.toString(MqttConnectOptions.CONNECTION_TIMEOUT_DEFAULT)));
         keepalive.setText(configprops.getProperty("mqtt.keepaliveinterval", Integer.toString(MqttConnectOptions.KEEP_ALIVE_INTERVAL_DEFAULT)));
+        maxinflight.setText(configprops.getProperty("mqtt.maxinflight", Integer.toString(MqttConnectOptions.MAX_INFLIGHT_DEFAULT)));
+        automaticreconnect.setSelected(Boolean.parseBoolean(configprops.getProperty("mqtt.automaticreconnect", "true")));
         switch (Integer.parseInt(configprops.getProperty("mqtt.defaultqos", "1"))) {
         case 1:
             qos1.setSelected(true);
@@ -113,53 +138,67 @@ public class ConnectMQTT {
             break;
         default:
             versiondefault.setSelected(true);
-        }        
+        }
         cleansession.setSelected(Boolean.parseBoolean(configprops.getProperty("mqtt.cleansession", Boolean.toString(MqttConnectOptions.CLEAN_SESSION_DEFAULT))));
-        
+
         switch (Integer.parseInt(configprops.getProperty("client.broker", "0"))) {
         case 1:
             brokermosquitto.setSelected(true);
             break;
         default:
             brokernone.setSelected(true);
-        }        
-    }    
-    
+        }
+    }
+
     public void saveConfig(ConfigProperties configprops) {
         configprops.setProperty("mqtt.host", host.getText());
         configprops.setProperty("mqtt.port", port.getText());
         configprops.setProperty("mqtt.ssl", Boolean.toString(ssl.isSelected()));
         configprops.setProperty("mqtt.websockets", Boolean.toString(websockets.isSelected()));
+        configprops.setProperty("mqtt.protocol", protocol.getSelectionModel().getSelectedItem().name());
+        configprops.setProperty("mqtt.keystore", keystore.getText());
+        configprops.setProperty("mqtt.truststore", truststore.getText());
         configprops.setProperty("mqtt.clientid", clientid.getText());
         configprops.setProperty("mqtt.connectiontimeout", timeout.getText());
-        configprops.setProperty("mqtt.keepaliveinterval", keepalive.getText());     
-        configprops.setProperty("mqtt.defaultqos", Integer.toString(getDefaultQoS()));     
+        configprops.setProperty("mqtt.keepaliveinterval", keepalive.getText());
+        configprops.setProperty("mqtt.maxinflight", maxinflight.getText());
+        configprops.setProperty("mqtt.automaticreconnect", Boolean.toString(automaticreconnect.isSelected()));
+        configprops.setProperty("mqtt.defaultqos", Integer.toString(getDefaultQoS()));
         configprops.setProperty("mqtt.version", Integer.toString(getVersion()));
-        configprops.setProperty("mqtt.cleansession", Boolean.toString(cleansession.isSelected()));    
-        
-        configprops.setProperty("client.broker", Integer.toString(getBrokerPane()));        
+        configprops.setProperty("mqtt.cleansession", Boolean.toString(cleansession.isSelected()));
+
+        configprops.setProperty("client.broker", Integer.toString(getBrokerPane()));
     }
-    
+
     public void applyConfig(Map<String, MiniVar> config) {
         config.put("mqtt.host", new MiniVarString(host.getText()));
         config.put("mqtt.port", new MiniVarInt(Integer.parseInt(port.getText())));
         config.put("mqtt.ssl", new MiniVarBoolean(ssl.isSelected()));
         config.put("mqtt.websockets", new MiniVarBoolean(websockets.isSelected()));
+        config.put("mqtt.protocol", new MiniVarString(protocol.getSelectionModel().getSelectedItem().name()));
+        config.put("mqtt.keystore", new MiniVarString(keystore.getText()));
+        config.put("mqtt.keystorepassword", new MiniVarString(keystorepassword.getText()));
+        config.put("mqtt.truststore", new MiniVarString(truststore.getText()));
+        config.put("mqtt.truststorepassword", new MiniVarString(truststorepassword.getText()));
         config.put("mqtt.username", new MiniVarString(username.getText()));
         config.put("mqtt.password", new MiniVarString(password.getText()));
         config.put("mqtt.clientid", new MiniVarString(clientid.getText()));
         config.put("mqtt.connectiontimeout", new MiniVarInt(Integer.parseInt(timeout.getText())));
         config.put("mqtt.keepaliveinterval", new MiniVarInt(Integer.parseInt(keepalive.getText())));
+        config.put("mqtt.maxinflight", new MiniVarInt(Integer.parseInt(maxinflight.getText())));
+        config.put("mqtt.automaticreconnect", new MiniVarBoolean(automaticreconnect.isSelected()));
         config.put("mqtt.defaultqos", new MiniVarInt(getDefaultQoS()));
         config.put("mqtt.version", new MiniVarInt(getVersion()));
-        config.put("mqtt.cleansession", new MiniVarBoolean(cleansession.isSelected()));  
-        
+        config.put("mqtt.cleansession", new MiniVarBoolean(cleansession.isSelected()));
+
         config.put("client.broker", new MiniVarInt(getBrokerPane()));
-        
+
+        keystorepassword.setText("");
+        truststorepassword.setText("");
         username.setText("");
-        password.setText("");        
-    }  
-    
+        password.setText("");
+    }
+
     public int getDefaultQoS() {
         if (qos1.isSelected()) {
             return 1;
@@ -168,8 +207,8 @@ public class ConnectMQTT {
         } else {
             return 0;
         }
-    }    
-    
+    }
+
     public int getVersion() {
         if (version311.isSelected()) {
             return MqttConnectOptions.MQTT_VERSION_3_1_1;
@@ -179,20 +218,29 @@ public class ConnectMQTT {
             return MqttConnectOptions.MQTT_VERSION_DEFAULT;
         }
     }
-    
+
     public int getBrokerPane() {
-        if (brokermosquitto.isSelected()) {
-            return 1;
-        } else {
-            return 0;
-        }
+        return brokermosquitto.isSelected()
+                ? 1
+                : 0;
     }
-    
-    private void disableMQTT(boolean value) {
+
+    private void disableMQTT(boolean value, boolean sslselected) {
         labelport.setDisable(value);
         port.setDisable(value);
         ssl.setDisable(value);
         websockets.setDisable(value);
+        labelprotocol.setDisable(value || !sslselected);
+        protocol.setDisable(value || !sslselected);
+        labelkeystore.setDisable(value || !sslselected);
+        keystore.setDisable(value || !ssl.isSelected());
+        labelkeystorepassword.setDisable(value || !sslselected);
+        keystorepassword.setDisable(value || !sslselected);
+        labeltruststore.setDisable(value || !sslselected);
+        truststore.setDisable(value || !sslselected);
+        labeltruststorepassword.setDisable(value || !sslselected);
+        truststorepassword.setDisable(value || !sslselected);
+        labelcredentials.setDisable(value);
         labelusername.setDisable(value);
         username.setDisable(value);
         labelpassword.setDisable(value);
@@ -209,6 +257,9 @@ public class ConnectMQTT {
         timeout.setDisable(value);
         labelkeepalive.setDisable(value);
         keepalive.setDisable(value);
+        labelmaxinflight.setDisable(value);
+        maxinflight.setDisable(value);
+        automaticreconnect.setDisable(value);
         labeldefaultqos.setDisable(value);
         qos0.setDisable(value);
         qos1.setDisable(value);
@@ -217,8 +268,8 @@ public class ConnectMQTT {
         brokernone.setDisable(value);
         brokermosquitto.setDisable(value);
     }
-    
+
     public Node getNode() {
         return root;
-    }      
+    }
 }

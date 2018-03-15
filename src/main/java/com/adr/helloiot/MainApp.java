@@ -44,36 +44,21 @@ public abstract class MainApp extends Application {
 
     private final static String APP_PROPERTIES = ".helloiot-app.properties";
 
-    private MainManager manager;
+    private MainManager manager; 
     private Stage stage;
 
     private Properties appproperties;
 
     protected abstract MainManager createManager();
 
-    protected boolean isAppFullScreen() {
-        return false;
-    }
-
     protected String getAppTitle() {
         return "Hello IoT";
-    }
-
-    protected String getStyleName() {
-        // Locale.setDefault(Locale.forLanguageTag("en-US"));     
-        // Main, dark or standard
-//        return "/com/adr/helloiot/styles/empty";
-        return "/com/adr/helloiot/styles/main";
-//        return "/com/adr/helloiot/styles/main-dark";
     }
 
     @Override
     public final void start(Stage stage) {
 
         loadAppProperties();
-
-        String styleroot = "/com/adr/helloiot/styles/root";
-        String stylename = getStyleName();
 
         this.stage = stage;
         StackPane root = new StackPane();
@@ -83,14 +68,12 @@ public abstract class MainApp extends Application {
 
         // Construct root graph scene
         Scene scene;
-        if (HelloPlatform.getInstance().isFullScreen() || isAppFullScreen()) {
-            root.getStylesheets().add(getClass().getResource("/com/adr/helloiot/styles/fullscreen.css").toExternalForm());
+        if (HelloPlatform.getInstance().isFullScreen()) {
             Rectangle2D dimension = Screen.getPrimary().getVisualBounds();
             scene = new Scene(root, dimension.getWidth(), dimension.getHeight());
             scene.setCursor(Cursor.NONE);
 
         } else {
-            root.getStylesheets().add(getClass().getResource(stylename + ".hover.css").toExternalForm());
             // Dimension properties only managed if not fullscreen
             scene = new Scene(root);
             boolean maximized = Boolean.parseBoolean(appproperties.getProperty("window.maximized"));
@@ -101,10 +84,6 @@ public abstract class MainApp extends Application {
                 stage.setHeight(Double.parseDouble(appproperties.getProperty("window.height")));
             }
         }
-
-        // hover pseudoclass definiton must go before armed pseudoclass definition
-        root.getStylesheets().add(getClass().getResource(styleroot + ".css").toExternalForm());
-        root.getStylesheets().add(getClass().getResource(stylename + ".css").toExternalForm());
 
         stage.setScene(scene);
 
@@ -131,10 +110,10 @@ public abstract class MainApp extends Application {
         saveAppProperties();
 
         manager.destroy();
-
+        manager = null;
+        stage = null;
+        
         CompletableAsync.shutdown();
-
-        this.stage = null;
     }
 
     private void loadAppProperties() {

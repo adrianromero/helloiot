@@ -47,6 +47,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.MissingResourceException;
+import java.util.Properties;
 import java.util.ResourceBundle;
 import java.util.ServiceLoader;
 import java.util.logging.Level;
@@ -115,9 +116,24 @@ public class HelloIoTApp {
         }
         
         if (!config.get("mqtt.host").isEmpty()) {
-            String protocol = config.get("mqtt.websockets").asBoolean()
-                    ? (config.get("mqtt.ssl").asBoolean() ? "wss" : "ws")
-                    : (config.get("mqtt.ssl").asBoolean() ? "ssl" : "tcp");
+            boolean websockets = config.get("mqtt.websockets").asBoolean();
+            boolean ssl = config.get("mqtt.ssl").asBoolean();
+            String protocol = websockets
+                    ? (ssl ? "wss" : "ws")
+                    : (ssl ? "ssl" : "tcp");
+            Properties sslproperties;
+            if (ssl) {
+                sslproperties = new Properties();
+                sslproperties.setProperty("com.ibm.ssl.protocol", config.get("mqtt.protocol").asString());
+                sslproperties.setProperty("com.ibm.ssl.keyStore", config.get("mqtt.keystore").asString());
+                sslproperties.setProperty("com.ibm.ssl.keyStorePassword", config.get("mqtt.keystorepassword").asString());
+                sslproperties.setProperty("com.ibm.ssl.keyStoreType", "JKS");
+                sslproperties.setProperty("com.ibm.ssl.trustStore", config.get("mqtt.truststore").asString());
+                sslproperties.setProperty("com.ibm.ssl.trustStorePassword", config.get("mqtt.truststorepassword").asString());
+                sslproperties.setProperty("com.ibm.ssl.trustStoreType", "JKS");                
+            } else {
+                sslproperties = null;
+            }
             String mqtturl = protocol + "://" + config.get("mqtt.host").asString()  + ":" + Integer.toString(config.get("mqtt.port").asInt());     
             manager.addManagerProtocol(
                     "",
@@ -131,7 +147,9 @@ public class HelloIoTApp {
                                     config.get("mqtt.defaultqos").asInt(),
                                     config.get("mqtt.version").asInt(),
                                     config.get("mqtt.cleansession").asBoolean(),
-                                    null));
+                                    config.get("mqtt.maxinflight").asInt(),
+                                    config.get("mqtt.automaticreconnect").asBoolean(),
+                                    sslproperties));
         }
 
         topicsmanager = new TopicsManager(manager);
