@@ -1,5 +1,5 @@
 //    HelloIoT is a dashboard creator for MQTT
-//    Copyright (C) 2017 Adrián Romero Corchado.
+//    Copyright (C) 2017-2018 Adrián Romero Corchado.
 //
 //    This file is part of HelloIot.
 //
@@ -120,7 +120,7 @@ public class UnitPage implements Comparable<UnitPage> {
         } else {
             UnitLine lastPane;
             if (unitlines.isEmpty()) {
-                lastPane = new StartLine();
+                lastPane = new StartFlow();
                 unitlines.add(lastPane);
             } else {
                 lastPane = unitlines.get(unitlines.size() - 1);
