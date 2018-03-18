@@ -26,7 +26,7 @@ import javafx.scene.layout.StackPane;
  */
 public enum Style {
     
-    DEFAULT("Default", "/com/adr/helloiot/styles/empty"),
+    SIMPLE("Simple", "/com/adr/helloiot/styles/empty"),
     LIGHT("Light", "/com/adr/helloiot/styles/main"),
     DARK("Dark", "/com/adr/helloiot/styles/main-dark");
     

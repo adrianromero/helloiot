@@ -74,7 +74,7 @@ public class MainManagerPlatform implements MainManager {
         config.put("app.exitbutton", new MiniVarBoolean(Boolean.parseBoolean(configprops.getProperty("app.exitbutton", "true"))));
         config.put("app.retryconnection", MiniVarBoolean.TRUE);
         
-        Style.changeStyle(root, Style.valueOf(configprops.getProperty("app.style", Style.DEFAULT.name())));            
+        Style.changeStyle(root, Style.valueOf(configprops.getProperty("app.style", Style.LIGHT.name())));            
 
         helloiotapp = new HelloIoTApp(config);
 

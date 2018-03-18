@@ -78,7 +78,7 @@ public class MainManagerClient implements MainManager {
 //        Style.changeStyle(root, "/com/adr/helloiot/styles/empty");
 //        Style.changeStyle(root, "/com/adr/helloiot/styles/main");
 //        Style.changeStyle(root, "/com/adr/helloiot/styles/main-dark");
-        Style.changeStyle(root, Style.valueOf(configprops.getProperty("app.style", Style.DEFAULT.name())));        
+        Style.changeStyle(root, Style.valueOf(configprops.getProperty("app.style", Style.LIGHT.name())));        
 
         clientlogin = new ClientLoginNode();
         
@@ -92,7 +92,7 @@ public class MainManagerClient implements MainManager {
         
         clientlogin.setTopicApp(configprops.getProperty("client.topicapp", "_LOCAL_/mainapp"));
         clientlogin.setTopicSys(configprops.getProperty("client.topicsys", "system"));
-        clientlogin.setStyle(Style.valueOf(configprops.getProperty("app.style", Style.DEFAULT.name()))); 
+        clientlogin.setStyle(Style.valueOf(configprops.getProperty("app.style", Style.LIGHT.name()))); 
         clientlogin.setClock(Boolean.parseBoolean(configprops.getProperty("app.clock", "true")));
 
         int i = 0;
