@@ -15,8 +15,8 @@ Install and execute HelloIoT
 
 To run HelloIoT just download and install the appropiate release file:
 
-* [helloiot-1.0.20.zip](https://github.com/adrianromero/helloiot/releases/download/1.0.20/helloiot-1.0.20.zip) Windows / Mac / Linux
-* [helloiot-1.0.20.apk](https://github.com/adrianromero/helloiot/releases/download/1.0.20/helloiot-1.0.20.apk) Android
+* [helloiot-1.0.21.zip](https://github.com/adrianromero/helloiot/releases/download/1.0.21/helloiot-1.0.21.zip) Windows / Mac / Linux
+* [helloiot-1.0.21.apk](https://github.com/adrianromero/helloiot/releases/download/1.0.21/helloiot-1.0.21.apk) Android
 
 Install a MQTT Broker
 ----------------------
