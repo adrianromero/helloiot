@@ -55,7 +55,7 @@ repositories {
 
 dependencies {
     compile group: 'com.github.adrianromero', name: 'fonticon', version:'1.2.3'
-    compile group: 'com.github.adrianromero', name: 'hellocommon', version:'1.2.15'
+    compile group: 'com.github.adrianromero', name: 'hellocommon', version:'1.2.16'
     compile group: 'com.github.adrianromero', name: 'textflowbuilder', version: '1.0.3'
     compile group: 'org.eclipse.paho', name: 'org.eclipse.paho.client.mqttv3', version:'1.1.1'
     compile group: 'com.jidesoft', name: 'jidefx-common', version:'0.9.1'
