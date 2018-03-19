@@ -21,10 +21,13 @@ package com.adr.helloiot.unit;
 import com.adr.helloiot.HelloIoTAppPublic;
 import com.adr.helloiot.device.DeviceSubscribe;
 import com.google.common.base.Strings;
-import javafx.fxml.FXML;
 import javafx.geometry.HPos;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextInputControl;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.StackPane;
 
 /**
  *
@@ -32,7 +35,6 @@ import javafx.scene.control.TextInputControl;
  */
 public class LogView extends Tile {
 
-    @FXML
     private TextInputControl statusview;
 
     private DeviceSubscribe device = null;
@@ -40,11 +42,28 @@ public class LogView extends Tile {
 
     @Override
     public Node constructContent() {
-        return loadFXML("/com/adr/helloiot/fxml/editareaview.fxml");
+        StackPane stackpaneroot = new StackPane();
+        stackpaneroot.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+        
+        BorderPane borderpane = new BorderPane();
+        
+        statusview = new TextArea();
+        statusview.setEditable(false);
+        statusview.setFocusTraversable(false);
+        statusview.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+        statusview.setPrefHeight(100.0);
+        statusview.getStyleClass().add("noneditable");
+        BorderPane.setAlignment(statusview, Pos.CENTER);
+        
+        borderpane.setCenter(statusview);
+        
+        stackpaneroot.getChildren().add(borderpane);
+        
+        initialize();
+        return stackpaneroot;
     }
 
-    @FXML
-    public void initialize() {
+    protected void initialize() {
         setDisable(true);
     }
 

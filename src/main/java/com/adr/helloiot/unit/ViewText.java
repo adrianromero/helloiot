@@ -1,5 +1,5 @@
 //    HelloIoT is a dashboard creator for MQTT
-//    Copyright (C) 2017 Adrián Romero Corchado.
+//    Copyright (C) 2017-2018 Adrián Romero Corchado.
 //
 //    This file is part of HelloIot.
 //
@@ -21,8 +21,11 @@ package com.adr.helloiot.unit;
 import com.adr.helloiot.device.DeviceSubscribe;
 import com.adr.helloiot.HelloIoTAppPublic;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
 
 /**
  *
@@ -38,7 +41,19 @@ public class ViewText extends Tile {
 
     @Override
     protected Node constructContent() {
-        return loadFXML("/com/adr/helloiot/fxml/viewtext.fxml");
+        VBox vboxroot = new VBox();
+        vboxroot.setSpacing(10.0);        
+        
+        level = new Label();
+        level.setAlignment(Pos.CENTER_RIGHT);
+        level.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+        level.getStyleClass().add("levelbase");
+        VBox.setVgrow(level, Priority.SOMETIMES);   
+        
+        vboxroot.getChildren().add(level);
+        
+        initialize();
+        return vboxroot;
     }
 
     @FXML

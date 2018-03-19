@@ -1,5 +1,5 @@
 //    HelloIoT is a dashboard creator for MQTT
-//    Copyright (C) 2017 Adrián Romero Corchado.
+//    Copyright (C) 2017-2018 Adrián Romero Corchado.
 //
 //    This file is part of HelloIot.
 //
@@ -22,10 +22,12 @@ import com.adr.helloiot.device.DeviceNumber;
 import com.adr.helloiot.HelloIoTAppPublic;
 import com.adr.helloiot.device.format.MiniVarDouble;
 import javafx.beans.value.ObservableValue;
-import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
 
 /**
  *
@@ -33,9 +35,7 @@ import javafx.scene.control.Slider;
  */
 public class SliderSimple extends Tile {
 
-    @FXML
     private Slider slider;
-    @FXML
     private Label level;
 
     private boolean levelupdating = false;
@@ -44,10 +44,28 @@ public class SliderSimple extends Tile {
 
     @Override
     public Node constructContent() {
-        return loadFXML("/com/adr/helloiot/fxml/slidersimple.fxml");
+        
+        VBox vboxroot = new VBox();
+        vboxroot.setSpacing(10.0);
+        
+        level = new Label();
+        level.setAlignment(Pos.CENTER_RIGHT);
+        level.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+        level.getStyleClass().add("levelbase");
+        VBox.setVgrow(level, Priority.SOMETIMES);
+        
+        slider = new Slider();
+        slider.setFocusTraversable(false);
+        slider.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+        slider.setPrefWidth(20.0);
+        
+        vboxroot.getChildren().addAll(level, slider);
+        
+        initialize();
+        
+        return vboxroot;
     }
 
-    @FXML
     public void initialize() {
         slider.valueProperty().addListener((ObservableValue<? extends Number> ov, Number old_val, Number new_val) -> {
             if (!levelupdating) {

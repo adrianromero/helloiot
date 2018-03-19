@@ -1,5 +1,5 @@
 //    HelloIoT is a dashboard creator for MQTT
-//    Copyright (C) 2017 Adrián Romero Corchado.
+//    Copyright (C) 2017-2018 Adrián Romero Corchado.
 //
 //    This file is part of HelloIot.
 //
@@ -26,10 +26,12 @@ import com.adr.helloiot.graphic.IconNull;
 import com.adr.helloiot.graphic.IconStatus;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Slider;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
 
 /**
  *
@@ -40,9 +42,7 @@ public class ControlIntensity extends Tile {
     private final static IconStatus ICONNULL = new IconNull();
     private IconStatus iconbuilder = ICONNULL;   
     
-    @FXML
     private Button action;
-    @FXML
     private Slider slider;
     
     private DeviceSimple deviceon = null;
@@ -54,11 +54,30 @@ public class ControlIntensity extends Tile {
     
     @Override
     public Node constructContent() {
-        return loadFXML("/com/adr/helloiot/fxml/controlintensity.fxml");
+        VBox vboxroot = new VBox();
+        vboxroot.setSpacing(10.0);
+        
+        action = new Button();
+        action.setContentDisplay(ContentDisplay.TOP);
+        action.setFocusTraversable(false);
+        action.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+        action.setMnemonicParsing(false);
+        action.getStyleClass().add("buttonbase");
+        VBox.setVgrow(action, Priority.SOMETIMES);
+        action.setOnAction(this::onAction);
+        
+        slider = new Slider();
+        slider.setFocusTraversable(false);
+        slider.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+        slider.setPrefWidth(20.0);
+        
+        vboxroot.getChildren().addAll(action, slider);
+        
+        initialize();
+        return vboxroot;
     }
     
-    @FXML
-    public void initialize() {
+    private void initialize() {
         slider.valueProperty().addListener((ObservableValue<? extends Number> ov, Number old_val, Number new_val) -> {
             if (!levelupdating) {
                 devicedim.sendStatus(new MiniVarDouble(devicedim.adjustLevel(new_val.doubleValue())));
@@ -136,8 +155,7 @@ public class ControlIntensity extends Tile {
         return action.getText();
     }
     
-    @FXML
-    void onAction(ActionEvent event) {
+    private void onAction(ActionEvent event) {
         deviceon.sendStatus(deviceon.rollNextStatus());
     }    
 }

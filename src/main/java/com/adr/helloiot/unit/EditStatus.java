@@ -1,5 +1,5 @@
 //    HelloIoT is a dashboard creator for MQTT
-//    Copyright (C) 2017 Adrián Romero Corchado.
+//    Copyright (C) 2017-2018 Adrián Romero Corchado.
 //
 //    This file is part of HelloIot.
 //
@@ -26,12 +26,14 @@ import com.adr.helloiot.device.DeviceSimple;
 import com.google.common.base.Strings;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
 import javafx.geometry.HPos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputControl;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.StackPane;
 
 /**
  *
@@ -41,30 +43,68 @@ public class EditStatus extends Tile {
 
     protected ResourceBundle resources = ResourceBundle.getBundle("com/adr/helloiot/fxml/basic");
 
-    @FXML
-    private TextInputControl statusview;
-    @FXML
-    private Button editaction;
-    @FXML
-    private TextInputControl statusedit;
-    @FXML
-    private Button okaction;
-    @FXML
-    private Button cancelaction;
-    @FXML
-    private Pane boxview;
-    @FXML
-    private Pane boxedit;
+    protected TextInputControl statusview;
+    protected Button editaction;
+    protected TextInputControl statusedit;
+    protected Button okaction;
+    protected Button cancelaction;
+    protected HBox boxview;
+    protected HBox boxedit;
 
     private DeviceSimple device = null;
     private final Object messageHandler = Units.messageHandler(this::updateStatus);    
 
     @Override
     public Node constructContent() {
-        return loadFXML("/com/adr/helloiot/fxml/editstatus.fxml");
+        
+        StackPane stackpaneroot = new StackPane();
+        
+        boxview = new HBox();
+        boxview.setSpacing(6.0);
+        
+        statusview = new TextField();
+        statusview.setEditable(false);
+        statusview.setFocusTraversable(false);
+        statusview.getStyleClass().add("noneditable");
+        HBox.setHgrow(statusview, Priority.SOMETIMES);
+        
+        editaction = new Button();
+        editaction.setFocusTraversable(false);
+        editaction.setMnemonicParsing(false);
+        editaction.getStyleClass().add("unitbutton");
+        editaction.setOnAction(this::onEditEvent);
+        
+        boxview.getChildren().addAll(statusview, editaction);
+        
+        boxedit = new HBox();
+        boxedit.setSpacing(6.0);
+        boxedit.setVisible(false);
+        
+        statusedit = new TextField();
+        statusedit.getStyleClass().add("fieldtextbox");
+        HBox.setHgrow(statusedit, Priority.SOMETIMES);
+        ((TextField) statusedit).setOnAction(this::onEnterEvent);
+        
+        okaction = new Button();
+        okaction.setFocusTraversable(false);
+        okaction.setMnemonicParsing(false);
+        okaction.getStyleClass().add("unitbutton");
+        okaction.setOnAction(this::onOkEvent);
+        
+        cancelaction = new Button();
+        cancelaction.setFocusTraversable(false);
+        cancelaction.setMnemonicParsing(false);
+        cancelaction.getStyleClass().add("unitbutton");
+        cancelaction.setOnAction(this::onCancelEvent);
+        
+        boxedit.getChildren().addAll(statusedit, okaction, cancelaction);
+        
+        stackpaneroot.getChildren().addAll(boxview, boxedit);
+
+        initialize();
+        return stackpaneroot;
     }
 
-    @FXML
     public void initialize() {
         editaction.setGraphic(IconBuilder.create(FontAwesome.FA_EDIT, 16).styleClass("icon-fill").build());
         okaction.setGraphic(IconBuilder.create(FontAwesome.FA_CHECK, 16).styleClass("icon-fill").build());
@@ -115,14 +155,12 @@ public class EditStatus extends Tile {
         return !editaction.isVisible();
     }
 
-    @FXML
-    void onCancelEvent(ActionEvent event) {
+    protected void onCancelEvent(ActionEvent event) {
         boxedit.setVisible(false);
         boxview.setVisible(true);
     }
 
-    @FXML
-    void onEditEvent(ActionEvent event) {
+    protected void onEditEvent(ActionEvent event) {
         boxview.setVisible(false);
         boxedit.setVisible(true);
         statusedit.setText(device.formatStatus());
@@ -130,8 +168,7 @@ public class EditStatus extends Tile {
         statusedit.requestFocus();
     }
 
-    @FXML
-    void onOkEvent(ActionEvent event) {
+    protected void onOkEvent(ActionEvent event) {
         try {
             boxedit.setVisible(false);
             boxview.setVisible(true);
@@ -141,8 +178,7 @@ public class EditStatus extends Tile {
         }
     }
 
-    @FXML
-    void onEnterEvent(ActionEvent event) {
+    protected void onEnterEvent(ActionEvent event) {
         onOkEvent(event);
     }
 }

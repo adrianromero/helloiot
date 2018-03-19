@@ -1,5 +1,5 @@
 //    HelloIoT is a dashboard creator for MQTT
-//    Copyright (C) 2017 Adrián Romero Corchado.
+//    Copyright (C) 2017-2018 Adrián Romero Corchado.
 //
 //    This file is part of HelloIot.
 //
@@ -53,7 +53,7 @@ public class ButtonPair extends Tile {
         goup.getStyleClass().add("buttonbase");
         goup.getStyleClass().add("buttonup");
         VBox.setVgrow(goup, Priority.SOMETIMES);
-        goup.setMaxSize(Integer.MAX_VALUE, Integer.MAX_VALUE);
+        goup.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
         goup.setFocusTraversable(false);
         goup.setOnAction(event -> {
             device.sendStatus(roll ? device.rollNextStatus() : device.nextStatus());
@@ -65,7 +65,7 @@ public class ButtonPair extends Tile {
         godown.getStyleClass().add("buttonbase");
         godown.getStyleClass().add("buttondown");
         VBox.setVgrow(godown, Priority.SOMETIMES);
-        godown.setMaxSize(Integer.MAX_VALUE, Integer.MAX_VALUE);
+        godown.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
         godown.setFocusTraversable(false);
         godown.setOnAction(event -> {
             device.sendStatus(roll ? device.rollPrevStatus() : device.prevStatus());
@@ -75,7 +75,7 @@ public class ButtonPair extends Tile {
         VBox content = new VBox(goup, godown);
         content.setSpacing(2);
         VBox.setVgrow(content, Priority.SOMETIMES);
-        content.setMaxSize(Integer.MAX_VALUE, Integer.MAX_VALUE);
+        content.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
         return content;
     }
 

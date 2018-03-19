@@ -25,11 +25,13 @@ import com.adr.helloiot.device.TransmitterSimple;
 import com.google.common.base.Strings;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
 import javafx.geometry.HPos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputControl;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 
 /**
  *
@@ -39,10 +41,8 @@ public class EditEvent extends Tile {
 
     protected ResourceBundle resources = ResourceBundle.getBundle("com/adr/helloiot/fxml/basic");
 
-    @FXML
-    private TextInputControl payload;
-    @FXML
-    private Button fireaction;
+    protected TextInputControl payload;
+    protected Button fireaction;
 
     private String defaultValue = null;
     private boolean deleteSent = false;
@@ -50,10 +50,26 @@ public class EditEvent extends Tile {
 
     @Override
     public Node constructContent() {
-        return loadFXML("/com/adr/helloiot/fxml/editevent.fxml");
+        HBox hboxroot = new HBox();
+        hboxroot.setSpacing(6.0);
+        
+        payload = new TextField();
+        payload.getStyleClass().add("fieldtextbox");
+        HBox.setHgrow(payload, Priority.SOMETIMES);
+        ((TextField)payload).setOnAction(this::onEnterEvent);
+        
+        fireaction = new Button();
+        fireaction.setFocusTraversable(false);
+        fireaction.setMnemonicParsing(false);
+        fireaction.getStyleClass().add("unitbutton");
+        fireaction.setOnAction(this::onSendEvent);
+        
+        hboxroot.getChildren().addAll(payload, fireaction);
+        
+        initialize();
+        return hboxroot;
     }
 
-    @FXML
     public void initialize() {
         fireaction.setGraphic(IconBuilder.create(FontAwesome.FA_SEND, 16).styleClass("icon-fill").build());
 
@@ -93,8 +109,7 @@ public class EditEvent extends Tile {
         return deleteSent;
     }
 
-    @FXML
-    void onSendEvent(ActionEvent event) {
+    protected void onSendEvent(ActionEvent event) {
 
         try {
             device.sendStatus(device.getFormat().parse(payload.getText()));
@@ -108,8 +123,7 @@ public class EditEvent extends Tile {
         }
     }
 
-    @FXML
-    void onEnterEvent(ActionEvent event) {
+    protected void onEnterEvent(ActionEvent event) {
         onSendEvent(event);
     }
 }

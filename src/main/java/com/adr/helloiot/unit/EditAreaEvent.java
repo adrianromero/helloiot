@@ -1,5 +1,5 @@
 //    HelloIoT is a dashboard creator for MQTT
-//    Copyright (C) 2017 Adrián Romero Corchado.
+//    Copyright (C) 2017-2018 Adrián Romero Corchado.
 //
 //    This file is part of HelloIot.
 //
@@ -19,6 +19,10 @@
 package com.adr.helloiot.unit;
 
 import javafx.scene.Node;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextArea;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 
 /**
  *
@@ -28,6 +32,25 @@ public class EditAreaEvent extends EditEvent {
 
     @Override
     public Node constructContent() {
-        return loadFXML("/com/adr/helloiot/fxml/editareaevent.fxml");
+        HBox hboxroot = new HBox();
+        hboxroot.setSpacing(6.0);
+        
+        payload = new TextArea();
+        payload.getStyleClass().add("fieldtextbox");
+        payload.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+        payload.setPrefHeight(100.0);
+        HBox.setHgrow(payload, Priority.SOMETIMES);
+
+        
+        fireaction = new Button();
+        fireaction.setFocusTraversable(false);
+        fireaction.setMnemonicParsing(false);
+        fireaction.getStyleClass().add("unitbutton");
+        fireaction.setOnAction(this::onSendEvent);
+        
+        hboxroot.getChildren().addAll(payload, fireaction);
+        
+        initialize();
+        return hboxroot;    
     }
 }

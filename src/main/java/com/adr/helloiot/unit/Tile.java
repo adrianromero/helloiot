@@ -1,5 +1,5 @@
 //    HelloIoT is a dashboard creator for MQTT
-//    Copyright (C) 2017 Adrián Romero Corchado.
+//    Copyright (C) 2017-2018 Adrián Romero Corchado.
 //
 //    This file is part of HelloIot.
 //
@@ -20,10 +20,8 @@ package com.adr.helloiot.unit;
 
 import com.adr.textflow.TextContainer;
 import java.io.IOException;
-import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.Control;
 import javafx.scene.control.Label;
@@ -54,28 +52,7 @@ public abstract class Tile extends BorderPane implements Unit {
         setCenter(constructContent());  
     }
 
-    protected abstract Node constructContent();
-    
-    protected <T> T loadFXML(String fxml) {  
-        FXMLLoader loader = new FXMLLoader(getClass().getResource(fxml));
-        loader.setController(this);
-        try {
-            return loader.load();
-        } catch (IOException exception) {
-            throw new RuntimeException(exception);
-        } 
-    }      
-    
-    protected <T> T loadFXML(String fxml, String resources) {  
-        FXMLLoader loader = new FXMLLoader(getClass().getResource(fxml));
-        loader.setController(this);
-        loader.setResources(ResourceBundle.getBundle(resources));
-        try {
-            return loader.load();
-        } catch (IOException exception) {
-            throw new RuntimeException(exception);
-        } 
-    }      
+    protected abstract Node constructContent();    
 
     @Override
     public void start() {

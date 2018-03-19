@@ -18,7 +18,11 @@
 //
 package com.adr.helloiot.unit;
 
+import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.control.TextArea;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.StackPane;
 
 /**
  *
@@ -28,6 +32,25 @@ public class EditAreaView extends EditView {
 
     @Override
     public Node constructContent() {
-        return loadFXML("/com/adr/helloiot/fxml/editareaview.fxml");
+        
+        StackPane stackpaneroot = new StackPane();
+        stackpaneroot.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+        
+        BorderPane borderpane = new BorderPane();
+        
+        statusview = new TextArea();
+        statusview.setEditable(false);
+        statusview.setFocusTraversable(false);
+        statusview.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+        statusview.setPrefHeight(100.0);
+        statusview.getStyleClass().add("noneditable");
+        BorderPane.setAlignment(statusview, Pos.CENTER);
+        
+        borderpane.setCenter(statusview);
+        
+        stackpaneroot.getChildren().add(borderpane);
+        
+        initialize();
+        return stackpaneroot;
     }
 }

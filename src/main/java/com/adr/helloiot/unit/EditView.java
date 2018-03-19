@@ -1,5 +1,5 @@
 //    HelloIoT is a dashboard creator for MQTT
-//    Copyright (C) 2017 Adrián Romero Corchado.
+//    Copyright (C) 2017-2018 Adrián Romero Corchado.
 //
 //    This file is part of HelloIot.
 //
@@ -21,10 +21,12 @@ package com.adr.helloiot.unit;
 import com.adr.helloiot.HelloIoTAppPublic;
 import com.adr.helloiot.device.DeviceSubscribe;
 import com.google.common.base.Strings;
-import javafx.fxml.FXML;
 import javafx.geometry.HPos;
 import javafx.scene.Node;
+import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputControl;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 
 /**
  *
@@ -32,19 +34,31 @@ import javafx.scene.control.TextInputControl;
  */
 public class EditView extends Tile {
 
-    @FXML
-    private TextInputControl statusview;
+    protected TextInputControl statusview;
 
     private DeviceSubscribe device = null;
     private final Object messageHandler = Units.messageHandler(this::updateStatus);      
 
     @Override
     public Node constructContent() {
-        return loadFXML("/com/adr/helloiot/fxml/editview.fxml");
+        
+        HBox hboxroot = new HBox();
+        hboxroot.setSpacing(6.0);
+        
+        statusview = new TextField();
+        statusview.setEditable(false);
+        statusview.setFocusTraversable(false);
+        statusview.getStyleClass().add("noneditable");
+        HBox.setHgrow(statusview, Priority.SOMETIMES);
+        
+        hboxroot.getChildren().add(statusview);
+        
+        initialize();
+        return hboxroot;
     }
 
-    @FXML
-    public void initialize() {
+
+    protected void initialize() {
         setDisable(true);
     }
 

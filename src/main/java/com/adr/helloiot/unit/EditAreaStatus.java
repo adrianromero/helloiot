@@ -1,5 +1,5 @@
 //    HelloIoT is a dashboard creator for MQTT
-//    Copyright (C) 2017 Adrián Romero Corchado.
+//    Copyright (C) 2017-2018 Adrián Romero Corchado.
 //
 //    This file is part of HelloIot.
 //
@@ -19,6 +19,11 @@
 package com.adr.helloiot.unit;
 
 import javafx.scene.Node;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextArea;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.StackPane;
 
 /**
  *
@@ -26,12 +31,56 @@ import javafx.scene.Node;
  */
 public class EditAreaStatus extends EditStatus {
 
-//    @Override
-//    protected void loadFXML() {   
-//        this.load("/com/adr/helloiot/fxml/editareastatus.fxml");   
-//    }  
     @Override
     public Node constructContent() {
-        return loadFXML("/com/adr/helloiot/fxml/editareastatus.fxml");
+        StackPane stackpaneroot = new StackPane();
+        
+        boxview = new HBox();
+        boxview.setSpacing(6.0);
+        
+        statusview = new TextArea();
+        statusview.setEditable(false);
+        statusview.setFocusTraversable(false);
+        statusview.setMaxSize(Double.MAX_VALUE,Double.MAX_VALUE);
+        statusview.setPrefHeight(100.0);
+        statusview.getStyleClass().add("noneditable");
+        HBox.setHgrow(statusview, Priority.SOMETIMES);
+        
+        editaction = new Button();
+        editaction.setFocusTraversable(false);
+        editaction.setMnemonicParsing(false);
+        editaction.getStyleClass().add("unitbutton");
+        editaction.setOnAction(this::onEditEvent);
+        
+        boxview.getChildren().addAll(statusview, editaction);
+        
+        boxedit = new HBox();
+        boxedit.setSpacing(6.0);
+        boxedit.setVisible(false);
+        
+        statusedit = new TextArea();
+        statusedit.setMaxSize(Double.MAX_VALUE,Double.MAX_VALUE);
+        statusedit.setPrefHeight(100.0);        
+        statusedit.getStyleClass().add("fieldtextbox");
+        HBox.setHgrow(statusedit, Priority.SOMETIMES);
+        
+        okaction = new Button();
+        okaction.setFocusTraversable(false);
+        okaction.setMnemonicParsing(false);
+        okaction.getStyleClass().add("unitbutton");
+        okaction.setOnAction(this::onOkEvent);
+        
+        cancelaction = new Button();
+        cancelaction.setFocusTraversable(false);
+        cancelaction.setMnemonicParsing(false);
+        cancelaction.getStyleClass().add("unitbutton");
+        cancelaction.setOnAction(this::onCancelEvent);
+        
+        boxedit.getChildren().addAll(statusedit, okaction, cancelaction);
+        
+        stackpaneroot.getChildren().addAll(boxview, boxedit);
+
+        initialize();
+        return stackpaneroot;
     }
 }
