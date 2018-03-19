@@ -180,12 +180,15 @@ public class MainManagerClient implements MainManager {
                 helloiotapp.addFXMLFileDevicesUnits("local:com/adr/helloiot/panes/mosquitto");
             }
 
-            helloiotapp.addDevicesUnits(Collections.emptyList(), Collections.singletonList(new StartFlow()));
             TopicStatus ts;
             for (TopicInfo topicinfo : topicinfolist) {            
                 ts = topicinfo.getTopicStatus();
                 helloiotapp.addDevicesUnits(ts.getDevices(), ts.getUnits());
-            }        
+            }   
+            
+            if (helloiotapp.getUnits().isEmpty()) {
+                throw new HelloIoTException(resources.getString("exception.emptyunits"));
+            }
 
             helloiotapp.addUnitPages(Arrays.asList(
                     new UnitPage("Lights", IconBuilder.create(FontAwesome.FA_LIGHTBULB_O, 24.0).styleClass("icon-fill").build(), resources.getString("page.lights")))
