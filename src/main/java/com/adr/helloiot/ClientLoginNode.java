@@ -21,7 +21,6 @@ package com.adr.helloiot;
 import com.adr.fonticon.FontAwesome;
 import com.adr.fonticon.IconBuilder;
 import com.adr.hellocommon.dialog.MessageUtils;
-import com.adr.hellocommon.utils.FXMLUtil;
 import com.google.common.io.Resources;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -33,7 +32,9 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.fxml.FXML;
+import javafx.geometry.Insets;
+import javafx.geometry.Orientation;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
@@ -42,8 +43,17 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.Separator;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 import javafx.scene.control.ToolBar;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
@@ -53,25 +63,25 @@ import javafx.scene.layout.VBox;
  */
 public class ClientLoginNode {
 
-    @FXML private ResourceBundle resources;
-    @FXML private BorderPane rootpane;
-    @FXML private Button nextbutton;
-    @FXML private VBox connections;
-    @FXML private CheckBox mainpage;
-
-    @FXML Button adddeviceunit;
-    @FXML Button removedeviceunit;
-    @FXML Button updeviceunit;
-    @FXML Button downdeviceunit;
-    @FXML ListView<TopicInfo> devicesunitslist;
-    @FXML ScrollPane deviceunitform;
+    private ResourceBundle resources;
+    private BorderPane rootpane;
+    private Button nextbutton;
+    private VBox connections;
+    private CheckBox mainpage;
     
-    @FXML ChoiceBox<String> edittype;
-    @FXML StackPane topicinfocontainer;
-    @FXML ToolBar unitstoolbar;
+    Button adddeviceunit;
+    Button removedeviceunit;
+    Button updeviceunit;
+    Button downdeviceunit;
+    ListView<TopicInfo> devicesunitslist;
+    ScrollPane deviceunitform;
     
-    @FXML private ChoiceBox<Style> skins;
-    @FXML private CheckBox clock;
+    ChoiceBox<String> edittype;
+    StackPane topicinfocontainer;
+    ToolBar unitstoolbar;
+    
+    private ChoiceBox<Style> skins;
+    private CheckBox clock;
         
     TopicInfoNode editnode = null;
  
@@ -83,14 +93,189 @@ public class ClientLoginNode {
     private boolean updating = false;
 
     public ClientLoginNode() {
-        FXMLUtil.load(this, "/com/adr/helloiot/fxml/clientlogin.fxml", "com/adr/helloiot/fxml/clientlogin");
+        
+        resources = ResourceBundle.getBundle("com/adr/helloiot/fxml/clientlogin");
+        
+        rootpane = new BorderPane();
+        rootpane.setPrefSize(900.0, 720.0);
+        
+        HBox hbox = new HBox();
+        hbox.setSpacing(6.0);
+        hbox.getStyleClass().add("header");
+        BorderPane.setAlignment(hbox, Pos.CENTER);
+        
+        Label label = new Label(resources.getString("label.clientlogin"));
+        label.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+        label.getStyleClass().add("headertitle");
+        HBox.setHgrow(label, Priority.SOMETIMES);
+        
+        nextbutton = new Button(resources.getString("button.connect"));
+        nextbutton.setFocusTraversable(false);
+        nextbutton.setMnemonicParsing(false);
+        nextbutton.getStyleClass().add("headerbutton");
+        
+        hbox.getChildren().addAll(label, nextbutton);
+        
+        rootpane.setTop(hbox);
+        
+        TabPane tabpane = new TabPane();
+        tabpane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
+        BorderPane.setAlignment(tabpane, Pos.CENTER);
+        
+        Tab tab0 = new Tab(resources.getString("tab.connection"));
+        tab0.setClosable(false);
+        
+        ScrollPane scroll = new ScrollPane();
+        scroll.setFitToWidth(true);
+        
+        connections = new VBox();
+        
+        scroll.setContent(connections);
+        
+        tab0.setContent(scroll);
+        
+        Tab tab1 = new Tab(resources.getString("tab.devicesunits"));
+        tab1.setClosable(false);
+        
+        BorderPane borderpanetab1 = new BorderPane();
+        
+        deviceunitform = new ScrollPane();
+        deviceunitform.setFitToWidth(true);
+        BorderPane.setMargin(deviceunitform, new Insets(5.0, 5.0, 5.0, 0.0));
+        
+        VBox vbox2 = new VBox();
+        
+        GridPane griddeviceunit = new GridPane();
+        griddeviceunit.setHgap(10.0);
+        griddeviceunit.setVgap(10.0);       
+        ColumnConstraints constr = new ColumnConstraints();
+        constr.setHgrow(Priority.SOMETIMES);
+        griddeviceunit.getColumnConstraints().addAll(
+               new ColumnConstraints(150.0, 150.0, Region.USE_COMPUTED_SIZE),
+               new ColumnConstraints(200.0, 200.0, Region.USE_COMPUTED_SIZE),
+               new ColumnConstraints(150.0, 150.0, Region.USE_COMPUTED_SIZE),
+               constr);
+        griddeviceunit.getRowConstraints().addAll(
+                new RowConstraints(10.0, 30.0, Region.USE_COMPUTED_SIZE),
+                new RowConstraints(10.0, 30.0, Region.USE_COMPUTED_SIZE),
+                new RowConstraints(10.0, 30.0, Region.USE_COMPUTED_SIZE));
+        griddeviceunit.setPadding(new Insets(10.0, 10.0, 0.0, 10.0));
+        
+        Label section = new Label(resources.getString("label.unit"));
+        section.getStyleClass().add("formsection");
+        section.setMaxWidth(Double.MAX_VALUE);
+        GridPane.setColumnSpan(section, Integer.MAX_VALUE);
+        
+        Label ltype = new Label(resources.getString("label.type"));
+        GridPane.setRowIndex(ltype, 1);
+        
+        edittype = new ChoiceBox();
+        edittype.setMaxWidth(Double.MAX_VALUE);
+        GridPane.setRowIndex(edittype, 1);
+        GridPane.setColumnIndex(edittype, 1);
+        
+        Label lprops = new Label(resources.getString("label.properties"));
+        lprops.getStyleClass().add("formsection");
+        lprops.setMaxWidth(Double.MAX_VALUE);
+        GridPane.setColumnSpan(lprops, Integer.MAX_VALUE);
+        GridPane.setRowIndex(lprops, 2);
+        
+        griddeviceunit.getChildren().addAll(section, ltype, edittype, lprops);
+        
+        topicinfocontainer = new StackPane();
+        
+        vbox2.getChildren().addAll(griddeviceunit, topicinfocontainer);
+        
+        deviceunitform.setContent(vbox2);
+        
+        borderpanetab1.setCenter(deviceunitform);
+        
+        unitstoolbar = new ToolBar();
+        BorderPane.setAlignment(unitstoolbar, Pos.CENTER);
+        
+        adddeviceunit = new Button();
+        adddeviceunit.setFocusTraversable(false);
+        adddeviceunit.setMnemonicParsing(false);
+        adddeviceunit.setOnAction(this::onAddDeviceUnit);
+        
+        removedeviceunit = new Button();
+        removedeviceunit.setFocusTraversable(false);
+        removedeviceunit.setMnemonicParsing(false);
+        removedeviceunit.setOnAction(this::onRemoveDeviceUnit);
+        
+        updeviceunit = new Button();
+        updeviceunit.setFocusTraversable(false);
+        updeviceunit.setMnemonicParsing(false);
+        updeviceunit.setOnAction(this::onUpDeviceUnit);
+        
+        downdeviceunit = new Button();
+        downdeviceunit.setFocusTraversable(false);
+        downdeviceunit.setMnemonicParsing(false);
+        downdeviceunit.setOnAction(this::onDownDeviceUnit);
+        
+        Separator sep = new Separator(Orientation.VERTICAL);
+        
+        unitstoolbar.getItems().addAll(adddeviceunit, removedeviceunit, updeviceunit, downdeviceunit, sep);
+        
+        borderpanetab1.setTop(unitstoolbar);
+        
+        devicesunitslist = new ListView();
+        devicesunitslist.setPrefWidth(280.0);
+        BorderPane.setAlignment(devicesunitslist, Pos.CENTER);
+        BorderPane.setMargin(devicesunitslist, new Insets(5.0));
+        
+        borderpanetab1.setLeft(devicesunitslist);
+        
+        tab1.setContent(borderpanetab1);
+        
+        Tab tab2 = new Tab(resources.getString("tab.configuration"));
+        tab2.setClosable(false);
+        
+        ScrollPane scrolltab2 = new ScrollPane();
+        scrolltab2.setFitToWidth(true);
+        
+        GridPane grid2 = new GridPane();
+        grid2.setHgap(10.0);
+        grid2.setVgap(10.0);       
+        ColumnConstraints constr2 = new ColumnConstraints();
+        constr2.setHgrow(Priority.SOMETIMES);
+        grid2.getColumnConstraints().addAll(
+               new ColumnConstraints(150.0, 150.0, Region.USE_COMPUTED_SIZE),
+               new ColumnConstraints(200.0, 200.0, Region.USE_COMPUTED_SIZE),
+               constr2);
+        grid2.getRowConstraints().addAll(
+                new RowConstraints(10.0, 30.0, Region.USE_COMPUTED_SIZE),
+                new RowConstraints(10.0, 30.0, Region.USE_COMPUTED_SIZE));
+        grid2.setPadding(new Insets(10.0, 10.0, 0.0, 10.0));
+        
+        Label labelstyle = new Label(resources.getString("label.style"));
+        
+        skins = new ChoiceBox();
+        skins.setPrefWidth(200.);
+        GridPane.setColumnIndex(skins, 1);
+        
+        clock = new CheckBox(resources.getString("label.clock"));
+        clock.setMnemonicParsing(false);
+        GridPane.setColumnIndex(clock, 1);
+        GridPane.setRowIndex(clock, 1);
+        
+        grid2.getChildren().addAll(labelstyle, skins, clock);
+        
+        scrolltab2.setContent(grid2);
+        
+        tab2.setContent(scrolltab2);
+                
+        tabpane.getTabs().addAll(tab0, tab1, tab2);
+        
+        rootpane.setCenter(tabpane);
+        
+        initialize();
     }
     
     public void appendConnectNode(Node n) {
         connections.getChildren().add(n);
     }
 
-    @FXML
     public void initialize() {
 
         nextbutton.setGraphic(IconBuilder.create(FontAwesome.FA_PLAY, 18.0).styleClass("icon-fill").build());
@@ -229,21 +414,18 @@ public class ClientLoginNode {
         }
     }
 
-    @FXML
     void onAddDeviceUnit(ActionEvent event) {
         TopicInfo t = topicinfobuilder.create();
         devicesunitslist.getItems().add(t);
         devicesunitslist.getSelectionModel().select(t);
     }
 
-    @FXML
     void onRemoveDeviceUnit(ActionEvent event) {
         TopicInfo t = devicesunitslist.getSelectionModel().getSelectedItem();
         devicesunitslist.getItems().remove(t);
 
     }
 
-    @FXML
     void onUpDeviceUnit(ActionEvent event) {
         TopicInfo topic = devicesunitslist.getSelectionModel().getSelectedItem();
         int index = devicesunitslist.getSelectionModel().getSelectedIndex();
@@ -252,7 +434,6 @@ public class ClientLoginNode {
         devicesunitslist.getSelectionModel().select(index - 1);
     }
 
-    @FXML
     void onDownDeviceUnit(ActionEvent event) {
         TopicInfo topic = devicesunitslist.getSelectionModel().getSelectedItem();
         int index = devicesunitslist.getSelectionModel().getSelectedIndex();
