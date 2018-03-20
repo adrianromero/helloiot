@@ -26,7 +26,6 @@ import com.adr.helloiot.device.format.MiniVarBoolean;
 import com.adr.helloiot.device.format.MiniVarString;
 import com.adr.helloiot.mqtt.ConnectMQTT;
 import com.adr.helloiot.tradfri.ConnectTradfri;
-import com.adr.helloiot.unit.StartFlow;
 import com.adr.helloiot.unit.UnitPage;
 import com.google.common.base.Strings;
 import java.io.File;
@@ -35,7 +34,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -71,8 +69,8 @@ public class MainManagerClient implements MainManager {
         try {
             configprops.load(() -> new FileInputStream(configfile));
         } catch (IOException ex) {
-            // No properties file found, then use defaults and continue
-            LOGGER.log(Level.WARNING, "No properties file found, then use defaults and continue.", ex);
+            // No properties file found, then use defaults and continue          
+            LOGGER.log(Level.WARNING, () -> String.format("Using defaults. Properties file not found: %s.", configfile));            
         }        
         
 //        Style.changeStyle(root, "/com/adr/helloiot/styles/empty");
@@ -131,7 +129,7 @@ public class MainManagerClient implements MainManager {
             configprops.load(() -> new FileInputStream(configfile));
         } catch (IOException ex) {
             // No properties file found, then use defaults and continue
-            LOGGER.log(Level.WARNING, "No properties file found, then use defaults and continue.", ex);
+            LOGGER.log(Level.WARNING, () -> String.format("Using defaults. Properties file not found: %s.", configfile));
         }   
         
         clientmqtt.saveConfig(configprops);
@@ -188,7 +186,7 @@ public class MainManagerClient implements MainManager {
             
             if (helloiotapp.getUnits().isEmpty()) {
                 throw new HelloIoTException(resources.getString("exception.emptyunits"));
-            }
+           }
 
             helloiotapp.addUnitPages(Arrays.asList(
                     new UnitPage("Lights", IconBuilder.create(FontAwesome.FA_LIGHTBULB_O, 24.0).styleClass("icon-fill").build(), resources.getString("page.lights")))

@@ -103,6 +103,8 @@ public final class MainNode {
     private Clock clock = null;
     private Transition listpagestransition;
     
+    private String firstmenupage;
+    
     private final Map<String, UnitPage> unitpages = new LinkedHashMap<>();
     private final Object messagePageHandler = Units.messageHandler(this::updatePageStatus);  
     private final Beeper beeper;
@@ -153,6 +155,7 @@ public final class MainNode {
         List<UnitPage> sortedunitpages = new ArrayList<>();
         sortedunitpages.addAll(unitpages.values());
         Collections.sort(sortedunitpages);
+        firstmenupage = null;
         for (UnitPage value : sortedunitpages) {
             if (!value.isSystem() && value.getUnitLines().size() > 0 && (value.getName() == null || !value.getName().startsWith("."))) {
                 Label l = new Label();
@@ -168,7 +171,10 @@ public final class MainNode {
                 buttonmenu.setOnAction(e -> {
                     app.getUnitPage().sendStatus(value.getName());              
                 });
-                menupages.getChildren().add(buttonmenu);            
+                menupages.getChildren().add(buttonmenu);
+                if (firstmenupage == null) {
+                    firstmenupage = value.getName();
+                }
             }
         }
         
@@ -289,6 +295,10 @@ public final class MainNode {
         }
         
         UnitPage unitpage = unitpages.get(status);
+        
+        if (unitpage == null && "_first".equals(status)) {
+            unitpage = unitpages.get(firstmenupage);
+        }
         
         if (unitpage == null) {
             unitpage = unitpages.get("notfound");

@@ -18,6 +18,7 @@
 //
 package com.adr.helloiot;
 
+import com.adr.helloiot.device.format.StringFormatIdentity;
 import com.adr.helloiot.util.CompletableAsync;
 import com.adr.helloiot.util.CryptUtils;
 import java.io.File;
@@ -118,12 +119,14 @@ public class ManagerLocal implements ManagerProtocol {
         try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(dbfile))) {                
             mapClient = (ConcurrentMap<String, byte[]>) in.readObject(); 
         } catch (IOException | ClassNotFoundException ex) {
-            logger.log(Level.WARNING, "Cannot load map file.", ex);
+            logger.log(Level.WARNING, () -> String.format("Creating map. Local map file not found: %s.", dbfile));
         }
         
         if (mapClient == null) {
             mapClient = new ConcurrentHashMap<>();
-            group.distributeMessage(topicapp + "/unitpage", "main".getBytes(StandardCharsets.UTF_8));
+            
+            mapClient.put(topicapp + "/unitpage", StringFormatIdentity.INSTANCE.parse("_first"));
+            group.distributeMessage(topicapp + "/unitpage", StringFormatIdentity.INSTANCE.parse("_first"));
         }
     }
     
