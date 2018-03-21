@@ -95,7 +95,7 @@ public abstract class MainApp extends Application {
         });
 
         manager = createManager();
-        manager.construct(root, getParameters());
+        manager.construct(root, getParameters(), appproperties);
 
         stage.setTitle(getAppTitle());
         stage.show();
@@ -107,9 +107,10 @@ public abstract class MainApp extends Application {
         appproperties.setProperty("window.height", Double.toString(stage.getHeight()));
         appproperties.setProperty("window.width", Double.toString(stage.getWidth()));
         appproperties.setProperty("window.maximized", Boolean.toString(stage.isMaximized()));
+        
+        manager.destroy(appproperties);
         saveAppProperties();
-
-        manager.destroy();
+        
         manager = null;
         stage = null;
         

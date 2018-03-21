@@ -62,14 +62,9 @@ public class ConnectTradfri {
     
     public void saveConfig(ConfigProperties configprops) {
         configprops.setProperty("tradfri.host", tradfrihost.getText());        
+        configprops.setProperty("tradfri.psk", tradfripsk.getText());        
     }
-    
-    public void applyConfig(Map<String, MiniVar> config) {
-        config.put("tradfri.host", new MiniVarString(tradfrihost.getText()));
-        config.put("tradfri.psk", new MiniVarString(tradfripsk.getText()));   
-        tradfripsk.setText("");
-    }
-    
+        
     private void disableTradfri(boolean value) {
         labeltradfripsk.setDisable(value);
         tradfripsk.setDisable(value);

@@ -26,6 +26,7 @@ import com.google.common.base.Strings;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 import javafx.application.Application.Parameters;
 import javafx.scene.layout.StackPane;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
@@ -39,7 +40,7 @@ public class MainManagerPlatform implements MainManager {
     private HelloIoTApp helloiotapp = null;
 
     @Override
-    public void construct(StackPane root, Parameters params) {
+    public void construct(StackPane root, Parameters params, Properties appprops) {
 
         ConfigProperties configprops = new ConfigProperties();
         try {
@@ -55,14 +56,22 @@ public class MainManagerPlatform implements MainManager {
         config.put("mqtt.port", new MiniVarInt(Integer.parseInt(configprops.getProperty("mqtt.port", "1883"))));
         config.put("mqtt.ssl", new MiniVarBoolean(Boolean.parseBoolean(configprops.getProperty("mqtt.ssl", "false"))));
         config.put("mqtt.websockets", new MiniVarBoolean(Boolean.parseBoolean(configprops.getProperty("mqtt.websockets", "false"))));
+        config.put("mqtt.protocol", new MiniVarString(configprops.getProperty("mqtt.protocol", "TSLv12")));
+        config.put("mqtt.keystore", new MiniVarString(configprops.getProperty("mqtt.keystore", "")));
+        config.put("mqtt.keystorepassword", new MiniVarString(namedParams.getOrDefault("mqtt.keystorepassword", "")));
+        config.put("mqtt.truststore", new MiniVarString(configprops.getProperty("mqtt.truststore", "")));
+        config.put("mqtt.truststorepassword", new MiniVarString(namedParams.getOrDefault("mqtt.truststorepassword", "")));
         config.put("mqtt.username", new MiniVarString(namedParams.getOrDefault("mqtt.username", "")));
         config.put("mqtt.password", new MiniVarString(namedParams.getOrDefault("mqtt.password", "")));
         config.put("mqtt.clientid", new MiniVarString(configprops.getProperty("mqtt.clientid", "")));
         config.put("mqtt.connectiontimeout", new MiniVarInt(Integer.parseInt(configprops.getProperty("mqtt.connectiontimeout", Integer.toString(MqttConnectOptions.CONNECTION_TIMEOUT_DEFAULT)))));
         config.put("mqtt.keepaliveinterval", new MiniVarInt(Integer.parseInt(configprops.getProperty("mqtt.keepaliveinterval", Integer.toString(MqttConnectOptions.KEEP_ALIVE_INTERVAL_DEFAULT)))));
+        config.put("mqtt.maxinflight", new MiniVarInt(Integer.parseInt(configprops.getProperty("mqtt.maxinflight", Integer.toString(MqttConnectOptions.MAX_INFLIGHT_DEFAULT)))));
+        config.put("mqtt.automaticreconnect", new MiniVarBoolean(Boolean.parseBoolean(configprops.getProperty("mqtt.automaticreconnect", "true"))));
         config.put("mqtt.defaultqos", new MiniVarInt(Integer.parseInt(configprops.getProperty("mqtt.defaultqos", "1"))));
         config.put("mqtt.version", new MiniVarInt(Integer.parseInt(configprops.getProperty("mqtt.version", Integer.toString(MqttConnectOptions.MQTT_VERSION_DEFAULT))))); // MQTT_VERSION_DEFAULT = 0; MQTT_VERSION_3_1 = 3; MQTT_VERSION_3_1_1 = 4;
         config.put("mqtt.cleansession", new MiniVarBoolean(Boolean.parseBoolean(configprops.getProperty("mqtt.cleansession", Boolean.toString(MqttConnectOptions.CLEAN_SESSION_DEFAULT)))));
+        config.put("client.broker", new MiniVarString(configprops.getProperty("mqtt.cleansession", "0")));
         
         config.put("tradfri.host", new MiniVarString(configprops.getProperty("tradfri.host", "")));
         config.put("tradfri.psk", new MiniVarString(namedParams.getOrDefault("tradfri.psk", "")));
@@ -72,8 +81,7 @@ public class MainManagerPlatform implements MainManager {
 
         config.put("app.clock", new MiniVarBoolean(Boolean.parseBoolean(configprops.getProperty("app.clock", "true"))));
         config.put("app.exitbutton", new MiniVarBoolean(Boolean.parseBoolean(configprops.getProperty("app.exitbutton", "true"))));
-        config.put("app.retryconnection", MiniVarBoolean.TRUE);
-        
+        config.put("app.retryconnection", MiniVarBoolean.TRUE);        
         Style.changeStyle(root, Style.valueOf(configprops.getProperty("app.style", Style.LIGHT.name())));            
 
         helloiotapp = new HelloIoTApp(config);
@@ -100,7 +108,7 @@ public class MainManagerPlatform implements MainManager {
     }
 
     @Override
-    public void destroy() {
+    public void destroy(Properties appprops) {
         helloiotapp.stopAndDestroy();
         helloiotapp = null;
     }

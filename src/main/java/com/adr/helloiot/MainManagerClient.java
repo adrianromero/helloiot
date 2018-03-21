@@ -23,6 +23,7 @@ import com.adr.fonticon.IconBuilder;
 import com.adr.hellocommon.dialog.MessageUtils;
 import com.adr.helloiot.device.format.MiniVar;
 import com.adr.helloiot.device.format.MiniVarBoolean;
+import com.adr.helloiot.device.format.MiniVarInt;
 import com.adr.helloiot.device.format.MiniVarString;
 import com.adr.helloiot.mqtt.ConnectMQTT;
 import com.adr.helloiot.tradfri.ConnectTradfri;
@@ -37,6 +38,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -45,6 +47,7 @@ import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.layout.StackPane;
+import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 
 /**
  *
@@ -56,6 +59,7 @@ public class MainManagerClient implements MainManager {
     private static final String CONFIG_PROPERTIES = ".helloiot-config.properties";
     
     private HelloIoTApp helloiotapp = null;
+    
     private ClientLoginNode clientlogin = null;
     private ConnectTradfri clienttradfri = null;
     private ConnectMQTT clientmqtt = null;
@@ -64,19 +68,6 @@ public class MainManagerClient implements MainManager {
     private StackPane root = null;
 
     private void showLogin() {
-        
-        ConfigProperties configprops = new ConfigProperties();            
-        try {
-            configprops.load(() -> new FileInputStream(configfile));
-        } catch (IOException ex) {
-            // No properties file found, then use defaults and continue          
-            LOGGER.log(Level.WARNING, () -> String.format("Using defaults. Properties file not found: %s.", configfile));            
-        }        
-        
-//        Style.changeStyle(root, "/com/adr/helloiot/styles/empty");
-//        Style.changeStyle(root, "/com/adr/helloiot/styles/main");
-//        Style.changeStyle(root, "/com/adr/helloiot/styles/main-dark");
-        Style.changeStyle(root, Style.valueOf(configprops.getProperty("app.style", Style.LIGHT.name())));        
 
         clientlogin = new ClientLoginNode();
         
@@ -85,14 +76,28 @@ public class MainManagerClient implements MainManager {
         clienttradfri = new ConnectTradfri();
         clientlogin.appendConnectNode(clienttradfri.getNode()); 
         
+        
+        
+        ConfigProperties configprops = new ConfigProperties();            
+        try {
+            configprops.load(() -> new FileInputStream(configfile));
+        } catch (IOException ex) {        
+            LOGGER.log(Level.WARNING, () -> String.format("Using defaults. Properties file not found: %s.", configfile));            
+        }        
+               
         clientmqtt.loadConfig(configprops);
         clienttradfri.loadConfig(configprops);
         
         clientlogin.setTopicApp(configprops.getProperty("client.topicapp", "_LOCAL_/mainapp"));
         clientlogin.setTopicSys(configprops.getProperty("client.topicsys", "system"));
-        clientlogin.setStyle(Style.valueOf(configprops.getProperty("app.style", Style.LIGHT.name()))); 
+        
         clientlogin.setClock(Boolean.parseBoolean(configprops.getProperty("app.clock", "true")));
-
+        // "app.exitbutton"
+        // "app.retryconnection"
+        clientlogin.setStyle(Style.valueOf(configprops.getProperty("app.style", Style.LIGHT.name()))); 
+        Style.changeStyle(root, Style.valueOf(configprops.getProperty("app.style", Style.LIGHT.name())));        
+        
+        // Now the units
         int i = 0;
         List<TopicInfo> topicinfolist = new ArrayList<>();
         TopicInfoBuilder topicinfobuilder = new TopicInfoBuilder();
@@ -104,8 +109,8 @@ public class MainManagerClient implements MainManager {
 
         clientlogin.setOnNextAction(e -> {    
             try {
-                showApplication();
                 hideLogin();
+                showApplication();      
             } catch (HelloIoTException ex) {
                 ResourceBundle resources = ResourceBundle.getBundle("com/adr/helloiot/fxml/main");
                 MessageUtils.showError(MessageUtils.getRoot(root), resources.getString("exception.topicinfotitle"), ex.getLocalizedMessage());
@@ -117,7 +122,46 @@ public class MainManagerClient implements MainManager {
 
     private void hideLogin() {
         if (clientlogin != null) {
+            
+            ConfigProperties configprops = new ConfigProperties();           
+            try {
+                configprops.load(() -> new FileInputStream(configfile));
+            } catch (IOException ex) {
+                // No properties file found, then use defaults and continue
+                LOGGER.log(Level.WARNING, () -> String.format("Using defaults. Properties file not found: %s.", configfile));
+            } 
+            
+            clientmqtt.saveConfig(configprops);
+            clienttradfri.saveConfig(configprops);     
+            
+            configprops.setProperty("client.topicapp", clientlogin.getTopicApp());
+            configprops.setProperty("client.topicsys", clientlogin.getTopicSys());
+            
+            configprops.setProperty("app.clock", Boolean.toString(clientlogin.isClock())); 
+            // "app.exitbutton"
+            // "app.retryconnection"
+            configprops.setProperty("app.style", clientlogin.getStyle().name());
+            
+            // Now the units
+            List<TopicInfo> topicinfolist = clientlogin.getTopicInfoList();
+            configprops.setProperty("topicinfo.size", Integer.toString(topicinfolist.size()));
+            int i = 0;
+            for (TopicInfo topicinfo : topicinfolist) {       
+                SubProperties subproperties = new ConfigSubProperties(configprops, "topicinfo" + Integer.toString(++i));
+                subproperties.setProperty(".type", topicinfo.getType());
+                topicinfo.store(subproperties);
+            }
+
+            try {
+                configprops.save(() -> new FileOutputStream(configfile));
+            } catch (IOException ex) {
+                LOGGER.log(Level.WARNING, "Cannot save configuration properties.", ex);
+            }
+        
+            // And destroy
             root.getChildren().remove(clientlogin.getNode());
+            clientmqtt = null;
+            clienttradfri = null;
             clientlogin = null;
         }
     }
@@ -130,41 +174,40 @@ public class MainManagerClient implements MainManager {
         } catch (IOException ex) {
             // No properties file found, then use defaults and continue
             LOGGER.log(Level.WARNING, () -> String.format("Using defaults. Properties file not found: %s.", configfile));
-        }   
-        
-        clientmqtt.saveConfig(configprops);
-        clienttradfri.saveConfig(configprops);
-        
-        configprops.setProperty("client.topicapp", clientlogin.getTopicApp());
-        configprops.setProperty("client.topicsys", clientlogin.getTopicSys());
-        configprops.setProperty("app.style", clientlogin.getStyle().name());
-        configprops.setProperty("app.clock", Boolean.toString(clientlogin.isClock()));
-
-        List<TopicInfo> topicinfolist = clientlogin.getTopicInfoList();
-        configprops.setProperty("topicinfo.size", Integer.toString(topicinfolist.size()));
-        int i = 0;
-        for (TopicInfo topicinfo : topicinfolist) {       
-            SubProperties subproperties = new ConfigSubProperties(configprops, "topicinfo" + Integer.toString(++i));
-            subproperties.setProperty(".type", topicinfo.getType());
-            topicinfo.store(subproperties);
-        }
-
-        try {
-            configprops.save(() -> new FileOutputStream(configfile));
-        } catch (IOException ex) {
-            LOGGER.log(Level.WARNING, "Cannot save configuration properties.", ex);
-        }
+        }         
 
         Map<String, MiniVar> config = new HashMap<>();
-        clientmqtt.applyConfig(config);
-        clienttradfri.applyConfig(config);
+        config.put("mqtt.host", new MiniVarString(configprops.getProperty("mqtt.host", "localhost")));
+        config.put("mqtt.port", new MiniVarInt(Integer.parseInt(configprops.getProperty("mqtt.port", "1883"))));
+        config.put("mqtt.ssl", new MiniVarBoolean(Boolean.parseBoolean(configprops.getProperty("mqtt.ssl", "false"))));
+        config.put("mqtt.websockets", new MiniVarBoolean(Boolean.parseBoolean(configprops.getProperty("mqtt.websockets", "false"))));
+        config.put("mqtt.protocol", new MiniVarString(configprops.getProperty("mqtt.protocol", "TSLv12")));
+        config.put("mqtt.keystore", new MiniVarString(configprops.getProperty("mqtt.keystore", "")));
+        config.put("mqtt.keystorepassword", new MiniVarString(configprops.getProperty("mqtt.keystorepassword", "")));
+        config.put("mqtt.truststore", new MiniVarString(configprops.getProperty("mqtt.truststore", "")));
+        config.put("mqtt.truststorepassword", new MiniVarString(configprops.getProperty("mqtt.truststorepassword")));
+        config.put("mqtt.username", new MiniVarString(configprops.getProperty("mqtt.username", "")));
+        config.put("mqtt.password", new MiniVarString(configprops.getProperty("mqtt.password", "")));
+        config.put("mqtt.clientid", new MiniVarString(configprops.getProperty("mqtt.clientid", "")));
+        config.put("mqtt.connectiontimeout", new MiniVarInt(Integer.parseInt(configprops.getProperty("mqtt.connectiontimeout", Integer.toString(MqttConnectOptions.CONNECTION_TIMEOUT_DEFAULT)))));
+        config.put("mqtt.keepaliveinterval", new MiniVarInt(Integer.parseInt(configprops.getProperty("mqtt.keepaliveinterval", Integer.toString(MqttConnectOptions.KEEP_ALIVE_INTERVAL_DEFAULT)))));
+        config.put("mqtt.maxinflight", new MiniVarInt(Integer.parseInt(configprops.getProperty("mqtt.maxinflight", Integer.toString(MqttConnectOptions.MAX_INFLIGHT_DEFAULT)))));
+        config.put("mqtt.automaticreconnect", new MiniVarBoolean(Boolean.parseBoolean(configprops.getProperty("mqtt.automaticreconnect", "true"))));
+        config.put("mqtt.defaultqos", new MiniVarInt(Integer.parseInt(configprops.getProperty("mqtt.defaultqos", "1"))));
+        config.put("mqtt.version", new MiniVarInt(Integer.parseInt(configprops.getProperty("mqtt.version", Integer.toString(MqttConnectOptions.MQTT_VERSION_DEFAULT))))); // MQTT_VERSION_DEFAULT = 0; MQTT_VERSION_3_1 = 3; MQTT_VERSION_3_1_1 = 4;
+        config.put("mqtt.cleansession", new MiniVarBoolean(Boolean.parseBoolean(configprops.getProperty("mqtt.cleansession", Boolean.toString(MqttConnectOptions.CLEAN_SESSION_DEFAULT)))));
+        config.put("client.broker", new MiniVarString(configprops.getProperty("mqtt.cleansession", "0")));
         
-        config.put("client.topicapp", new MiniVarString(clientlogin.getTopicApp()));
-        config.put("client.topicsys", new MiniVarString(clientlogin.getTopicSys()));
+        config.put("tradfri.host", new MiniVarString(configprops.getProperty("tradfri.host", "")));
+        config.put("tradfri.psk", new MiniVarString(configprops.getProperty("tradfri.psk", "")));
+        
+        config.put("client.topicapp", new MiniVarString(configprops.getProperty("client.topicapp", "_LOCAL_/mainapp")));
+        config.put("client.topicsys", new MiniVarString(configprops.getProperty("client.topicsys", "system")));
 
-        config.put("app.clock", new MiniVarBoolean(clientlogin.isClock()));
+        config.put("app.clock", new MiniVarBoolean(Boolean.parseBoolean(configprops.getProperty("app.clock", "true"))));
         config.put("app.exitbutton", MiniVarBoolean.FALSE);
         config.put("app.retryconnection", MiniVarBoolean.FALSE);
+        Style.changeStyle(root, Style.valueOf(configprops.getProperty("app.style", Style.LIGHT.name())));  
 
         helloiotapp = new HelloIoTApp(config);
 
@@ -172,17 +215,20 @@ public class MainManagerClient implements MainManager {
             // add sample panes
             ResourceBundle resources = ResourceBundle.getBundle("com/adr/helloiot/fxml/main");
 
-            if (config.get("client.broker").asInt() == 1) {
+            if ("1".equals(config.get("client.broker").asString())) {
                 UnitPage info = new UnitPage("info", IconBuilder.create(FontAwesome.FA_INFO, 24.0).styleClass("icon-fill").build(), resources.getString("page.info"));
                 helloiotapp.addUnitPages(Arrays.asList(info));
                 helloiotapp.addFXMLFileDevicesUnits("local:com/adr/helloiot/panes/mosquitto");
             }
 
-            TopicStatus ts;
-            for (TopicInfo topicinfo : topicinfolist) {            
-                ts = topicinfo.getTopicStatus();
-                helloiotapp.addDevicesUnits(ts.getDevices(), ts.getUnits());
-            }   
+            TopicInfoBuilder topicinfobuilder = new TopicInfoBuilder();
+            int topicinfosize = Integer.parseInt(configprops.getProperty("topicinfo.size", "0"));
+            int i = 0;
+            while (i++ < topicinfosize) {
+                TopicInfo topicinfo = topicinfobuilder.fromProperties(new ConfigSubProperties(configprops, "topicinfo" + Integer.toString(i)));
+                TopicStatus ts = topicinfo.getTopicStatus();
+                helloiotapp.addDevicesUnits(ts.getDevices(), ts.getUnits());               
+            }            
             
             if (helloiotapp.getUnits().isEmpty()) {
                 throw new HelloIoTException(resources.getString("exception.emptyunits"));
@@ -196,8 +242,8 @@ public class MainManagerClient implements MainManager {
             );        
 
             EventHandler<ActionEvent> showloginevent = (event -> {
-                showLogin();
                 hideApplication();
+                showLogin();           
             });
             helloiotapp.setOnDisconnectAction(showloginevent);
             helloiotapp.getMainNode().setToolbarButton(showloginevent, IconBuilder.create(FontAwesome.FA_SIGN_OUT, 18.0).styleClass("icon-fill").build(), resources.getString("label.disconnect"));
@@ -220,7 +266,7 @@ public class MainManagerClient implements MainManager {
     }
 
     @Override
-    public void construct(StackPane root, Parameters params) {
+    public void construct(StackPane root, Parameters params, Properties appproperties) {
         this.root = root;
         List<String> unnamed = params.getUnnamed();
         if (unnamed.isEmpty()) {
@@ -237,7 +283,7 @@ public class MainManagerClient implements MainManager {
     }
 
     @Override
-    public void destroy() {
+    public void destroy(Properties appproperties) {
         hideLogin();
         hideApplication();
     }

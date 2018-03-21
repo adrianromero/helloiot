@@ -169,7 +169,7 @@ public class ClientLoginNode {
         Label ltype = new Label(resources.getString("label.type"));
         GridPane.setRowIndex(ltype, 1);
         
-        edittype = new ChoiceBox();
+        edittype = new ChoiceBox<>();
         edittype.setMaxWidth(Double.MAX_VALUE);
         GridPane.setRowIndex(edittype, 1);
         GridPane.setColumnIndex(edittype, 1);
@@ -219,7 +219,7 @@ public class ClientLoginNode {
         
         borderpanetab1.setTop(unitstoolbar);
         
-        devicesunitslist = new ListView();
+        devicesunitslist = new ListView<>();
         devicesunitslist.setPrefWidth(280.0);
         BorderPane.setAlignment(devicesunitslist, Pos.CENTER);
         BorderPane.setMargin(devicesunitslist, new Insets(5.0));
@@ -250,7 +250,7 @@ public class ClientLoginNode {
         
         Label labelstyle = new Label(resources.getString("label.style"));
         
-        skins = new ChoiceBox();
+        skins = new ChoiceBox<>();
         skins.setPrefWidth(200.);
         GridPane.setColumnIndex(skins, 1);
         

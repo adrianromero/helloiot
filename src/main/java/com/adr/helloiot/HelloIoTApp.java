@@ -282,11 +282,11 @@ public class HelloIoTApp {
 
     private void connection() {
         // connect !!!
-        mainnode.showConnecting();
         styleConnection.run();
     }
 
     private void oneConnection() {
+        mainnode.showConnecting();
         Futures.addCallback(topicsmanager.open(), new FutureCallback<Object>() {
             @Override
             public void onSuccess(Object v) {
@@ -305,7 +305,7 @@ public class HelloIoTApp {
     }
 
     private void tryConnection() {
-
+        mainnode.showConnecting();
         Futures.addCallback(topicsmanager.open(), new FutureCallback<Object>() {
             @Override
             public void onSuccess(Object v) {

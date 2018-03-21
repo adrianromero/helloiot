@@ -1,5 +1,5 @@
 //    HelloIoT is a dashboard creator for MQTT
-//    Copyright (C) 2017 Adrián Romero Corchado.
+//    Copyright (C) 2017-2018 Adrián Romero Corchado.
 //
 //    This file is part of HelloIot.
 //
@@ -18,6 +18,7 @@
 //
 package com.adr.helloiot;
 
+import java.util.Properties;
 import javafx.application.Application.Parameters;
 import javafx.scene.layout.StackPane;
 
@@ -27,7 +28,6 @@ import javafx.scene.layout.StackPane;
  */
 public interface MainManager {
 
-    public void construct(StackPane root, Parameters params);
-
-    public void destroy();
+    public void construct(StackPane root, Parameters params, Properties appproperties);
+    public void destroy(Properties appproperties);
 }
