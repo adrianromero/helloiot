@@ -112,6 +112,7 @@ jfxmobile {
             exclude 'epl-v10.html'
             exclude 'edl-v10.html'
             exclude 'notice.html'
+            pickFirst 'META-INF/INDEX.LIST'
         }        
         signingConfig {
             // keytool -genkey -v -keystore my-release-key.jks -keyalg RSA -keysize 2048 -validity 10000 -alias app
