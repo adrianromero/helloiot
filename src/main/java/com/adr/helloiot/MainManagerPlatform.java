@@ -22,7 +22,6 @@ import com.adr.helloiot.device.format.MiniVar;
 import com.adr.helloiot.device.format.MiniVarBoolean;
 import com.adr.helloiot.device.format.MiniVarInt;
 import com.adr.helloiot.device.format.MiniVarString;
-import com.google.common.base.Strings;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -50,7 +49,7 @@ public class MainManagerPlatform implements MainManager {
         }
 
         Map<String, String> namedParams = params.getNamed();
-        
+
         Map<String, MiniVar> config = new HashMap<>();
         config.put("mqtt.host", new MiniVarString(configprops.getProperty("mqtt.host", "localhost")));
         config.put("mqtt.port", new MiniVarInt(Integer.parseInt(configprops.getProperty("mqtt.port", "1883"))));
@@ -72,8 +71,9 @@ public class MainManagerPlatform implements MainManager {
         config.put("mqtt.version", new MiniVarInt(Integer.parseInt(configprops.getProperty("mqtt.version", Integer.toString(MqttConnectOptions.MQTT_VERSION_DEFAULT))))); // MQTT_VERSION_DEFAULT = 0; MQTT_VERSION_3_1 = 3; MQTT_VERSION_3_1_1 = 4;
         config.put("mqtt.cleansession", new MiniVarBoolean(Boolean.parseBoolean(configprops.getProperty("mqtt.cleansession", Boolean.toString(MqttConnectOptions.CLEAN_SESSION_DEFAULT)))));
         config.put("client.broker", new MiniVarString(configprops.getProperty("mqtt.cleansession", "0")));
-        
+
         config.put("tradfri.host", new MiniVarString(configprops.getProperty("tradfri.host", "")));
+        config.put("tradfri.psk", new MiniVarString(namedParams.getOrDefault("tradfri.identity", "")));
         config.put("tradfri.psk", new MiniVarString(namedParams.getOrDefault("tradfri.psk", "")));
 
         config.put("client.topicapp", new MiniVarString(configprops.getProperty("client.topicapp", "_LOCAL_/mainapp")));
@@ -81,23 +81,22 @@ public class MainManagerPlatform implements MainManager {
 
         config.put("app.clock", new MiniVarBoolean(Boolean.parseBoolean(configprops.getProperty("app.clock", "true"))));
         config.put("app.exitbutton", new MiniVarBoolean(Boolean.parseBoolean(configprops.getProperty("app.exitbutton", "true"))));
-        config.put("app.retryconnection", MiniVarBoolean.TRUE);        
-        Style.changeStyle(root, Style.valueOf(configprops.getProperty("app.style", Style.LIGHT.name())));            
+        config.put("app.retryconnection", MiniVarBoolean.TRUE);
+        Style.changeStyle(root, Style.valueOf(configprops.getProperty("app.style", Style.LIGHT.name())));
 
         helloiotapp = new HelloIoTApp(config);
 
         // Add all devices and units
         helloiotapp.addServiceDevicesUnits();
-        String devproperty = configprops.getProperty("devicesunits", null);
-        if (!Strings.isNullOrEmpty(devproperty)) {
-            for (String s : devproperty.split(",")) {
-                try {
-                    helloiotapp.addFXMLFileDevicesUnits(s);
-                } catch (HelloIoTException ex) {
-                    throw new RuntimeException(ex);
-                }
-            }
-        }
+
+//        TopicInfoBuilder topicinfobuilder = new TopicInfoBuilder();
+//        int topicinfosize = Integer.parseInt(configprops.getProperty("topicinfo.size", "0"));
+//        int i = 0;
+//        while (i++ < topicinfosize) {
+//            TopicInfo topicinfo = topicinfobuilder.fromProperties(new ConfigSubProperties(configprops, "topicinfo" + Integer.toString(i)));
+//            TopicStatus ts = topicinfo.getTopicStatus();
+//            helloiotapp.addDevicesUnits(ts.getDevices(), ts.getUnits());
+//        }
 
         helloiotapp.setOnDisconnectAction(event -> {
             root.getScene().getWindow().hide();

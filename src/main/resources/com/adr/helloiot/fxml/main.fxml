@@ -30,7 +30,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane fx:id="rootpane" prefHeight="400.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.131" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane fx:id="rootpane" prefHeight="400.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.161" xmlns:fx="http://javafx.com/fxml/1">
 <StackPane fx:id="stackparent" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
    <children>
       <AnchorPane prefHeight="200.0" prefWidth="200.0">
@@ -42,7 +42,6 @@
                         <Button fx:id="menubutton" focusTraversable="false" mnemonicParsing="false" onAction="#onMenuAction" styleClass="headerbutton" />
                         <Label fx:id="headertitle" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="headertitle" text="Hello IoT" HBox.hgrow="SOMETIMES" />
                         <Label fx:id="currenttime" maxHeight="1.7976931348623157E308" styleClass="currenttime" />
-                        <Button fx:id="backbutton" focusTraversable="false" layoutX="781.0" layoutY="15.0" mnemonicParsing="false" styleClass="headerbutton" visible="false" />
                         <Button fx:id="exitbutton" focusTraversable="false" mnemonicParsing="false" styleClass="headerbutton" visible="false" />
                      </children>
                   </HBox>

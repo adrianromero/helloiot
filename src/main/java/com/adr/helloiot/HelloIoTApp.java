@@ -112,6 +112,7 @@ public class HelloIoTApp {
                     "TRÅDFRI/",
                     new ManagerTradfri(
                                     config.get("tradfri.host").asString(),
+                                    config.get("tradfri.identity").asString(),
                                     config.get("tradfri.psk").asString()));
         }
         

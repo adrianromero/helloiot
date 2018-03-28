@@ -278,7 +278,7 @@
 .dialog-buttonlist .button:default:armed {
     -fx-background-color: -fx-border-fill, derive(-fx-selected-fill, 40%);         
 }
-.dialog-content .label {
+.dialog-label {
     -fx-font-family: 'ROBOTO LIGHT';
     -fx-text-fill: -fx-info-fill;
     -fx-font-size: 20px;    

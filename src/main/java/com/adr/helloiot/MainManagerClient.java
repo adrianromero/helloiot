@@ -108,14 +108,16 @@ public class MainManagerClient implements MainManager {
         clientlogin.setTopicInfoList(topicinfobuilder, FXCollections.observableList(topicinfolist));
 
         clientlogin.setOnNextAction(e -> {    
-            try {
-                hideLogin();
+            hideLogin();
+            try {                
                 showApplication();      
             } catch (HelloIoTException ex) {
                 ResourceBundle resources = ResourceBundle.getBundle("com/adr/helloiot/fxml/main");
-                MessageUtils.showError(MessageUtils.getRoot(root), resources.getString("exception.topicinfotitle"), ex.getLocalizedMessage());
+                MessageUtils.showError(MessageUtils.getRoot(root), resources.getString("exception.topicinfotitle"), ex.getLocalizedMessage(), ev -> {
+                    showLogin();
+                });
+                
             }
-            
         });
         root.getChildren().add(clientlogin.getNode());
     }
@@ -124,12 +126,6 @@ public class MainManagerClient implements MainManager {
         if (clientlogin != null) {
             
             ConfigProperties configprops = new ConfigProperties();           
-            try {
-                configprops.load(() -> new FileInputStream(configfile));
-            } catch (IOException ex) {
-                // No properties file found, then use defaults and continue
-                LOGGER.log(Level.WARNING, () -> String.format("Using defaults. Properties file not found: %s.", configfile));
-            } 
             
             clientmqtt.saveConfig(configprops);
             clienttradfri.saveConfig(configprops);     
@@ -199,6 +195,7 @@ public class MainManagerClient implements MainManager {
         config.put("client.broker", new MiniVarString(configprops.getProperty("mqtt.cleansession", "0")));
         
         config.put("tradfri.host", new MiniVarString(configprops.getProperty("tradfri.host", "")));
+        config.put("tradfri.identity", new MiniVarString(configprops.getProperty("tradfri.identity", "")));
         config.put("tradfri.psk", new MiniVarString(configprops.getProperty("tradfri.psk", "")));
         
         config.put("client.topicapp", new MiniVarString(configprops.getProperty("client.topicapp", "_LOCAL_/mainapp")));
@@ -246,7 +243,7 @@ public class MainManagerClient implements MainManager {
                 showLogin();           
             });
             helloiotapp.setOnDisconnectAction(showloginevent);
-            helloiotapp.getMainNode().setToolbarButton(showloginevent, IconBuilder.create(FontAwesome.FA_SIGN_OUT, 18.0).styleClass("icon-fill").build(), resources.getString("label.disconnect"));
+            helloiotapp.getMainNode().setToolbarButton(showloginevent, IconBuilder.create(FontAwesome.FA_SIGN_OUT, 24.0).styleClass("icon-fill").build(), resources.getString("label.disconnect"));
         } catch (HelloIoTException ex) {
             helloiotapp = null;
             throw ex;
@@ -279,11 +276,27 @@ public class MainManagerClient implements MainManager {
                 configfile = new File(param);
             }
         }       
-        showLogin();
+        
+        boolean status = Boolean.parseBoolean(appproperties.getProperty("window.status", "false"));
+        if (status) {
+            try {                
+                showApplication();      
+            } catch (HelloIoTException ex) {
+                ResourceBundle resources = ResourceBundle.getBundle("com/adr/helloiot/fxml/main");
+                MessageUtils.showError(MessageUtils.getRoot(root), resources.getString("exception.topicinfotitle"), ex.getLocalizedMessage(), ev -> {
+                    showLogin();
+                });
+            }
+        } else {
+            showLogin();
+        }
     }
 
     @Override
     public void destroy(Properties appproperties) {
+        
+        appproperties.setProperty("window.status", Boolean.toString(helloiotapp != null));
+        
         hideLogin();
         hideApplication();
     }

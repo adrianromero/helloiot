@@ -29,6 +29,7 @@ import com.adr.helloiot.unit.Unit;
 import com.adr.helloiot.media.ClipFactory;
 import com.adr.helloiot.unit.UnitLine;
 import com.adr.helloiot.unit.Units;
+import com.adr.helloiot.util.Dialogs;
 import com.google.common.base.Strings;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -45,13 +46,14 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
+import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
-import javafx.scene.control.ProgressBar;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.Separator;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
@@ -88,8 +90,6 @@ public final class MainNode {
     @FXML
     private Button menubutton;
     @FXML
-    private Button backbutton;
-    @FXML
     private Button exitbutton;
     @FXML
     private Label headertitle;
@@ -112,6 +112,7 @@ public final class MainNode {
     private final HelloIoTApp app;
     private final boolean appclock;
     private final boolean appexitbutton;
+    private Button backbutton;
     
     public MainNode(
             HelloIoTApp app,
@@ -125,6 +126,7 @@ public final class MainNode {
         FXMLUtil.load(this, "/com/adr/helloiot/fxml/main.fxml", "com/adr/helloiot/fxml/main");
         beeper = new Beeper(factory, alert);
         buzzer = new Buzzer(factory);
+        backbutton = null;
     }
     
     public Node getNode() {
@@ -168,14 +170,21 @@ public final class MainNode {
                 buttonmenu.setAlignment(Pos.BASELINE_LEFT);
                 buttonmenu.setMaxWidth(Double.MAX_VALUE);
                 buttonmenu.setFocusTraversable(false);
+                buttonmenu.setMnemonicParsing(false);
                 buttonmenu.setOnAction(e -> {
                     app.getUnitPage().sendStatus(value.getName());              
                 });
-                menupages.getChildren().add(buttonmenu);
+                menupages.getChildren().add(buttonmenu); // Last button is disconnect button
                 if (firstmenupage == null) {
                     firstmenupage = value.getName();
                 }
             }
+        }
+        
+        // Add backbutton
+        if (backbutton != null && backbutton.isVisible()) {
+            menupages.getChildren().add(new Separator(Orientation.HORIZONTAL));
+            menupages.getChildren().add(backbutton);
         }
         
         gotoPage("start");
@@ -201,9 +210,20 @@ public final class MainNode {
     }
     
     public void setToolbarButton(EventHandler<ActionEvent> backevent, Node graphic, String text) {
+        
+        Label l = new Label();
+        l.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+        l.setAlignment(Pos.CENTER);
+        l.setGraphic(graphic);
+        l.setPrefSize(45.0, 40.0);             
+        
+        backbutton = new Button(text, l);     
+        backbutton.setAlignment(Pos.BASELINE_LEFT);
+        backbutton.setMaxWidth(Double.MAX_VALUE);
+        backbutton.setFocusTraversable(false);
+        backbutton.setMnemonicParsing(false);
+        backbutton.getStyleClass().add("menubutton");
         backbutton.setOnAction(backevent);
-        backbutton.setText(text);
-        backbutton.setGraphic(graphic);
         backbutton.setVisible(backevent != null);
     }
     
@@ -345,21 +365,7 @@ public final class MainNode {
     
     public void showConnecting() {
         if (connectingdialog == null) {
-            Label l = new Label(resources.getString("message.waitingconnection"));
-            l.setAlignment(Pos.CENTER);
-            l.setMaxSize(Integer.MAX_VALUE, Integer.MAX_VALUE);
-            
-            ProgressBar p = new ProgressBar();
-            p.setMaxSize(Integer.MAX_VALUE, Integer.MAX_VALUE);
-            
-            VBox box = new VBox();
-            box.setSpacing(5.0);
-            box.setPadding(new Insets(0.0, 0.0, 50.0, 0.0));
-            box.getChildren().addAll(l, p);
-            
-            connectingdialog = new DialogView();
-            connectingdialog.setMaster(true);
-            connectingdialog.setContent(box);
+            connectingdialog = Dialogs.createLoading(resources.getString("message.waitingconnection"));
             connectingdialog.show(MessageUtils.getRoot(rootpane));
         }
     }

@@ -55,7 +55,7 @@ repositories {
 
 dependencies {
     compile group: 'com.github.adrianromero', name: 'fonticon', version:'1.2.3'
-    compile group: 'com.github.adrianromero', name: 'hellocommon', version:'1.2.16'
+    compile group: 'com.github.adrianromero', name: 'hellocommon', version:'1.2.17'
     compile group: 'com.github.adrianromero', name: 'textflowbuilder', version: '1.0.3'
     compile group: 'org.eclipse.paho', name: 'org.eclipse.paho.client.mqttv3', version:'1.1.1'
     compile group: 'com.jidesoft', name: 'jidefx-common', version:'0.9.1'
@@ -63,6 +63,7 @@ dependencies {
     compile group: 'commons-io', name: 'commons-io', version:'2.5'
     compile group: 'com.google.guava', name: 'guava', version: '20.0'
     compile group: 'com.jayway.jsonpath', name: 'json-path', version: '2.2.0'
+    compile group: 'javax.jmdns', name: 'jmdns', version: '3.2.2'
     compile group: 'org.mozilla', name: 'rhino', version: '1.7.7.1'  
     
     // Tradfri - Coap

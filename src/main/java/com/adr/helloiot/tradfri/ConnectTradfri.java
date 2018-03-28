@@ -18,16 +18,30 @@
 //
 package com.adr.helloiot.tradfri;
 
+import com.adr.hellocommon.dialog.DialogView;
+import com.adr.hellocommon.dialog.MessageUtils;
 import com.adr.hellocommon.utils.FXMLUtil;
 import com.adr.helloiot.ConfigProperties;
-import com.adr.helloiot.device.format.MiniVar;
-import com.adr.helloiot.device.format.MiniVarString;
-import java.util.Map;
+import com.adr.helloiot.util.CompletableAsync;
+import com.adr.helloiot.util.Dialogs;
+import com.google.common.util.concurrent.FutureCallback;
+import com.google.common.util.concurrent.Futures;
+import com.google.common.util.concurrent.ListenableFuture;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import java.io.IOException;
+import java.util.ResourceBundle;
+import java.util.UUID;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
+import javafx.util.Pair;
+import javax.jmdns.JmDNS;
+import javax.jmdns.ServiceInfo;
 
 /**
  *
@@ -38,8 +52,12 @@ public class ConnectTradfri {
     @FXML private GridPane root;
     @FXML private Label labeltradfihost;
     @FXML private TextField tradfrihost;
-    @FXML private Label labeltradfripsk;
-    @FXML private TextField tradfripsk;    
+    @FXML private Label labeltradfriidentity;
+    @FXML private TextField tradfriidentity;
+    @FXML private Button identity;
+    private String tradfripsk;
+    
+    @FXML private ResourceBundle resources;
     
     public ConnectTradfri() {
         FXMLUtil.load(this, "/com/adr/helloiot/fxml/connecttradfri.fxml", "com/adr/helloiot/fxml/connecttradfri");
@@ -57,16 +75,114 @@ public class ConnectTradfri {
     
     public void loadConfig(ConfigProperties configprops) {
         tradfrihost.setText(configprops.getProperty("tradfri.host", ""));
-        tradfripsk.setText(configprops.getProperty("tradfri.psk", ""));  
+        tradfriidentity.setText(configprops.getProperty("tradfri.identity", ""));
+        tradfripsk = configprops.getProperty("tradfri.psk", "");  
     }
     
     public void saveConfig(ConfigProperties configprops) {
-        configprops.setProperty("tradfri.host", tradfrihost.getText());        
-        configprops.setProperty("tradfri.psk", tradfripsk.getText());        
+        configprops.setProperty("tradfri.host", tradfrihost.getText());     
+        configprops.setProperty("tradfri.identity", tradfriidentity.getText());
+        configprops.setProperty("tradfri.psk", tradfripsk);        
     }
         
     private void disableTradfri(boolean value) {
-        labeltradfripsk.setDisable(value);
-        tradfripsk.setDisable(value);
+        labeltradfriidentity.setDisable(value);
+        identity.setDisable(value);
     }  
+    
+
+    @FXML
+    void findTradfriBridge(ActionEvent event) {
+        DialogView loading = Dialogs.createLoading(resources.getString("message.findtradfri"));
+        loading.show(MessageUtils.getRoot(root));
+        Futures.addCallback(findBridge(), new FutureCallback<String[]>() {
+            @Override
+            public void onSuccess(String[] v) {
+                loading.dispose();
+                if (v.length > 0) {
+                    generateIdentity(v[0]);
+                } else {
+                    MessageUtils.showWarning(MessageUtils.getRoot(root), resources.getString("label.tradfrigateway"), resources.getString("message.cannotfindtradfri"));
+                }
+            }
+            @Override
+            public void onFailure(Throwable ex) {
+                loading.dispose();
+                MessageUtils.showException(MessageUtils.getRoot(root), resources.getString("label.tradfrigateway"), resources.getString("message.cannotfindtradfri"), ex);
+            }
+        }, CompletableAsync.fxThread());
+    }    
+    
+
+    @FXML
+    void newIdentity(ActionEvent event) {
+        generateIdentity(tradfrihost.getText());
+    }  
+    
+    private void generateIdentity(String host) {
+        DialogView dialog = new DialogView();
+        dialog.setTitle(resources.getString("label.tradfrigateway"));
+        FindTradfri contentex = new FindTradfri(host);
+        dialog.setContent(contentex.getNode());     
+        dialog.addButtons(dialog.createCancelButton(), dialog.createOKButton());
+        dialog.setActionOK(ev -> {
+            DialogView loading2 = Dialogs.createLoading(resources.getString("message.newidentity"));
+            loading2.show(MessageUtils.getRoot(root));    
+            Futures.addCallback(requestSharedKey(host, contentex.getPSK()), new FutureCallback<Pair<String, String>>() {
+                @Override
+                public void onSuccess(Pair<String, String> key) {    
+                    loading2.dispose();
+                    tradfrihost.setText(host);   
+                    tradfriidentity.setText(key.getKey());
+                    tradfripsk = key.getValue();
+                }                    
+                @Override
+                public void onFailure(Throwable ex) {                               
+                    loading2.dispose();
+                    MessageUtils.showException(MessageUtils.getRoot(root), resources.getString("label.tradfrigateway"), resources.getString("message.cannotgenerateidentity"), ex);
+                }
+            }, CompletableAsync.fxThread());                        
+        });
+        dialog.show(MessageUtils.getRoot(root));          
+    }
+
+    private ListenableFuture<Pair<String, String>> requestSharedKey(String server, String psk) {       
+        return CompletableAsync.supplyAsync(() -> {
+            try {
+                ManagerTradfri tradfri = new ManagerTradfri(server, "Client_identity", psk);
+                tradfri.connectBridge();             
+                String newidentity = UUID.randomUUID().toString();  
+                JsonParser gsonparser = new JsonParser();
+                String result = tradfri.requestPostCOAP("15011/9063", "{\"9090\":\"" + newidentity + "\"}");
+                JsonObject json = gsonparser.parse(result).getAsJsonObject();
+                String version = json.get("9029").getAsString();
+                String newsharedkey = json.get("9091").getAsString();
+                tradfri.disconnectBridge();
+                
+                return new Pair(newidentity, newsharedkey);
+            } catch (TradfriException ex) {
+                throw new RuntimeException(ex);
+            }
+        });           
+    }
+    
+    private ListenableFuture<String[]> findBridge() { 
+        return CompletableAsync.supplyAsync(() -> {
+            try {
+                JmDNS jmdns = JmDNS.create();
+                ServiceInfo[] services  = jmdns.list("_coap._udp.local.", 5000); 
+                String [] servers = new String[services.length];
+
+                for (int i = 0; i < services.length; i++) {
+                    // System.out.println("Host Address: " + info.getHostAddress());
+                    // System.out.println("Server      : " + info.getServer());     
+                    servers[i] = services[i].getServer();
+                }
+                jmdns.close();
+                return servers;
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }             
+        });        
+    }   
 }
