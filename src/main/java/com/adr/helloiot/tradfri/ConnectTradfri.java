@@ -159,7 +159,7 @@ public class ConnectTradfri {
                 String newsharedkey = json.get("9091").getAsString();
                 tradfri.disconnectBridge();
                 
-                return new Pair(newidentity, newsharedkey);
+                return new Pair<>(newidentity, newsharedkey);
             } catch (TradfriException ex) {
                 throw new RuntimeException(ex);
             }
