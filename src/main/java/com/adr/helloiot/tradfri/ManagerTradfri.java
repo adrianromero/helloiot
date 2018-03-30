@@ -35,7 +35,6 @@ import java.util.Map;
 import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.regex.Pattern;
 import org.eclipse.californium.core.CoapClient;
 import org.eclipse.californium.core.CoapHandler;
 import org.eclipse.californium.core.CoapObserveRelation;
@@ -297,6 +296,8 @@ public class ManagerTradfri implements ManagerProtocol {
 
         String name = json.get(NAME).getAsString();
         boolean register;
+        JsonObject jsonregistry = new JsonObject();
+        jsonregistry.addProperty("name", name);
         if (!name2id.containsKey(name)) {
             name2id.put(name, json.get(INSTANCE_ID).getAsInt());
             register = true;
@@ -316,36 +317,31 @@ public class ManagerTradfri implements ManagerProtocol {
                 return; // skip this lamp for now
             }
 
-            if (register) {
-                group.distributeMessage("TRÅDFRI/registry", ("TRÅDFRI/bulb/" + name + "/on").getBytes(StandardCharsets.UTF_8));
-            }
             group.distributeMessage("TRÅDFRI/bulb/" + name + "/on", Integer.toString(light.get(ONOFF).getAsInt()).getBytes(StandardCharsets.UTF_8));
+            jsonregistry.addProperty("type", "bulb");
             if (light.has(DIMMER)) {
-                if (register) {
-                    group.distributeMessage("TRÅDFRI/registry", ("TRÅDFRI/bulb/" + name + "/dim").getBytes(StandardCharsets.UTF_8));
-                }
                 group.distributeMessage("TRÅDFRI/bulb/" + name + "/dim", Integer.toString(light.get(DIMMER).getAsInt()).getBytes(StandardCharsets.UTF_8));
             }
+            jsonregistry.addProperty("dim", light.has(DIMMER));
             if (light.has(COLOR)) {
-                if (register) {
-                    group.distributeMessage("TRÅDFRI/registry", ("TRÅDFRI/bulb/" + name + "/temperature").getBytes(StandardCharsets.UTF_8));
-                }
                 group.distributeMessage("TRÅDFRI/bulb/" + name + "/temperature", light.get(COLOR).getAsString().getBytes(StandardCharsets.UTF_8));
             }
+            jsonregistry.addProperty("temperature", light.has(COLOR));
         } else if (json.has(HS_ACCESSORY_LINK)) { // groups have this entry
-            if (register) {
-                group.distributeMessage("TRÅDFRI/registry", ("TRÅDFRI/group/" + name + "/on").getBytes(StandardCharsets.UTF_8));
-            }
             group.distributeMessage("TRÅDFRI/group/" + name + "/on", Integer.toString(json.get(ONOFF).getAsInt()).getBytes(StandardCharsets.UTF_8));
+            jsonregistry.addProperty("type", "group");      
             if (json.has(DIMMER)) {
-                if (register) {
-                    group.distributeMessage("TRÅDFRI/registry", ("TRÅDFRI/group/" + name + "/dim").getBytes(StandardCharsets.UTF_8));
-                }
                 group.distributeMessage("TRÅDFRI/group/" + name + "/dim", Integer.toString(json.get(DIMMER).getAsInt()).getBytes(StandardCharsets.UTF_8));
             }
+            jsonregistry.addProperty("dim", json.has(DIMMER));
         } else {
+            jsonregistry.addProperty("type", "unknown");    
             LOGGER.log(Level.WARNING, "COAP reponse not supported: {0}", json.toString());
         }
+        
+        if (register) {
+            group.distributeMessage("TRÅDFRI/registry", jsonregistry.toString().getBytes(StandardCharsets.UTF_8));
+        }        
     }
 
     private static int parseDim(String value) {
