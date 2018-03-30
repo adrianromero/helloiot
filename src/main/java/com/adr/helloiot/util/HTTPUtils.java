@@ -1,5 +1,5 @@
 //    HelloIoT is a dashboard creator for MQTT
-//    Copyright (C) 2017 Adrián Romero Corchado.
+//    Copyright (C) 2017-2018 Adrián Romero Corchado.
 //
 //    This file is part of HelloIot.
 //
@@ -25,8 +25,21 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.text.MessageFormat;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class HTTPUtils {
+    
+    private static final Pattern HOSTPATTERN = Pattern.compile("\\s*(\\S+)\\s*.*");
+    
+    public static String getAddress(String host) {
+        Matcher m = HOSTPATTERN.matcher(host);
+        if (m.matches()) {
+            return m.group(1);
+        } else {
+            return null;
+        }  
+    }
 
     public static String execGET(String address) throws IOException {
 

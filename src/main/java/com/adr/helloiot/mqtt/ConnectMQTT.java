@@ -21,11 +21,7 @@ package com.adr.helloiot.mqtt;
 import com.adr.hellocommon.utils.FXMLUtil;
 import com.adr.helloiot.ConfigProperties;
 import com.adr.helloiot.SSLProtocol;
-import com.adr.helloiot.device.format.MiniVar;
-import com.adr.helloiot.device.format.MiniVarBoolean;
-import com.adr.helloiot.device.format.MiniVarInt;
-import com.adr.helloiot.device.format.MiniVarString;
-import java.util.Map;
+import com.adr.helloiot.util.HTTPUtils;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -96,9 +92,9 @@ public class ConnectMQTT {
     @FXML 
     public void initialize() {
         protocol.setItems(FXCollections.observableArrayList(SSLProtocol.values()));
-        host.textProperty().addListener((ov, old_val, new_val) -> disableMQTT(new_val.isEmpty(), ssl.isSelected()));
-        ssl.selectedProperty().addListener((ov, old_val, new_val) -> disableMQTT(host.getText().isEmpty(), new_val));
-        disableMQTT(host.getText().isEmpty(), ssl.isSelected());
+        host.textProperty().addListener((ov, old_val, new_val) -> disableMQTT(HTTPUtils.getAddress(new_val) == null, ssl.isSelected()));
+        ssl.selectedProperty().addListener((ov, old_val, new_val) -> disableMQTT(HTTPUtils.getAddress(host.getText()) == null, new_val));
+        disableMQTT(HTTPUtils.getAddress(host.getText()) == null, ssl.isSelected());
     }
 
     public void loadConfig(ConfigProperties configprops) {

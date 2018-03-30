@@ -24,6 +24,7 @@ import com.adr.hellocommon.utils.FXMLUtil;
 import com.adr.helloiot.ConfigProperties;
 import com.adr.helloiot.util.CompletableAsync;
 import com.adr.helloiot.util.Dialogs;
+import com.adr.helloiot.util.HTTPUtils;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
@@ -65,8 +66,8 @@ public class ConnectTradfri {
     
     @FXML
     public void initialize() {
-        tradfrihost.textProperty().addListener((ov, old_val, new_val) ->  disableTradfri(new_val.isEmpty()));
-        disableTradfri(tradfrihost.getText().isEmpty());        
+        tradfrihost.textProperty().addListener((ov, old_val, new_val) ->  disableTradfri(HTTPUtils.getAddress(new_val) == null));
+        disableTradfri(HTTPUtils.getAddress(tradfrihost.getText()) == null);        
     }  
     
     public Node getNode() {
@@ -99,9 +100,10 @@ public class ConnectTradfri {
             @Override
             public void onSuccess(String[] v) {
                 loading.dispose();
-                if (v.length > 0) {
-                    generateIdentity(v[0]);
-                } else {
+                if (v.length > 0) {       
+                        tradfrihost.setText(v[0]);   
+                        generateIdentity(v[0]);   
+                    } else {
                     MessageUtils.showWarning(MessageUtils.getRoot(root), resources.getString("label.tradfrigateway"), resources.getString("message.cannotfindtradfri"));
                 }
             }
@@ -132,7 +134,6 @@ public class ConnectTradfri {
                 @Override
                 public void onSuccess(Pair<String, String> key) {    
                     loading2.dispose();
-                    tradfrihost.setText(host);   
                     tradfriidentity.setText(key.getKey());
                     tradfripsk = key.getValue();
                 }                    
@@ -173,10 +174,8 @@ public class ConnectTradfri {
                 ServiceInfo[] services  = jmdns.list("_coap._udp.local.", 5000); 
                 String [] servers = new String[services.length];
 
-                for (int i = 0; i < services.length; i++) {
-                    // System.out.println("Host Address: " + info.getHostAddress());
-                    // System.out.println("Server      : " + info.getServer());     
-                    servers[i] = services[i].getServer();
+                for (int i = 0; i < services.length; i++) {    
+                    servers[i] = services[i].getHostAddress() + " " + services[i].getServer();
                 }
                 jmdns.close();
                 return servers;

@@ -18,6 +18,7 @@ import static com.adr.helloiot.tradfri.TradfriConstants.NAME;
 import static com.adr.helloiot.tradfri.TradfriConstants.ONOFF;
 import static com.adr.helloiot.tradfri.TradfriConstants.TRANSITION_TIME;
 import static com.adr.helloiot.tradfri.TradfriConstants.TYPE;
+import com.adr.helloiot.util.HTTPUtils;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -34,6 +35,7 @@ import java.util.Map;
 import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Pattern;
 import org.eclipse.californium.core.CoapClient;
 import org.eclipse.californium.core.CoapHandler;
 import org.eclipse.californium.core.CoapObserveRelation;
@@ -64,6 +66,7 @@ public class ManagerTradfri implements ManagerProtocol {
     private GroupManagers group;
     private Consumer<Throwable> lost;
     // COAP
+    private final String host; 
     private final String coapIP;
     private final String identity;
     private final String psk;
@@ -72,9 +75,10 @@ public class ManagerTradfri implements ManagerProtocol {
     private final Map<String, Integer> name2id = new HashMap<>();
     private final List<CoapObserveRelation> watching = new ArrayList<>();
 
-    public ManagerTradfri(String ip, String identity, String psk) {
+    public ManagerTradfri(String host, String identity, String psk) {
         // Create COAP connection
-        this.coapIP = ip;
+        this.host = host;       
+        this.coapIP = HTTPUtils.getAddress(host);
         this.identity = identity;
         this.psk = psk;
     }
@@ -286,7 +290,7 @@ public class ManagerTradfri implements ManagerProtocol {
         }
     }
 
-    private void receivedCOAP(String topic, String payload) {
+    void receivedCOAP(String topic, String payload) {
         LOGGER.log(Level.FINE, "Receiving COAP: {0}, {1}", new Object[]{topic, payload});
 
         JsonObject json = gsonparser.parse(payload).getAsJsonObject();
