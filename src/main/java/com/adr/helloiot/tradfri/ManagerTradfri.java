@@ -2,22 +2,6 @@ package com.adr.helloiot.tradfri;
 
 import com.adr.helloiot.GroupManagers;
 import com.adr.helloiot.ManagerProtocol;
-import static com.adr.helloiot.tradfri.TradfriConstants.COLOR;
-import static com.adr.helloiot.tradfri.TradfriConstants.COLOR_COLD;
-import static com.adr.helloiot.tradfri.TradfriConstants.COLOR_NORMAL;
-import static com.adr.helloiot.tradfri.TradfriConstants.COLOR_WARM;
-import static com.adr.helloiot.tradfri.TradfriConstants.DEVICES;
-import static com.adr.helloiot.tradfri.TradfriConstants.DIMMER;
-import static com.adr.helloiot.tradfri.TradfriConstants.DIMMER_MAX;
-import static com.adr.helloiot.tradfri.TradfriConstants.DIMMER_MIN;
-import static com.adr.helloiot.tradfri.TradfriConstants.GROUPS;
-import static com.adr.helloiot.tradfri.TradfriConstants.HS_ACCESSORY_LINK;
-import static com.adr.helloiot.tradfri.TradfriConstants.INSTANCE_ID;
-import static com.adr.helloiot.tradfri.TradfriConstants.LIGHT;
-import static com.adr.helloiot.tradfri.TradfriConstants.NAME;
-import static com.adr.helloiot.tradfri.TradfriConstants.ONOFF;
-import static com.adr.helloiot.tradfri.TradfriConstants.TRANSITION_TIME;
-import static com.adr.helloiot.tradfri.TradfriConstants.TYPE;
 import com.adr.helloiot.util.HTTPUtils;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -102,12 +86,12 @@ public class ManagerTradfri implements ManagerProtocol {
             String response = requestGetCOAP(TradfriConstants.DEVICES);
             JsonArray devices = gsonparser.parse(response).getAsJsonArray();
             for (JsonElement d : devices) {
-                subscribeCOAP(DEVICES + "/" + d.getAsInt());
+                subscribeCOAP(TradfriConstants.DEVICES + "/" + d.getAsInt());
             }
-            response = requestGetCOAP(GROUPS);
+            response = requestGetCOAP(TradfriConstants.GROUPS);
             JsonArray groups = gsonparser.parse(response).getAsJsonArray();
             for (JsonElement g : groups) {
-                subscribeCOAP(GROUPS + "/" + g.getAsInt());
+                subscribeCOAP(TradfriConstants.GROUPS + "/" + g.getAsInt());
             }
         } catch (TradfriException | JsonParseException ex) {
             throw new RuntimeException(ex.getLocalizedMessage(), ex);
@@ -146,44 +130,44 @@ public class ManagerTradfri implements ManagerProtocol {
             JsonObject settings = new JsonObject();
             JsonArray array = new JsonArray();
             array.add(settings);
-            json.add(LIGHT, array);
+            json.add(TradfriConstants.LIGHT, array);
             if (command.equals("dim")) {
-                settings.addProperty(DIMMER, Math.min(DIMMER_MAX, Math.max(DIMMER_MIN, parseDim(payload))));
-                settings.addProperty(TRANSITION_TIME, 3);	// transition in seconds
+                settings.addProperty(TradfriConstants.DIMMER, Math.min(TradfriConstants.DIMMER_MAX, Math.max(TradfriConstants.DIMMER_MIN, parseDim(payload))));
+                settings.addProperty(TradfriConstants.TRANSITION_TIME, 3);	// transition in seconds
             } else if (command.equals("temperature")) {
                 // not sure what the COLOR_X and COLOR_Y values do, it works without them...
                 switch (payload) {
                 case "cold":
-                    settings.addProperty(COLOR, COLOR_COLD);
+                    settings.addProperty(TradfriConstants.COLOR, TradfriConstants.COLOR_COLD);
                     break;
                 case "normal":
-                    settings.addProperty(COLOR, COLOR_NORMAL);
+                    settings.addProperty(TradfriConstants.COLOR, TradfriConstants.COLOR_NORMAL);
                     break;
                 case "warm":
-                    settings.addProperty(COLOR, COLOR_WARM);
+                    settings.addProperty(TradfriConstants.COLOR, TradfriConstants.COLOR_WARM);
                     break;
                 default:
                     LOGGER.log(Level.WARNING, "Invalid temperature supplied: {0}", payload);
                     return;
                 }
             } else if (command.equals("on")) {
-                settings.addProperty(ONOFF, payload.equals("0") ? 0 : 1);
+                settings.addProperty(TradfriConstants.ONOFF, payload.equals("0") ? 0 : 1);
             } else {
                 LOGGER.log(Level.WARNING, "Command not supported: {0}", command);
                 return;
             }
-            requestPutCOAP(DEVICES + "/" + id, json.toString());
+            requestPutCOAP(TradfriConstants.DEVICES + "/" + id, json.toString());
         } else if ("group".equals(type)) { // whole group
             if (command.equals("dim")) {
-                json.addProperty(DIMMER, parseDim(payload));
-                json.addProperty(TRANSITION_TIME, 3);
+                json.addProperty(TradfriConstants.DIMMER, parseDim(payload));
+                json.addProperty(TradfriConstants.TRANSITION_TIME, 3);
             } else if (command.equals("on")) {
-                json.addProperty(ONOFF, payload.equals("0") ? 0 : 1);
+                json.addProperty(TradfriConstants.ONOFF, payload.equals("0") ? 0 : 1);
             } else {
                 LOGGER.log(Level.WARNING, "Command not supported: {0}", command);
                 return;
             }
-            requestPutCOAP(GROUPS + "/" + id, json.toString());
+            requestPutCOAP(TradfriConstants.GROUPS + "/" + id, json.toString());
         } else {
             LOGGER.log(Level.WARNING, "Type not supported: {0}", type);
         }
@@ -294,12 +278,12 @@ public class ManagerTradfri implements ManagerProtocol {
 
         JsonObject json = gsonparser.parse(payload).getAsJsonObject();
 
-        String name = json.get(NAME).getAsString();
+        String name = json.get(TradfriConstants.NAME).getAsString();
         boolean register;
         JsonObject jsonregistry = new JsonObject();
         jsonregistry.addProperty("name", name);
         if (!name2id.containsKey(name)) {
-            name2id.put(name, json.get(INSTANCE_ID).getAsInt());
+            name2id.put(name, json.get(TradfriConstants.INSTANCE_ID).getAsInt());
             register = true;
         } else {
             register = false;
@@ -308,32 +292,32 @@ public class ManagerTradfri implements ManagerProtocol {
         //TODO change this test to something based on TYPE(5750) values
         // 2 = light?
         // 0 = remote/dimmer?
-        if (json.has(LIGHT) && (json.has(TYPE) && json.get(TYPE).getAsInt() == 2)) { // single bulb
+        if (json.has(TradfriConstants.LIGHT) && (json.has(TradfriConstants.TYPE) && json.get(TradfriConstants.TYPE).getAsInt() == 2)) { // single bulb
 
-            JsonObject light = json.getAsJsonArray(LIGHT).get(0).getAsJsonObject();
+            JsonObject light = json.getAsJsonArray(TradfriConstants.LIGHT).get(0).getAsJsonObject();
 
-            if (!light.has(ONOFF)) {
-                LOGGER.log(Level.WARNING, "Bulb '{0}' has no On/Off value (probably no power on lightbulb socket)", json.get(NAME).getAsString());
+            if (!light.has(TradfriConstants.ONOFF)) {
+                LOGGER.log(Level.WARNING, "Bulb '{0}' has no On/Off value (probably no power on lightbulb socket)", json.get(TradfriConstants.NAME).getAsString());
                 return; // skip this lamp for now
             }
 
-            group.distributeMessage("TRÅDFRI/bulb/" + name + "/on", Integer.toString(light.get(ONOFF).getAsInt()).getBytes(StandardCharsets.UTF_8));
+            group.distributeMessage("TRÅDFRI/bulb/" + name + "/on", Integer.toString(light.get(TradfriConstants.ONOFF).getAsInt()).getBytes(StandardCharsets.UTF_8));
             jsonregistry.addProperty("type", "bulb");
-            if (light.has(DIMMER)) {
-                group.distributeMessage("TRÅDFRI/bulb/" + name + "/dim", Integer.toString(light.get(DIMMER).getAsInt()).getBytes(StandardCharsets.UTF_8));
+            if (light.has(TradfriConstants.DIMMER)) {
+                group.distributeMessage("TRÅDFRI/bulb/" + name + "/dim", Integer.toString(light.get(TradfriConstants.DIMMER).getAsInt()).getBytes(StandardCharsets.UTF_8));
             }
-            jsonregistry.addProperty("dim", light.has(DIMMER));
-            if (light.has(COLOR)) {
-                group.distributeMessage("TRÅDFRI/bulb/" + name + "/temperature", light.get(COLOR).getAsString().getBytes(StandardCharsets.UTF_8));
+            jsonregistry.addProperty("dim", light.has(TradfriConstants.DIMMER));
+            if (light.has(TradfriConstants.COLOR)) {
+                group.distributeMessage("TRÅDFRI/bulb/" + name + "/temperature", light.get(TradfriConstants.COLOR).getAsString().getBytes(StandardCharsets.UTF_8));
             }
-            jsonregistry.addProperty("temperature", light.has(COLOR));
-        } else if (json.has(HS_ACCESSORY_LINK)) { // groups have this entry
-            group.distributeMessage("TRÅDFRI/group/" + name + "/on", Integer.toString(json.get(ONOFF).getAsInt()).getBytes(StandardCharsets.UTF_8));
+            jsonregistry.addProperty("temperature", light.has(TradfriConstants.COLOR));
+        } else if (json.has(TradfriConstants.HS_ACCESSORY_LINK)) { // groups have this entry
+            group.distributeMessage("TRÅDFRI/group/" + name + "/on", Integer.toString(json.get(TradfriConstants.ONOFF).getAsInt()).getBytes(StandardCharsets.UTF_8));
             jsonregistry.addProperty("type", "group");      
-            if (json.has(DIMMER)) {
-                group.distributeMessage("TRÅDFRI/group/" + name + "/dim", Integer.toString(json.get(DIMMER).getAsInt()).getBytes(StandardCharsets.UTF_8));
+            if (json.has(TradfriConstants.DIMMER)) {
+                group.distributeMessage("TRÅDFRI/group/" + name + "/dim", Integer.toString(json.get(TradfriConstants.DIMMER).getAsInt()).getBytes(StandardCharsets.UTF_8));
             }
-            jsonregistry.addProperty("dim", json.has(DIMMER));
+            jsonregistry.addProperty("dim", json.has(TradfriConstants.DIMMER));
         } else {
             jsonregistry.addProperty("type", "unknown");    
             LOGGER.log(Level.WARNING, "COAP reponse not supported: {0}", json.toString());
