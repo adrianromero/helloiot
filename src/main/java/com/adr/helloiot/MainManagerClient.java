@@ -53,6 +53,7 @@ import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
+import javafx.scene.control.MenuItem;
 import javafx.scene.layout.StackPane;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 
@@ -308,11 +309,10 @@ public class MainManagerClient implements MainManager {
     }  
     
     
-    private Button createTradfriButton() {
+    private MenuItem createTradfriButton() {
         ResourceBundle resources = ResourceBundle.getBundle("com/adr/helloiot/fxml/main");
 
-        Button b = new Button(resources.getString("button.tradfri"), IconBuilder.create(FontAwesome.FA_SEARCH, 18.0).styleClass("icon-fill").build());
-        b.setFocusTraversable(false);        
+        MenuItem b = new MenuItem(resources.getString("button.tradfri"), IconBuilder.create(FontAwesome.FA_SEARCH, 18.0).styleClass("icon-fill").build());       
         b.setOnAction(e -> {
             ConfigProperties tempconfig = new ConfigProperties();
             clienttradfri.saveConfig(tempconfig);      

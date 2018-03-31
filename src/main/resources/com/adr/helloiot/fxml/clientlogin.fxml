@@ -26,6 +26,7 @@
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.Tab?>
@@ -113,6 +114,7 @@
                               <Button fx:id="updeviceunit" focusTraversable="false" mnemonicParsing="false" onAction="#onUpDeviceUnit" />
                               <Button fx:id="downdeviceunit" focusTraversable="false" mnemonicParsing="false" onAction="#onDownDeviceUnit" />
                               <Separator orientation="VERTICAL" />
+                              <MenuButton fx:id="menubutton" focusTraversable="false" mnemonicParsing="false" text="%label.samplestitle" />
                            </items>
                         </ToolBar>
                      </top>

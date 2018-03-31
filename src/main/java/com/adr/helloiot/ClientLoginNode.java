@@ -40,6 +40,8 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.control.MenuButton;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Separator;
 import javafx.scene.control.Tab;
@@ -71,6 +73,7 @@ public class ClientLoginNode {
     private Button removedeviceunit;
     private Button updeviceunit;
     private Button downdeviceunit;
+    private MenuButton menubutton;
     private ListView<TopicInfo> devicesunitslist;
     private ScrollPane deviceunitform;
     
@@ -213,7 +216,10 @@ public class ClientLoginNode {
         
         Separator sep = new Separator(Orientation.VERTICAL);
         
-        unitstoolbar.getItems().addAll(adddeviceunit, removedeviceunit, updeviceunit, downdeviceunit, sep);
+        menubutton = new MenuButton(resources.getString("label.samplestitle"));
+        menubutton.setFocusTraversable(false);
+        
+        unitstoolbar.getItems().addAll(adddeviceunit, removedeviceunit, updeviceunit, downdeviceunit, sep, menubutton);
         
         borderpanetab1.setTop(unitstoolbar);
         
@@ -282,6 +288,8 @@ public class ClientLoginNode {
         removedeviceunit.setGraphic(IconBuilder.create(FontAwesome.FA_MINUS, 18.0).styleClass("icon-fill").build());
         updeviceunit.setGraphic(IconBuilder.create(FontAwesome.FA_CHEVRON_UP, 18.0).styleClass("icon-fill").build());
         downdeviceunit.setGraphic(IconBuilder.create(FontAwesome.FA_CHEVRON_DOWN, 18.0).styleClass("icon-fill").build());
+        
+        menubutton.setGraphic(IconBuilder.create(FontAwesome.FA_DASHBOARD, 18.0).styleClass("icon-fill").build());
 
         edittype.setItems(FXCollections.observableArrayList("Publication/Subscription", "Subscription", "Publication", "Code"));
         edittype.getSelectionModel().clearSelection();
@@ -320,9 +328,8 @@ public class ClientLoginNode {
 //        Platform.runLater(host::requestFocus);
     }
 
-    private void constructSampleButtons() {
-        unitstoolbar.getItems().addAll(
-                new Label(resources.getString("label.samplestitle")),
+    private void constructSampleButtons() {      
+        menubutton.getItems().addAll(
                 createSamplesButton("samples.lights", IconBuilder.create(FontAwesome.FA_LIGHTBULB_O, 18.0).styleClass("icon-fill").build(), "com/adr/helloiot/samples/lights.fxml"),
                 createSamplesButton("samples.chart", IconBuilder.create(FontAwesome.FA_BAR_CHART, 18.0).styleClass("icon-fill").build(), "com/adr/helloiot/samples/chart.fxml"),
                 createSamplesButton("samples.numbers", IconBuilder.create(FontAwesome.FA_DASHBOARD, 18.0).styleClass("icon-fill").build(), "com/adr/helloiot/samples/numbers.fxml"),
@@ -498,9 +505,8 @@ public class ClientLoginNode {
         mainpage.setSelected(value);
     }
     
-    public Button createSamplesButton(String key, Node graphic, String fxml) {
-        Button b = new Button(resources.getString(key), graphic);
-        b.setFocusTraversable(false);        
+    public MenuItem createSamplesButton(String key, Node graphic, String fxml) {
+        MenuItem b = new MenuItem(resources.getString(key), graphic);       
         b.setOnAction(e -> {
             try {
                 addCodeUnit(resources.getString(key), Resources.toString(Resources.getResource(fxml), StandardCharsets.UTF_8));
@@ -511,8 +517,8 @@ public class ClientLoginNode {
         return b;
     }
     
-    public void addToolbarButton(Button b) {
-        unitstoolbar.getItems().add(b);
+    public void addToolbarButton(MenuItem b) {
+        menubutton.getItems().add(b);
     }
     
     public void addCodeUnit(String name, String code) {
