@@ -25,8 +25,6 @@ import com.google.common.io.Resources;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -69,21 +67,21 @@ public class ClientLoginNode {
     private VBox connections;
     private CheckBox mainpage;
     
-    Button adddeviceunit;
-    Button removedeviceunit;
-    Button updeviceunit;
-    Button downdeviceunit;
-    ListView<TopicInfo> devicesunitslist;
-    ScrollPane deviceunitform;
+    private Button adddeviceunit;
+    private Button removedeviceunit;
+    private Button updeviceunit;
+    private Button downdeviceunit;
+    private ListView<TopicInfo> devicesunitslist;
+    private ScrollPane deviceunitform;
     
-    ChoiceBox<String> edittype;
-    StackPane topicinfocontainer;
-    ToolBar unitstoolbar;
+    private ChoiceBox<String> edittype;
+    private StackPane topicinfocontainer;
+    private ToolBar unitstoolbar;
     
     private ChoiceBox<Style> skins;
     private CheckBox clock;
         
-    TopicInfoNode editnode = null;
+    private TopicInfoNode editnode = null;
  
     private TopicInfoBuilder topicinfobuilder;
     
@@ -505,18 +503,26 @@ public class ClientLoginNode {
         b.setFocusTraversable(false);        
         b.setOnAction(e -> {
             try {
-                TopicInfo t = topicinfobuilder.create("Code");
-                BaseSubProperties props = new BaseSubProperties();
-                props.setProperty(".name", resources.getString(key));
-                props.setProperty(".code", Resources.toString(Resources.getResource(fxml), StandardCharsets.UTF_8));
-                t.load(props);
-                
-                devicesunitslist.getItems().add(t);
-                devicesunitslist.getSelectionModel().select(t);
+                addCodeUnit(resources.getString(key), Resources.toString(Resources.getResource(fxml), StandardCharsets.UTF_8));
             } catch (IOException ex) {
-                Logger.getLogger(ClientLoginNode.class.getName()).log(Level.SEVERE, null, ex);
+                throw new RuntimeException(ex);
             }
         });
         return b;
+    }
+    
+    public void addToolbarButton(Button b) {
+        unitstoolbar.getItems().add(b);
+    }
+    
+    public void addCodeUnit(String name, String code) {
+        TopicInfo t = topicinfobuilder.create("Code");
+        BaseSubProperties props = new BaseSubProperties();
+        props.setProperty(".name", name);
+        props.setProperty(".code", code);
+        t.load(props);
+
+        devicesunitslist.getItems().add(t);
+        devicesunitslist.getSelectionModel().select(t);        
     }
 }

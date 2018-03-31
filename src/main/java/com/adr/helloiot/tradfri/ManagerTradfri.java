@@ -136,20 +136,7 @@ public class ManagerTradfri implements ManagerProtocol {
                 settings.addProperty(TradfriConstants.TRANSITION_TIME, 3);	// transition in seconds
             } else if (command.equals("temperature")) {
                 // not sure what the COLOR_X and COLOR_Y values do, it works without them...
-                switch (payload) {
-                case "cold":
-                    settings.addProperty(TradfriConstants.COLOR, TradfriConstants.COLOR_COLD);
-                    break;
-                case "normal":
-                    settings.addProperty(TradfriConstants.COLOR, TradfriConstants.COLOR_NORMAL);
-                    break;
-                case "warm":
-                    settings.addProperty(TradfriConstants.COLOR, TradfriConstants.COLOR_WARM);
-                    break;
-                default:
-                    LOGGER.log(Level.WARNING, "Invalid temperature supplied: {0}", payload);
-                    return;
-                }
+                settings.addProperty(TradfriConstants.COLOR, parseTemperature(payload));
             } else if (command.equals("on")) {
                 settings.addProperty(TradfriConstants.ONOFF, payload.equals("0") ? 0 : 1);
             } else {
@@ -308,7 +295,7 @@ public class ManagerTradfri implements ManagerProtocol {
             }
             jsonregistry.addProperty("dim", light.has(TradfriConstants.DIMMER));
             if (light.has(TradfriConstants.COLOR)) {
-                group.distributeMessage("TRÅDFRI/bulb/" + name + "/temperature", light.get(TradfriConstants.COLOR).getAsString().getBytes(StandardCharsets.UTF_8));
+                group.distributeMessage("TRÅDFRI/bulb/" + name + "/temperature", valueOfTemperature(light.get(TradfriConstants.COLOR).getAsString()).getBytes(StandardCharsets.UTF_8));
             }
             jsonregistry.addProperty("temperature", light.has(TradfriConstants.COLOR));
         } else if (json.has(TradfriConstants.HS_ACCESSORY_LINK)) { // groups have this entry
@@ -332,4 +319,32 @@ public class ManagerTradfri implements ManagerProtocol {
         Double d = Double.parseDouble(value);
         return d.intValue();
     }
+    
+    private static String parseTemperature(String value) {
+        // not sure what the COLOR_X and COLOR_Y values do, it works without them...
+        switch (value) {
+        case "Cold":
+            return TradfriConstants.COLOR_COLD;
+        case "Normal":
+            return TradfriConstants.COLOR_NORMAL;
+        case "Warm":
+            return TradfriConstants.COLOR_WARM;
+        default:
+            return TradfriConstants.COLOR_NORMAL;
+        }        
+    }
+    
+      private static String valueOfTemperature(String value) {
+        // not sure what the COLOR_X and COLOR_Y values do, it works without them...
+        switch (value) {
+        case TradfriConstants.COLOR_COLD:
+            return "Cold";
+        case TradfriConstants.COLOR_NORMAL:
+            return "Normal" ;
+        case TradfriConstants.COLOR_WARM:
+            return "Warm";
+        default:
+            return "Unknown";
+        }        
+    }  
 }

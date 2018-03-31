@@ -34,6 +34,7 @@ import com.adr.helloiot.media.StandardClipFactory;
 import com.adr.helloiot.tradfri.ManagerTradfri;
 import com.adr.helloiot.unit.UnitPage;
 import com.adr.helloiot.util.CompletableAsync;
+import com.adr.helloiot.util.HTTPUtils;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
 import java.io.File;
@@ -107,7 +108,7 @@ public class HelloIoTApp {
                 new ManagerLocal(
                         config.get("client.topicapp").asString()));
         
-        if (!config.get("tradfri.host").isEmpty()) {
+        if (HTTPUtils.getAddress(config.get("tradfri.host").asString()) != null) {
             manager.addManagerProtocol(
                     "TRÅDFRI/",
                     new ManagerTradfri(
@@ -116,7 +117,7 @@ public class HelloIoTApp {
                                     config.get("tradfri.psk").asString()));
         }
         
-        if (!config.get("mqtt.host").isEmpty()) {
+        if (HTTPUtils.getAddress(config.get("mqtt.host").asString()) != null) {
             boolean websockets = config.get("mqtt.websockets").asBoolean();
             boolean ssl = config.get("mqtt.ssl").asBoolean();
             String protocol = websockets

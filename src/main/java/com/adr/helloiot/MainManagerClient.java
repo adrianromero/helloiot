@@ -20,6 +20,7 @@ package com.adr.helloiot;
 
 import com.adr.fonticon.FontAwesome;
 import com.adr.fonticon.IconBuilder;
+import com.adr.hellocommon.dialog.DialogView;
 import com.adr.hellocommon.dialog.MessageUtils;
 import com.adr.helloiot.device.format.MiniVar;
 import com.adr.helloiot.device.format.MiniVarBoolean;
@@ -28,7 +29,12 @@ import com.adr.helloiot.device.format.MiniVarString;
 import com.adr.helloiot.mqtt.ConnectMQTT;
 import com.adr.helloiot.tradfri.ConnectTradfri;
 import com.adr.helloiot.unit.UnitPage;
+import com.adr.helloiot.util.CompletableAsync;
+import com.adr.helloiot.util.Dialogs;
+import com.adr.helloiot.util.HTTPUtils;
 import com.google.common.base.Strings;
+import com.google.common.util.concurrent.FutureCallback;
+import com.google.common.util.concurrent.Futures;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -46,6 +52,7 @@ import javafx.application.Application.Parameters;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.control.Button;
 import javafx.scene.layout.StackPane;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 
@@ -74,10 +81,9 @@ public class MainManagerClient implements MainManager {
         clientmqtt = new ConnectMQTT();
         clientlogin.appendConnectNode(clientmqtt.getNode());
         clienttradfri = new ConnectTradfri();
-        clientlogin.appendConnectNode(clienttradfri.getNode()); 
-        
-        
-        
+        clientlogin.appendConnectNode(clienttradfri.getNode());     
+        clientlogin.addToolbarButton(createTradfriButton());
+
         ConfigProperties configprops = new ConfigProperties();            
         try {
             configprops.load(() -> new FileInputStream(configfile));
@@ -299,5 +305,44 @@ public class MainManagerClient implements MainManager {
         
         hideLogin();
         hideApplication();
-    }
+    }  
+    
+    
+    private Button createTradfriButton() {
+        ResourceBundle resources = ResourceBundle.getBundle("com/adr/helloiot/fxml/main");
+
+        Button b = new Button(resources.getString("button.tradfri"), IconBuilder.create(FontAwesome.FA_SEARCH, 18.0).styleClass("icon-fill").build());
+        b.setFocusTraversable(false);        
+        b.setOnAction(e -> {
+            ConfigProperties tempconfig = new ConfigProperties();
+            clienttradfri.saveConfig(tempconfig);      
+            
+            if (HTTPUtils.getAddress(tempconfig.getProperty("tradfri.host", "")) == null) {
+                MessageUtils.showWarning(MessageUtils.getRoot(root), resources.getString("title.tradfridiscovery"), resources.getString("message.notradfriconnection"));                
+                return;
+            }
+
+            DialogView loading2 = Dialogs.createLoading(resources.getString("title.tradfridiscovery"));
+            loading2.show(MessageUtils.getRoot(root));    
+
+            Futures.addCallback(clienttradfri.requestSample(
+                    tempconfig.getProperty("tradfri.host"), 
+                    tempconfig.getProperty("tradfri.identity"), 
+                    tempconfig.getProperty("tradfri.psk")), new FutureCallback<Map<String, String>>() {
+                @Override
+                public void onSuccess(Map<String, String> units) {    
+                    loading2.dispose();
+                    for(Map.Entry<String, String> entry: units.entrySet()) {
+                        clientlogin.addCodeUnit(entry.getKey(), entry.getValue());
+                    }
+                }                    
+                @Override
+                public void onFailure(Throwable ex) {                               
+                    loading2.dispose();
+                    MessageUtils.showException(MessageUtils.getRoot(root), resources.getString("title.tradfridiscovery"), ex.getLocalizedMessage(), ex);
+                }
+            }, CompletableAsync.fxThread());  
+        });
+        return b;
+    }      
 }

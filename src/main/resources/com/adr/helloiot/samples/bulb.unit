@@ -1,0 +1,12 @@
+<Light 
+    fx:id="${nameshort}on" 
+    topic="TRÅDFRI/bulb/${name}/on">
+    <properties tags="tradfrilight"/>
+</Light>
+
+<ButtonSimple 
+    UnitPage.page="Tradfri lights" 
+    device="$${nameshort}on"
+    prefWidth="240"
+    prefHeight="160"
+    text="${name}" />

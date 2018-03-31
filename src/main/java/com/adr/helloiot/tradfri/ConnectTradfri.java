@@ -22,15 +22,22 @@ import com.adr.hellocommon.dialog.DialogView;
 import com.adr.hellocommon.dialog.MessageUtils;
 import com.adr.hellocommon.utils.FXMLUtil;
 import com.adr.helloiot.ConfigProperties;
+import com.adr.helloiot.GroupManagers;
 import com.adr.helloiot.util.CompletableAsync;
 import com.adr.helloiot.util.Dialogs;
 import com.adr.helloiot.util.HTTPUtils;
+import com.google.common.io.Resources;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.UUID;
 import javafx.event.ActionEvent;
@@ -169,19 +176,89 @@ public class ConnectTradfri {
     
     private ListenableFuture<String[]> findBridge() { 
         return CompletableAsync.supplyAsync(() -> {
-            try {
-                JmDNS jmdns = JmDNS.create();
+            try (JmDNS jmdns = JmDNS.create()) {
                 ServiceInfo[] services  = jmdns.list("_coap._udp.local.", 5000); 
                 String [] servers = new String[services.length];
 
                 for (int i = 0; i < services.length; i++) {    
                     servers[i] = services[i].getHostAddress() + " " + services[i].getServer();
                 }
-                jmdns.close();
                 return servers;
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
             }             
         });        
+    }  
+    
+    public ListenableFuture<Map<String, String>> requestSample(String server, String identity, String sharedkey) {
+        return CompletableAsync.supplyAsync(() -> {
+            try {
+                JsonParser gsonparser = new JsonParser();
+                TradfriRegistryGroup myregistry = new TradfriRegistryGroup();
+                ManagerTradfri tradfri = new ManagerTradfri(server, identity, sharedkey);
+                tradfri.registerTopicsManager(myregistry, null);
+                tradfri.connectBridge();    
+                
+                String response = tradfri.requestGetCOAP(TradfriConstants.DEVICES);
+                JsonArray devices = gsonparser.parse(response).getAsJsonArray();
+                for (JsonElement d : devices) {
+                    String topic = TradfriConstants.DEVICES + "/" + d.getAsInt();
+                    response = tradfri.requestGetCOAP(topic);
+                    tradfri.receivedCOAP(topic, response);
+                }              
+                
+                tradfri.disconnectBridge();
+                
+                return myregistry.getUnitsMap();
+            } catch (TradfriException ex) {
+                throw new RuntimeException(ex);
+            }
+        });          
     }   
+    
+    private static class TradfriRegistryGroup implements GroupManagers {
+        
+        private Map<String, String> units = new HashMap<>();
+        
+        public TradfriRegistryGroup() {
+            try {   
+                units.put("Switch off", Resources.toString(getClass().getResource("/com/adr/helloiot/samples/bulball.unit"), StandardCharsets.UTF_8));
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        }
+
+        @Override
+        public void distributeMessage(String topic, byte[] message) {
+            if ("TRÅDFRI/registry".equals(topic)) {
+                JsonParser gsonparser = new JsonParser();
+                JsonObject device = gsonparser.parse(new String(message, StandardCharsets.UTF_8)).getAsJsonObject();
+                if ("bulb".equals(device.get("type").getAsString())) {
+                    String template;
+                    String name = device.get("name").getAsString();
+                    String nameshort = name.replaceAll("\\s", "_");
+                    if (device.get("dim").getAsBoolean()) {
+                        if (device.get("temperature").getAsBoolean()) {
+                            template = "/com/adr/helloiot/samples/bulbdimtemperature.unit";
+                        } else {
+                            template = "/com/adr/helloiot/samples/bulbdim.unit";
+                        }
+                    } else {
+                        template = "/com/adr/helloiot/samples/bulb.unit";
+                    }
+                    
+                    try {
+                        String code = Resources.toString(getClass().getResource(template), StandardCharsets.UTF_8);
+                        units.put(name, code.replaceAll("\\$\\{name\\}", name).replaceAll("\\$\\{nameshort\\}", nameshort));
+                    } catch (IOException ex) {
+                        throw new RuntimeException(ex);
+                    } 
+                }
+            }
+        }
+        
+        public Map<String, String> getUnitsMap() {
+            return units;
+        }   
+    }
 }
