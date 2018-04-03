@@ -2,7 +2,9 @@ package com.adr.helloiot.tradfri;
 
 import com.adr.helloiot.GroupManagers;
 import com.adr.helloiot.ManagerProtocol;
+import com.adr.helloiot.util.CompletableAsync;
 import com.adr.helloiot.util.HTTPUtils;
+import com.google.common.util.concurrent.ListenableScheduledFuture;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -49,7 +51,7 @@ public class ManagerTradfri implements ManagerProtocol {
     private GroupManagers group;
     private Consumer<Throwable> lost;
     // COAP
-    private final String host; 
+    private final String host;
     private final String coapIP;
     private final String identity;
     private final String psk;
@@ -57,10 +59,11 @@ public class ManagerTradfri implements ManagerProtocol {
 
     private final Map<String, Integer> name2id = new HashMap<>();
     private final List<CoapObserveRelation> watching = new ArrayList<>();
+    private ListenableScheduledFuture<?> registrations;
 
     public ManagerTradfri(String host, String identity, String psk) {
         // Create COAP connection
-        this.host = host;       
+        this.host = host;
         this.coapIP = HTTPUtils.getAddress(host);
         this.identity = identity;
         this.psk = psk;
@@ -96,10 +99,18 @@ public class ManagerTradfri implements ManagerProtocol {
         } catch (TradfriException | JsonParseException ex) {
             throw new RuntimeException(ex.getLocalizedMessage(), ex);
         }
+
+        registrations = CompletableAsync.scheduleTask(120000, 120000, () -> {
+            watching.forEach(CoapObserveRelation::reregister);
+        });
     }
 
     @Override
     public void disconnect() {
+        
+        registrations.cancel(false);
+        registrations = null;
+        
         disconnectBridge();
     }
 
@@ -169,7 +180,7 @@ public class ManagerTradfri implements ManagerProtocol {
         CoapEndpoint.CoapEndpointBuilder coapbuilder = new CoapEndpoint.CoapEndpointBuilder();
         coapbuilder.setConnector(dtlsConnector);
         coapbuilder.setNetworkConfig(NetworkConfig.getStandard());
-        coapEndPoint = coapbuilder.build();       
+        coapEndPoint = coapbuilder.build();
     }
 
     void disconnectBridge() {
@@ -300,26 +311,26 @@ public class ManagerTradfri implements ManagerProtocol {
             jsonregistry.addProperty("temperature", light.has(TradfriConstants.COLOR));
         } else if (json.has(TradfriConstants.HS_ACCESSORY_LINK)) { // groups have this entry
             group.distributeMessage("TRÅDFRI/group/" + name + "/on", Integer.toString(json.get(TradfriConstants.ONOFF).getAsInt()).getBytes(StandardCharsets.UTF_8));
-            jsonregistry.addProperty("type", "group");      
+            jsonregistry.addProperty("type", "group");
             if (json.has(TradfriConstants.DIMMER)) {
                 group.distributeMessage("TRÅDFRI/group/" + name + "/dim", Integer.toString(json.get(TradfriConstants.DIMMER).getAsInt()).getBytes(StandardCharsets.UTF_8));
             }
             jsonregistry.addProperty("dim", json.has(TradfriConstants.DIMMER));
         } else {
-            jsonregistry.addProperty("type", "unknown");    
+            jsonregistry.addProperty("type", "unknown");
             LOGGER.log(Level.WARNING, "COAP reponse not supported: {0}", json.toString());
         }
-        
+
         if (register) {
             group.distributeMessage("TRÅDFRI/registry", jsonregistry.toString().getBytes(StandardCharsets.UTF_8));
-        }        
+        }
     }
 
     private static int parseDim(String value) {
         Double d = Double.parseDouble(value);
         return d.intValue();
     }
-    
+
     private static String parseTemperature(String value) {
         // not sure what the COLOR_X and COLOR_Y values do, it works without them...
         switch (value) {
@@ -331,20 +342,20 @@ public class ManagerTradfri implements ManagerProtocol {
             return TradfriConstants.COLOR_WARM;
         default:
             return TradfriConstants.COLOR_NORMAL;
-        }        
+        }
     }
-    
-      private static String valueOfTemperature(String value) {
+
+    private static String valueOfTemperature(String value) {
         // not sure what the COLOR_X and COLOR_Y values do, it works without them...
         switch (value) {
         case TradfriConstants.COLOR_COLD:
             return "Cold";
         case TradfriConstants.COLOR_NORMAL:
-            return "Normal" ;
+            return "Normal";
         case TradfriConstants.COLOR_WARM:
             return "Warm";
         default:
             return "Unknown";
-        }        
-    }  
+        }
+    }
 }
