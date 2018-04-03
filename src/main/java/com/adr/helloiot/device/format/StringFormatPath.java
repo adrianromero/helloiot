@@ -1,5 +1,5 @@
 //    HelloIoT is a dashboard creator for MQTT
-//    Copyright (C) 2017 Adrián Romero Corchado.
+//    Copyright (C) 2017-2018 Adrián Romero Corchado.
 //
 //    This file is part of HelloIot.
 //
@@ -49,11 +49,11 @@ public abstract class StringFormatPath extends StringFormat {
    
     @Override
     public final MiniVar value(byte[] value) {
+        if (value == null || value.length == 0) {
+            return valueImpl(null);
+        }        
         if (path == null || path.isEmpty()) {
             // No JSON path -> Normal payload processing
-            if (value == null || value.length == 0) {
-                return valueImpl(null);
-            }
             return valueImpl(new String(value, StandardCharsets.UTF_8));
         } else {
             // if value null or empty this will throw an exception
