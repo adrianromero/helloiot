@@ -1,3 +1,25 @@
+//    HelloIoT is a dashboard creator for MQTT
+//    Copyright (C) 2018 Adrián Romero Corchado.
+//
+//    This file is part of HelloIot.
+//
+//    HelloIot is free software: you can redistribute it and/or modify
+//    it under the terms of the GNU General Public License as published by
+//    the Free Software Foundation, either version 3 of the License, or
+//    (at your option) any later version.
+//
+//    HelloIot is distributed in the hope that it will be useful,
+//    but WITHOUT ANY WARRANTY; without even the implied warranty of
+//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//    GNU General Public License for more details.
+//
+//    You should have received a copy of the GNU General Public License
+//    along with HelloIot.  If not, see <http://www.gnu.org/licenses/>.
+//
+//    This class is based on project https://github.com/hardillb/TRADFRI2MQTT
+//    by Ben Hardill and licensed under the Apache License 2.0
+//
+
 package com.adr.helloiot.tradfri;
 
 import com.adr.helloiot.GroupManagers;
@@ -47,6 +69,7 @@ public class ManagerTradfri implements ManagerProtocol {
 ////		ScandiumLogger.initialize();
 ////		ScandiumLogger.setLevel(Level.FINE);
 //    }
+    
     // Manager
     private GroupManagers group;
     private Consumer<Throwable> lost;
@@ -89,12 +112,12 @@ public class ManagerTradfri implements ManagerProtocol {
             String response = requestGetCOAP(TradfriConstants.DEVICES);
             JsonArray devices = gsonparser.parse(response).getAsJsonArray();
             for (JsonElement d : devices) {
-                subscribeCOAP(TradfriConstants.DEVICES + "/" + d.getAsInt());
+                watching.add(subscribeCOAP(TradfriConstants.DEVICES + "/" + d.getAsInt()));
             }
             response = requestGetCOAP(TradfriConstants.GROUPS);
             JsonArray groups = gsonparser.parse(response).getAsJsonArray();
             for (JsonElement g : groups) {
-                subscribeCOAP(TradfriConstants.GROUPS + "/" + g.getAsInt());
+                watching.add(subscribeCOAP(TradfriConstants.GROUPS + "/" + g.getAsInt()));
             }
         } catch (TradfriException | JsonParseException ex) {
             throw new RuntimeException(ex.getLocalizedMessage(), ex);
@@ -110,6 +133,7 @@ public class ManagerTradfri implements ManagerProtocol {
         
         registrations.cancel(false);
         registrations = null;
+        watching.clear();
         
         disconnectBridge();
     }
@@ -246,7 +270,7 @@ public class ManagerTradfri implements ManagerProtocol {
         }
     }
 
-    private void subscribeCOAP(String topic) throws TradfriException {
+    private CoapObserveRelation subscribeCOAP(String topic) throws TradfriException {
 
         try {
             URI uri = new URI("coaps://" + coapIP + "/" + topic);
@@ -264,7 +288,7 @@ public class ManagerTradfri implements ManagerProtocol {
                     LOGGER.log(Level.WARNING, "COAP subscription error");
                 }
             };
-            watching.add(client.observe(handler));
+            return client.observe(handler);
         } catch (URISyntaxException ex) {
             LOGGER.log(Level.WARNING, "COAP SEND error: {0}", ex.getMessage());
             throw new TradfriException(ex);
