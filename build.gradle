@@ -31,7 +31,7 @@ apply plugin: 'application'
 apply plugin: 'org.javafxports.jfxmobile'
 
 group = 'com.github.adrianromero'
-version = '1.0.25'
+version = '1.0.26'
 
 mainClassName = 'com.adr.helloiot.MainAppClient'
 ext.mainClass = 'com.adr.helloiot.MainAppClient'
