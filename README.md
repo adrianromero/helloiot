@@ -1,9 +1,9 @@
 HelloIoT [![Release](https://jitpack.io/v/adrianromero/helloiot.svg)](https://jitpack.io/#adrianromero/helloiot)
 ========
 
-HelloIoT is a [MQTT](https://en.wikipedia.org/wiki/MQTT) client and dashboard application. 
-You can use HelloIoT as a MQTT client application to publish and subscribe to topics or you can use HelloIoT as a client platform to create your own dashboard. 
-HelloIoT is a Java multiplatform application and it can run on Windows, MacOS or Linux.
+HelloIoT is a [MQTT](https://en.wikipedia.org/wiki/MQTT) and [IKEA Tradfri](https://www.ikea.com/gb/en/products/lighting/smart-lighting/) dashboard application. 
+You can use HelloIoT as a MQTT and IKEA Tradfri client application to publish and subscribe to topics or you can use HelloIoT as a client platform to create your own dashboard. 
+HelloIoT is a Java multiplatform application and it can run on Windows, MacOS, Linux or Android.
 
 ![Screenshot](https://i.imgur.com/ULC4eEw.gif)
 
@@ -15,8 +15,8 @@ Install and execute HelloIoT
 
 To run HelloIoT just download and install the appropiate release file:
 
-* [helloiot-1.0.23.zip](https://github.com/adrianromero/helloiot/releases/download/1.0.23/helloiot-1.0.23.zip) Windows / Mac / Linux
-* [helloiot-1.0.23.apk](https://github.com/adrianromero/helloiot/releases/download/1.0.23/helloiot-1.0.23.apk) Android
+* [helloiot-1.0.26.zip](https://github.com/adrianromero/helloiot/releases/download/1.0.26/helloiot-1.0.26.zip) Windows / MacOS / Linux
+* [helloiot-1.0.26.apk](https://github.com/adrianromero/helloiot/releases/download/1.0.26/helloiot-1.0.26.apk) Android
 
 Install a MQTT Broker
 ----------------------
@@ -74,6 +74,7 @@ Acknowledgments
 * JideSoft Common library. https://github.com/jidesoft/jidefx-oss  (GPL version 2 with classpath exception)
 * Apache Commons IO. https://commons.apache.org/proper/commons-io/ (Apache License Version 2.0)
 * MapDB Database engine. http://www.mapdb.org/ (Apache License Version 2.0)
+* MQTT Bridge for IKEA Tradfri Light Gateway by Ben Hardill https://github.com/hardillb/TRADFRI2MQTT (Apache License Version 2.0)
 
 License
 =======
