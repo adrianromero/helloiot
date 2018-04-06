@@ -55,6 +55,10 @@ public abstract class StringFormat {
             return StringFormatDecimal.DEGREES;
         } else if (value.startsWith("DECIMAL/")) {
             return new StringFormatDecimal(null, value.substring(8));
+        } else if ("ON/OFF".equals(value)) {
+            StringFormatSwitch onoff = new StringFormatSwitch();
+            onoff.setValues("OFF,ON");
+            return onoff;
         } else {
             throw new IllegalArgumentException("Cannot create StringFormat: " + value);
         }
