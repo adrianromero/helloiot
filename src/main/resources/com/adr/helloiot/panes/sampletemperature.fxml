@@ -82,7 +82,7 @@
         <SliderSimple UnitPage.page="temperature" device="$home_thermostat5"/>          
         
         <ButtonPassword UnitPage.page="Testing" label="Change password"  securityKey="mainsecuritykey">
-            <graphic><Icon iconAwesome="FA_KEY" size="48" color="WHITE" shine="WHITE"/></graphic>
+            <graphic><Picture iconAwesome="FA_KEY" size="48" color="WHITE" shine="WHITE"/></graphic>
         </ButtonPassword>       
         <ButtonSimple UnitPage.page="Testing" device="$beeper" iconStatus="TOGGLE"/>
         
