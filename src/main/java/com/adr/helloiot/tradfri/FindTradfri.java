@@ -21,6 +21,7 @@ package com.adr.helloiot.tradfri;
 import com.adr.hellocommon.utils.FXMLUtil;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
 /**
@@ -30,7 +31,7 @@ import javafx.scene.control.TextField;
 public class FindTradfri {
     
     private Node root;
-    @FXML private TextField host;
+    @FXML private Label host;
     @FXML private TextField psk;    
 
     public FindTradfri(String host) {

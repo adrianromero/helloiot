@@ -7,21 +7,21 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<GridPane hgap="10.0" minHeight="-Infinity" minWidth="-Infinity" vgap="10.0" xmlns="http://javafx.com/javafx/8.0.161" xmlns:fx="http://javafx.com/fxml/1">
+<GridPane hgap="10.0" vgap="10.0" xmlns="http://javafx.com/javafx/8.0.161" xmlns:fx="http://javafx.com/fxml/1">
   <columnConstraints>
-    <ColumnConstraints minWidth="150.0" prefWidth="150.0" />
-    <ColumnConstraints minWidth="200.0" prefWidth="200.0" />
+    <ColumnConstraints minWidth="80.0" />
+    <ColumnConstraints />
   </columnConstraints>
   <rowConstraints>
       <RowConstraints vgrow="SOMETIMES" />
-    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+    <RowConstraints minHeight="30.0" vgrow="SOMETIMES" />
     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
       <Label text="%label.psk" GridPane.rowIndex="2" />
-      <TextField fx:id="host" editable="false" style="-fx-background-color: transparent;" GridPane.columnSpan="2147483647" GridPane.rowIndex="1" />
       <TextField fx:id="psk" GridPane.columnIndex="1" GridPane.rowIndex="2" />
       <Label text="%message.putpsk" wrapText="true" GridPane.columnSpan="2147483647" />
+      <Label fx:id="host" wrapText="true" GridPane.columnSpan="2147483647" GridPane.rowIndex="1" />
    </children>
    <padding>
       <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />

@@ -131,8 +131,10 @@ public class ManagerTradfri implements ManagerProtocol {
     @Override
     public void disconnect() {
         
-        registrations.cancel(false);
-        registrations = null;
+        if (registrations != null) {
+            registrations.cancel(false);
+            registrations = null;
+        }
         watching.clear();
         
         disconnectBridge();
