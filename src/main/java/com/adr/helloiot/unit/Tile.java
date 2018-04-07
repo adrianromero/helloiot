@@ -18,6 +18,8 @@
 //
 package com.adr.helloiot.unit;
 
+import com.adr.helloiot.HelloIoTAppPublic;
+import com.adr.helloiot.device.DeviceSubscribe;
 import com.adr.textflow.TextContainer;
 import java.io.IOException;
 import java.util.logging.Level;
@@ -40,6 +42,9 @@ public abstract class Tile extends BorderPane implements Unit {
     private Label titlelabel = null;
     private String footer = null;
     private FlowPane footerpane = null;
+    
+    private DeviceSubscribe deviceavailable = null; // can be null
+    private final Object messageHandler = Units.messageHandler(this::updateAvailable);
 
     public Tile() {
         getStyleClass().add("unitbase");
@@ -52,7 +57,27 @@ public abstract class Tile extends BorderPane implements Unit {
         setCenter(constructContent());  
     }
 
-    protected abstract Node constructContent();    
+    protected abstract Node constructContent();  
+    
+    private void updateAvailable(byte[] newstatus) {
+        setDisable(!deviceavailable.getFormat().value(newstatus).asBoolean());
+    }   
+    
+    @Override
+    public void construct(HelloIoTAppPublic app) {
+        Unit.super.construct(app);
+        if (deviceavailable != null) {
+            deviceavailable.subscribeStatus(messageHandler);
+        }
+    }
+
+    @Override
+    public void destroy() {
+        Unit.super.destroy();
+        if (deviceavailable != null) {
+            deviceavailable.unsubscribeStatus(messageHandler);
+        }
+    }    
 
     @Override
     public void start() {
@@ -85,6 +110,14 @@ public abstract class Tile extends BorderPane implements Unit {
 
     public String getLabel() {
         return title;
+    }
+    
+    public void setDeviceAvailable(DeviceSubscribe deviceavailable) {
+        this.deviceavailable = deviceavailable;
+    }
+    
+    public DeviceSubscribe getDeviceAvailable() {
+        return deviceavailable;
     }
 
     public void setFooter(String label) {
