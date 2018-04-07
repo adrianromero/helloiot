@@ -20,7 +20,6 @@ package com.adr.helloiot.unit;
 
 import com.adr.helloiot.device.DeviceSubscribe;
 import com.adr.helloiot.HelloIoTAppPublic;
-import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
@@ -33,7 +32,6 @@ import javafx.scene.layout.VBox;
  */
 public class ViewText extends Tile {
 
-    @FXML
     private Label level;
 
     private DeviceSubscribe device = null;
@@ -56,7 +54,6 @@ public class ViewText extends Tile {
         return vboxroot;
     }
 
-    @FXML
     public void initialize() {
         level.setText(null);
     }
