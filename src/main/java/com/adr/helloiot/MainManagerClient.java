@@ -119,7 +119,7 @@ public class MainManagerClient implements MainManager {
                 showApplication();      
             } catch (HelloIoTException ex) {
                 ResourceBundle resources = ResourceBundle.getBundle("com/adr/helloiot/fxml/main");
-                MessageUtils.showError(MessageUtils.getRoot(root), resources.getString("exception.topicinfotitle"), ex.getLocalizedMessage(), ev -> {
+                MessageUtils.showException(MessageUtils.getRoot(root), resources.getString("exception.topicinfotitle"), ex, ev -> {
                     showLogin();
                 });
                 
@@ -289,7 +289,7 @@ public class MainManagerClient implements MainManager {
                 showApplication();      
             } catch (HelloIoTException ex) {
                 ResourceBundle resources = ResourceBundle.getBundle("com/adr/helloiot/fxml/main");
-                MessageUtils.showError(MessageUtils.getRoot(root), resources.getString("exception.topicinfotitle"), ex.getLocalizedMessage(), ev -> {
+                MessageUtils.showException(MessageUtils.getRoot(root), resources.getString("exception.topicinfotitle"), ex, ev -> {
                     showLogin();
                 });
             }

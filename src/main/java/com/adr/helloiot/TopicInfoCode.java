@@ -129,7 +129,7 @@ public class TopicInfoCode implements TopicInfo {
         } catch (IOException ex) {
             ResourceBundle resources = ResourceBundle.getBundle("com/adr/helloiot/fxml/main");
             String label = getLabel();
-            throw new HelloIoTException(String.format(resources.getString("exception.topicinfocode"), label == null || label.isEmpty() ? resources.getString("label.empty") : label));
+            throw new HelloIoTException(String.format(resources.getString("exception.topicinfocode"), label == null || label.isEmpty() ? resources.getString("label.empty") : label), ex);
         }
     }
 
