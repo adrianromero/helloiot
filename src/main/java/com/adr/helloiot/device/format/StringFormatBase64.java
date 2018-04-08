@@ -40,27 +40,27 @@ public class StringFormatBase64 extends StringFormat {
         if (v.isEmpty()) {
             return "";
         } else {
-            return v.asString();
+            return Base64.getMimeEncoder().encodeToString(v.asBytes());
         }
     }
 
     @Override
     public MiniVar value(byte[] value) {
         if (value == null) {
-            return MiniVarString.NULL;
+            return MiniVarBytes.NULL;
         } else {
-            return new MiniVarString(Base64.getMimeEncoder().encodeToString(value));
+            return new MiniVarBytes(value);
         }
     }
     
     @Override
     public byte[] parse(String formattedvalue) {
-        return devalue(new MiniVarString(formattedvalue));
+        return devalue(new MiniVarBytes(Base64.getMimeDecoder().decode(formattedvalue)));
     }
     
     @Override
     public byte[] devalue(MiniVar formattedvalue) {
-        return Base64.getMimeDecoder().decode(formattedvalue.asString());
+        return formattedvalue.asBytes();
     }
 
     @Override
