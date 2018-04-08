@@ -96,7 +96,7 @@ public class ButtonsSpinner extends Tile {
     }
 
     private void updateStatus(byte[] status) {
-        level.setText(device.getFormat().format(status));
+        level.setText(device.getFormat().format(device.getFormat().value(status)));
         goup.setDisable(!device.hasNextStatus());
         godown.setDisable(!device.hasPrevStatus());
     }

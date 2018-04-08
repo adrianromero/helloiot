@@ -1,5 +1,5 @@
 //    HelloIoT is a dashboard creator for MQTT
-//    Copyright (C) 2017 Adrián Romero Corchado.
+//    Copyright (C) 2017-2018 Adrián Romero Corchado.
 //
 //    This file is part of HelloIot.
 //
@@ -74,21 +74,20 @@ public class StringFormatSwitch extends StringFormatPath {
     }
 
     @Override
-    public String format(byte[] value) {
-        MiniVar v = value(value);
-        if (v.isEmpty()) {
+    public String format(MiniVar value) {
+        if (value.isEmpty()) {
             return "";
         } else {
-            return pattern[v.asBoolean() ? 1 : 0];
+            return pattern[value.asBoolean() ? 1 : 0];
         }
     }
 
     @Override
-    public byte[] parse(String formattedvalue) {
+    public MiniVar parse(String formattedvalue) {
         if (formattedvalue == null || formattedvalue.isEmpty()) {
-            return devalue(MiniVarBoolean.NULL);
+            return MiniVarBoolean.NULL;
         } else {
-            return devalue(new MiniVarBoolean(pattern[1].equals(formattedvalue)));
+            return new MiniVarBoolean(pattern[1].equals(formattedvalue));
         }
     }
 

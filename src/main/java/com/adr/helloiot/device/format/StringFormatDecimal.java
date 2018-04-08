@@ -1,5 +1,5 @@
 //    HelloIoT is a dashboard creator for MQTT
-//    Copyright (C) 2017 Adrián Romero Corchado.
+//    Copyright (C) 2017-2018 Adrián Romero Corchado.
 //
 //    This file is part of HelloIot.
 //
@@ -96,19 +96,18 @@ public class StringFormatDecimal extends StringFormatPath {
     }
 
     @Override
-    public String format(byte[] value) {
-        MiniVar v = value(value);
-        if (v.isEmpty()) {
+    public String format(MiniVar value) {
+        if (value.isEmpty()) {
             return "";
         } else {
-            return format.format(v.asDouble());
+            return format.format(value.asDouble());
         }
     }
     
     @Override
-    public byte[] parse(String formattedvalue) {
+    public MiniVar parse(String formattedvalue) {
         if (formattedvalue == null || formattedvalue.isEmpty()) {
-            return devalue(MiniVarDouble.NULL);
+            return MiniVarDouble.NULL;
         } else {
             double d;
             try {
@@ -121,7 +120,7 @@ public class StringFormatDecimal extends StringFormatPath {
                     throw new IllegalArgumentException(ex2);
                 }
             }
-            return devalue(new MiniVarDouble(d));
+            return new MiniVarDouble(d);
         }
     }
     

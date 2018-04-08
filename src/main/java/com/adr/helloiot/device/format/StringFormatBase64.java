@@ -1,5 +1,5 @@
 //    HelloIoT is a dashboard creator for MQTT
-//    Copyright (C) 2017 Adrián Romero Corchado.
+//    Copyright (C) 2017-2018 Adrián Romero Corchado.
 //
 //    This file is part of HelloIot.
 //
@@ -35,12 +35,11 @@ public class StringFormatBase64 extends StringFormat {
     }
 
     @Override
-    public String format(byte[] value) {
-        MiniVar v = value(value);
-        if (v.isEmpty()) {
+    public String format(MiniVar value) {
+        if (value.isEmpty()) {
             return "";
         } else {
-            return Base64.getMimeEncoder().encodeToString(v.asBytes());
+            return Base64.getMimeEncoder().encodeToString(value.asBytes());
         }
     }
 
@@ -54,8 +53,8 @@ public class StringFormatBase64 extends StringFormat {
     }
     
     @Override
-    public byte[] parse(String formattedvalue) {
-        return devalue(new MiniVarBytes(Base64.getMimeDecoder().decode(formattedvalue)));
+    public MiniVar parse(String formattedvalue) {
+        return new MiniVarBytes(Base64.getMimeDecoder().decode(formattedvalue));
     }
     
     @Override

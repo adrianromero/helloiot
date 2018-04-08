@@ -1,5 +1,5 @@
 //    HelloIoT is a dashboard creator for MQTT
-//    Copyright (C) 2017 Adrián Romero Corchado.
+//    Copyright (C) 2017-2018 Adrián Romero Corchado.
 //
 //    This file is part of HelloIot.
 //
@@ -18,6 +18,7 @@
 //
 package com.adr.helloiot.device;
 
+import com.adr.helloiot.device.format.MiniVar;
 import com.adr.helloiot.device.format.MiniVarDouble;
 import com.adr.helloiot.device.format.StringFormatDecimal;
 
@@ -95,23 +96,23 @@ public class DeviceNumber extends DeviceSimple {
     }
     
     @Override
-    public byte[] prevStatus() {
-        return getFormat().devalue(new MiniVarDouble(adjustLevel(varStatus().asDouble() - increment)));
+    public MiniVar prevStatus() {
+        return new MiniVarDouble(adjustLevel(varStatus().asDouble() - increment));
     }
     
     @Override
-    public byte[] rollPrevStatus() {
-        return getFormat().devalue(new MiniVarDouble(rollLevel(varStatus().asDouble() - increment)));
+    public MiniVar rollPrevStatus() {
+        return new MiniVarDouble(rollLevel(varStatus().asDouble() - increment));
     }
     
     @Override
-    public byte[] nextStatus() {
-        return getFormat().devalue(new MiniVarDouble(adjustLevel(varStatus().asDouble() + increment)));
+    public MiniVar nextStatus() {
+        return new MiniVarDouble(adjustLevel(varStatus().asDouble() + increment));
     }
     
     @Override
-    public byte[] rollNextStatus() {
-        return getFormat().devalue(new MiniVarDouble(rollLevel(varStatus().asDouble() + increment)));
+    public MiniVar rollNextStatus() {
+        return new MiniVarDouble(rollLevel(varStatus().asDouble() + increment));
     }
     
     @Override

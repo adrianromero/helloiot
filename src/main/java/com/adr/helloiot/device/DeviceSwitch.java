@@ -1,5 +1,5 @@
 //    HelloIoT is a dashboard creator for MQTT
-//    Copyright (C) 2017 Adrián Romero Corchado.
+//    Copyright (C) 2017-2018 Adrián Romero Corchado.
 //
 //    This file is part of HelloIot.
 //
@@ -18,6 +18,7 @@
 //
 package com.adr.helloiot.device;
 
+import com.adr.helloiot.device.format.MiniVar;
 import com.adr.helloiot.device.format.MiniVarBoolean;
 import com.adr.helloiot.device.format.StringFormatSwitch;
 
@@ -38,23 +39,23 @@ public class DeviceSwitch extends DeviceSimple {
 
 
     @Override
-    public byte[] nextStatus() {
-        return getFormat().devalue(MiniVarBoolean.TRUE);
+    public MiniVar nextStatus() {
+        return MiniVarBoolean.TRUE;
     }
     
     @Override
-    public byte[] rollNextStatus() {
-        return getFormat().devalue(new MiniVarBoolean(!varStatus().asBoolean()));
+    public MiniVar rollNextStatus() {
+        return new MiniVarBoolean(!varStatus().asBoolean());
     }
     
     @Override
-    public byte[] prevStatus() {
-        return getFormat().devalue(MiniVarBoolean.FALSE);
+    public MiniVar prevStatus() {
+        return MiniVarBoolean.FALSE;
     }
     
     @Override
-    public byte[] rollPrevStatus() {
-        return getFormat().devalue(new MiniVarBoolean(!varStatus().asBoolean()));
+    public MiniVar rollPrevStatus() {
+        return new MiniVarBoolean(!varStatus().asBoolean());
     }
     
     @Override
@@ -68,11 +69,11 @@ public class DeviceSwitch extends DeviceSimple {
     }
 
     public void sendON() {
-        sendStatus(getFormat().devalue(MiniVarBoolean.TRUE));
+        sendStatus(MiniVarBoolean.TRUE);
     }
 
     public void sendOFF() {
-        sendStatus(getFormat().devalue(MiniVarBoolean.FALSE));
+        sendStatus(MiniVarBoolean.FALSE);
     }
 
     public void sendSWITCH() {
@@ -86,7 +87,7 @@ public class DeviceSwitch extends DeviceSimple {
             return;
         }
 
-        sendStatus(getFormat().devalue(MiniVarBoolean.TRUE));
-        sendStatus(getFormat().devalue(MiniVarBoolean.FALSE), duration);
+        sendStatus(MiniVarBoolean.TRUE);
+        sendStatus(MiniVarBoolean.FALSE, duration);
     }
 }

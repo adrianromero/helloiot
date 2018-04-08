@@ -77,7 +77,7 @@ public class SliderSimple extends Tile {
 
     private void updateStatus(byte[] status) {
         levelupdating = true;
-        level.setText(device.getFormat().format(status));
+        level.setText(device.getFormat().format(device.getFormat().value(status)));
         slider.setValue(device.getFormat().value(status).asDouble());
         levelupdating = false;
     }

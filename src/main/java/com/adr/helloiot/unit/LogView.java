@@ -68,7 +68,7 @@ public class LogView extends Tile {
     }
 
     private void updateStatus(byte[] status) {
-        statusview.appendText(device.getFormat().format(status));
+        statusview.appendText(device.getFormat().format(device.getFormat().value(status)));
         statusview.appendText("\n");
     }
 

@@ -1,5 +1,5 @@
 //    HelloIoT is a dashboard creator for MQTT
-//    Copyright (C) 2017 Adrián Romero Corchado.
+//    Copyright (C) 2017-2018 Adrián Romero Corchado.
 //
 //    This file is part of HelloIot.
 //
@@ -19,6 +19,7 @@
 package com.adr.helloiot.device;
 
 import com.adr.helloiot.EventMessage;
+import com.adr.helloiot.device.format.MiniVar;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -36,7 +37,7 @@ public class DeviceSet extends DeviceSimple {
     @Override
     protected void consumeMessage(EventMessage message) {
         super.consumeMessage(message);      
-        valuesindex.set(values.indexOf(getFormat().format(message.getMessage())));
+        valuesindex.set(values.indexOf(getFormat().format(getFormat().value(message.getMessage()))));
     }
     
     @Override
@@ -49,7 +50,7 @@ public class DeviceSet extends DeviceSimple {
     }
     
     @Override 
-    public byte[] nextStatus() {
+    public MiniVar nextStatus() {
         int i = valuesindex.get();
         if (i < 0) {
             return getFormat().parse(values.get(1)); // go to second element. It is a design decision
@@ -61,7 +62,7 @@ public class DeviceSet extends DeviceSimple {
     }
     
     @Override
-    public byte[] rollNextStatus() {
+    public MiniVar rollNextStatus() {
         int i = valuesindex.get();
         if (i < 0) {
             return getFormat().parse(values.get(1)); // go to second element. It is a design decision
@@ -73,7 +74,7 @@ public class DeviceSet extends DeviceSimple {
     }
     
     @Override
-    public byte[] prevStatus() {
+    public MiniVar prevStatus() {
         int i = valuesindex.get();
         if (i < 0) {
             return getFormat().parse(values.get(0)); // go to first element
@@ -85,7 +86,7 @@ public class DeviceSet extends DeviceSimple {
     }
     
     @Override
-    public byte[] rollPrevStatus() {
+    public MiniVar rollPrevStatus() {
         int i = valuesindex.get();
         if (i < 0) { 
             return getFormat().parse(values.get(0)); // go to first element

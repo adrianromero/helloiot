@@ -1,5 +1,5 @@
 //    HelloIoT is a dashboard creator for MQTT
-//    Copyright (C) 2017 Adrián Romero Corchado.
+//    Copyright (C) 2017-2018 Adrián Romero Corchado.
 //
 //    This file is part of HelloIot.
 //
@@ -28,7 +28,7 @@ import java.util.concurrent.atomic.AtomicReference;
  */
 public class DeviceBasic extends DeviceSubscribe {
 
-    private final AtomicReference<byte[]> status = new AtomicReference<>(null);
+    private final AtomicReference<MiniVar> status = new AtomicReference<>(null);
 
     public DeviceBasic() {
         setRetained(true);
@@ -42,15 +42,11 @@ public class DeviceBasic extends DeviceSubscribe {
 
     @Override
     protected void consumeMessage(EventMessage message) {
-        status.set(message.getMessage());
-    }
-
-    public byte[] rawStatus() {
-        return status.get();
+        status.set(getFormat().value(message.getMessage()));
     }
     
     public MiniVar varStatus() {
-        return getFormat().value(status.get());
+        return status.updateAndGet(s -> s == null ? getFormat().value(null) : s);
     }
 
     public String formatStatus() {

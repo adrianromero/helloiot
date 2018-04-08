@@ -1,5 +1,5 @@
 //    HelloIoT is a dashboard creator for MQTT
-//    Copyright (C) 2017 Adrián Romero Corchado.
+//    Copyright (C) 2017-2018 Adrián Romero Corchado.
 //
 //    This file is part of HelloIot.
 //
@@ -26,16 +26,17 @@ import javafx.geometry.Pos;
  */
 public abstract class StringFormat {
 
-    public abstract String format(byte[] value);
+    public abstract String format(MiniVar value);
     public abstract MiniVar value(byte[] value);
 
-    public abstract byte[] parse(String formattedvalue);
+    public abstract MiniVar parse(String formattedvalue);
     public abstract byte[] devalue(MiniVar formattedvalue);
 
     public abstract Pos alignment();
     
     public final ValueFormatValue getValueFormat(byte[] value) {
-        return new ValueFormatValue(value(value), format(value));        
+        MiniVar v = value(value);
+        return new ValueFormatValue(v, format(v));        
     }
 
     public static StringFormat valueOf(String value) {

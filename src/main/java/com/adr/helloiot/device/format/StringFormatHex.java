@@ -38,12 +38,11 @@ public class StringFormatHex extends StringFormat {
     }
 
     @Override
-    public String format(byte[] value) {
-        MiniVar v = value(value);
-        if (v.isEmpty()) {
+    public String format(MiniVar value) {
+        if (value.isEmpty()) {
             return "";
         } else {
-            return fixedSplit(formatHexString(v.asBytes()));
+            return fixedSplit(formatHexString(value.asBytes()));
         }
     }
 
@@ -57,8 +56,8 @@ public class StringFormatHex extends StringFormat {
     }
     
     @Override
-    public byte[] parse(String formattedvalue) {
-        return devalue(new MiniVarBytes(parseHexString(formattedvalue.replaceAll("\\s", ""))));
+    public MiniVar parse(String formattedvalue) {
+        return new MiniVarBytes(parseHexString(formattedvalue.replaceAll("\\s", "")));
     }
     
     @Override

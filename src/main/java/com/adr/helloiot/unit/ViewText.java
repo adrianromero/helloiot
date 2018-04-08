@@ -59,7 +59,7 @@ public class ViewText extends Tile {
     }
 
     private void updateStatus(byte[] newstatus) {
-        level.setText(device.getFormat().format(newstatus));
+        level.setText(device.getFormat().format(device.getFormat().value(newstatus)));
     }
 
     @Override

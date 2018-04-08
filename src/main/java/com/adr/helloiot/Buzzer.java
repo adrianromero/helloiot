@@ -1,5 +1,5 @@
 //    HelloIoT is a dashboard creator for MQTT
-//    Copyright (C) 2017 Adrián Romero Corchado.
+//    Copyright (C) 2017-2018 Adrián Romero Corchado.
 //
 //    This file is part of HelloIot.
 //
@@ -58,7 +58,7 @@ public class Buzzer {
 
     private void updateStatus(byte[] status) {
 
-        String statusvalue = StringFormatIdentity.INSTANCE.format(status);
+        String statusvalue = StringFormatIdentity.INSTANCE.format(StringFormatIdentity.INSTANCE.value(status));
 
         if ("ERROR".equals(statusvalue)) {
             buzzer01.play();

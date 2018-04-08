@@ -1,5 +1,5 @@
 //    HelloIoT is a dashboard creator for MQTT
-//    Copyright (C) 2017 Adrián Romero Corchado.
+//    Copyright (C) 2017-2018 Adrián Romero Corchado.
 //
 //    This file is part of HelloIot.
 //
@@ -44,13 +44,8 @@ public class TransmitterSimple extends Device implements DeviceSend {
     }
 
     @Override
-    public void sendStatus(byte[] event) {
-        manager.publish(getTopicPublish(), getQos(), event, isRetained());
-    }
-
-    @Override
     public void sendStatus(MiniVar event) {
-        sendStatus(getFormat().devalue(event));
+        manager.publish(getTopicPublish(), getQos(), getFormat().devalue(event), isRetained());
     }
 
     @Override

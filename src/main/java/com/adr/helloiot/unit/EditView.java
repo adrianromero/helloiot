@@ -63,7 +63,7 @@ public class EditView extends Tile {
     }
 
     private void updateStatus(byte[] status) {
-        statusview.setText(device.getFormat().format(status));
+        statusview.setText(device.getFormat().format(device.getFormat().value(status)));
     }
 
     @Override

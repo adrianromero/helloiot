@@ -1,5 +1,5 @@
 //    HelloIoT is a dashboard creator for MQTT
-//    Copyright (C) 2017 Adrián Romero Corchado.
+//    Copyright (C) 2017-2018 Adrián Romero Corchado.
 //
 //    This file is part of HelloIot.
 //
@@ -38,22 +38,22 @@ public class DeviceSimple extends DeviceBasic implements DeviceSend {
     }
 
     // Overwrite this method 
-    public byte[] prevStatus() {
+    public MiniVar prevStatus() {
         throw new UnsupportedOperationException("Not supported.");
     }
     
     // Overwrite this method 
-    public byte[] rollPrevStatus() {
+    public MiniVar rollPrevStatus() {
         throw new UnsupportedOperationException("Not supported.");
     }
     
     // Overwrite this  method
-    public byte[] nextStatus() {
+    public MiniVar nextStatus() {
         throw new UnsupportedOperationException("Not supported.");
     }
 
     // Overwrite this  method
-    public byte[] rollNextStatus() {
+    public MiniVar rollNextStatus() {
         throw new UnsupportedOperationException("Not supported.");
     }
     // Overwrite this  method
@@ -73,14 +73,9 @@ public class DeviceSimple extends DeviceBasic implements DeviceSend {
     }
 
     @Override
-    public void sendStatus(byte[] status) {
-        cancelTimer();
-        manager.publish(getTopicPublish(), getQos(), status, isRetained());
-    }
-    
-    @Override
     public void sendStatus(MiniVar status) {
-        sendStatus(getFormat().devalue(status));
+        cancelTimer();
+        manager.publish(getTopicPublish(), getQos(), getFormat().devalue(status), isRetained());
     }
 
     @Override
@@ -88,7 +83,7 @@ public class DeviceSimple extends DeviceBasic implements DeviceSend {
         sendStatus(getFormat().parse(status));
     }
 
-    public void sendStatus(byte[] status, long delay) {
+    public void sendStatus(MiniVar status, long delay) {
 
         synchronized (sflock) {
             cancelTimer();
@@ -96,10 +91,6 @@ public class DeviceSimple extends DeviceBasic implements DeviceSend {
                 DeviceSimple.this.sendStatus(status);
             });
         }
-    }
-
-    public void sendStatus(MiniVar status, long delay) {
-        sendStatus(getFormat().devalue(status), delay);
     }
 
     public void sendStatus(String status, long delay) {
