@@ -144,6 +144,7 @@ public class ManagerMQTT implements MqttCallback, ManagerProtocol {
                 try {
                     mqttClient.setCallback(null);
                     mqttClient.disconnect();
+                    mqttClient.close();
                 } catch (MqttException ex) {
                     logger.log(Level.WARNING, null, ex);
                 }
