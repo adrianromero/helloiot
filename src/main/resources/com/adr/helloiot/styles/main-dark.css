@@ -116,8 +116,8 @@
 }
 
 .unitbase {
-    -fx-background-radius: 0, 6, 5;
-    -fx-background-insets: 0, 3, 4;
+    -fx-background-radius: 0, 3, 2;
+    -fx-background-insets: 0, 6, 7;
     -fx-background-color: transparent, -fx-border-unit, -fx-background-unit;        
     -fx-effect: dropshadow(one-pass-box, derive(-fx-border-unit, -20%), 4, 0, 0, 0);
 }

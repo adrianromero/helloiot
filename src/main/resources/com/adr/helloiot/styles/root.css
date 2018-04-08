@@ -37,7 +37,7 @@
 }
 
 .gridcontainer {
-    -fx-padding: 3px;   
+    -fx-padding: 6px;   
 }
 
 .labelsection {
@@ -66,9 +66,9 @@
 }
 
 .unitbase {
-    -fx-background-insets: 0, 3, 4;
+    -fx-background-insets: 0, 6, 7;
     -fx-background-color: transparent, derive(-fx-box-border, 25%), -fx-background;      
-    -fx-padding: 7px 9px 7px 9px;
+    -fx-padding: 12px 14px 12px 14px;
     -fx-value-color:  -fx-text-base-color;    
 }
 .noneditable {

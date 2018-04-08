@@ -30,7 +30,7 @@
 } 
 
 .maincontainer {
-    -fx-background-container: -fx-background;
+    -fx-background-container: #f5f7fb;
     
     -fx-unit-fill: -fx-text-inner-color;      
     -fx-separator-fill: -fx-box-border;
@@ -47,8 +47,8 @@
     
     -fx-info-fill: #707070;
     
-    -fx-border-unit: #e0e0e0;
-    -fx-background-unit: #fafafa;
+    -fx-border-unit: #e0e5ec;
+    -fx-background-unit: #ffffff;
 }
 
 .header {
@@ -98,8 +98,8 @@
 }
 
 .unitbase {
-    -fx-background-radius: 0, 6, 5;
-    -fx-background-insets: 0, 3, 4;
+    -fx-background-radius: 0, 3, 2;
+    -fx-background-insets: 0, 6, 7;
     -fx-background-color: transparent, -fx-border-unit, -fx-background-unit;        
     -fx-effect: dropshadow(one-pass-box, derive(-fx-border-unit, 20%), 4, 0, 0, 0);
 }
