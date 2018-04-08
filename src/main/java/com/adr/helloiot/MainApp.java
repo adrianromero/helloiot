@@ -115,6 +115,7 @@ public abstract class MainApp extends Application {
         stage = null;
         
         CompletableAsync.shutdown();
+        System.exit(0);
     }
 
     private void loadAppProperties() {
