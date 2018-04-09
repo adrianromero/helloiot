@@ -1,5 +1,5 @@
 //    HelloIoT is a dashboard creator for MQTT
-//    Copyright (C) 2017 Adrián Romero Corchado.
+//    Copyright (C) 2017-2018 Adrián Romero Corchado.
 //
 //    This file is part of HelloIot.
 //
@@ -19,6 +19,8 @@
 package com.adr.helloiot.device;
 
 import com.adr.helloiot.TopicsManager;
+import com.adr.helloiot.device.format.MiniVar;
+import com.adr.helloiot.device.format.MiniVarString;
 import com.adr.helloiot.util.CompletableAsync;
 import java.util.concurrent.ScheduledFuture;
 
@@ -50,16 +52,16 @@ public class TreePublish extends Device {
     public void destroy() {
     }
 
-    public final void sendMessage(String branch, byte[] message) {
+    public final void sendMessage(String branch, MiniVar message) {
         cancelTimer();
-        manager.publish(getTopicPublish() + "/" + branch, getQos(), message, isRetained());
+        manager.publish(getTopicPublish() + "/" + branch, getQos(), getFormat().devalue(message), isRetained());
     }
 
     public final void sendMessage(String branch, String message) {
         sendMessage(branch, getFormat().parse(message));
     }
 
-    public void sendMessage(String branch, byte[] message, long delay) {
+    public void sendMessage(String branch, MiniVar message, long delay) {
         synchronized (sflock) {
             cancelTimer();
             sf = CompletableAsync.scheduleTask(delay, () -> {
@@ -73,11 +75,11 @@ public class TreePublish extends Device {
     }
 
     public final void sendMessage(String branch) {
-        sendMessage(branch, new byte[0]);
+        sendMessage(branch, MiniVarString.NULL);
     }
 
     public void sendMessage(String branch, long delay) {
-        sendMessage(branch, new byte[0], delay);
+        sendMessage(branch, MiniVarString.NULL, delay);
     }
 
     public void cancelTimer() {

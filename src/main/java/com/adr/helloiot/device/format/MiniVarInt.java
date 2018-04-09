@@ -51,6 +51,11 @@ public class MiniVarInt implements MiniVar {
     public boolean asBoolean() {
         throw new UnsupportedOperationException("Not supported.");
     }
+
+    @Override
+    public byte[] asBytes() {
+        throw new UnsupportedOperationException("Not supported.");
+    }
     
     @Override
     public boolean isEmpty() {

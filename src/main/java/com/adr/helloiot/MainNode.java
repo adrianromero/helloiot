@@ -303,7 +303,7 @@ public final class MainNode {
     }
        
     private void updatePageStatus(byte[] status) {
-        gotoPage(StringFormatIdentity.INSTANCE.format(status));
+        gotoPage(StringFormatIdentity.INSTANCE.format(StringFormatIdentity.INSTANCE.value(status)));
     }
     
     private void gotoPage(String status) {

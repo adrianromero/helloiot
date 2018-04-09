@@ -1,5 +1,5 @@
 //    HelloIoT is a dashboard creator for MQTT
-//    Copyright (C) 2017 Adrián Romero Corchado.
+//    Copyright (C) 2017-2018 Adrián Romero Corchado.
 //
 //    This file is part of HelloIot.
 //
@@ -25,7 +25,6 @@ import com.adr.helloiot.device.format.MiniVar;
  * @author adrian
  */
 public interface DeviceSend {
-    public void sendStatus(byte[] event);
     public void sendStatus(MiniVar status);
     public void sendStatus(String event);
 }

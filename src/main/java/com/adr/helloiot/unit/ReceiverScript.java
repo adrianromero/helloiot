@@ -1,5 +1,5 @@
 //    HelloIoT is a dashboard creator for MQTT
-//    Copyright (C) 2017 Adrián Romero Corchado.
+//    Copyright (C) 2017-2018 Adrián Romero Corchado.
 //
 //    This file is part of HelloIot.
 //
@@ -48,7 +48,7 @@ public class ReceiverScript extends ReceiverBase {
         } else {
             String topic = message.getTopic();
             byte[] status = message.getMessage();
-            if (condition == null || (this.getDevice().getFormat().format(status).matches(condition))) {
+            if (condition == null || (this.getDevice().getFormat().format(this.getDevice().getFormat().value(status)).matches(condition))) {
                 Map<String, Object> mergedParams = new HashMap<>();
                 mergedParams.putAll(params);
                 mergedParams.put("_device", getDevice());

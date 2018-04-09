@@ -27,6 +27,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.layout.Priority;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
 /**
@@ -52,14 +53,15 @@ public class SliderSimple extends Tile {
         level.setAlignment(Pos.CENTER_RIGHT);
         level.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
         level.getStyleClass().add("levelbase");
-        VBox.setVgrow(level, Priority.SOMETIMES);
         
         slider = new Slider();
         slider.setFocusTraversable(false);
-        slider.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
         slider.setPrefWidth(20.0);
+        StackPane.setAlignment(slider, Pos.BOTTOM_CENTER);        
         
-        vboxroot.getChildren().addAll(level, slider);
+        StackPane stack = new StackPane(slider);
+        VBox.setVgrow(stack, Priority.SOMETIMES);
+        vboxroot.getChildren().addAll(level, stack);
         
         initialize();
         
@@ -77,7 +79,7 @@ public class SliderSimple extends Tile {
 
     private void updateStatus(byte[] status) {
         levelupdating = true;
-        level.setText(device.getFormat().format(status));
+        level.setText(device.getFormat().format(device.getFormat().value(status)));
         slider.setValue(device.getFormat().value(status).asDouble());
         levelupdating = false;
     }

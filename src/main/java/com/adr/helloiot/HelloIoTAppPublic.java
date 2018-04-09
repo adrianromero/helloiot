@@ -1,5 +1,5 @@
 //    HelloIoT is a dashboard creator for MQTT
-//    Copyright (C) 2017 Adrián Romero Corchado.
+//    Copyright (C) 2017-2018 Adrián Romero Corchado.
 //
 //    This file is part of HelloIot.
 //
@@ -22,6 +22,7 @@ import com.adr.helloiot.device.Device;
 import com.adr.helloiot.device.DeviceSimple;
 import com.adr.helloiot.device.DeviceSwitch;
 import com.adr.helloiot.device.ListDevice;
+import com.adr.helloiot.device.format.MiniVar;
 
 /**
  *
@@ -43,7 +44,7 @@ public class HelloIoTAppPublic {
         return app.getDevice(id);
     }
 
-    public byte[] readSYSStatus(String branch) {
+    public MiniVar readSYSStatus(String branch) {
         return app.readSYSStatus(branch);
     }
 
@@ -55,7 +56,7 @@ public class HelloIoTAppPublic {
         app.sendSYSStatus(branch, message);
     }
 
-    public void sendSYSStatus(String branch, byte[] message) {
+    public void sendSYSStatus(String branch, MiniVar message) {
         app.sendSYSStatus(branch, message);
     }
 
@@ -63,7 +64,7 @@ public class HelloIoTAppPublic {
         app.sendSYSEvent(branch, message);
     }
 
-    public final void sendSYSEvent(String branch, byte[] message) {
+    public final void sendSYSEvent(String branch, MiniVar message) {
         app.sendSYSEvent(branch, message);
     }
 
@@ -71,7 +72,7 @@ public class HelloIoTAppPublic {
         app.sendSYSEvent(branch, message, delay);
     }
 
-    public void sendSYSEvent(String branch, byte[] message, long delay) {
+    public void sendSYSEvent(String branch, MiniVar message, long delay) {
         app.sendSYSEvent(branch, message, delay);
     }
 

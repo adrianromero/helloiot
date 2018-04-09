@@ -124,8 +124,9 @@ public class ManagerLocal implements ManagerProtocol {
         if (mapClient == null) {
             mapClient = new ConcurrentHashMap<>();
             
-            mapClient.put(topicapp + "/unitpage", StringFormatIdentity.INSTANCE.parse("_first"));
-            group.distributeMessage(topicapp + "/unitpage", StringFormatIdentity.INSTANCE.parse("_first"));
+            byte[] messagefirst = StringFormatIdentity.INSTANCE.devalue(StringFormatIdentity.INSTANCE.parse("_first"));
+            mapClient.put(topicapp + "/unitpage", messagefirst);
+            group.distributeMessage(topicapp + "/unitpage", messagefirst);
         }
     }
     

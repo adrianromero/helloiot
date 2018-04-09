@@ -1,5 +1,5 @@
 //    HelloIoT is a dashboard creator for MQTT
-//    Copyright (C) 2017 Adrián Romero Corchado.
+//    Copyright (C) 2017-2018 Adrián Romero Corchado.
 //
 //    This file is part of HelloIot.
 //
@@ -39,7 +39,8 @@ public class StringFormatDecimal extends StringFormatPath {
     public static StringFormat INTEGER = new StringFormatDecimal();
     public static StringFormat DOUBLE = new StringFormatDecimal(null, "0.00");
     public static StringFormat DECIMAL = new StringFormatDecimal(null, "0.000");
-    public static StringFormat DEGREES = new StringFormatDecimal(null, "0.0°");
+    public static StringFormat DEGREES = new StringFormatDecimal(null, "0.0°C");
+    public static StringFormat PERCENTAGE = new StringFormatDecimal(null, "0'%'");
 
     private NumberFormat format;
     private String pattern;
@@ -65,6 +66,8 @@ public class StringFormatDecimal extends StringFormatPath {
             return "DOUBLE";
         } else if ("0.000".equals(pattern)) {
             return "DECIMAL";
+         } else if ("0'%'".equals(pattern)) {
+            return "PERCENTAGE";
         } else if ("0.0°".equals(pattern)) {
             return "DEGREES";
         } else {
@@ -96,19 +99,18 @@ public class StringFormatDecimal extends StringFormatPath {
     }
 
     @Override
-    public String format(byte[] value) {
-        MiniVar v = value(value);
-        if (v.isEmpty()) {
+    public String format(MiniVar value) {
+        if (value.isEmpty()) {
             return "";
         } else {
-            return format.format(v.asDouble());
+            return format.format(value.asDouble());
         }
     }
     
     @Override
-    public byte[] parse(String formattedvalue) {
+    public MiniVar parse(String formattedvalue) {
         if (formattedvalue == null || formattedvalue.isEmpty()) {
-            return devalue(MiniVarDouble.NULL);
+            return MiniVarDouble.NULL;
         } else {
             double d;
             try {
@@ -121,7 +123,7 @@ public class StringFormatDecimal extends StringFormatPath {
                     throw new IllegalArgumentException(ex2);
                 }
             }
-            return devalue(new MiniVarDouble(d));
+            return new MiniVarDouble(d);
         }
     }
     

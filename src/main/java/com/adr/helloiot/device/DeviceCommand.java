@@ -19,6 +19,7 @@
 package com.adr.helloiot.device;
 
 import com.adr.helloiot.TopicsManager;
+import com.adr.helloiot.device.format.MiniVar;
 import com.adr.helloiot.graphic.IconStatus;
 import com.adr.helloiot.graphic.IconText;
 
@@ -49,22 +50,22 @@ public class DeviceCommand extends DeviceSimple {
     }
     
     @Override 
-    public byte[] nextStatus() {
+    public MiniVar nextStatus() {
         return getFormat().parse(value);
     }
     
     @Override
-    public byte[] rollNextStatus() {
+    public MiniVar rollNextStatus() {
         return getFormat().parse(value);
     }
     
     @Override
-    public byte[] prevStatus() {
+    public MiniVar prevStatus() {
         return getFormat().parse(value);
     }
     
     @Override
-    public byte[] rollPrevStatus() {
+    public MiniVar rollPrevStatus() {
         return getFormat().parse(value);
     }
     

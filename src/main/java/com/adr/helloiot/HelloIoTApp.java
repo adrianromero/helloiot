@@ -385,7 +385,7 @@ public class HelloIoTApp {
         return null;
     }
 
-    public byte[] readSYSStatus(String branch) {
+    public MiniVar readSYSStatus(String branch) {
         return ((TreePublishSubscribe) getDevice(SYS_VALUE_ID)).readMessage(branch);
     }
 
@@ -397,7 +397,7 @@ public class HelloIoTApp {
         ((TreePublishSubscribe) getDevice(SYS_VALUE_ID)).sendMessage(branch, message);
     }
 
-    public void sendSYSStatus(String branch, byte[] message) {
+    public void sendSYSStatus(String branch, MiniVar message) {
         ((TreePublishSubscribe) getDevice(SYS_VALUE_ID)).sendMessage(branch, message);
     }
 
@@ -405,7 +405,7 @@ public class HelloIoTApp {
         ((TreePublish) getDevice(SYS_EVENT_ID)).sendMessage(branch, message);
     }
 
-    public final void sendSYSEvent(String branch, byte[] message) {
+    public final void sendSYSEvent(String branch, MiniVar message) {
         ((TreePublish) getDevice(SYS_EVENT_ID)).sendMessage(branch, message);
     }
 
@@ -413,7 +413,7 @@ public class HelloIoTApp {
         ((TreePublish) getDevice(SYS_EVENT_ID)).sendMessage(branch, message, delay);
     }
 
-    public void sendSYSEvent(String branch, byte[] message, long delay) {
+    public void sendSYSEvent(String branch, MiniVar message, long delay) {
         ((TreePublish) getDevice(SYS_EVENT_ID)).sendMessage(branch, message, delay);
     }
 
