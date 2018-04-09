@@ -152,23 +152,27 @@
 }
 
 
-/*.default-color0.chart-line-symbol {
-    -fx-background-color: transparent;
-    -fx-shape: "";
+/* Chart styles */
+
+.chart {
+    -fx-padding: 0;
 }
-.default-color1.chart-line-symbol {
+
+.chart-plot-background {
     -fx-background-color: transparent;
-    -fx-shape: "";
 }
-.default-color2.chart-line-symbol {
+
+.chart-content {
     -fx-background-color: transparent;
-    -fx-shape: "";
+    -fx-padding: 0;
 }
-.default-color3.chart-line-symbol {
-    -fx-background-color: transparent;
-    -fx-shape: "";
+
+.axis {
+    -fx-border-color: transparent;
 }
-.default-color4.chart-line-symbol {
-    -fx-background-color: transparent;
-    -fx-shape: "";
-}*/
+
+.default-color0.chart-series-area-line {
+}
+
+.default-color0.chart-series-area-fill { 
+}
