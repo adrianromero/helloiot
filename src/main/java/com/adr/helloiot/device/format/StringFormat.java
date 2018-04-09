@@ -52,6 +52,8 @@ public abstract class StringFormat {
             return StringFormatDecimal.DOUBLE;
         } else if ("DECIMAL".equals(value)) {
             return StringFormatDecimal.DECIMAL;
+        } else if ("PERCENTAGE".equals(value)) {
+            return StringFormatDecimal.PERCENTAGE;
         } else if ("DEGREES".equals(value)) {
             return StringFormatDecimal.DEGREES;
         } else if (value.startsWith("DECIMAL/")) {

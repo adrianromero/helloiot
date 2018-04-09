@@ -39,7 +39,8 @@ public class StringFormatDecimal extends StringFormatPath {
     public static StringFormat INTEGER = new StringFormatDecimal();
     public static StringFormat DOUBLE = new StringFormatDecimal(null, "0.00");
     public static StringFormat DECIMAL = new StringFormatDecimal(null, "0.000");
-    public static StringFormat DEGREES = new StringFormatDecimal(null, "0.0°");
+    public static StringFormat DEGREES = new StringFormatDecimal(null, "0.0°C");
+    public static StringFormat PERCENTAGE = new StringFormatDecimal(null, "0'%'");
 
     private NumberFormat format;
     private String pattern;
@@ -65,6 +66,8 @@ public class StringFormatDecimal extends StringFormatPath {
             return "DOUBLE";
         } else if ("0.000".equals(pattern)) {
             return "DECIMAL";
+         } else if ("0'%'".equals(pattern)) {
+            return "PERCENTAGE";
         } else if ("0.0°".equals(pattern)) {
             return "DEGREES";
         } else {
