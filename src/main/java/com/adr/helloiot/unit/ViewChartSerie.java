@@ -1,5 +1,5 @@
 //    HelloIoT is a dashboard creator for MQTT
-//    Copyright (C) 2017 Adrián Romero Corchado.
+//    Copyright (C) 2017-2018 Adrián Romero Corchado.
 //
 //    This file is part of HelloIot.
 //
@@ -20,11 +20,14 @@
 package com.adr.helloiot.unit;
 
 import com.adr.helloiot.device.DeviceNumber;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.chart.XYChart;
+import javafx.scene.chart.AreaChart;
+
 
 /**
  *
@@ -32,12 +35,12 @@ import javafx.scene.chart.XYChart;
  */
 public class ViewChartSerie {
     
-    private final static int SIZE = 60;
+    public final static int SIZE = 30;
 
     private String label = null;
     private DeviceNumber device = null;
     private final Object messageHandler = Units.messageHandler(this::updateStatus);      
-    private final ObservableList<XYChart.Data<Number, Number>> data = FXCollections.observableArrayList();
+    private final ObservableList<AreaChart.Data<Number, Number>> data = FXCollections.observableArrayList();
     
     private double current = 0.0;
     private double last = 0.0;
@@ -65,15 +68,15 @@ public class ViewChartSerie {
     
     public void construct() {
         device.subscribeStatus(messageHandler);
-        updateStatus(null);
+        // Do not update status all values come from messages
     }
 
     public void destroy() {
         device.unsubscribeStatus(messageHandler);
     }
     
-    public XYChart.Series<Number, Number> createSerie() {
-        return new XYChart.Series<>(label, data);
+    public AreaChart.Series<Number, Number> createSerie() {
+        return new AreaChart.Series<>(label, data);
     }
 
     private void updateStatus(byte[] status) {
@@ -83,7 +86,10 @@ public class ViewChartSerie {
         }
         
         currentlock.lock();
-        try {            
+        try {
+            if (device.getFormat().value(status).isEmpty()) {
+                return; // ignore empty values instead of defaulting to zero
+            }
             last = device.getFormat().value(status).asDouble();
             if (currentcount == 0.0) {
                 currentcount = 1.0;
@@ -104,16 +110,20 @@ public class ViewChartSerie {
             Number d = currentcount == 0.0 ? last : current;
             currentcount = 0.0;
             current = 0.0;
-
-            if (data.size() < SIZE) {
-                data.add(new XYChart.Data<>(SIZE - data.size(), 0.0));
+            
+            // Prepare the array Construct a new 
+            if (data.isEmpty()) {
+                List<AreaChart.Data<Number, Number>> initial = new ArrayList<>();
+                for (int i = 0; i < SIZE + 1; i++) {
+                    initial.add(new AreaChart.Data<>(i, d));
+                }
+                data.addAll(initial);
+            } else {
+                for (int i = 0; i < SIZE; i++) {
+                    data.get(i).setYValue(data.get(i + 1).getYValue());
+                }
+                data.get(SIZE).setYValue(d);
             }
-
-            for (XYChart.Data<Number, Number> xydata : data) {
-                Number aux = xydata.getYValue();
-                xydata.setYValue(d);
-                d = aux;
-            }            
         } finally {
             currentlock.unlock();
         }

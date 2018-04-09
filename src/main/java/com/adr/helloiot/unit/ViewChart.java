@@ -1,5 +1,5 @@
 //    HelloIoT is a dashboard creator for MQTT
-//    Copyright (C) 2017 Adrián Romero Corchado.
+//    Copyright (C) 2017-2018 Adrián Romero Corchado.
 //
 //    This file is part of HelloIot.
 //
@@ -27,9 +27,10 @@ import javafx.animation.Timeline;
 import javafx.beans.DefaultProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.geometry.Insets;
 import javafx.geometry.Side;
 import javafx.scene.Node;
-import javafx.scene.chart.LineChart;
+import javafx.scene.chart.AreaChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.layout.StackPane;
@@ -43,7 +44,7 @@ import javafx.util.Duration;
 public class ViewChart extends Tile {
 
     private StackPane chartcontainer; 
-    private Duration duration = Duration.seconds(1.0);
+    private Duration duration = Duration.seconds(5.0);
     private boolean legendVisible = true;
     private Side legendSide  = Side.RIGHT;
     private Timeline timeline;
@@ -66,32 +67,41 @@ public class ViewChart extends Tile {
         List<XYChart.Series<Number, Number>> chartdata = new ArrayList<>();
         for (ViewChartSerie serie: series) {
             serie.construct();
-            min = Math.min(min, serie.getDevice().getLevelMin());
-            max = Math.max(max, serie.getDevice().getLevelMax());
+            min = Math.min(min, serie.getDevice().getLevelMin() - 5.0);
+            max = Math.max(max, serie.getDevice().getLevelMax() + 5.0);
             inc = Math.max(inc, serie.getDevice().getIncrement());
             chartdata.add(serie.createSerie());
         }
         ObservableList<XYChart.Series<Number, Number>> areaChartData = FXCollections.observableArrayList(chartdata);       
         
-        LineChart chart;
+        AreaChart chart;
         NumberAxis xAxis;
         NumberAxis yAxis;
     
-        xAxis = new NumberAxis(1.0, 60.0, 0.0);
-        xAxis.setTickMarkVisible(false);
+        xAxis = new NumberAxis(1.0, ViewChartSerie.SIZE, 0.0);
         xAxis.setMinorTickVisible(false);
+        xAxis.setTickMarkVisible(false);     
         xAxis.setTickLabelsVisible(false);
         yAxis = new NumberAxis(min, max, inc * 10.0);
         yAxis.setSide(Side.RIGHT);
         yAxis.setMinorTickVisible(false);        
+        yAxis.setTickMarkVisible(false);
+        yAxis.setTickLabelsVisible(false);
         
-        chart = new LineChart<>(xAxis, yAxis, areaChartData);
+        chart = new AreaChart<>(xAxis, yAxis, areaChartData);
         chart.setLegendVisible(legendVisible);
         chart.setLegendSide(legendSide);
-        chart.setAnimated(false);
+        chart.setAnimated(true);
         chart.setCreateSymbols(false);
+        chart.setVerticalGridLinesVisible(false);
+        chart.setHorizontalGridLinesVisible(false);
+        chart.setMinSize(40.0, 240.0);
+        chart.setPrefSize(40.0, 240.0);
+        chart.setPadding(Insets.EMPTY);
 
-        chartcontainer.getChildren().add(chart); 
+        StackPane stack = new StackPane(chart);
+        stack.setPadding(new Insets(0.0, 0.0, 0.0, 3.0));
+        chartcontainer.getChildren().add(stack); 
         
         timeline = new Timeline(new KeyFrame(duration, ae -> {
             for (ViewChartSerie serie: series) {
