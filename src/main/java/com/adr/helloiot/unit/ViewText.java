@@ -23,7 +23,6 @@ import com.adr.helloiot.HelloIoTAppPublic;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
-import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
 /**
@@ -46,7 +45,6 @@ public class ViewText extends Tile {
         level.setAlignment(Pos.CENTER_RIGHT);
         level.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
         level.getStyleClass().add("levelbase");
-        VBox.setVgrow(level, Priority.SOMETIMES);   
         
         vboxroot.getChildren().add(level);
         

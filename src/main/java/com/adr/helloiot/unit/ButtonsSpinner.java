@@ -29,6 +29,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import jidefx.utils.AutoRepeatButtonUtils;
 
@@ -55,29 +56,31 @@ public class ButtonsSpinner extends Tile {
         level.setAlignment(Pos.CENTER_RIGHT);
         level.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
         level.getStyleClass().add("levelbase");
-        VBox.setVgrow(level, Priority.SOMETIMES);    
+  
         
         HBox hbox = new HBox();
         hbox.setSpacing(6.0);
-        hbox.setAlignment(Pos.TOP_CENTER);
+        hbox.setAlignment(Pos.BOTTOM_CENTER);
+//        StackPane.setAlignment(hbox, Pos.BOTTOM_CENTER);
         
         godown = new Button();
         godown.setFocusTraversable(false);
-        godown.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
         godown.setMnemonicParsing(false);
         godown.getStyleClass().add("buttonbase");
         godown.setOnAction(this::onGoDown);
         
         goup = new Button();
         goup.setFocusTraversable(false);
-        goup.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
         goup.setMnemonicParsing(false);
         goup.getStyleClass().add("buttonbase");
         goup.setOnAction(this::onGoUp);
         
         hbox.getChildren().addAll(godown, goup);
         
-        vboxroot.getChildren().addAll(level, hbox);
+        StackPane stack = new StackPane(hbox);     
+        VBox.setVgrow(stack, Priority.SOMETIMES);
+        
+        vboxroot.getChildren().addAll(level, stack);
         
         initialize();
         return vboxroot;
