@@ -112,8 +112,13 @@ public abstract class ButtonBase extends Tile {
             doRun(event);
         } else {
             SecurityKeyboard sec = new SecurityKeyboard();
-            DialogView dialog = new DialogView();
-            dialog.setTitle(getLabel());
+            DialogView dialog = new DialogView();           
+            String title = getLabel();
+            if (Strings.isNullOrEmpty(title)) {
+                title = getText();
+            }
+            String titletodisplay = title;
+            dialog.setTitle(titletodisplay);
             dialog.setContent(sec.getNode());
             dialog.setActionOK((ActionEvent evok) -> {
                 if (CryptUtils.validatePassword(sec.getPassword(), app.loadSYSStatus(securitykey))) {
@@ -121,7 +126,7 @@ public abstract class ButtonBase extends Tile {
                 } else {
                     evok.consume();
                     sec.setPassword("");
-                    MessageUtils.showWarning(MessageUtils.getRoot(this), getLabel(), resources.getString("message.wrongpassword"));
+                    MessageUtils.showWarning(MessageUtils.getRoot(this), titletodisplay, resources.getString("message.wrongpassword"));
                 }
             });
             dialog.addButtons(dialog.createCancelButton(), dialog.createOKButton());
