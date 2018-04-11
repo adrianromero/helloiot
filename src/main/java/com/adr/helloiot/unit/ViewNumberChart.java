@@ -86,7 +86,7 @@ public class ViewNumberChart extends Tile {
         chart.setAnimated(true);
         chart.setCreateSymbols(false);
         chart.setVerticalGridLinesVisible(false);
-//        chart.setHorizontalGridLinesVisible(false);
+        chart.setHorizontalGridLinesVisible(false);
         chart.setMinSize(40.0, 50.0);
         chart.setPrefSize(40.0, 50.0);
         chart.setPadding(Insets.EMPTY);
