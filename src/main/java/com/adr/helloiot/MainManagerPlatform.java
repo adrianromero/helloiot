@@ -70,7 +70,7 @@ public class MainManagerPlatform implements MainManager {
         config.put("mqtt.defaultqos", new MiniVarInt(Integer.parseInt(configprops.getProperty("mqtt.defaultqos", "1"))));
         config.put("mqtt.version", new MiniVarInt(Integer.parseInt(configprops.getProperty("mqtt.version", Integer.toString(MqttConnectOptions.MQTT_VERSION_DEFAULT))))); // MQTT_VERSION_DEFAULT = 0; MQTT_VERSION_3_1 = 3; MQTT_VERSION_3_1_1 = 4;
         config.put("mqtt.cleansession", new MiniVarBoolean(Boolean.parseBoolean(configprops.getProperty("mqtt.cleansession", Boolean.toString(MqttConnectOptions.CLEAN_SESSION_DEFAULT)))));
-        config.put("client.broker", new MiniVarString(configprops.getProperty("mqtt.cleansession", "0")));
+        config.put("client.broker", new MiniVarString(configprops.getProperty("client.broker", "0")));
 
         config.put("tradfri.host", new MiniVarString(configprops.getProperty("tradfri.host", "")));
         config.put("tradfri.psk", new MiniVarString(namedParams.getOrDefault("tradfri.identity", "")));
