@@ -143,6 +143,8 @@ public class ManagerMQTT implements MqttCallback, ManagerProtocol {
             if (mqttClient.isConnected()) {
                 try {
                     mqttClient.setCallback(null);
+                    String[] listtopics = worktopics.toArray(new String[worktopics.size()]);
+                    mqttClient.unsubscribe(listtopics);
                     mqttClient.disconnect();
                     mqttClient.close();
                 } catch (MqttException ex) {
