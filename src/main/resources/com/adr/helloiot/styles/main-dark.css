@@ -17,17 +17,6 @@
     You should have received a copy of the GNU General Public License
     along with HelloIot.  If not, see <http://www.gnu.org/licenses/>.
 */
-@font-face {
-    src: url('Roboto-Bold.ttf');
-}
-
-@font-face {
-    src: url('Roboto-Regular.ttf');
-}
-
-@font-face {
-    src: url('Roboto-Light.ttf');
-} 
 
 .root {
     /* A light grey that is the base color for objects.  Instead of using
@@ -75,7 +64,7 @@
 }
 
 .headertitle {
-    -fx-font-family: 'ROBOTO BOLD';
+    -fx-font-family: 'Source Sans Pro Bold';
     -fx-font-size: 18px;
     -fx-text-fill: -fx-text-fill-title;
     -fx-effect: dropshadow(one-pass-box, -fx-effect-title, 1.0, 0.0, 1.0, 1.0);        
@@ -103,7 +92,7 @@
 }
 
 .currenttime {
-    -fx-font-family: 'ROBOTO LIGHT';
+    -fx-font-family: 'Source Sans Pro Regular';
     -fx-font-size: 16px;
     -fx-text-fill: -fx-info-fill;   
 }
@@ -123,7 +112,7 @@
 }
 
 .labelsection {
-    -fx-font-family: 'ROBOTO BOLD';
+    -fx-font-family: 'Source Sans Pro Bold';
     -fx-font-size: 16px;
     -fx-text-fill: -fx-info-fill;
     -fx-background-insets: 0, 0 5 4 5, 0 5 5 5;
@@ -131,24 +120,24 @@
 }
 
 .fieldlabel {
-    -fx-font-family: 'ROBOTO LIGHT';
+    -fx-font-family: 'Source Sans Pro Regular';
     -fx-font-size: 16px;
     -fx-text-fill: -fx-info-fill;       
 }
 
 .fieldtextbox {
-    -fx-font-family: 'ROBOTO BOLD';
+    -fx-font-family: 'Source Sans Pro Bold';
     -fx-font-size: 14px;   
 }
 
 .noneditable {
-    -fx-font-family: 'ROBOTO BOLD';
+    -fx-font-family: 'Source Sans Pro Bold';
     -fx-text-fill: -fx-unit-fill;
     -fx-font-size: 14px;    
 }
 
 .labelbase {
-    -fx-font-family: 'ROBOTO LIGHT';
+    -fx-font-family: 'Source Sans Pro Regular';
     -fx-font-size: 16px;   
     -fx-text-fill: -fx-info-fill;   
 }
@@ -160,24 +149,24 @@
 
 .footerbase .styledtext {
     -fx-fill: -fx-info-fill;
-    -fx-font-family: 'ROBOTO REGULAR';
+    -fx-font-family: 'Source Sans Pro Regular';
     -fx-font-size: 12px;       
 }
 
 .levelbase {
-    -fx-font-family: 'ROBOTO BOLD';
+    -fx-font-family: 'Source Sans Pro Bold';
     -fx-font-size: 36px;
 }
 
 .emptypanel {
     -fx-font-size: 48px;
-    -fx-font-family: 'ROBOTO BOLD';
+    -fx-font-family: 'Source Sans Pro Bold';
     -fx-text-fill: -fx-info-fill;
     -fx-effect: dropshadow(one-pass-box, derive(-fx-info-fill, -20%), 1.0, 0.0, 1.0, 1.0);     
 }
 
 .keypadtext {
-    -fx-font-family: 'ROBOTO BOLD';
+    -fx-font-family: 'Source Sans Pro Bold';
     -fx-font-size: 42px;     
     -fx-stroke: white;
     -fx-stroke-width: 1px;
@@ -226,7 +215,7 @@
 }
 
 .buttonbase {
-    -fx-font-family: 'ROBOTO BOLD';
+    -fx-font-family: 'Source Sans Pro Bold';
     -fx-font-size: 18px;
     -fx-text-fill: -fx-text-fill-title;
     -fx-background-radius: 10;
@@ -261,7 +250,7 @@
     -fx-padding: 5 10 5 10;
 }
 .dialog-buttonlist .button {
-    -fx-font-family: 'ROBOTO LIGHT';
+    -fx-font-family: 'Source Sans Pro Regular';
     -fx-font-size: 18px;
     -fx-text-fill: -fx-text-fill-title;
     -fx-background-radius: 20;
@@ -279,7 +268,7 @@
     -fx-background-color: -fx-border-fill, derive(-fx-selected-fill, 40%);         
 }
 .dialog-label {
-    -fx-font-family: 'ROBOTO LIGHT';
+    -fx-font-family: 'Source Sans Pro Regular';
     -fx-text-fill: -fx-info-fill;
     -fx-font-size: 20px;    
 }

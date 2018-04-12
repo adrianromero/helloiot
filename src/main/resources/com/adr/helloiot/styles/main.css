@@ -17,17 +17,6 @@
     You should have received a copy of the GNU General Public License
     along with HelloIot.  If not, see <http://www.gnu.org/licenses/>.
 */
-@font-face {
-    src: url('Roboto-Bold.ttf');
-}
-
-@font-face {
-    src: url('Roboto-Regular.ttf');
-}
-
-@font-face {
-    src: url('Roboto-Light.ttf');
-} 
 
 .maincontainer {
     -fx-background-container: #f5f7fb;
@@ -40,9 +29,16 @@
     
     -fx-border-fill: #909090;
 
-    -fx-button-fill: #f2f2f2;
-    -fx-hover-fill:  derive(-fx-button-fill, -12%); /*#d0d0d0; */
-    -fx-armed-fill: derive(-fx-button-fill, -30%);/*#a4a4a4; */
+    -fx-canvas-fill: #e8ebee;
+    
+    -fx-button-fill: #007BFF;
+    -fx-buttonaction-fill: derive(-fx-button-fill, -20%);
+    -fx-buttonarmed-fill: derive(-fx-button-fill, 60%);
+    
+    -fx-button2-fill: #6c757d;
+    -fx-buttonaction2-fill: derive(-fx-button2-fill, -20%);
+    -fx-buttonarmed2-fill: derive(-fx-button2-fill, 60%);
+     
     -fx-selected-fill: #b9f2fa;
     
     -fx-info-fill: #707070;
@@ -57,35 +53,53 @@
 }
 
 .headertitle {
-    -fx-font-family: 'ROBOTO BOLD';
+    -fx-font-family: 'Source Sans Pro Bold';
     -fx-font-size: 18px;
     -fx-text-fill: -fx-text-fill-title;
     -fx-effect: dropshadow(one-pass-box, -fx-effect-title, 1.0, 0.0, 1.0, 1.0);        
 }
 
+/* Header button */
+
 .headerbutton {
-    -fx-background-color:  -fx-border-fill, -fx-button-fill;      
-    -fx-background-insets: 0, 1;
-    -fx-background-radius: 16px, 15px;
-    -fx-text-fill: -fx-text-fill-title;    
+    -fx-background-color: transparent, transparent;
+    -fx-background-insets: 0, 2;
+    -fx-background-radius: 0, 0;    
+    -fx-text-fill: white;    
     -fx-alignment: center;
     -fx-padding: 8px 12px 8px 12px; 
 }
-
-.headerbutton:armed {
-    -fx-background-color: -fx-border-fill,  -fx-armed-fill;             
+.headerbutton .icon-fill {
+    -fx-fill: -fx-button2-fill;
 }
+.headerbutton:armed {
+    -fx-background-color: -fx-buttonarmed2-fill, -fx-background-title;
+}
+.headerbutton:armed .icon-fill {
+    -fx-fill: -fx-buttonarmed2-fill;
+}
+
+/* Menu button */
 
 .menubutton {
-    -fx-background-color:  transparent;
+    -fx-background-insets: 0, 4;
+    -fx-background-radius: 2, 0;    
+    -fx-background-color: transparent, transparent;
+    -fx-font-family: 'Source Sans Pro Regular';
+    -fx-font-size: 18px;
 }
-
+.menubutton .icon-fill {
+    -fx-fill: black;
+}
 .menubutton:armed  {
-    -fx-background-color:  -fx-armed-fill;       
+    -fx-background-color:  -fx-buttonarmed-fill, -fx-buttonaction-fill;       
+}
+.menubutton:armed .icon-fill {
+    -fx-fill: white;
 }
 
 .currenttime {
-    -fx-font-family: 'ROBOTO LIGHT';
+    -fx-font-family: 'Source Sans Pro Regular';
     -fx-font-size: 16px;
     -fx-text-fill: -fx-info-fill;   
 }
@@ -105,7 +119,7 @@
 }
 
 .labelsection {
-    -fx-font-family: 'ROBOTO BOLD';
+    -fx-font-family: 'Source Sans Pro Bold';
     -fx-font-size: 16px;
     -fx-text-fill: -fx-info-fill;
     -fx-background-insets: 0, 0 5 4 0, 0 5 5 0;
@@ -113,24 +127,24 @@
 }
 
 .fieldlabel {
-    -fx-font-family: 'ROBOTO LIGHT';
+    -fx-font-family: 'Source Sans Pro Regular';
     -fx-font-size: 16px;
     -fx-text-fill: -fx-info-fill;       
 }
 
 .fieldtextbox {
-    -fx-font-family: 'ROBOTO BOLD';
-    -fx-font-size: 14px;   
+    -fx-font-family: 'Source Sans Pro Black';
+    -fx-font-size: 16px;   
 }
 
 .noneditable {
-    -fx-font-family: 'ROBOTO BOLD';
+    -fx-font-family: 'Source Sans Pro Black';
     -fx-text-fill: -fx-unit-fill;
-    -fx-font-size: 14px;    
+    -fx-font-size: 16px;    
 }
 
 .labelbase {
-    -fx-font-family: 'ROBOTO LIGHT';
+    -fx-font-family: 'Source Sans Pro Regular';
     -fx-font-size: 16px;   
     -fx-text-fill: -fx-info-fill;   
 }
@@ -142,54 +156,53 @@
 
 .footerbase .styledtext {
     -fx-fill: -fx-info-fill;
-    -fx-font-family: 'ROBOTO REGULAR';
-    -fx-font-size: 12px;       
+    -fx-font-family: 'Source Sans Pro Regular';
+    -fx-font-size: 14px;       
 }
 
 .levelbase {
-    -fx-font-family: 'ROBOTO BOLD';
+    -fx-font-family: 'Source Sans Pro Black';
+    -fx-text-fill: #4b5157;
     -fx-font-size: 36px;  
 }
 
 .emptypanel {
     -fx-font-size: 48px;
-    -fx-font-family: 'ROBOTO BOLD';
+    -fx-font-family: 'Source Sans Pro Black';
     -fx-text-fill: -fx-info-fill;
     -fx-effect: dropshadow(one-pass-box, derive(-fx-info-fill, 20%), 1.0, 0.0, 1.0, 1.0);     
 }
 
 .keypadtext {
-    -fx-font-family: 'ROBOTO BOLD';
+    -fx-font-family: 'Source Sans Pro Black';
     -fx-font-size: 42px;     
-    -fx-stroke: darkgray;
-    -fx-stroke-width: 1px;
-    -fx-fill: linear-gradient(to bottom, #0000dd 0%, #000088 50%, #0000dd 100%);
+    -fx-fill: white;
 }
+
+/* Keypad Button */
 
 .keypadbutton {
     -fx-text-fill: -fx-text-fill-title;
     -fx-pref-width: 100px;
-    -fx-background-radius: 15;
-    -fx-background-color:  -fx-border-fill, -fx-button-fill;  
-    -fx-background-insets: 0, 1;
+    -fx-background-radius: 2, 0;
+    -fx-background-color:  -fx-button-fill, -fx-button-fill;  
+    -fx-background-insets: 0, 4;
     -fx-alignment: center; 
 }
 .keypadbutton:armed {
-    -fx-background-color: -fx-border-fill,  -fx-armed-fill;             
-}
-.keypadbuttonleft {
-    -fx-background-radius: 15 2 2 15;
-}
-.keypadbuttoncenter {
-    -fx-background-radius: 2;
-}
-.keypadbuttonright {
-    -fx-background-radius: 2 15 15 2;
+    -fx-background-color: -fx-buttonarmed-fill,  -fx-buttonaction-fill;             
 }
 .keypadbuttondelete {
-    -fx-background-radius: 2 2 2 2;
-    -fx-padding: 12px;    
+    -fx-background-insets: 0, 2;
+    -fx-background-color:  -fx-button2-fill, -fx-button2-fill;  
 }
+.keypadbuttondelete .icon-fill {
+    -fx-fill: white;
+}
+.keypadbuttondelete:armed {
+    -fx-background-color: -fx-buttonarmed2-fill,  -fx-buttonaction2-fill; 
+}
+
 .keypadinput {
     -fx-background-radius: 2 2 2 2;
     -fx-background-color:  -fx-border-fill, #fafafa;  
@@ -197,27 +210,36 @@
     -fx-alignment: center; 
 }
 
+/* Unit buttons */
 .unitbutton {
     -fx-text-fill: -fx-text-fill-title;    
-    -fx-background-color:  -fx-border-fill, -fx-button-fill;  
-    -fx-background-insets: 0, 1;
+    -fx-background-color:  -fx-button-fill, -fx-button-fill;  
+    -fx-background-radius: 2, 0;
+    -fx-background-insets: 0, 2;
     -fx-alignment: center;
 }
+.unitbutton .icon-fill {
+    -fx-fill: white;
+}
 .unitbutton:armed {
-    -fx-background-color: -fx-border-fill,  -fx-armed-fill;             
+    -fx-background-color: -fx-buttonarmed-fill,  -fx-buttonaction-fill;             
 }
 
+/* Button base */
 .buttonbase {
-    -fx-font-family: 'ROBOTO BOLD';
+    -fx-font-family: 'Source Sans Pro Bold';
     -fx-font-size: 18px;
-    -fx-text-fill: -fx-text-fill-title;
-    -fx-background-radius: 10;
-    -fx-background-color:  -fx-border-fill, -fx-button-fill;  
-    -fx-background-insets: 0, 1;
-    -fx-alignment: center;    
+    -fx-text-fill: white;
+    -fx-background-radius: 10, 6;
+    -fx-background-color: -fx-button-fill, -fx-button-fill; 
+    -fx-background-insets: 0, 4;
+    -fx-alignment: center;   
+}
+.buttonbase .icon-fill {
+    -fx-fill: white;
 }
 .buttonbase:armed {
-    -fx-background-color: -fx-border-fill, -fx-armed-fill;             
+   -fx-background-color:  -fx-buttonarmed-fill,  -fx-buttonaction-fill;                        
 }
 .buttonup {
 }
@@ -229,8 +251,14 @@
     -fx-background-color: -fx-background-container;  
 }
 
+.dialog-close-button .dialog-close-icon  {
+    -fx-fill: -fx-button2-fill;
+}
 .dialog-close-button:armed {
-    -fx-background-color: -fx-armed-fill;
+    -fx-background-color: -fx-buttonarmed2-fill, -fx-background-title;
+}
+.dialog-close-button:armed .dialog-close-icon  {
+    -fx-fill: -fx-buttonarmed2-fill;
 }
 .dialog-title-text {
     -fx-font-size: 14;
@@ -244,58 +272,61 @@
     -fx-padding: 5 10 5 10;
 }
 .dialog-buttonlist .button {
-    -fx-font-family: 'ROBOTO LIGHT';
+    -fx-font-family: 'Source Sans Pro Regular';
     -fx-font-size: 18px;
-    -fx-text-fill: -fx-text-fill-title;
-    -fx-background-radius: 20;
-    -fx-background-color:  -fx-border-fill, -fx-button-fill;  
-    -fx-background-insets: 0, 1;
+    -fx-text-fill: white;
+    -fx-background-radius: 20,18;
+    -fx-background-color: -fx-button2-fill, -fx-button2-fill;  
+    -fx-background-insets: 0, 2;
     -fx-alignment: center;        
 }
+.dialog-button-icon {
+    -fx-fill: white;  
+}
 .dialog-buttonlist .button:armed {
-    -fx-background-color: -fx-border-fill, -fx-armed-fill;             
+    -fx-background-color: -fx-buttonarmed2-fill, -fx-buttonaction2-fill;            
 }
 .dialog-buttonlist .button:default {
-    -fx-background-color: -fx-border-fill, -fx-selected-fill;    
+    -fx-background-color: -fx-button-fill, -fx-button-fill;   
 }
 .dialog-buttonlist .button:default:armed {
-    -fx-background-color: -fx-border-fill, derive(-fx-selected-fill, -30%);         
+    -fx-background-color: -fx-buttonarmed-fill, -fx-buttonaction-fill;   
 }
 .dialog-label {
-    -fx-font-family: 'ROBOTO LIGHT';
+    -fx-font-family: 'Source Sans Pro Regular';
     -fx-text-fill: -fx-info-fill;
     -fx-font-size: 20px;    
 }
 
 /* Slider styles */
 .slider .thumb {
-    -fx-background-color: -fx-border-fill, -fx-button-fill;
-    -fx-background-insets: 0, 1;
-    -fx-background-radius: 1.5em; /* makes sure this remains circular */
-    -fx-padding: 1.5em /*1.583333em*/;    
+    -fx-background-color: -fx-button-fill, -fx-button-fill;
+    -fx-background-insets: 0, 4;
+    -fx-background-radius: 1.2em; /* makes sure this remains circular */
+    -fx-padding: 1.2em /*1.583333em*/;    
     /*-fx-effect: dropshadow(two-pass-box , rgba(0, 0, 0, 0.1), 5, 0.0 , 0, 2);*/
 }
 .slider .thumb:pressed {
-    -fx-background-color: -fx-border-fill, -fx-armed-fill;
+    -fx-background-color: -fx-buttonarmed-fill, -fx-buttonaction-fill;
 }
 .slider .track {
-    -fx-background-color: -fx-border-fill, derive(-fx-button-fill, -10%);
-    -fx-background-insets: 0, 1;
-    -fx-background-radius: 0.25em, 0.25em, 0.166667em;  
-    -fx-padding: 1.0em;   
+    -fx-background-color: -fx-canvas-fill;
+    -fx-background-insets: 0;
+    -fx-background-radius: 2;  
+    -fx-padding: 0.5em;   
 }
 
 /* Progresss style */
 .progress-bar > .bar {
-    -fx-background-insets: 1;    
+    -fx-background-insets: 0;    
     -fx-background-radius: 2;
-    -fx-padding: 0.75em;
+    -fx-padding: 0.50em;
 }
 .progress-bar:indeterminate > .bar {
-    -fx-background-color: linear-gradient(to left, transparent, -fx-accent);
+    -fx-background-color: linear-gradient(to left, transparent, -fx-button-fill);
 }
 .progress-bar > .track {
-    -fx-background-color: -fx-border-fill,  derive(-fx-button-fill, 20%);
-    -fx-background-insets: 0, 1;    
+    -fx-background-color: -fx-canvas-fill;
+    -fx-background-insets: 0;    
     -fx-background-radius: 2;    
 }
