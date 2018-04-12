@@ -51,7 +51,8 @@ public class ViewNumberChart extends Tile {
     private NumberAxis yAxis;
 
     private DeviceNumber device = null;
-    private final Object messageHandler = Units.messageHandler(this::updateStatus);    
+    private final Object messageHandler = Units.messageHandler(this::updateStatus);
+    private Duration duration = Duration.minutes(1.0);
 
     @Override
     protected Node constructContent() {
@@ -91,11 +92,6 @@ public class ViewNumberChart extends Tile {
         chart.setPrefSize(40.0, 50.0);
         chart.setPadding(Insets.EMPTY);
         
-        timeline = new Timeline(new KeyFrame(Duration.seconds(5.0), ae -> {
-            serie.tick();
-        }));  
-        timeline.setCycleCount(Animation.INDEFINITE);
-
         StackPane stack = new StackPane(chart);
         VBox.setVgrow(stack, Priority.SOMETIMES);   
         stack.setPadding(new Insets(0.0, 0.0, 0.0, 3.0));
@@ -126,6 +122,11 @@ public class ViewNumberChart extends Tile {
         yAxis.setLowerBound(device.getLevelMin()- 5.0);
         yAxis.setUpperBound(device.getLevelMax() + 5.0);
         yAxis.setTickUnit((device.getLevelMax() - device.getLevelMin()) / 10.0);      
+        
+        timeline = new Timeline(new KeyFrame(duration.divide(ViewChartSerie.SIZE), ae -> {
+            serie.tick();
+        }));  
+        timeline.setCycleCount(Animation.INDEFINITE);        
         timeline.play();   
         // Do not update status all values come from messages
     }
@@ -135,7 +136,9 @@ public class ViewNumberChart extends Tile {
         super.destroy();
         
         timeline.stop();
+        timeline = null;
         serie.destroy();  
+        serie = null;
         areaChartData.clear();
         
         device.unsubscribeStatus(messageHandler);
@@ -150,5 +153,13 @@ public class ViewNumberChart extends Tile {
 
     public DeviceNumber getDevice() {
         return device;
+    }
+    
+    public void setDuration(Duration duration) {
+        this.duration = duration;
+    }
+    
+    public Duration getDuration() {
+        return duration;
     }
 }

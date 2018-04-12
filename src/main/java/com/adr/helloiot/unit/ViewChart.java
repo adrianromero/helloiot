@@ -44,11 +44,11 @@ import javafx.util.Duration;
 public class ViewChart extends Tile {
 
     private StackPane chartcontainer; 
-    private Duration duration = Duration.seconds(5.0);
     private boolean legendVisible = true;
     private Side legendSide  = Side.RIGHT;
     private Timeline timeline;
     private final List<ViewChartSerie> series = new ArrayList<>();
+    private Duration duration = Duration.minutes(1.0);
 
     @Override
     protected Node constructContent() {
@@ -103,13 +103,14 @@ public class ViewChart extends Tile {
         stack.setPadding(new Insets(0.0, 0.0, 0.0, 3.0));
         chartcontainer.getChildren().add(stack); 
         
-        timeline = new Timeline(new KeyFrame(duration, ae -> {
+        timeline = new Timeline(new KeyFrame(duration.divide(ViewChartSerie.SIZE), ae -> {
             for (ViewChartSerie serie: series) {
                 serie.tick();
             }                   
         }));  
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
+        // Do not update status all values come from messages
     }
 
     @Override
@@ -117,6 +118,7 @@ public class ViewChart extends Tile {
         super.destroy();
         
         timeline.stop();
+        timeline = null;
         for (ViewChartSerie serie: series) {
             serie.destroy();
         }       
@@ -150,5 +152,4 @@ public class ViewChart extends Tile {
     public void setLegendSide(Side legendSide) {
         this.legendSide = legendSide;
     }
-    
 }
