@@ -56,7 +56,6 @@ public class SliderSimple extends Tile {
         
         slider = new Slider();
         slider.setFocusTraversable(false);
-        slider.setPrefWidth(20.0);
         StackPane.setAlignment(slider, Pos.BOTTOM_CENTER);        
         
         StackPane stack = new StackPane(slider);
