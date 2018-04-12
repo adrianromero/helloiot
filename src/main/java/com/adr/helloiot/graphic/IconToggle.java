@@ -21,7 +21,6 @@ package com.adr.helloiot.graphic;
 import com.adr.fonticon.FontAwesome;
 import com.adr.fonticon.IconBuilder;
 import com.adr.fonticon.IconFont;
-import com.adr.fonticon.decorator.Shine;
 import javafx.scene.Node;
 import javafx.scene.paint.Color;
 
@@ -45,11 +44,11 @@ public class IconToggle extends IconSwitch {
 
     @Override
     protected Node buildIconOn() {
-        return IconBuilder.create(iconon, 48.0).color(Color.LIME).apply(new Shine(Color.LIME)).build();
+        return IconBuilder.create(iconon, 48.0).color(Color.LIME).build();
     }
 
     @Override
     protected Node buildIconOff() {
-        return IconBuilder.create(iconoff, 48.0).color(Color.DARKGREY).apply(new Shine(Color.DARKGREY)).build();
+        return IconBuilder.create(iconoff, 48.0).color(Color.DARKGREY).build();
     }
 }

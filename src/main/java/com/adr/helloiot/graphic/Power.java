@@ -21,7 +21,6 @@ package com.adr.helloiot.graphic;
 import com.adr.fonticon.FontAwesome;
 import com.adr.fonticon.IconBuilder;
 import com.adr.fonticon.IconFont;
-import com.adr.fonticon.decorator.Shine;
 import javafx.scene.Node;
 import javafx.scene.paint.Color;
 
@@ -49,11 +48,11 @@ public class Power extends IconSwitch {
 
     @Override
     protected Node buildIconOn() {
-        return IconBuilder.create(icon, 48.0).color(color).apply(new Shine(color)).build();
+        return IconBuilder.create(icon, 48.0).color(color).build();
     }
 
     @Override
     protected Node buildIconOff() {
-        return IconBuilder.create(icon, 48.0).color(Color.DARKGRAY).apply(new Shine(Color.DARKGRAY)).build();
+        return IconBuilder.create(icon, 48.0).color(Color.DARKGRAY).build();
     }
 }

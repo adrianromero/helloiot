@@ -1,5 +1,5 @@
 //    HelloIoT is a dashboard creator for MQTT
-//    Copyright (C) 2017 Adrián Romero Corchado.
+//    Copyright (C) 2017-2018 Adrián Romero Corchado.
 //
 //    This file is part of HelloIot.
 //
@@ -18,10 +18,11 @@
 //
 package com.adr.helloiot.graphic;
 
-import com.adr.fonticon.decorator.Shine;
 import com.adr.helloiot.device.format.ValueFormatValue;
 import com.adr.helloiot.util.ExternalFonts;
 import javafx.scene.Node;
+import javafx.scene.effect.BlurType;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -36,9 +37,15 @@ public class IconText extends IconStatus {
     @Override
     public Node buildIcon(ValueFormatValue value) {
         Text t = new Text(value.getFormatValue());
-        t.setFont(Font.font(ExternalFonts.ROBOTOBOLD, FontWeight.BOLD, 18.0));
+        t.setFont(Font.font(ExternalFonts.SOURCESANSPRO_BLACK, FontWeight.BOLD, 32.0));
         t.setFill(Color.WHITE);
-        new Shine(Color.DARKGRAY).decorate(t);        
+        
+        DropShadow dropShadow = new DropShadow();
+        dropShadow.setRadius(4.0);
+        dropShadow.setColor(Color.BLACK /* valueOf("#4b5157")*/);
+        dropShadow.setBlurType(BlurType.ONE_PASS_BOX);
+        t.setEffect(dropShadow);
+   
         return t;
     }
 }

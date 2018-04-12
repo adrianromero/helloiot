@@ -30,7 +30,6 @@ import javafx.scene.shape.Rectangle;
  */
 public class ImageIntensity extends Group {
     
-    private final Node graphic;
     private final double graphicw;
     private final double graphich;
     private final Rectangle r = new Rectangle();
@@ -40,7 +39,6 @@ public class ImageIntensity extends Group {
     
     public ImageIntensity(Node graphic) {
         
-        this.graphic = graphic;
         graphicw = graphic.getLayoutBounds().getWidth();
         graphich = graphic.getLayoutBounds().getHeight();
         

@@ -44,7 +44,7 @@ public abstract class IconStatus {
         } else if (value.startsWith("BULB/")) {
             return new Bulb(FontAwesome.valueOf(value.substring(5)));
         } else if (value.startsWith("BULBTEXT/")) {
-            return new Bulb(new IconFontList(value.substring(9), "ROBOTO BOLD"));
+            return new Bulb(new IconFontList(value.substring(9), "Source Sans Pro Black"));
         } else if ("PADLOCK".equals(value)) {
             return new Padlock();
         } else if ("TOGGLE".equals(value)) {
@@ -54,7 +54,7 @@ public abstract class IconStatus {
         } else if (value.startsWith("POWER/")) {
             return new Power(FontAwesome.valueOf(value.substring(6)));
         } else if (value.startsWith("POWERTEXT/")) {
-            return new Power(new IconFontList(value.substring(10), "ROBOTO BOLD"));
+            return new Power(new IconFontList(value.substring(10), "Source Sans Pro Black"));
         } else if ("COLOR".equals(value)) {
             return new IconColor();
         } else if (value.startsWith("COLOR/")) {

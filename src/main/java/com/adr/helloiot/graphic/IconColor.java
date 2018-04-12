@@ -49,6 +49,6 @@ public class IconColor extends IconStatus {
         } catch (Exception e) {
             c = Color.BLACK;
         }
-        return IconBuilder.create(icon, 48.0).color(c).shine(c).build();
+        return IconBuilder.create(icon, 48.0).color(c).build();
     }
 }
