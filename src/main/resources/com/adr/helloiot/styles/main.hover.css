@@ -18,38 +18,41 @@
     along with HelloIot.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-.headerbutton:hover {
-    -fx-background-color:  -fx-border-fill,  -fx-hover-fill;         
+.headerbutton:hover .icon-fill {
+    -fx-fill: -fx-buttonaction2-fill         
 }
 
 .menubutton:hover {
-    -fx-background-color:  -fx-hover-fill;       
+    -fx-background-color: -fx-buttonaction-fill, -fx-buttonaction-fill;       
 }
 
+.menubutton:hover .icon-fill {
+    -fx-fill: white;
+}
 .keypadbutton:hover {
-    -fx-background-color: -fx-border-fill,  -fx-hover-fill;         
+    -fx-background-color: -fx-buttonaction-fill, -fx-buttonaction-fill;
 }
 
 .unitbutton:hover {
-    -fx-background-color: -fx-border-fill,  -fx-hover-fill;         
+    -fx-background-color: -fx-buttonaction-fill, -fx-buttonaction-fill;
 }
 
 .buttonbase:hover {
-    -fx-background-color: -fx-border-fill, -fx-hover-fill;         
+    -fx-background-color: -fx-buttonaction-fill, -fx-buttonaction-fill;
 }
 
-.dialog-close-button:hover {
-    -fx-background-color: -fx-hover-fill;
+.dialog-close-button:hover .dialog-close-icon  {
+    -fx-fill: -fx-buttonaction2-fill;
 }
 
 .dialog-buttonlist .button:hover {
-    -fx-background-color: -fx-border-fill, -fx-hover-fill;         
+    -fx-background-color: -fx-buttonaction2-fill, -fx-buttonaction2-fill;        
 }
 
 .dialog-buttonlist .button:default:hover {
-    -fx-background-color: -fx-border-fill, derive(-fx-selected-fill, -12%);         
+    -fx-background-color: -fx-buttonaction-fill, -fx-buttonaction-fill;
 }
 
 .slider .thumb:hover {
-    -fx-background-color: -fx-border-fill, -fx-hover-fill;
+    -fx-background-color: -fx-buttonaction-fill, -fx-buttonaction-fill;
 }

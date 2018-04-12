@@ -17,6 +17,19 @@
     You should have received a copy of the GNU General Public License
     along with HelloIot.  If not, see <http://www.gnu.org/licenses/>.
 */
+@font-face { src: url('SourceSansPro-Black.ttf'); }
+@font-face { src: url('SourceSansPro-BlackItalic.ttf'); }
+@font-face { src: url('SourceSansPro-Bold.ttf'); }
+@font-face { src: url('SourceSansPro-BoldItalic.ttf'); }
+@font-face { src: url('SourceSansPro-ExtraLight.ttf'); }
+@font-face { src: url('SourceSansPro-ExtraLightItalic.ttf'); }
+@font-face { src: url('SourceSansPro-Italic.ttf'); }
+@font-face { src: url('SourceSansPro-Light.ttf'); }
+@font-face { src: url('SourceSansPro-LightItalic.ttf'); }
+@font-face { src: url('SourceSansPro-Regular.ttf'); }
+@font-face { src: url('SourceSansPro-SemiBold.ttf'); }
+@font-face { src: url('SourceSansPro-SemiBoldItalic.ttf'); }
+
 .maincontainer {
     -fx-separator-fill: -fx-box-border;
 }
@@ -29,6 +42,17 @@
 .headertitle {
     -fx-font-weight: bold;
     -fx-font-size: 18px;
+}
+
+/* Next button */
+
+.nextbutton {
+    -fx-background-radius: 18;      
+    -fx-alignment: center;
+    -fx-padding: 8px 12px 8px 12px; 
+}
+.nextbutton .icon-fill {
+    -fx-fill: -fx-text-base-color;
 }
 
 .unitscontainer {
@@ -69,7 +93,7 @@
     -fx-background-insets: 0, 6, 7;
     -fx-background-color: transparent, derive(-fx-box-border, 25%), -fx-background;      
     -fx-padding: 12px 14px 12px 14px;
-    -fx-value-color:  -fx-text-base-color;    
+    -fx-value-color: -fx-text-base-color;    
 }
 .noneditable {
     -fx-focus-color: transparent;
@@ -107,26 +131,30 @@
 }
 
 .dialog-close-button {
-    -fx-background-color: transparent;
-    -fx-background-insets: 0;
-    -fx-background-radius: 16px;
+    -fx-background-color: transparent, transparent;
+    -fx-background-insets: 0, 2;
+    -fx-background-radius: 0, 0;
     -fx-alignment: center;
     -fx-padding: 8px 12px 8px 12px; 
-    -fx-fill: white;
 }
-.dialog-close-button:hover {
-    -fx-background-color: #dddddd;
+.dialog-close-button .dialog-close-icon  {
+    -fx-fill: darkgray;
+}
+.dialog-close-button:hover .dialog-close-icon  {
+    -fx-fill: black;
+}
+.dialog-close-button:armed {
+    -fx-background-color: darkgray, transparent;
+}
+.dialog-close-button:armed .dialog-close-icon  {
+    -fx-fill: black;
 }
 
-.dialog-close-button:armed {
-    -fx-background-color: #a4a4a4;
-}
-.dialog-close-icon {
-    -fx-fill: -fx-text-base-color;
-}
+
 .dialog-button-icon {
     -fx-fill: -fx-text-base-color;  
 }
+
 .dialog-title-text {
     -fx-font-size: 14;
     -fx-font-weight: bold;
@@ -172,7 +200,25 @@
 }
 
 .default-color0.chart-series-area-line {
+    -fx-stroke: #497ccb;
 }
 
 .default-color0.chart-series-area-fill { 
+    -fx-fill: #ecf1f9;
 }
+
+/*.default-color1.chart-series-area-line {
+    -fx-stroke: #ca2024;
+}
+
+.default-color1.chart-series-area-fill { 
+    -fx-fill: #fceceb;
+}
+
+.default-color2.chart-series-area-line {
+    -fx-stroke: #62bb2a;
+}
+
+.default-color2.chart-series-area-fill { 
+    -fx-fill: #eff8ea;
+}*/

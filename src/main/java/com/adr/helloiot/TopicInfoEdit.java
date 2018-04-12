@@ -1,5 +1,5 @@
 //    HelloIoT is a dashboard creator for MQTT
-//    Copyright (C) 2017 Adrián Romero Corchado.
+//    Copyright (C) 2017-2018 Adrián Romero Corchado.
 //
 //    This file is part of HelloIot.
 //
@@ -89,7 +89,7 @@ public class TopicInfoEdit implements TopicInfo {
 
         Text t = new Text();
         t.setFill(Color.WHITE);
-        t.setFont(Font.font(ExternalFonts.ROBOTOBOLD, FontWeight.BOLD, 10.0));
+        t.setFont(Font.font(ExternalFonts.SOURCESANSPRO_BOLD, FontWeight.BOLD, 10.0));
         TextFlow tf = new TextFlow(t);
         tf.setPrefWidth(55);
         tf.setTextAlignment(TextAlignment.CENTER);

@@ -1,5 +1,5 @@
 //    HelloIoT is a dashboard creator for MQTT
-//    Copyright (C) 2017 Adrián Romero Corchado.
+//    Copyright (C) 2017-2018 Adrián Romero Corchado.
 //
 //    This file is part of HelloIot.
 //
@@ -26,15 +26,15 @@ import javafx.scene.text.Font;
  */
 public class ExternalFonts {
 
-    public static final String ROBOTOBOLD;
-    public static final String ROBOTOLIGHT;
-    public static final String ROBOTOREGULAR;
+    public static final String SOURCESANSPRO_BLACK;
+    public static final String SOURCESANSPRO_BOLD;
+    public static final String SOURCESANSPRO_REGULAR;
 
     static {
         try {
-            ROBOTOBOLD = Font.loadFont(ExternalFonts.class.getResourceAsStream("/com/adr/helloiot/styles/Roboto-Bold.ttf"), 10.0).getName();
-            ROBOTOLIGHT = Font.loadFont(ExternalFonts.class.getResourceAsStream("/com/adr/helloiot/styles/Roboto-Light.ttf"), 10.0).getName();
-            ROBOTOREGULAR = Font.loadFont(ExternalFonts.class.getResourceAsStream("/com/adr/helloiot/styles/Roboto-Regular.ttf"), 10.0).getName();
+            SOURCESANSPRO_BLACK = Font.loadFont(ExternalFonts.class.getResourceAsStream("/com/adr/helloiot/styles/SourceSansPro-Black.ttf"), 10.0).getName();
+            SOURCESANSPRO_BOLD = Font.loadFont(ExternalFonts.class.getResourceAsStream("/com/adr/helloiot/styles/SourceSansPro-Bold.ttf"), 10.0).getName();
+            SOURCESANSPRO_REGULAR = Font.loadFont(ExternalFonts.class.getResourceAsStream("/com/adr/helloiot/styles/SourceSansPro-Regular.ttf"), 10.0).getName();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
