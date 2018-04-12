@@ -113,7 +113,7 @@ public class ClientLoginNode {
         nextbutton = new Button(resources.getString("button.connect"));
         nextbutton.setFocusTraversable(false);
         nextbutton.setMnemonicParsing(false);
-        nextbutton.getStyleClass().add("headerbutton");
+        nextbutton.getStyleClass().add("nextbutton");
         
         hbox.getChildren().addAll(label, nextbutton);
         
