@@ -26,10 +26,10 @@ import javafx.scene.layout.StackPane;
  */
 public enum Style {
     
-    CLASSIC("Classic", "/com/adr/helloiot/styles/empty"),
     PRETTY("Pretty", "/com/adr/helloiot/styles/main"),
     LIGHT("Light", "/com/adr/helloiot/styles/main-light"),
-    DARK("Dark", "/com/adr/helloiot/styles/main-dark");
+    DARK("Dark", "/com/adr/helloiot/styles/main-dark"),
+    CLASSIC("Classic", "/com/adr/helloiot/styles/empty");
     
     private final String displayname;
     private final String styleurl;
