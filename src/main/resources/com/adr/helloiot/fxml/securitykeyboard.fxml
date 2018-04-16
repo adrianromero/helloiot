@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <!--
     HelloIoT is a dashboard creator for MQTT
     Copyright (C) 2017 Adrián Romero Corchado.
@@ -18,6 +19,7 @@
     You should have received a copy of the GNU General Public License
     along with HelloIot.  If not, see <http://www.gnu.org/licenses/>.
 -->
+
 <?import java.lang.String?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
@@ -29,7 +31,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
+<VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" xmlns="http://javafx.com/javafx/8.0.161" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <GridPane hgap="5.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" vgap="5.0" VBox.vgrow="SOMETIMES">
         <columnConstraints>
@@ -50,7 +52,7 @@
                </graphic>
                <styleClass>
                   <String fx:value="keypadbutton" />
-                  <String fx:value="keypadbuttonleft" />
+                  <String fx:value="keypadbuttonnumber" />
                </styleClass>
             </Button>
             <Button contentDisplay="GRAPHIC_ONLY" focusTraversable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onTwo" GridPane.columnIndex="1">
@@ -59,7 +61,7 @@
                </graphic>
                <styleClass>
                   <String fx:value="keypadbutton" />
-                  <String fx:value="keypadbuttoncenter" />
+                  <String fx:value="keypadbuttonnumber" />
                </styleClass>
             </Button>
             <Button contentDisplay="GRAPHIC_ONLY" focusTraversable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onThree" GridPane.columnIndex="2">
@@ -68,7 +70,7 @@
                </graphic>
                <styleClass>
                   <String fx:value="keypadbutton" />
-                  <String fx:value="keypadbuttonright" />
+                  <String fx:value="keypadbuttonnumber" />
                </styleClass>
             </Button>
             <Button contentDisplay="GRAPHIC_ONLY" focusTraversable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onFour" GridPane.rowIndex="1">
@@ -86,7 +88,7 @@
                </graphic>
                <styleClass>
                   <String fx:value="keypadbutton" />
-                  <String fx:value="keypadbuttoncenter" />
+                  <String fx:value="keypadbuttonnumber" />
                </styleClass>
             </Button>
             <Button contentDisplay="GRAPHIC_ONLY" focusTraversable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onSix" GridPane.columnIndex="2" GridPane.rowIndex="1">
@@ -95,7 +97,7 @@
                </graphic>
                <styleClass>
                   <String fx:value="keypadbutton" />
-                  <String fx:value="keypadbuttonright" />
+                  <String fx:value="keypadbuttonnumber" />
                </styleClass>
             </Button>
             <Button contentDisplay="GRAPHIC_ONLY" focusTraversable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onSeven" GridPane.rowIndex="2">
@@ -104,7 +106,7 @@
                </graphic>
                <styleClass>
                   <String fx:value="keypadbutton" />
-                  <String fx:value="keypadbuttonleft" />
+                  <String fx:value="keypadbuttonnumber" />
                </styleClass>
             </Button>
             <Button contentDisplay="GRAPHIC_ONLY" focusTraversable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onEight" GridPane.columnIndex="1" GridPane.rowIndex="2">
@@ -113,7 +115,7 @@
                </graphic>
                <styleClass>
                   <String fx:value="keypadbutton" />
-                  <String fx:value="keypadbuttoncenter" />
+                  <String fx:value="keypadbuttonnumber" />
                </styleClass>
             </Button>
             <Button contentDisplay="GRAPHIC_ONLY" focusTraversable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onNine" GridPane.columnIndex="2" GridPane.rowIndex="2">
@@ -122,13 +124,17 @@
                </graphic>
                <styleClass>
                   <String fx:value="keypadbutton" />
-                  <String fx:value="keypadbuttonright" />
+                  <String fx:value="keypadbuttonnumber" />
                </styleClass>
             </Button>
-            <Button contentDisplay="GRAPHIC_ONLY" focusTraversable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onZero" styleClass="keypadbutton" GridPane.columnSpan="3" GridPane.rowIndex="3">
+            <Button contentDisplay="GRAPHIC_ONLY" focusTraversable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onZero" GridPane.columnSpan="3" GridPane.rowIndex="3">
                <graphic>
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="keypadtext" text="0" />
                </graphic>
+               <styleClass>
+                  <String fx:value="keypadbutton" />
+                  <String fx:value="keypadbuttonnumber" />
+               </styleClass>
             </Button>
          </children>
       </GridPane>
@@ -140,7 +146,6 @@
                </BorderPane.margin>
                <styleClass>
                   <String fx:value="keypadbutton" />
-                  <String fx:value="keypadbuttonright" />
                   <String fx:value="keypadbuttondelete" />
                </styleClass></Button>
          </right>

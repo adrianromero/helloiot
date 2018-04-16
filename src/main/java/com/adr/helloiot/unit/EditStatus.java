@@ -65,7 +65,7 @@ public class EditStatus extends Tile {
         statusview = new TextField();
         statusview.setEditable(false);
         statusview.setFocusTraversable(false);
-        statusview.getStyleClass().add("noneditable");
+        statusview.getStyleClass().add("unitinputview");
         HBox.setHgrow(statusview, Priority.SOMETIMES);
         
         editaction = new Button();
@@ -81,7 +81,7 @@ public class EditStatus extends Tile {
         boxedit.setVisible(false);
         
         statusedit = new TextField();
-        statusedit.getStyleClass().add("fieldtextbox");
+        statusedit.getStyleClass().add("unitinput");
         HBox.setHgrow(statusedit, Priority.SOMETIMES);
         ((TextField) statusedit).setOnAction(this::onEnterEvent);
         

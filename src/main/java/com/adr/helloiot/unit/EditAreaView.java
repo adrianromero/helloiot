@@ -1,5 +1,5 @@
 //    HelloIoT is a dashboard creator for MQTT
-//    Copyright (C) 2017 Adrián Romero Corchado.
+//    Copyright (C) 2017-2018 Adrián Romero Corchado.
 //
 //    This file is part of HelloIot.
 //
@@ -43,7 +43,7 @@ public class EditAreaView extends EditView {
         statusview.setFocusTraversable(false);
         statusview.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
         statusview.setPrefHeight(100.0);
-        statusview.getStyleClass().add("noneditable");
+        statusview.getStyleClass().add("unitinputview");
         BorderPane.setAlignment(statusview, Pos.CENTER);
         
         borderpane.setCenter(statusview);

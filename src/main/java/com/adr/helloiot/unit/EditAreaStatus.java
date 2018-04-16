@@ -43,7 +43,7 @@ public class EditAreaStatus extends EditStatus {
         statusview.setFocusTraversable(false);
         statusview.setMaxSize(Double.MAX_VALUE,Double.MAX_VALUE);
         statusview.setPrefHeight(100.0);
-        statusview.getStyleClass().add("noneditable");
+        statusview.getStyleClass().add("unitinputview");
         HBox.setHgrow(statusview, Priority.SOMETIMES);
         
         editaction = new Button();
@@ -61,7 +61,7 @@ public class EditAreaStatus extends EditStatus {
         statusedit = new TextArea();
         statusedit.setMaxSize(Double.MAX_VALUE,Double.MAX_VALUE);
         statusedit.setPrefHeight(100.0);        
-        statusedit.getStyleClass().add("fieldtextbox");
+        statusedit.getStyleClass().add("unitinput");
         HBox.setHgrow(statusedit, Priority.SOMETIMES);
         
         okaction = new Button();

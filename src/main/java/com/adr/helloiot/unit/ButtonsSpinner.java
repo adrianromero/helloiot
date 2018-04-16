@@ -55,7 +55,7 @@ public class ButtonsSpinner extends Tile {
         level = new Label();
         level.setAlignment(Pos.CENTER_RIGHT);
         level.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-        level.getStyleClass().add("levelbase");
+        level.getStyleClass().add("unitmaintext");
   
         
         HBox hbox = new HBox();

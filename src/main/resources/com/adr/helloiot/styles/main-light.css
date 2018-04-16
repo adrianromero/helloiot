@@ -18,42 +18,24 @@
     along with HelloIot.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-.root {
-    /* A light grey that is the base color for objects.  Instead of using
-     * -fx-base directly, the sections in this file will typically use -fx-color.
-     */
-    -fx-base: #353535;
-    /* A very light grey used for the background of windows.  See also
-     * -fx-text-background-color, which should be used as the -fx-text-fill
-     * value for text painted on top of backgrounds colored with -fx-background.
-     */
-    -fx-background: derive(-fx-base, 0.0%);
-    /* Used for the inside of text boxes, password boxes, lists, trees, and
-     * tables.  See also -fx-text-inner-color, which should be used as the
-     * -fx-text-fill value for text painted on top of backgrounds colored
-     * with -fx-control-inner-background.
-     */
-    -fx-control-inner-background: derive(-fx-base, 20.0%);
-}
-
 .maincontainer {
-    -fx-background-container: #353535;
+    -fx-background-container: -fx-background;      
+    -fx-separator-fill: -fx-box-border;
     
-    -fx-separator-fill: #909090;
-    -fx-background-title: #333333;
-    -fx-text-fill-title: #dddddd;    
+    -fx-background-title: white;    
+    -fx-text-fill-title: #353535;
     
     -fx-border-fill: #909090;
 
-    -fx-button-fill: #404040;
-    -fx-buttonhover-fill:  derive(-fx-button-fill, 25%); /*#d0d0d0; */
-    -fx-armed-fill: derive(-fx-button-fill, 40%);/*#a4a4a4; */
-    -fx-selected-fill: #203280;
+    -fx-button-fill: #f2f2f2;
+    -fx-buttonhover-fill:  derive(-fx-button-fill, -12%); /*#d0d0d0; */
+    -fx-armed-fill: derive(-fx-button-fill, -30%);/*#a4a4a4; */
+    -fx-selected-fill: #b9f2fa;
     
-    -fx-info-fill: #d0d0d0;
+    -fx-info-fill: #707070;
     
-    -fx-border-unit: #505050;
-    -fx-background-unit: #444444;
+    -fx-border-unit: #e0e0e0;
+    -fx-background-unit: #fafafa;
 }
 
 .header {
@@ -64,7 +46,7 @@
 .headertitle {
     -fx-font-family: 'Source Sans Pro Bold';
     -fx-font-size: 18px;
-    -fx-text-fill: -fx-text-fill-title;
+    -fx-text-fill: -fx-text-fill-title;  
 }
 
 .headerbutton {
@@ -150,7 +132,7 @@
 .emptypanel {
     -fx-font-size: 48px;
     -fx-font-family: 'Source Sans Pro Bold';
-    -fx-text-fill: -fx-info-fill;
+    -fx-text-fill: -fx-info-fill; 
 }
 
 .keypadtext {
@@ -229,7 +211,7 @@
 .dialog-title-text {
     -fx-font-size: 14;
     -fx-font-weight: bold;
-    -fx-text-fill: -fx-text-fill-title;            
+    -fx-text-fill: -fx-text-fill-title;           
 }
 .dialog-title {
     -fx-background-color: -fx-separator-fill, -fx-background-title;

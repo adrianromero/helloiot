@@ -26,8 +26,9 @@ import javafx.scene.layout.StackPane;
  */
 public enum Style {
     
-    SIMPLE("Simple", "/com/adr/helloiot/styles/empty"),
-    LIGHT("Light", "/com/adr/helloiot/styles/main"),
+    CLASSIC("Classic", "/com/adr/helloiot/styles/empty"),
+    PRETTY("Pretty", "/com/adr/helloiot/styles/main"),
+    LIGHT("Light", "/com/adr/helloiot/styles/main-light"),
     DARK("Dark", "/com/adr/helloiot/styles/main-dark");
     
     private final String displayname;
@@ -59,6 +60,7 @@ public enum Style {
             if (HelloPlatform.getInstance().isFullScreen()) {
                 root.getStylesheets().add(Style.class.getResource("/com/adr/helloiot/styles/fullscreen.css").toExternalForm());
             } else {
+                root.getStylesheets().add(Style.class.getResource("/com/adr/helloiot/styles/root.hover.css").toExternalForm());
                 root.getStylesheets().add(Style.class.getResource(style.getStyleURL() + ".hover.css").toExternalForm());
             }     
             // hover pseudoclass definiton must go before armed pseudoclass definition

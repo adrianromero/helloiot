@@ -100,8 +100,8 @@ public class MainManagerClient implements MainManager {
         clientlogin.setClock(Boolean.parseBoolean(configprops.getProperty("app.clock", "true")));
         // "app.exitbutton"
         // "app.retryconnection"
-        clientlogin.setStyle(Style.valueOf(configprops.getProperty("app.style", Style.LIGHT.name()))); 
-        Style.changeStyle(root, Style.valueOf(configprops.getProperty("app.style", Style.LIGHT.name())));        
+        clientlogin.setStyle(Style.valueOf(configprops.getProperty("app.style", Style.PRETTY.name()))); 
+        Style.changeStyle(root, Style.valueOf(configprops.getProperty("app.style", Style.PRETTY.name())));        
         
         // Now the units
         int i = 0;
@@ -210,7 +210,7 @@ public class MainManagerClient implements MainManager {
         config.put("app.clock", new MiniVarBoolean(Boolean.parseBoolean(configprops.getProperty("app.clock", "true"))));
         config.put("app.exitbutton", MiniVarBoolean.FALSE);
         config.put("app.retryconnection", MiniVarBoolean.FALSE);
-        Style.changeStyle(root, Style.valueOf(configprops.getProperty("app.style", Style.LIGHT.name())));  
+        Style.changeStyle(root, Style.valueOf(configprops.getProperty("app.style", Style.PRETTY.name())));  
 
         helloiotapp = new HelloIoTApp(config);
 

@@ -19,16 +19,18 @@
 */
 
 .headerbutton:hover .icon-fill {
-    -fx-fill: -fx-buttonaction2-fill         
+    -fx-fill: -fx-buttonaction-fill         
 }
 
 .menubutton:hover {
-    -fx-background-color: -fx-buttonaction-fill, -fx-buttonaction-fill;       
+    -fx-background-color: -fx-buttonaction-fill, -fx-buttonaction-fill;     
+    -fx-text-fill: -fx-buttoncontent-fill;    
 }
 
 .menubutton:hover .icon-fill {
-    -fx-fill: white;
+    -fx-fill: -fx-buttoncontent-fill;
 }
+
 .keypadbutton:hover {
     -fx-background-color: -fx-buttonaction-fill, -fx-buttonaction-fill;
 }
@@ -42,15 +44,11 @@
 }
 
 .dialog-close-button:hover .dialog-close-icon  {
-    -fx-fill: -fx-buttonaction2-fill;
+    -fx-fill: -fx-buttonaction-fill;
 }
 
 .dialog-buttonlist .button:hover {
-    -fx-background-color: -fx-buttonaction2-fill, -fx-buttonaction2-fill;        
-}
-
-.dialog-buttonlist .button:default:hover {
-    -fx-background-color: -fx-buttonaction-fill, -fx-buttonaction-fill;
+    -fx-background-color: -fx-buttonaction-fill, -fx-buttonaction-fill;        
 }
 
 .slider .thumb:hover {

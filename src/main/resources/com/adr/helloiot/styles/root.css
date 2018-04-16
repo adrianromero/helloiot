@@ -34,12 +34,12 @@
     -fx-separator-fill: -fx-box-border;
 }
 
-.header {
+.headerclient {
     -fx-spacing: 10px;
     -fx-padding: 10px;
 }
 
-.headertitle {
+.headerclienttitle {
     -fx-font-weight: bold;
     -fx-font-size: 18px;
 }
@@ -53,6 +53,16 @@
 }
 .nextbutton .icon-fill {
     -fx-fill: -fx-text-base-color;
+}
+
+.header {
+    -fx-spacing: 10px;
+    -fx-padding: 10px;
+}
+
+.headertitle {
+    -fx-font-weight: bold;
+    -fx-font-size: 18px;
 }
 
 .unitscontainer {
@@ -85,7 +95,7 @@
     -fx-fill: -fx-text-base-color;
 }
 
-.levelbase {
+.unitmaintext {
     -fx-text-fill: -fx-text-base-color;
 }
 
@@ -95,26 +105,27 @@
     -fx-padding: 12px 14px 12px 14px;
     -fx-value-color: -fx-text-base-color;    
 }
-.noneditable {
+.unitinputview {
     -fx-focus-color: transparent;
     -fx-background-color: transparent;
 }
-.noneditable .scroll-pane {
+.unitinputview .scroll-pane {
     -fx-background-color: transparent;
 }
-.noneditable .scroll-pane .viewport {
+.unitinputview .scroll-pane .viewport {
     -fx-background-color: transparent;
 }
-.noneditable .scroll-pane .content {
+.unitinputview .scroll-pane .content {
     -fx-background-color: transparent;
 }
 
-.footerbase {
+.unitfooter {
     -fx-padding: 4px 0px 0px 0px;
     -fx-alignment: top-right;
 }
 .buttonbase {   
 }
+
 .textinput-right *.text {
     -fx-text-alignment: right;
     -fx-alignment: center-right;
@@ -140,9 +151,6 @@
 .dialog-close-button .dialog-close-icon  {
     -fx-fill: darkgray;
 }
-.dialog-close-button:hover .dialog-close-icon  {
-    -fx-fill: black;
-}
 .dialog-close-button:armed {
     -fx-background-color: darkgray, transparent;
 }
@@ -158,8 +166,7 @@
 .dialog-title-text {
     -fx-font-size: 14;
     -fx-font-weight: bold;
-    -fx-text-fill:#333333;
-    -fx-effect: dropshadow(one-pass-box, #cccccc, 1.0, 0.0, 1.0, 1.0);           
+    -fx-text-fill:#333333;      
 }
 .dialog-title {
     -fx-background-color: -fx-box-border, white;

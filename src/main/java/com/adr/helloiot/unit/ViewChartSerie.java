@@ -35,7 +35,7 @@ import javafx.scene.chart.AreaChart;
  */
 public class ViewChartSerie {
     
-    public final static int SIZE = 60;
+    public final static int SIZE = 30;
 
     private String label = null;
     private DeviceNumber device = null;

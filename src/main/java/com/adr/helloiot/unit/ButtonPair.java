@@ -73,7 +73,7 @@ public class ButtonPair extends Tile {
 
 //        setIconStatus(IconStatus.valueOf("TEXT/ON/OFF"));
         VBox content = new VBox(goup, godown);
-        content.setSpacing(2);
+        content.setSpacing(4);
         VBox.setVgrow(content, Priority.SOMETIMES);
         content.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
         return content;

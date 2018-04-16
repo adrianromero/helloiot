@@ -102,7 +102,7 @@ public abstract class Tile extends BorderPane implements Unit {
         title = label; 
         if (title != null && !title.isEmpty()) {
             titlelabel = new Label(label);
-            titlelabel.getStyleClass().add("labelbase");
+            titlelabel.getStyleClass().add("unittitle");
             titlelabel.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
             setTop(titlelabel);
         }
@@ -130,7 +130,7 @@ public abstract class Tile extends BorderPane implements Unit {
         if (footer != null && !footer.isEmpty()) {
             try {
                 footerpane = TextContainer.createFlowPane(label);
-                footerpane.getStyleClass().add("footerbase");            
+                footerpane.getStyleClass().add("unitfooter");            
                 setBottom(footerpane);
             } catch (IOException ex) {
                 Logger.getLogger(Tile.class.getName()).log(Level.WARNING, null, ex);;

@@ -48,7 +48,7 @@ public class EditView extends Tile {
         statusview = new TextField();
         statusview.setEditable(false);
         statusview.setFocusTraversable(false);
-        statusview.getStyleClass().add("noneditable");
+        statusview.getStyleClass().add("unitinputview");
         HBox.setHgrow(statusview, Priority.SOMETIMES);
         
         hboxroot.getChildren().add(statusview);

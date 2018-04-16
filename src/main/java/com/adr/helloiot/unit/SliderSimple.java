@@ -52,7 +52,7 @@ public class SliderSimple extends Tile {
         level = new Label();
         level.setAlignment(Pos.CENTER_RIGHT);
         level.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-        level.getStyleClass().add("levelbase");
+        level.getStyleClass().add("unitmaintext");
         
         slider = new Slider();
         slider.setFocusTraversable(false);

@@ -106,7 +106,7 @@ public class ViewChart extends Tile {
         timeline = new Timeline(new KeyFrame(duration.divide(ViewChartSerie.SIZE), ae -> {
             for (ViewChartSerie serie: series) {
                 serie.tick();
-            }                   
+            }    
         }));  
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();

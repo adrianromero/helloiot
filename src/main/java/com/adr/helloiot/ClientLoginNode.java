@@ -102,12 +102,12 @@ public class ClientLoginNode {
         
         HBox hbox = new HBox();
         hbox.setSpacing(6.0);
-        hbox.getStyleClass().add("header");
+        hbox.getStyleClass().add("headerclient");
         BorderPane.setAlignment(hbox, Pos.CENTER);
         
         Label label = new Label(resources.getString("label.clientlogin"));
         label.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-        label.getStyleClass().add("headertitle");
+        label.getStyleClass().add("headerclienttitle");
         HBox.setHgrow(label, Priority.SOMETIMES);
         
         nextbutton = new Button(resources.getString("button.connect"));

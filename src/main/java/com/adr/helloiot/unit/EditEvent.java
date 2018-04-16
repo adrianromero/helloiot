@@ -1,5 +1,5 @@
 //    HelloIoT is a dashboard creator for MQTT
-//    Copyright (C) 2017 Adrián Romero Corchado.
+//    Copyright (C) 2017-2018 Adrián Romero Corchado.
 //
 //    This file is part of HelloIot.
 //
@@ -54,7 +54,7 @@ public class EditEvent extends Tile {
         hboxroot.setSpacing(6.0);
         
         payload = new TextField();
-        payload.getStyleClass().add("fieldtextbox");
+        payload.getStyleClass().add("unitinput");
         HBox.setHgrow(payload, Priority.SOMETIMES);
         ((TextField)payload).setOnAction(this::onEnterEvent);
         

@@ -52,7 +52,7 @@ public class LogView extends Tile {
         statusview.setFocusTraversable(false);
         statusview.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
         statusview.setPrefHeight(100.0);
-        statusview.getStyleClass().add("noneditable");
+        statusview.getStyleClass().add("unitinputview");
         BorderPane.setAlignment(statusview, Pos.CENTER);
         
         borderpane.setCenter(statusview);
