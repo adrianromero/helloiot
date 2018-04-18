@@ -60,6 +60,7 @@
         <EditView UnitPage.page="info" label="%label.version" device="$version" />
         <EditView UnitPage.page="info" label="%label.changeset" device="$changeset"/>
         <EditView UnitPage.page="info" label="%label.timestamp" device="$timestamp" />
+        <StartLine UnitPage.page="info" VBox.vgrow= "NEVER" />        
         <EditView UnitPage.page="info" label="%label.uptime" device="$uptime" />
         <EditView UnitPage.page="info" label="%label.clients" device="$clients" />
         <EditView UnitPage.page="info" label="%label.subscriptions" device="$subscriptions" />
@@ -70,6 +71,7 @@
         <EditView UnitPage.page="info" label="%label.heapcurrent" device="$heapcurrent" />
         <EditView UnitPage.page="info" label="%label.heapmax" device="$heapmax" />
         <EditView UnitPage.page="info" label="%label.bytesreceived" device="$bytesreceived" />
+        <StartLine UnitPage.page="info" VBox.vgrow= "NEVER" />        
         <EditView UnitPage.page="info" label="%label.loadbytesreceived" device="$loadbytesreceived" />
         <EditView UnitPage.page="info" label="%label.bytessent" device="$bytessent" />
         <EditView UnitPage.page="info" label="%label.loadbytessent" device="$loadbytessent" />
@@ -80,6 +82,7 @@
         <EditView UnitPage.page="info" label="%label.retained" device="$retained" />
         <EditView UnitPage.page="info" label="%label.stored" device="$stored" />
         <EditView UnitPage.page="info" label="%label.inflight" device="$inflight" />
+        <StartLine UnitPage.page="info" VBox.vgrow= "NEVER" />        
         <EditView UnitPage.page="info" label="%label.dropped" device="$dropped" />
         <EditView UnitPage.page="info" label="%label.received" device="$received" />
         <EditView UnitPage.page="info" label="%label.sent" device="$sent" />
