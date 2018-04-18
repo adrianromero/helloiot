@@ -40,10 +40,6 @@
     
     -fx-primary-fill: #007BFF;
     -fx-secondary-fill: #6C757D;
-    -fx-color1-fill: #28A745;
-    -fx-color2-fill: #DC3545;
-    -fx-color3-fill: #E0A800;
-    -fx-color4-fill: #17A2B8;
     
     -fx-menu-fill: black;
     
@@ -230,7 +226,7 @@
 }
 
 /* Unit buttons */
-.unitbutton {
+.unitbutton {   
     -fx-text-fill: -fx-buttoncontent-fill;    
     -fx-background-color:  -fx-button-fill, -fx-button-fill;  
     -fx-background-radius: 2, 0;

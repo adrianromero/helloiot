@@ -32,6 +32,11 @@
 
 .maincontainer {
     -fx-separator-fill: -fx-box-border;
+    
+    -fx-color1-fill: #28A745;
+    -fx-color2-fill: #DC3545;
+    -fx-color3-fill: #E0A800;
+    -fx-color4-fill: #17A2B8;    
 }
 
 .headerclient {
@@ -185,7 +190,6 @@
 .dialog-buttonlist {
     -fx-padding: 10 10 10 10;    
 }
-
 
 /* Chart styles */
 
