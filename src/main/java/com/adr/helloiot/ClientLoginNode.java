@@ -427,8 +427,11 @@ public class ClientLoginNode {
 
     void onRemoveDeviceUnit(ActionEvent event) {
         TopicInfo t = devicesunitslist.getSelectionModel().getSelectedItem();
+        int index = devicesunitslist.getSelectionModel().getSelectedIndex();
         devicesunitslist.getItems().remove(t);
-
+        if (devicesunitslist.getItems().size() > 0 && index < devicesunitslist.getItems().size()) {
+            devicesunitslist.getSelectionModel().select(index);
+        }
     }
 
     void onUpDeviceUnit(ActionEvent event) {
