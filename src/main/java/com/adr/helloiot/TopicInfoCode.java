@@ -75,7 +75,7 @@ public class TopicInfoCode implements TopicInfo {
         tf.setPadding(new Insets(2, 5, 2, 5));
 
         t.setText("CODE");
-        tf.setStyle("-fx-background-color: #001A80; -fx-background-radius: 12px;");
+        tf.setStyle("-fx-background-color: #808080; -fx-background-radius: 12px;");
 
         return tf;
     }
