@@ -7,7 +7,8 @@
 <LabelSection UnitPage.page="Numbers" text="Numeric units"/> 
 
 <StartLine UnitPage.page="Numbers" VBox.vgrow= "SOMETIMES" />   
-<ViewText  UnitPage.page="Numbers" device="$number"/>
+<ViewNumberChart UnitPage.page="Numbers" device="$number"/>
+<ViewNumberProgress UnitPage.page="Numbers" device="$number"/>
 <ButtonSimple UnitPage.page="Numbers" device="$number" />
 <ButtonsSpinner UnitPage.page="Numbers" device="$number"/>
 <ButtonPair UnitPage.page="Numbers" device="$number"/>
