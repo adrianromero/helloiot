@@ -19,6 +19,7 @@
 package com.adr.helloiot.device;
 
 import com.adr.helloiot.EventMessage;
+import com.adr.helloiot.TopicsManager;
 import com.adr.helloiot.device.format.MiniVar;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -33,7 +34,19 @@ public class DeviceBasic extends DeviceSubscribe {
     public DeviceBasic() {
         setRetained(true);
     }
+    
+    @Override
+    public void construct(TopicsManager manager) {
+        status.set(getFormat().value(null));
+        super.construct(manager);
+    }
 
+    @Override
+    public void destroy() {
+        super.destroy();
+        status.set(getFormat().value(null));
+    }
+    
     // Overwrite this  method
     @Override
     public String getDeviceName() {
