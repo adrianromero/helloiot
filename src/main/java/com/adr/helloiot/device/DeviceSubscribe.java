@@ -43,7 +43,7 @@ public abstract class DeviceSubscribe extends Device {
     }
 
     @Override
-    public final void construct(TopicsManager manager) {
+    public void construct(TopicsManager manager) {
         this.manager = manager;
         status = manager.subscribe(getTopic(), getQos());
         status.setConsumer((message) -> {
