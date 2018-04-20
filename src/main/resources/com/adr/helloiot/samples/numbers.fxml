@@ -21,16 +21,10 @@
 <ViewGauge UnitPage.page="Numbers" device="$number" type="DASHBOARD"/>
 <ViewGauge UnitPage.page="Numbers" device="$number" type="BASIC"/>
 <ViewGauge UnitPage.page="Numbers" device="$number" type="SPACEX"/>
-<ViewGauge UnitPage.page="Numbers" device="$number" type="FLAT"/>
+<ViewGauge UnitPage.page="Numbers" device="$number" barColor="RED" type="FLAT"/>
 
 <StartLine UnitPage.page="Numbers" VBox.vgrow= "SOMETIMES" />
-<ViewGauge UnitPage.page="Numbers" device="$number" barColor="RED" type="SIMPLE"/>
-<ViewGauge UnitPage.page="Numbers" device="$number" barColor="YELLOW" type="LINEAR"/>
-<ViewGauge UnitPage.page="Numbers" device="$number" barColor="MAGENTA" type="SLIM"/>
+<ViewGauge UnitPage.page="Numbers" device="$number" barColor="GREEN" type="LINEAR"/>
 <ViewGauge UnitPage.page="Numbers" device="$number" barColor="LIGHTGREEN" type="TINY"/>
-
-<StartLine UnitPage.page="Numbers" VBox.vgrow= "SOMETIMES" />
-<ViewGauge UnitPage.page="Numbers" device="$number" type="INDICATOR"/>
-<ViewGauge UnitPage.page="Numbers" device="$number" type="DIGITAL"/>
+<ViewGauge UnitPage.page="Numbers" device="$number" barColor="MAGENTA" type="INDICATOR"/>
 <ViewGauge UnitPage.page="Numbers" device="$number" type="QUARTER"/>
-<ViewGauge UnitPage.page="Numbers" device="$number" type="SIMPLE_SECTION"/>
