@@ -88,7 +88,7 @@ public class MainManagerClient implements MainManager {
         try {
             configprops.load(() -> new FileInputStream(configfile));
         } catch (IOException ex) {        
-            LOGGER.log(Level.WARNING, () -> String.format("Using defaults. Properties file not found: %s.", configfile));            
+            LOGGER.log(Level.WARNING, String.format("Using defaults. Properties file not found: %s.", configfile));            
         }        
                
         clientmqtt.loadConfig(configprops);

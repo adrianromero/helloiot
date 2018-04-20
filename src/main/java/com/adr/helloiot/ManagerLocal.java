@@ -118,7 +118,7 @@ public class ManagerLocal implements ManagerProtocol {
         try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(dbfile))) {                
             mapClient = (ConcurrentMap<String, byte[]>) in.readObject(); 
         } catch (IOException | ClassNotFoundException ex) {
-            logger.log(Level.WARNING, () -> String.format("Creating map. Local map file not found: %s.", dbfile));
+            logger.log(Level.WARNING, String.format("Creating map. Local map file not found: %s.", dbfile));
         }
         
         if (mapClient == null) {
