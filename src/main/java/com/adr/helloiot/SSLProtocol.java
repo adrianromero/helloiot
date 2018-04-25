@@ -24,11 +24,11 @@ package com.adr.helloiot;
  */
 public enum SSLProtocol {
     
-  TSLv1("TSLv1"),
-  TSLv11("TSLv1.1"),
-  TSLv12("TSLv1.2"),
-  TSLv13("TSLv1.3"),
-  SSL_TSL("SSL_TSL"),
+  TLSv1("TLSv1"),
+  TLSv11("TLSv1.1"),
+  TLSv12("TLSv1.2"),
+  TLSv13("TLSv1.3"),
+  SSL_TLS("SSL_TLS"),
   SSLv3("SSLv3");
   
   private final String displayname;

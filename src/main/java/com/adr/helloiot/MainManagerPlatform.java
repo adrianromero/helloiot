@@ -55,7 +55,7 @@ public class MainManagerPlatform implements MainManager {
         config.put("mqtt.port", new MiniVarInt(Integer.parseInt(configprops.getProperty("mqtt.port", "1883"))));
         config.put("mqtt.ssl", new MiniVarBoolean(Boolean.parseBoolean(configprops.getProperty("mqtt.ssl", "false"))));
         config.put("mqtt.websockets", new MiniVarBoolean(Boolean.parseBoolean(configprops.getProperty("mqtt.websockets", "false"))));
-        config.put("mqtt.protocol", new MiniVarString(configprops.getProperty("mqtt.protocol", "TSLv12")));
+        config.put("mqtt.protocol", new MiniVarString(SSLProtocol.valueOf(configprops.getProperty("mqtt.protocol", "TLSv12")).getDisplayName()));
         config.put("mqtt.keystore", new MiniVarString(configprops.getProperty("mqtt.keystore", "")));
         config.put("mqtt.keystorepassword", new MiniVarString(namedParams.getOrDefault("mqtt.keystorepassword", "")));
         config.put("mqtt.truststore", new MiniVarString(configprops.getProperty("mqtt.truststore", "")));

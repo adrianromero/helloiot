@@ -86,7 +86,7 @@ public class ConnectMQTT {
     @FXML private RadioButton brokermosquitto;
 
     public ConnectMQTT() {
-        FXMLUtil.load(this, "/com/adr/helloiot/fxml/connectmqtt.fxml", "com/adr/helloiot/fxml/connectmqtt");
+        FXMLUtil.load(this, "/com/adr/helloiot/fxml/connectmqtt-mobile.fxml", "com/adr/helloiot/fxml/connectmqtt");
     }
 
     @FXML 
@@ -102,7 +102,7 @@ public class ConnectMQTT {
         port.setText(configprops.getProperty("mqtt.port", "1883"));
         ssl.setSelected(Boolean.parseBoolean(configprops.getProperty("mqtt.ssl", "false")));
         websockets.setSelected(Boolean.parseBoolean(configprops.getProperty("mqtt.websockets", "false")));
-        protocol.getSelectionModel().select(SSLProtocol.valueOf(configprops.getProperty("mqtt.protocol", "TSLv12")));
+        protocol.getSelectionModel().select(SSLProtocol.valueOf(configprops.getProperty("mqtt.protocol", "TLSv12")));
         keystore.setText(configprops.getProperty("mqtt.keystore", ""));
         keystorepassword.setText(configprops.getProperty("mqtt.keystorepassword", ""));
         truststore.setText(configprops.getProperty("mqtt.truststore", ""));
