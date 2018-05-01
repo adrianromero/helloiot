@@ -6,7 +6,7 @@
     label=""
     text="Switch lights off">
     <graphic>
-        <Picture iconAwesome="FA_POWER_OFF" size="48" color="RED" shine="white"/>
+        <Picture iconAwesome="FA_POWER_OFF" size="48" color="RED"/>
     </graphic>
     <scriptCode><![CDATA[
         _allDevices().tagged('tradfrilight').forEach(function (d) {
