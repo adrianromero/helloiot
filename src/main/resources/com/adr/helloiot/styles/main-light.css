@@ -76,13 +76,6 @@
     -fx-text-fill: -fx-info-fill;   
 }
 
-.unitscontainer > .viewport {
-   -fx-background-color: transparent;
-}
-.unitscontainer {
-    -fx-background-color: -fx-background-container;    
-}
-
 .unitbase {
     -fx-background-radius: 0, 3, 2;
     -fx-background-insets: 0, 6, 7;

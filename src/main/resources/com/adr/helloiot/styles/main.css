@@ -114,13 +114,6 @@
     -fx-fill: -fx-buttoncontent-fill;
 }
 
-/* Container */
-.unitscontainer > .viewport {
-   -fx-background-color: transparent;
-}
-.unitscontainer {
-    -fx-background-color: -fx-background-container;    
-}
 
 /* Unit component */
 .unitbase {
