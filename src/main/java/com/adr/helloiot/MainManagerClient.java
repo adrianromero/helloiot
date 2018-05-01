@@ -97,7 +97,7 @@ public class MainManagerClient implements MainManager {
         clientlogin.setTopicApp(configprops.getProperty("client.topicapp", "_LOCAL_/mainapp"));
         clientlogin.setTopicSys(configprops.getProperty("client.topicsys", "system"));
         
-        clientlogin.setClock(Boolean.parseBoolean(configprops.getProperty("app.clock", "true")));
+        clientlogin.setClock(Boolean.parseBoolean(configprops.getProperty("app.clock", "false")));
         // "app.exitbutton"
         // "app.retryconnection"
         clientlogin.setStyle(Style.valueOf(configprops.getProperty("app.style", Style.PRETTY.name()))); 
@@ -183,7 +183,7 @@ public class MainManagerClient implements MainManager {
         config.put("mqtt.port", new MiniVarInt(Integer.parseInt(configprops.getProperty("mqtt.port", "1883"))));
         config.put("mqtt.ssl", new MiniVarBoolean(Boolean.parseBoolean(configprops.getProperty("mqtt.ssl", "false"))));
         config.put("mqtt.websockets", new MiniVarBoolean(Boolean.parseBoolean(configprops.getProperty("mqtt.websockets", "false"))));
-        config.put("mqtt.protocol", new MiniVarString(SSLProtocol.valueOf(configprops.getProperty("mqtt.protocol", "TLSv12")).getDisplayName()));
+        config.put("mqtt.protocol", new MiniVarString(SSLProtocol.valueOfDefault(configprops.getProperty("mqtt.protocol", "TLSv12")).getDisplayName()));
         config.put("mqtt.keystore", new MiniVarString(configprops.getProperty("mqtt.keystore", "")));
         config.put("mqtt.keystorepassword", new MiniVarString(configprops.getProperty("mqtt.keystorepassword", "")));
         config.put("mqtt.truststore", new MiniVarString(configprops.getProperty("mqtt.truststore", "")));
@@ -207,7 +207,7 @@ public class MainManagerClient implements MainManager {
         config.put("client.topicapp", new MiniVarString(configprops.getProperty("client.topicapp", "_LOCAL_/mainapp")));
         config.put("client.topicsys", new MiniVarString(configprops.getProperty("client.topicsys", "system")));
 
-        config.put("app.clock", new MiniVarBoolean(Boolean.parseBoolean(configprops.getProperty("app.clock", "true"))));
+        config.put("app.clock", new MiniVarBoolean(Boolean.parseBoolean(configprops.getProperty("app.clock", "false"))));
         config.put("app.exitbutton", MiniVarBoolean.FALSE);
         config.put("app.retryconnection", MiniVarBoolean.FALSE);
         Style.changeStyle(root, Style.valueOf(configprops.getProperty("app.style", Style.PRETTY.name())));  
@@ -221,7 +221,7 @@ public class MainManagerClient implements MainManager {
             if ("1".equals(config.get("client.broker").asString())) {
                 UnitPage info = new UnitPage("info", IconBuilder.create(FontAwesome.FA_INFO, 24.0).styleClass("icon-fill").build(), resources.getString("page.info"));
                 helloiotapp.addUnitPages(Arrays.asList(info));
-                helloiotapp.addFXMLFileDevicesUnits("local:com/adr/helloiot/panes/mosquitto", "_mobile");
+                helloiotapp.addFXMLFileDevicesUnits("local:com/adr/helloiot/panes/mosquitto");
             }
 
             TopicInfoBuilder topicinfobuilder = new TopicInfoBuilder();
