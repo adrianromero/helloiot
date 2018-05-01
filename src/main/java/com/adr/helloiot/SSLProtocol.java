@@ -45,4 +45,12 @@ public enum SSLProtocol {
   public String toString() {
       return displayname;
   }
+  
+  public static SSLProtocol valueOfDefault(String v) {
+      try {
+          return valueOf(v);
+      } catch (java.lang.IllegalArgumentException e) {
+          return TLSv12;
+      }
+  }
 }
