@@ -1,5 +1,5 @@
 //    HelloIoT is a dashboard creator for MQTT
-//    Copyright (C) 2017 Adrián Romero Corchado.
+//    Copyright (C) 2017-2018 Adrián Romero Corchado.
 //
 //    This file is part of HelloIot.
 //
@@ -18,7 +18,7 @@
 //
 package com.adr.helloiot;
 
-import com.adr.hellocommon.utils.FXMLUtil;
+import com.adr.helloiot.util.FXMLNames;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -42,7 +42,7 @@ public class TopicInfoCodeNode implements TopicInfoNode {
     public TextArea code;
     
     public TopicInfoCodeNode() {
-        FXMLUtil.load(this, "/com/adr/helloiot/fxml/topicinfocodenode.fxml", "com/adr/helloiot/fxml/topicinfocodenode");
+        FXMLNames.load(this, "com/adr/helloiot/fxml/topicinfocodenode");  
     }
     
     @FXML
@@ -69,7 +69,5 @@ public class TopicInfoCodeNode implements TopicInfoNode {
         if (updatecurrent != null) {
             updatecurrent.run();
         }
-    }
-    
-    
+    } 
 }

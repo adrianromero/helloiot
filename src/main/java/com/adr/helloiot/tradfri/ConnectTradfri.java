@@ -20,11 +20,11 @@ package com.adr.helloiot.tradfri;
 
 import com.adr.hellocommon.dialog.DialogView;
 import com.adr.hellocommon.dialog.MessageUtils;
-import com.adr.hellocommon.utils.FXMLUtil;
 import com.adr.helloiot.ConfigProperties;
 import com.adr.helloiot.GroupManagers;
 import com.adr.helloiot.util.CompletableAsync;
 import com.adr.helloiot.util.Dialogs;
+import com.adr.helloiot.util.FXMLNames;
 import com.adr.helloiot.util.HTTPUtils;
 import com.google.common.io.Resources;
 import com.google.common.util.concurrent.FutureCallback;
@@ -68,7 +68,7 @@ public class ConnectTradfri {
     @FXML private ResourceBundle resources;
     
     public ConnectTradfri() {
-        FXMLUtil.load(this, "/com/adr/helloiot/fxml/connecttradfri.fxml", "com/adr/helloiot/fxml/connecttradfri");
+        FXMLNames.load(this, "com/adr/helloiot/fxml/connecttradfri");
     }    
     
     @FXML

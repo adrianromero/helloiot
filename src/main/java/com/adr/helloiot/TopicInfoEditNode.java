@@ -1,5 +1,5 @@
 //    HelloIoT is a dashboard creator for MQTT
-//    Copyright (C) 2017 Adrián Romero Corchado.
+//    Copyright (C) 2017-2018 Adrián Romero Corchado.
 //
 //    This file is part of HelloIot.
 //
@@ -20,7 +20,7 @@ package com.adr.helloiot;
 
 import com.adr.fonticon.FontAwesome;
 import com.adr.fonticon.IconBuilder;
-import com.adr.hellocommon.utils.FXMLUtil;
+import com.adr.helloiot.util.FXMLNames;
 import java.util.ResourceBundle;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -72,7 +72,7 @@ public class TopicInfoEditNode implements TopicInfoNode {
     public CheckBox editmultiline; 
 
     public TopicInfoEditNode() {
-        FXMLUtil.load(this, "/com/adr/helloiot/fxml/topicinfoeditnode.fxml", "com/adr/helloiot/fxml/topicinfoeditnode");
+        FXMLNames.load(this, "com/adr/helloiot/fxml/topicinfoeditnode");            
     }
     
     @Override
