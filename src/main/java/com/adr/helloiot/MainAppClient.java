@@ -18,8 +18,6 @@
 //
 package com.adr.helloiot;
 
-import java.util.Locale;
-
 public class MainAppClient extends MainApp {
 
     @Override
@@ -36,8 +34,7 @@ public class MainAppClient extends MainApp {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        
-        Locale.setDefault(Locale.US);
+        // Locale.setDefault(Locale.US);
         launch(args);
     }
 }
