@@ -1,0 +1,24 @@
+
+<Thermostat fx:id="temperature1"  topic="home/bedroom1/temperature">
+        <properties label="Bedroom 1 temperature"/>
+</Thermostat> 
+<Thermostat fx:id="temperature2"  topic="home/bedroom2/temperature">
+        <properties label="Bedroom 2 temperature"/>
+</Thermostat> 
+
+
+<StartLine UnitPage.page="Temperature Chart" VBox.vgrow= "NEVER" />
+<LabelSection UnitPage.page="Temperature Chart" text="Temperature"/>
+   
+<StartLine UnitPage.page="Temperature Chart" VBox.vgrow= "SOMETIMES" />
+<SliderSimple UnitPage.page="Temperature Chart" device="$temperature1"/>
+<SliderSimple UnitPage.page="Temperature Chart" device="$temperature2"/>
+
+<StartLine UnitPage.page="Temperature Chart" VBox.vgrow= "NEVER" />
+<LabelSection UnitPage.page="Temperature Chart" text="Chart"/>
+   
+<StartLine UnitPage.page="Temperature Chart" VBox.vgrow= "SOMETIMES" />
+<ViewChart UnitPage.page="Temperature Chart" label="Temperature bedrooms" legendSide="BOTTOM">
+    <ViewChartSerie device="$temperature1"/>
+    <ViewChartSerie device="$temperature2"/>
+</ViewChart>

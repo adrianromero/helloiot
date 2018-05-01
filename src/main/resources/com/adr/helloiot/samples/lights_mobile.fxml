@@ -1,0 +1,80 @@
+
+<Light fx:id="living_light1" topic="home/living/light1">
+    <properties name="living_light1" label="Living light 1" tags="living lamp"/>
+</Light>
+<Light fx:id="living_light2" topic="home/living/light2">
+    <properties name="living_light2" label="Living light 2" tags="living lamp"/>
+</Light>               
+
+<StartLine UnitPage.page="Lights" VBox.vgrow= "NEVER" />
+<LabelSection UnitPage.page="Lights" text="Living room lights"/>
+   
+<StartLine UnitPage.page="Lights" VBox.vgrow= "SOMETIMES" />
+<ViewSimple UnitPage.page="Lights" device="$living_light1" iconStatus="BULBTEXT/1"/>        
+<ViewSimple UnitPage.page="Lights" device="$living_light2" iconStatus="BULBTEXT/2"/>
+
+<StartLine UnitPage.page="Lights" VBox.vgrow= "NEVER" />      
+<LabelSection UnitPage.page="Lights" text="Light status"/>
+
+<StartLine UnitPage.page="Lights" VBox.vgrow= "NEVER" />  
+<EditStatus UnitPage.page="Lights" device="$living_light1"/>
+<EditStatus UnitPage.page="Lights" device="$living_light2"/>
+
+<StartLine UnitPage.page="Lights" VBox.vgrow= "NEVER" />
+<LabelSection UnitPage.page="Lights" text="Light switchs"/>  
+  
+<StartLine UnitPage.page="Lights" VBox.vgrow= "SOMETIMES" />
+<ButtonSimple UnitPage.page="Lights" device="$living_light1" iconStatus="TOGGLE"/>
+<ButtonSimple UnitPage.page="Lights" device="$living_light2" iconStatus="TOGGLE"/>
+
+<StartLine UnitPage.page="Lights" VBox.vgrow= "NEVER" />
+<LabelSection UnitPage.page="Lights" text="More actions"/> 
+
+<StartLine UnitPage.page="Lights" VBox.vgrow= "SOMETIMES" />
+<ButtonSimple UnitPage.page="Lights" device="$living_light1"
+  label=""
+  text="Light 1" 
+  style="-fx-background-color: transparent;"/>
+<ButtonScript UnitPage.page="Lights"
+  label=""
+  text="Timer Light 1" 
+  style="-fx-background-color: transparent; -fx-base:-fx-color4-fill; -fx-button-fill:-fx-color4-fill;">
+    <graphic><Picture iconAwesome="FA_CLOCK_O" size="48" color="WHITE"/></graphic>
+    <scriptCode><![CDATA[
+        _allDevices().getByName('living_light1').sendON(5000);
+    ]]></scriptCode>
+</ButtonScript>  
+<StartLine UnitPage.page="Lights" VBox.vgrow= "SOMETIMES" />                      
+<ButtonScript UnitPage.page="Lights" confirm="true"
+  label=""
+  text="Switch lights off" 
+  style="-fx-background-color: transparent; -fx-base:-fx-color3-fill; -fx-button-fill:-fx-color3-fill;">
+    <graphic><Picture iconAwesome="FA_POWER_OFF" size="48" color="white"/></graphic>
+    <scriptCode><![CDATA[
+        _allDevices().tagged('lamp').forEach(function (d) {
+            d.sendOFF();
+        });
+    ]]></scriptCode>
+</ButtonScript>                                   
+<ButtonScript UnitPage.page="Lights"
+  label=""
+  text="Scroll" 
+  style="-fx-background-color: transparent; -fx-base:-fx-color1-fill; -fx-button-fill:-fx-color1-fill;">
+    <graphic><Picture iconAwesome="FA_STAR_O" size="48" color="yellow"/></graphic>
+    <parameters light1="$living_light1" light2="$living_light2" light3="$living_light3" light4="$living_light4" light5="$living_light5"/>
+    <scriptCode><![CDATA[
+        light1.sendOFF();           
+        light2.sendOFF();           
+                 
+        for (var i = 1; i < 5; i++) {
+            java.lang.Thread.sleep(300);      
+            light1.sendON();
+            java.lang.Thread.sleep(300);
+            light2.sendON();
+            java.lang.Thread.sleep(300);
+            light1.sendOFF();
+            java.lang.Thread.sleep(300);
+            light2.sendOFF();                                                                                       
+        }
+    ]]></scriptCode>
+</ButtonScript>

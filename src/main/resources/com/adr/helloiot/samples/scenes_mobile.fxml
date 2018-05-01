@@ -15,5 +15,6 @@
 <StartLine UnitPage.page="Scenes" VBox.vgrow= "ALWAYS" />
 <ViewText  UnitPage.page="Scenes" device="$scenes"/>
 <ButtonSimple UnitPage.page="Scenes" device="$scenes" />
+<StartLine UnitPage.page="Scenes" VBox.vgrow= "ALWAYS" />
 <ButtonsSpinner UnitPage.page="Scenes" device="$scenes"/>
 <ButtonPair UnitPage.page="Scenes" device="$scenes"/>
