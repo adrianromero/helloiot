@@ -69,8 +69,6 @@ public abstract class HelloPlatform {
     }
     
     public HelloPlatform() {
-                System.out.println("Diagonal-> " + getDiagonal());
-
         phone = getDiagonal() <= MAX_PHONE_DIAGONAL;
     }
 
