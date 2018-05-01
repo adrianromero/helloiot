@@ -1,5 +1,5 @@
 //    HelloIoT is a dashboard creator for MQTT
-//    Copyright (C) 2017 Adrián Romero Corchado.
+//    Copyright (C) 2017-2018 Adrián Romero Corchado.
 //
 //    This file is part of HelloIot.
 //
@@ -23,14 +23,20 @@ import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.geometry.Rectangle2D;
+import javafx.stage.Screen;
 
 /**
  *
  * @author adrian
  */
 public abstract class HelloPlatform {
-
+    
+    private final static double MAX_PHONE_DIAGONAL = 6.5;
+    
     private static HelloPlatform instance = null;
+    
+    private final boolean phone;
 
     private static void initInstance() {
 
@@ -61,10 +67,31 @@ public abstract class HelloPlatform {
         }
         return instance;
     }
+    
+    public HelloPlatform() {
+                System.out.println("Diagonal-> " + getDiagonal());
+
+        phone = getDiagonal() <= MAX_PHONE_DIAGONAL;
+    }
+
+    
+    public double getDiagonal() {       
+        Rectangle2D rect = Screen.getPrimary().getBounds();   
+        double dpi = Screen.getPrimary().getDpi();
+        double width = rect.getWidth() / dpi;
+        double height = rect.getHeight() / dpi;
+        return Math.sqrt(width * width + height * height); 
+    }
+    
+    
+    public boolean isPhone() {
+        return phone;
+    }
 
     public abstract File getFile(String file);
 
     public abstract boolean isFullScreen();
 
     public abstract Script getNewScript();
+
 }

@@ -221,15 +221,16 @@ public class HelloIoTApp {
     public void addFXMLFileDevicesUnits(String filedescriptor) throws HelloIoTException {
 
         try {
+            String versionfxml = HelloPlatform.getInstance().isPhone() ? "_mobile.fxml" : ".fxml";
             URL fxmlurl;
             ResourceBundle fxmlresources;
             if (filedescriptor.startsWith("local:")) {
                 // Is a local resource
-                fxmlurl = HelloIoTApp.class.getResource("/" + filedescriptor.substring(6) + ".fxml");
+                fxmlurl = HelloIoTApp.class.getResource("/" + filedescriptor.substring(6) + versionfxml);
                 fxmlresources = ResourceBundle.getBundle(filedescriptor.substring(6));
             } else {
                 // Is a file       
-                fxmlurl = new File(filedescriptor + ".fxml").toURI().toURL();
+                fxmlurl = new File(filedescriptor + versionfxml).toURI().toURL();
                 File file = new File(filedescriptor);
                 URL[] urls = {file.getAbsoluteFile().getParentFile().toURI().toURL()};
                 ClassLoader loader = new URLClassLoader(urls);
