@@ -71,10 +71,10 @@
          </children>
       </HBox>
       <Label fx:id="labelusername" text="%label.username" GridPane.rowIndex="17" />
-      <TextField fx:id="username" prefWidth="171.0" GridPane.rowIndex="18" />
+      <TextField fx:id="username" GridPane.rowIndex="18" />
       <CheckBox fx:id="cleansession" mnemonicParsing="false" selected="true" text="%label.cleansession" GridPane.columnSpan="2147483647" GridPane.rowIndex="24" />
       <Label fx:id="labelpassword" text="%label.password" GridPane.rowIndex="19" />
-      <PasswordField fx:id="password" prefWidth="171.0" GridPane.rowIndex="20" />
+      <PasswordField fx:id="password" GridPane.rowIndex="20" />
       <Label fx:id="labelextendedproperties" maxWidth="1.7976931348623157E308" styleClass="formsubsection" text="%label.extendedproperties" GridPane.columnSpan="2147483647" GridPane.rowIndex="21" />
       <Label fx:id="labeltimeout" text="%label.timeout" GridPane.rowIndex="26" />
       <TextField fx:id="timeout" GridPane.rowIndex="27" />
@@ -112,13 +112,13 @@
       <Label fx:id="labelprotocol" text="%label.protocol" GridPane.rowIndex="6" />
       <ChoiceBox fx:id="protocol" prefWidth="150.0" GridPane.rowIndex="7" />
       <Label fx:id="labelkeystore" text="%label.keystore" GridPane.rowIndex="8" />
-      <TextField fx:id="keystore" prefWidth="171.0" GridPane.rowIndex="9" />
+      <TextField fx:id="keystore" GridPane.rowIndex="9" />
       <Label fx:id="labelkeystorepassword" text="%label.keystorepassword" GridPane.rowIndex="10" />
-      <PasswordField fx:id="keystorepassword" prefWidth="171.0" GridPane.rowIndex="11" />
+      <PasswordField fx:id="keystorepassword" GridPane.rowIndex="11" />
       <Label fx:id="labeltruststore" text="%label.truststore" GridPane.rowIndex="12" />
       <Label fx:id="labeltruststorepassword" text="%label.truststorepassword" GridPane.rowIndex="14" />
-      <TextField fx:id="truststore" prefWidth="171.0" GridPane.rowIndex="13" />
-      <PasswordField fx:id="truststorepassword" prefWidth="171.0" GridPane.rowIndex="15" />
+      <TextField fx:id="truststore" GridPane.rowIndex="13" />
+      <PasswordField fx:id="truststorepassword" GridPane.rowIndex="15" />
       <Label fx:id="labelcredentials" maxWidth="1.7976931348623157E308" styleClass="formsubsection" text="%label.credentials" GridPane.columnSpan="2147483647" GridPane.rowIndex="16" />
       <Label fx:id="labelport" text="%label.port" GridPane.rowIndex="3" />
       <HBox alignment="CENTER_LEFT" spacing="10.0" GridPane.rowIndex="5">
