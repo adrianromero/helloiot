@@ -154,16 +154,6 @@ public class HelloIoTApp {
                                     sslproperties));
         }
 
-        topicsmanager = new TopicsManager(manager);
-
-        topicsmanager.setOnConnectionLost(t -> {
-            LOGGER.log(Level.WARNING, "Connection lost to broker.", t);
-            Platform.runLater(() -> {
-                stopUnits();
-                connection();
-            });
-        });
-
         styleConnection = config.get("app.retryconnection").asBoolean() ? this::tryConnection : this::oneConnection;
 
         mainnode = new MainNode(
@@ -171,6 +161,16 @@ public class HelloIoTApp {
                 Platform.isSupported(ConditionalFeature.MEDIA) ? new StandardClipFactory() : new SilentClipFactory(),
                 config.get("app.clock").asBoolean(),
                 config.get("app.exitbutton").asBoolean());
+        
+        topicsmanager = new TopicsManager(manager);
+        topicsmanager.setOnConnectionLost(t -> {
+            LOGGER.log(Level.WARNING, "Connection lost to broker.", t);
+            Platform.runLater(() -> {
+                MessageUtils.showException(MessageUtils.getRoot(mainnode.getNode()), resources.getString("title.errorconnection"), t.getLocalizedMessage(), t, ev -> {
+                    exitevent.handle(new ActionEvent());
+                });
+            });
+        });        
     }
 
     public void addUnitPages(List<UnitPage> unitpages) {

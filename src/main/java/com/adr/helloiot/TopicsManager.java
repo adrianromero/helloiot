@@ -130,8 +130,6 @@ public final class TopicsManager {
     }
     
     private void connectionLost(Throwable thrwbl) {
-        closeinternal();
-
         if (lostCallback != null) {
             lostCallback.accept(thrwbl);
         } else {
