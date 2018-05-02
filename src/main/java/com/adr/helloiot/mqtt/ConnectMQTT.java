@@ -68,7 +68,6 @@ public class ConnectMQTT {
     @FXML private RadioButton versiondefault;
     @FXML private RadioButton version311;
     @FXML private RadioButton version31;
-    @FXML private CheckBox cleansession;
     @FXML private Label labelextendedproperties;
     @FXML private Label labeltimeout;
     @FXML private TextField timeout;
@@ -76,7 +75,6 @@ public class ConnectMQTT {
     @FXML private TextField keepalive;
     @FXML private Label labelmaxinflight;
     @FXML private TextField maxinflight;
-    @FXML private CheckBox automaticreconnect;
     @FXML private Label labeldefaultqos;
     @FXML private RadioButton qos0;
     @FXML private RadioButton qos1;
@@ -113,7 +111,6 @@ public class ConnectMQTT {
         timeout.setText(configprops.getProperty("mqtt.connectiontimeout", Integer.toString(MqttConnectOptions.CONNECTION_TIMEOUT_DEFAULT)));
         keepalive.setText(configprops.getProperty("mqtt.keepaliveinterval", Integer.toString(MqttConnectOptions.KEEP_ALIVE_INTERVAL_DEFAULT)));
         maxinflight.setText(configprops.getProperty("mqtt.maxinflight", Integer.toString(MqttConnectOptions.MAX_INFLIGHT_DEFAULT)));
-        automaticreconnect.setSelected(Boolean.parseBoolean(configprops.getProperty("mqtt.automaticreconnect", "true")));
         switch (Integer.parseInt(configprops.getProperty("mqtt.defaultqos", "1"))) {
         case 1:
             qos1.setSelected(true);
@@ -135,7 +132,6 @@ public class ConnectMQTT {
         default:
             versiondefault.setSelected(true);
         }
-        cleansession.setSelected(Boolean.parseBoolean(configprops.getProperty("mqtt.cleansession", Boolean.toString(MqttConnectOptions.CLEAN_SESSION_DEFAULT))));
 
         switch (configprops.getProperty("client.broker", "0")) {
         case "1":
@@ -162,10 +158,8 @@ public class ConnectMQTT {
         configprops.setProperty("mqtt.connectiontimeout", timeout.getText());
         configprops.setProperty("mqtt.keepaliveinterval", keepalive.getText());
         configprops.setProperty("mqtt.maxinflight", maxinflight.getText());
-        configprops.setProperty("mqtt.automaticreconnect", Boolean.toString(automaticreconnect.isSelected()));
         configprops.setProperty("mqtt.defaultqos", Integer.toString(getDefaultQoS()));
         configprops.setProperty("mqtt.version", Integer.toString(getVersion()));
-        configprops.setProperty("mqtt.cleansession", Boolean.toString(cleansession.isSelected()));
 
         configprops.setProperty("client.broker", getBrokerPane());
     }
@@ -218,7 +212,6 @@ public class ConnectMQTT {
         password.setDisable(value);
         labelclientid.setDisable(value);
         clientid.setDisable(value);
-        cleansession.setDisable(value);
         labelversion.setDisable(value);
         versiondefault.setDisable(value);
         version31.setDisable(value);
@@ -230,7 +223,6 @@ public class ConnectMQTT {
         keepalive.setDisable(value);
         labelmaxinflight.setDisable(value);
         maxinflight.setDisable(value);
-        automaticreconnect.setDisable(value);
         labeldefaultqos.setDisable(value);
         qos0.setDisable(value);
         qos1.setDisable(value);

@@ -148,9 +148,7 @@ public class HelloIoTApp {
                                     config.get("mqtt.keepaliveinterval").asInt(),
                                     config.get("mqtt.defaultqos").asInt(),
                                     config.get("mqtt.version").asInt(),
-                                    config.get("mqtt.cleansession").asBoolean(),
                                     config.get("mqtt.maxinflight").asInt(),
-                                    config.get("mqtt.automaticreconnect").asBoolean(),
                                     sslproperties));
         }
 

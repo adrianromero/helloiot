@@ -55,9 +55,7 @@ public class ManagerMQTT implements MqttCallback, ManagerProtocol {
     private final Properties sslproperties;
     private final int defaultqos;
     private final int version;
-    private final boolean cleansession;
     private final int maxinflight;
-    private boolean automaticreconnect;
     
     // Manager
     private GroupManagers group;   
@@ -69,10 +67,10 @@ public class ManagerMQTT implements MqttCallback, ManagerProtocol {
     private final ResourceBundle resources;
         
     public ManagerMQTT(String url) {
-        this(url, null, null, null, MqttConnectOptions.CONNECTION_TIMEOUT_DEFAULT, MqttConnectOptions.KEEP_ALIVE_INTERVAL_DEFAULT, 1, MqttConnectOptions.MQTT_VERSION_DEFAULT, MqttConnectOptions.CLEAN_SESSION_DEFAULT, MqttConnectOptions.MAX_INFLIGHT_DEFAULT, true, null);
+        this(url, null, null, null, MqttConnectOptions.CONNECTION_TIMEOUT_DEFAULT, MqttConnectOptions.KEEP_ALIVE_INTERVAL_DEFAULT, 1, MqttConnectOptions.MQTT_VERSION_DEFAULT, MqttConnectOptions.MAX_INFLIGHT_DEFAULT, null);
     }
     
-    public ManagerMQTT(String url, String username, String password, String clientid, int timeout, int keepalive, int defaultqos, int version, boolean cleansession, int maxinflight, boolean automaticreconnect, Properties sslproperties) {
+    public ManagerMQTT(String url, String username, String password, String clientid, int timeout, int keepalive, int defaultqos, int version, int maxinflight, Properties sslproperties) {
 
         this.url = url;
         this.username = username;
@@ -82,9 +80,7 @@ public class ManagerMQTT implements MqttCallback, ManagerProtocol {
         this.keepalive = keepalive;
         this.defaultqos = defaultqos;
         this.version = version;
-        this.cleansession = cleansession;
         this.maxinflight = maxinflight;
-        this.automaticreconnect = automaticreconnect;
         this.sslproperties = sslproperties;
 
         this.mqttClient = null;   
@@ -115,7 +111,6 @@ public class ManagerMQTT implements MqttCallback, ManagerProtocol {
         try {
             mqttClient = new MqttAsyncClient(url, clientid == null || clientid.isEmpty() ? MqttAsyncClient.generateClientId() : clientid, new MemoryPersistence());
             MqttConnectOptions options = new MqttConnectOptions();
-            options.setCleanSession(true);
             if (!Strings.isNullOrEmpty(username)) {
                 options.setUserName(username);
                 options.setPassword(password.toCharArray());
@@ -123,8 +118,8 @@ public class ManagerMQTT implements MqttCallback, ManagerProtocol {
             options.setConnectionTimeout(timeout);
             options.setKeepAliveInterval(keepalive);
             options.setMqttVersion(version);
-            options.setCleanSession(cleansession);
-            options.setAutomaticReconnect(automaticreconnect);
+            options.setCleanSession(true);
+            options.setAutomaticReconnect(false);
             options.setMaxInflight(maxinflight);
             options.setSSLProperties(sslproperties);
             mqttClient.connect(options).waitForCompletion(1000);
