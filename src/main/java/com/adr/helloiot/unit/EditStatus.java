@@ -109,7 +109,6 @@ public class EditStatus extends Tile {
         editaction.setGraphic(IconBuilder.create(FontAwesome.FA_EDIT, 16).styleClass("icon-fill").build());
         okaction.setGraphic(IconBuilder.create(FontAwesome.FA_CHECK, 16).styleClass("icon-fill").build());
         cancelaction.setGraphic(IconBuilder.create(FontAwesome.FA_REMOVE, 16).styleClass("icon-fill").build());
-        setDisable(true);
     }
 
     private void updateStatus(byte[] status) {

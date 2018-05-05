@@ -1,5 +1,5 @@
 //    HelloIoT is a dashboard creator for MQTT
-//    Copyright (C) 2017 Adrián Romero Corchado.
+//    Copyright (C) 2017-2018 Adrián Romero Corchado.
 //
 //    This file is part of HelloIot.
 //
@@ -39,17 +39,14 @@ public class LabelSection extends Label implements Unit {
         HBox.setHgrow(this, Priority.SOMETIMES);
         setMaxSize(Integer.MAX_VALUE, Integer.MAX_VALUE);
         setFocusTraversable(false);
-        setDisable(true);
     }
 
     @Override
     public void start() {
-        setDisable(false);
     }
 
     @Override
     public void stop() {
-        setDisable(true);
     }
 
     @Override

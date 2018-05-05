@@ -208,6 +208,14 @@ public final class MainNode {
         app.getBuzzer().unsubscribeStatus(buzzer.getMessageHandler());
         unitpages.clear();
     }
+
+    public void start() {
+        container.setDisable(false);
+    }
+    
+    public void stop() {
+        container.setDisable(true);
+    }
     
     public void setToolbarButton(EventHandler<ActionEvent> backevent, Node graphic, String text) {
         

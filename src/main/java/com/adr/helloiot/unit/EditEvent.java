@@ -72,8 +72,6 @@ public class EditEvent extends Tile {
 
     public void initialize() {
         fireaction.setGraphic(IconBuilder.create(FontAwesome.FA_SEND, 16).styleClass("icon-fill").build());
-
-        setDisable(true);
     }
 
     public void setDevice(TransmitterSimple device) {

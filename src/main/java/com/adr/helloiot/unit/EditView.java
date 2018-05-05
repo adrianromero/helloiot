@@ -59,7 +59,6 @@ public class EditView extends Tile {
 
 
     protected void initialize() {
-        setDisable(true);
     }
 
     private void updateStatus(byte[] status) {

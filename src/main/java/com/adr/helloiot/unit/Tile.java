@@ -52,7 +52,6 @@ public abstract class Tile extends BorderPane implements Unit {
         setMinSize(150.0, Control.USE_COMPUTED_SIZE);
         setPrefSize(160.0, Control.USE_COMPUTED_SIZE);
         HBox.setHgrow(this, Priority.SOMETIMES);
-        setDisable(true);
 
         setCenter(constructContent());  
     }
@@ -81,12 +80,10 @@ public abstract class Tile extends BorderPane implements Unit {
 
     @Override
     public void start() {
-        setDisable(false);
     }
 
     @Override
     public void stop() {
-        setDisable(true);
     }
 
     @Override

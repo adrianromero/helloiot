@@ -21,6 +21,10 @@ package com.adr.helloiot;
 import com.adr.helloiot.mqtt.ManagerMQTT;
 import com.adr.fonticon.FontAwesome;
 import com.adr.fonticon.IconBuilder;
+import com.adr.fonticon.decorator.FillPaint;
+import com.adr.fonticon.decorator.Shine;
+import com.adr.hellocommon.dialog.DialogException;
+import com.adr.hellocommon.dialog.DialogView;
 import com.adr.hellocommon.dialog.MessageUtils;
 import com.adr.helloiot.unit.Unit;
 import com.adr.helloiot.device.Device;
@@ -51,6 +55,7 @@ import java.util.MissingResourceException;
 import java.util.Properties;
 import java.util.ResourceBundle;
 import java.util.ServiceLoader;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.animation.KeyFrame;
@@ -60,6 +65,9 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.paint.Color;
 import javafx.util.Duration;
 
 /**
@@ -92,6 +100,8 @@ public class HelloIoTApp {
 
     private EventHandler<ActionEvent> exitevent = null;
     private final Runnable styleConnection;
+    
+    private int runningstatus;
 
     public HelloIoTApp(Map<String, MiniVar> config) {
 
@@ -163,14 +173,23 @@ public class HelloIoTApp {
         topicsmanager = new TopicsManager(manager);
         topicsmanager.setOnConnectionLost(t -> {
             LOGGER.log(Level.WARNING, "Connection lost to broker.", t);
-            Platform.runLater(() -> {
-                MessageUtils.showException(MessageUtils.getRoot(mainnode.getNode()), resources.getString("title.errorconnection"), t.getLocalizedMessage(), t, ev -> {
-                    exitevent.handle(new ActionEvent());
-                });
+             Platform.runLater(() -> {
+                stopUnits();
+                Futures.addCallback(topicsmanager.close(), new FutureCallback<Object>() {
+                    @Override
+                    public void onSuccess(Object v) {
+                        showConnectionException(t);
+                    }
+                    @Override
+                    public void onFailure(Throwable ex) {
+                        showConnectionException(t);
+                    }
+                }, CompletableAsync.fxThread());
+                
             });
         });        
     }
-
+    
     public void addUnitPages(List<UnitPage> unitpages) {
         appunitpages.addAll(unitpages);
     }
@@ -296,11 +315,9 @@ public class HelloIoTApp {
             }
 
             @Override
-            public void onFailure(Throwable ex) {
+            public void onFailure(Throwable t) {
                 mainnode.hideConnecting();
-                MessageUtils.showException(MessageUtils.getRoot(mainnode.getNode()), resources.getString("title.errorconnection"), ex.getLocalizedMessage(), ex, ev -> {
-                    exitevent.handle(new ActionEvent());
-                });
+                showConnectionException(t);
             }
         }, CompletableAsync.fxThread());
     }
@@ -322,23 +339,74 @@ public class HelloIoTApp {
             }
         }, CompletableAsync.fxThread());
     }
-
+    
+    private void showConnectionException(Throwable t) {
+        
+        AtomicBoolean isok = new AtomicBoolean(false);
+    
+        DialogView dialog = new DialogView();
+        dialog.setTitle(resources.getString("title.errorconnection"));
+        DialogException contentex = new DialogException();
+        contentex.setMessage(t.getLocalizedMessage());
+        contentex.setException(t);   
+        dialog.setContent(contentex.getNode());     
+        dialog.setIndicator(IconBuilder.create(FontAwesome.FA_TIMES_CIRCLE, 48.0).apply(new FillPaint(Color.web("#FF9999"))).apply(new Shine(Color.RED)).build());
+        dialog.setActionDispose((ActionEvent event) -> {
+            if (isok.get()) {
+                connection();
+            } else {
+                exitevent.handle(event);
+            }    
+        });
+        
+        Button cancel = new Button (resources.getString("button.cancel"));
+        cancel.setOnAction((ActionEvent event) -> {
+            dialog.dispose();
+        });
+        ButtonBar.setButtonData(cancel, ButtonBar.ButtonData.CANCEL_CLOSE);   
+       
+        Button retry = new Button (resources.getString("button.retry"));
+        retry.setOnAction((ActionEvent event) -> {
+            isok.set(true);
+            dialog.dispose();
+        });
+        retry.setDefaultButton(true);
+        ButtonBar.setButtonData(retry, ButtonBar.ButtonData.OK_DONE);           
+        
+        dialog.addButtons(contentex.createButtonDetails(), cancel, retry);
+        dialog.show(MessageUtils.getRoot(mainnode.getNode()));                  
+    }
+    
     public void stopAndDestroy() {
         stopUnits();
-        topicsmanager.close();
+        Futures.addCallback(topicsmanager.close(), new FutureCallback<Object>() {
+            @Override
+            public void onSuccess(Object v) {
+                // Destroy all units
+                appunits.forEach(Unit::destroy);
+                appdevices.forEach(Device::destroy);
 
-        // Destroy all units
-        appunits.forEach(Unit::destroy);
-        appdevices.forEach(Device::destroy);
+                mainnode.destroy();
+            }
 
-        mainnode.destroy();
+            @Override
+            public void onFailure(Throwable ex) {
+                // Destroy all units
+                appunits.forEach(Unit::destroy);
+                appdevices.forEach(Device::destroy);
+
+                mainnode.destroy();
+            }
+        }, CompletableAsync.fxThread());
     }
 
     private void startUnits() {
         appunits.forEach(Unit::start);
+        mainnode.start();
     }
 
     private void stopUnits() {
+        mainnode.stop();
         appunits.forEach(Unit::stop);
     }
 

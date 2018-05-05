@@ -64,7 +64,6 @@ public class LogView extends Tile {
     }
 
     protected void initialize() {
-        setDisable(true);
     }
 
     private void updateStatus(byte[] status) {
