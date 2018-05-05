@@ -1,5 +1,5 @@
 //    HelloIoT is a dashboard creator for MQTT
-//    Copyright (C) 2017 Adrián Romero Corchado.
+//    Copyright (C) 2017-2018 Adrián Romero Corchado.
 //
 //    This file is part of HelloIot.
 //
@@ -42,9 +42,13 @@ public class CompletableAsync<T> {
         return new Executor() {
             @Override
             public void execute(Runnable command) {
-                Platform.runLater(() -> {
+                if (Platform.isFxApplicationThread()) {
                     command.run();
-                });          
+                } else {
+                    Platform.runLater(() -> {
+                        command.run();
+                    });        
+                }
             }
         };
     }
