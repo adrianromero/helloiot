@@ -3,14 +3,12 @@
     topic="TRÅDFRI/bulb/${name}/on">
     <properties tags="tradfrilight"/>
 </Light>
-
 <DeviceNumber 
     fx:id="${nameshort}dim"
     topic="TRÅDFRI/bulb/${name}/dim"
     levelMin="10.0" 
     levelMax="254.0" 
     increment="10.0"/>
-
 <DeviceSet 
     fx:id="${nameshort}temperature"  
     topic="TRÅDFRI/bulb/${name}/temperature">
@@ -21,17 +19,15 @@
     </values>
 </DeviceSet> 
 
+<StartLine UnitPage.page="Tradfri lights" VBox.vgrow= "SOMETIMES" />
 <ControlIntensity 
     UnitPage.page="Tradfri lights" 
     deviceOn="$${nameshort}on"
     deviceDim="$${nameshort}dim"
-    prefWidth="240" 
     prefHeight="160"
     text="${name}" />
-
 <ButtonSimple 
     UnitPage.page="Tradfri lights" 
     device="$${nameshort}temperature"
-    prefWidth="240" 
     prefHeight="160"
     text="${name}" />

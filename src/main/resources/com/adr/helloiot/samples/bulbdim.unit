@@ -3,7 +3,6 @@
     topic="TRÅDFRI/bulb/${name}/on">
     <properties tags="tradfrilight"/>
 </Light>
-
 <DeviceNumber 
     fx:id="${nameshort}dim"
     topic="TRÅDFRI/bulb/${name}/dim"
@@ -11,10 +10,10 @@
     levelMax="254.0" 
     increment="10.0"/>
 
+<StartLine UnitPage.page="Tradfri lights" VBox.vgrow= "SOMETIMES" />
 <ControlIntensity 
     UnitPage.page="Tradfri lights" 
     deviceOn="$${nameshort}on"
     deviceDim="$${nameshort}dim"
-    prefWidth="240" 
     prefHeight="160"
     text="${name}" />
