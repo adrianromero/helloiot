@@ -529,7 +529,7 @@ public class ClientLoginNode {
         updeviceunit.setGraphic(IconBuilder.create(FontAwesome.FA_CHEVRON_UP, 18.0).styleClass("icon-fill").build());
         downdeviceunit.setGraphic(IconBuilder.create(FontAwesome.FA_CHEVRON_DOWN, 18.0).styleClass("icon-fill").build());
         
-        menubutton.setGraphic(IconBuilder.create(FontAwesome.FA_DASHBOARD, 18.0).styleClass("icon-fill").build());
+        menubutton.setGraphic(IconBuilder.create(FontAwesome.FA_MAGIC, 18.0).styleClass("icon-fill").build());
 
         edittype.setItems(FXCollections.observableArrayList("Publication/Subscription", "Subscription", "Publication", "Code"));
         edittype.getSelectionModel().clearSelection();
