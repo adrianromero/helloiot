@@ -20,7 +20,13 @@ package com.adr.helloiot;
 
 import com.adr.helloiot.scripting.Script;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.geometry.Rectangle2D;
@@ -31,12 +37,14 @@ import javafx.stage.Screen;
  * @author adrian
  */
 public abstract class HelloPlatform {
-    
+
+    private final static String APP_PROPERTIES = ".helloiot-app.properties";    
     private final static double MAX_PHONE_DIAGONAL = 6.5;
     
     private static HelloPlatform instance = null;
     
-    private final boolean phone;
+    private boolean phone;    
+    private Properties appproperties;
 
     private static void initInstance() {
 
@@ -59,6 +67,7 @@ public abstract class HelloPlatform {
             Logger.getLogger(HelloPlatform.class.getName()).log(Level.SEVERE, null, ex);
             throw new RuntimeException(ex);
         }
+        instance.init();
     }
 
     public static final HelloPlatform getInstance() {
@@ -68,10 +77,17 @@ public abstract class HelloPlatform {
         return instance;
     }
     
-    public HelloPlatform() {
-        phone = getDiagonal() <= MAX_PHONE_DIAGONAL;
+    private void init() {
+        // Init phone status
+        phone = getDiagonal() <= MAX_PHONE_DIAGONAL;       
+        // Load the properties
+        appproperties = new Properties();     
+        try (InputStream in = new FileInputStream(HelloPlatform.getInstance().getFile(APP_PROPERTIES))) {
+            appproperties.load(in);
+        } catch (IOException ex) {
+            Logger.getLogger(HelloIoTApp.class.getName()).log(Level.WARNING, ex.getMessage());
+        }          
     }
-
     
     public double getDiagonal() {       
         Rectangle2D rect = Screen.getPrimary().getBounds();   
@@ -84,6 +100,23 @@ public abstract class HelloPlatform {
     
     public boolean isPhone() {
         return phone;
+    }
+
+    public void saveAppProperties() {
+        // Save the properties...
+        try (OutputStream out = new FileOutputStream(HelloPlatform.getInstance().getFile(APP_PROPERTIES))) {
+            appproperties.store(out, "HelloIoT properties");
+        } catch (IOException ex) {
+            Logger.getLogger(HelloIoTApp.class.getName()).log(Level.WARNING, ex.getMessage());
+        }
+    }   
+    
+    public String getProperty(String key, String defaultValue) {
+        return appproperties.getProperty(key, defaultValue);
+    }
+    
+    public void setProperty(String key, String value) {
+        appproperties.setProperty(key, value);
     }
 
     public abstract File getFile(String file);

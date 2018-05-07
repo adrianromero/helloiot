@@ -20,14 +20,6 @@ package com.adr.helloiot;
 
 import com.adr.hellocommon.dialog.MessageUtils;
 import com.adr.helloiot.util.CompletableAsync;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.Properties;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.application.Application;
 import javafx.beans.value.ObservableValue;
 import javafx.geometry.Rectangle2D;
@@ -42,12 +34,8 @@ import javafx.stage.Stage;
 
 public abstract class MainApp extends Application {
 
-    private final static String APP_PROPERTIES = ".helloiot-app.properties";
-
     private MainManager manager; 
     private Stage stage;
-
-    private Properties appproperties;
 
     protected abstract MainManager createManager();
 
@@ -57,8 +45,6 @@ public abstract class MainApp extends Application {
 
     @Override
     public final void start(Stage stage) {
-
-        loadAppProperties();
 
         this.stage = stage;
         StackPane root = new StackPane();
@@ -76,12 +62,12 @@ public abstract class MainApp extends Application {
         } else {
             // Dimension properties only managed if not fullscreen
             scene = new Scene(root);
-            boolean maximized = Boolean.parseBoolean(appproperties.getProperty("window.maximized"));
+            boolean maximized = Boolean.parseBoolean(HelloPlatform.getInstance().getProperty("window.maximized", "false"));
             if (maximized) {
                 stage.setMaximized(true);
             } else {
-                stage.setWidth(Double.parseDouble(appproperties.getProperty("window.width")));
-                stage.setHeight(Double.parseDouble(appproperties.getProperty("window.height")));
+                stage.setWidth(Double.parseDouble(HelloPlatform.getInstance().getProperty("window.width", "800.0")));
+                stage.setHeight(Double.parseDouble(HelloPlatform.getInstance().getProperty("window.height", "600.0")));
             }
         }
 
@@ -95,7 +81,7 @@ public abstract class MainApp extends Application {
         });
 
         manager = createManager();
-        manager.construct(root, getParameters(), appproperties);
+        manager.construct(root, getParameters());
 
         stage.setTitle(getAppTitle());
         stage.show();
@@ -104,39 +90,16 @@ public abstract class MainApp extends Application {
     @Override
     public final void stop() throws Exception {
 
-        appproperties.setProperty("window.height", Double.toString(stage.getHeight()));
-        appproperties.setProperty("window.width", Double.toString(stage.getWidth()));
-        appproperties.setProperty("window.maximized", Boolean.toString(stage.isMaximized()));
+        HelloPlatform.getInstance().setProperty("window.height", Double.toString(stage.getHeight()));
+        HelloPlatform.getInstance().setProperty("window.width", Double.toString(stage.getWidth()));
+        HelloPlatform.getInstance().setProperty("window.maximized", Boolean.toString(stage.isMaximized()));
+        HelloPlatform.getInstance().saveAppProperties();
         
-        manager.destroy(appproperties);
-        saveAppProperties();
-        
+        manager.destroy();
         manager = null;
         stage = null;
         
         CompletableAsync.shutdown();
         System.exit(0);
-    }
-
-    private void loadAppProperties() {
-        // Load the properties
-        appproperties = new Properties();
-        appproperties.setProperty("window.height", "600.0");
-        appproperties.setProperty("window.width", "800.0");
-        appproperties.setProperty("window.maximized", "false");
-        try (InputStream in = new FileInputStream(HelloPlatform.getInstance().getFile(APP_PROPERTIES))) {
-            appproperties.load(in);
-        } catch (IOException ex) {
-            Logger.getLogger(HelloIoTApp.class.getName()).log(Level.WARNING, ex.getMessage());
-        }
-    }
-
-    private void saveAppProperties() {
-        // Save the properties...
-        try (OutputStream out = new FileOutputStream(HelloPlatform.getInstance().getFile(APP_PROPERTIES))) {
-            appproperties.store(out, "HelloIoT properties");
-        } catch (IOException ex) {
-            Logger.getLogger(HelloIoTApp.class.getName()).log(Level.WARNING, ex.getMessage());
-        }
     }
 }

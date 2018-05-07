@@ -44,7 +44,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -126,6 +125,9 @@ public class MainManagerClient implements MainManager {
             }
         });
         root.getChildren().add(clientlogin.getNode());
+                     
+        HelloPlatform.getInstance().setProperty("window.status", Boolean.toString(false));
+        HelloPlatform.getInstance().saveAppProperties();
     }
 
     private void hideLogin() {
@@ -256,6 +258,9 @@ public class MainManagerClient implements MainManager {
         // ALL the job is done
         root.getChildren().add(helloiotapp.getMainNode().getNode());
         helloiotapp.startAndConstruct();
+        
+        HelloPlatform.getInstance().setProperty("window.status", Boolean.toString(true));
+        HelloPlatform.getInstance().saveAppProperties();        
     }
 
     private void hideApplication() {
@@ -267,7 +272,7 @@ public class MainManagerClient implements MainManager {
     }
 
     @Override
-    public void construct(StackPane root, Parameters params, Properties appproperties) {
+    public void construct(StackPane root, Parameters params) {
         this.root = root;
         List<String> unnamed = params.getUnnamed();
         if (unnamed.isEmpty()) {
@@ -281,7 +286,7 @@ public class MainManagerClient implements MainManager {
             }
         }       
         
-        boolean status = Boolean.parseBoolean(appproperties.getProperty("window.status", "false"));
+        boolean status = Boolean.parseBoolean(HelloPlatform.getInstance().getProperty("window.status", "false"));
         if (status) {
             try {                
                 showApplication();      
@@ -297,10 +302,7 @@ public class MainManagerClient implements MainManager {
     }
 
     @Override
-    public void destroy(Properties appproperties) {
-        
-        appproperties.setProperty("window.status", Boolean.toString(helloiotapp != null));
-        
+    public void destroy() {       
         hideLogin();
         hideApplication();
     }  

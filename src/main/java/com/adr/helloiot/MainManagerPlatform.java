@@ -25,7 +25,6 @@ import com.adr.helloiot.device.format.MiniVarString;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Properties;
 import javafx.application.Application.Parameters;
 import javafx.scene.layout.StackPane;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
@@ -39,7 +38,7 @@ public class MainManagerPlatform implements MainManager {
     private HelloIoTApp helloiotapp = null;
 
     @Override
-    public void construct(StackPane root, Parameters params, Properties appprops) {
+    public void construct(StackPane root, Parameters params) {
 
         ConfigProperties configprops = new ConfigProperties();
         try {
@@ -105,7 +104,7 @@ public class MainManagerPlatform implements MainManager {
     }
 
     @Override
-    public void destroy(Properties appprops) {
+    public void destroy() {
         helloiotapp.stopAndDestroy();
         helloiotapp = null;
     }
