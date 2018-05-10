@@ -1,5 +1,5 @@
 //    HelloIoT is a dashboard creator for MQTT
-//    Copyright (C) 2017 Adrián Romero Corchado.
+//    Copyright (C) 2017-2018 Adrián Romero Corchado.
 //
 //    This file is part of HelloIot.
 //
@@ -26,6 +26,7 @@ public class TopicInfoBuilder {
     
     TopicInfoEditNode editnode = null;
     TopicInfoCodeNode codenode = null;
+    TopicInfoSwitchNode switchnode = null;
     
     public TopicInfo fromProperties(SubProperties subproperties) {
         
@@ -44,6 +45,8 @@ public class TopicInfoBuilder {
         TopicInfo topicinfo;
         if ("Code".equals(type)) {
             topicinfo = new TopicInfoCode(codenode == null ? (codenode = new TopicInfoCodeNode()) : codenode);
+        } else if ("Switch".equals(type)) {
+            topicinfo = new TopicInfoSwitch(switchnode == null ? (switchnode = new TopicInfoSwitchNode()) : switchnode);
         } else {
             topicinfo = new TopicInfoEdit(type, editnode == null ? (editnode = new TopicInfoEditNode()) : editnode);
         }
