@@ -498,7 +498,9 @@ public class ClientLoginNode {
     }
 
     private void changeCounterLabel(int index, int size) {
-        devicesunitscounter_mobile.setText(String.format("%s / %s", index < 0 ? "-" : Integer.toString(index + 1), size <= 0 ? "-" : Integer.toString(size)));
+        if (devicesunitscounter_mobile != null) { // be sure we are in mobile
+            devicesunitscounter_mobile.setText(String.format("%s / %s", index < 0 ? "-" : Integer.toString(index + 1), size <= 0 ? "-" : Integer.toString(size)));
+        }
     }
     
     private class DevicesUnitsListCell extends ListCell<TopicInfo> {
@@ -531,7 +533,7 @@ public class ClientLoginNode {
         
         menubutton.setGraphic(IconBuilder.create(FontAwesome.FA_MAGIC, 18.0).styleClass("icon-fill").build());
 
-        edittype.setItems(FXCollections.observableArrayList("Publication/Subscription", "Subscription", "Publication", "Code"));
+        edittype.setItems(FXCollections.observableArrayList("Publication/Subscription", "Subscription", "Publication", "Switch", "Code"));
         edittype.getSelectionModel().clearSelection();
         edittype.valueProperty().addListener((ObservableValue<? extends String> ov, String old_val, String new_val) -> {
             updateCurrentTopic();
