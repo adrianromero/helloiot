@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<GridPane fx:id="root" hgap="10.0" vgap="10.0" xmlns="http://javafx.com/javafx/8.0.161" xmlns:fx="http://javafx.com/fxml/1">
+<GridPane fx:id="root" hgap="10.0" vgap="10.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
    <columnConstraints>
       <ColumnConstraints minWidth="150.0" prefWidth="150.0" />
       <ColumnConstraints minWidth="200.0" prefWidth="200.0" />
@@ -25,9 +25,9 @@
       <Label maxWidth="1.7976931348623157E308" styleClass="formsection" text="%label.tradfrigateway" GridPane.columnSpan="2147483647" />
       <Label fx:id="labeltradfihost" text="%label.host" GridPane.rowIndex="1" />
       <TextField fx:id="tradfrihost" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="1" />
+      <Button focusTraversable="false" mnemonicParsing="false" onAction="#findTradfriBridge" text="%button.find" GridPane.columnIndex="3" GridPane.rowIndex="1" />
       <Label fx:id="labeltradfriidentity" text="%label.identity" GridPane.rowIndex="2" />
       <TextField fx:id="tradfriidentity" disable="true" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="2" />
-      <Button focusTraversable="false" mnemonicParsing="false" onAction="#findTradfriBridge" text="%button.find" GridPane.columnIndex="3" GridPane.rowIndex="1" />
       <Button fx:id="identity" focusTraversable="false" mnemonicParsing="false" onAction="#newIdentity" text="%button.generate" GridPane.columnIndex="3" GridPane.rowIndex="2" />
    </children>
    <padding>

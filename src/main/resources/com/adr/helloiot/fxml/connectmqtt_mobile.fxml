@@ -56,6 +56,38 @@
       <Label maxWidth="1.7976931348623157E308" styleClass="formsection" text="%label.mqttbroker" GridPane.columnSpan="2147483647" />
       <Label fx:id="labelhost" text="%label.host" GridPane.rowIndex="1" />
       <TextField fx:id="host" GridPane.rowIndex="2" />
+      <Label fx:id="labelport" text="%label.port" GridPane.rowIndex="3" />
+      <TextField fx:id="port" maxWidth="60.0" prefWidth="60.0" GridPane.rowIndex="4" />
+      <HBox alignment="CENTER_LEFT" spacing="10.0" GridPane.rowIndex="5">
+         <children>
+            <CheckBox fx:id="ssl" mnemonicParsing="false" text="%label.ssl" />
+            <CheckBox fx:id="websockets" mnemonicParsing="false" text="%label.websockets" />
+         </children>
+      </HBox>
+      <Label fx:id="labelprotocol" text="%label.protocol" GridPane.rowIndex="6" />
+      <ChoiceBox fx:id="protocol" prefWidth="150.0" GridPane.rowIndex="7" />
+      <Label fx:id="labelkeystore" text="%label.keystore" GridPane.rowIndex="8" />
+      <TextField fx:id="keystore" GridPane.rowIndex="9" />
+      <Label fx:id="labelkeystorepassword" text="%label.keystorepassword" GridPane.rowIndex="10" />
+      <PasswordField fx:id="keystorepassword" GridPane.rowIndex="11" />
+      <Label fx:id="labeltruststore" text="%label.truststore" GridPane.rowIndex="12" />
+      <TextField fx:id="truststore" GridPane.rowIndex="13" />
+      <Label fx:id="labeltruststorepassword" text="%label.truststorepassword" GridPane.rowIndex="14" />
+      <PasswordField fx:id="truststorepassword" GridPane.rowIndex="15" />
+      <Label fx:id="labelcredentials" maxWidth="1.7976931348623157E308" styleClass="formsubsection" text="%label.credentials" GridPane.columnSpan="2147483647" GridPane.rowIndex="16" />
+      <Label fx:id="labelusername" text="%label.username" GridPane.rowIndex="17" />
+      <TextField fx:id="username" GridPane.rowIndex="18" />
+      <Label fx:id="labelpassword" text="%label.password" GridPane.rowIndex="19" />
+      <PasswordField fx:id="password" GridPane.rowIndex="20" />
+      <Label fx:id="labelextendedproperties" maxWidth="1.7976931348623157E308" styleClass="formsubsection" text="%label.extendedproperties" GridPane.columnSpan="2147483647" GridPane.rowIndex="21" />
+      <Label fx:id="labelclientid" text="%label.clientid" GridPane.rowIndex="22" />
+      <TextField fx:id="clientid" promptText="%label.generateid" GridPane.rowIndex="23" />
+      <Label fx:id="labeltimeout" text="%label.timeout" GridPane.rowIndex="24" />
+      <TextField fx:id="timeout" GridPane.rowIndex="25" />
+      <Label fx:id="labelkeepalive" text="%label.keepalive" GridPane.rowIndex="26" />
+      <TextField fx:id="keepalive" GridPane.rowIndex="27" />
+      <Label fx:id="labelmaxinflight" text="%label.maxinflight" GridPane.rowIndex="28" />
+      <TextField fx:id="maxinflight" GridPane.rowIndex="29" />
       <HBox alignment="CENTER_LEFT" spacing="10.0" GridPane.rowIndex="30">
          <children>
             <Label fx:id="labelversion" text="%label.version" />
@@ -68,15 +100,6 @@
             <RadioButton fx:id="version311" mnemonicParsing="false" text="3.1.1" toggleGroup="$version" />
          </children>
       </HBox>
-      <Label fx:id="labelusername" text="%label.username" GridPane.rowIndex="17" />
-      <TextField fx:id="username" GridPane.rowIndex="18" />
-      <Label fx:id="labelpassword" text="%label.password" GridPane.rowIndex="19" />
-      <PasswordField fx:id="password" GridPane.rowIndex="20" />
-      <Label fx:id="labelextendedproperties" maxWidth="1.7976931348623157E308" styleClass="formsubsection" text="%label.extendedproperties" GridPane.columnSpan="2147483647" GridPane.rowIndex="21" />
-      <Label fx:id="labeltimeout" text="%label.timeout" GridPane.rowIndex="24" />
-      <TextField fx:id="timeout" GridPane.rowIndex="25" />
-      <Label fx:id="labelkeepalive" text="%label.keepalive" GridPane.rowIndex="26" />
-      <TextField fx:id="keepalive" GridPane.rowIndex="27" />
       <HBox alignment="CENTER_LEFT" spacing="10.0" GridPane.rowIndex="31">
          <children>
             <Label fx:id="labeldefaultqos" text="%label.defaultqos" />
@@ -98,29 +121,6 @@
                </toggleGroup>
             </RadioButton>
             <RadioButton fx:id="brokermosquitto" mnemonicParsing="false" text="%label.brokermosquitto" toggleGroup="$broker" />
-         </children>
-      </HBox>
-      <Label fx:id="labelclientid" text="%label.clientid" GridPane.rowIndex="22" />
-      <TextField fx:id="clientid" promptText="%label.generateid" GridPane.rowIndex="23" />
-      <TextField fx:id="port" maxWidth="60.0" prefWidth="60.0" GridPane.rowIndex="4" />
-      <Label fx:id="labelmaxinflight" text="%label.maxinflight" GridPane.rowIndex="28" />
-      <TextField fx:id="maxinflight" GridPane.rowIndex="29" />
-      <Label fx:id="labelprotocol" text="%label.protocol" GridPane.rowIndex="6" />
-      <ChoiceBox fx:id="protocol" prefWidth="150.0" GridPane.rowIndex="7" />
-      <Label fx:id="labelkeystore" text="%label.keystore" GridPane.rowIndex="8" />
-      <TextField fx:id="keystore" GridPane.rowIndex="9" />
-      <Label fx:id="labelkeystorepassword" text="%label.keystorepassword" GridPane.rowIndex="10" />
-      <PasswordField fx:id="keystorepassword" GridPane.rowIndex="11" />
-      <Label fx:id="labeltruststore" text="%label.truststore" GridPane.rowIndex="12" />
-      <Label fx:id="labeltruststorepassword" text="%label.truststorepassword" GridPane.rowIndex="14" />
-      <TextField fx:id="truststore" GridPane.rowIndex="13" />
-      <PasswordField fx:id="truststorepassword" GridPane.rowIndex="15" />
-      <Label fx:id="labelcredentials" maxWidth="1.7976931348623157E308" styleClass="formsubsection" text="%label.credentials" GridPane.columnSpan="2147483647" GridPane.rowIndex="16" />
-      <Label fx:id="labelport" text="%label.port" GridPane.rowIndex="3" />
-      <HBox alignment="CENTER_LEFT" spacing="10.0" GridPane.rowIndex="5">
-         <children>
-            <CheckBox fx:id="ssl" mnemonicParsing="false" text="%label.ssl" />
-            <CheckBox fx:id="websockets" mnemonicParsing="false" text="%label.websockets" />
          </children>
       </HBox>
    </children>

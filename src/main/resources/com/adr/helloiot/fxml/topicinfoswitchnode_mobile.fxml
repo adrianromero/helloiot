@@ -28,14 +28,14 @@
       <RowConstraints minHeight="10.0" prefHeight="30.0" />
    </rowConstraints>
    <children>
+      <Label text="%label.name" />
+      <TextField fx:id="editname" GridPane.rowIndex="1" />
       <Label text="%label.topic" GridPane.rowIndex="2" />
       <TextField fx:id="edittopic" GridPane.rowIndex="3" />
-      <Label text="%label.icon" GridPane.rowIndex="6" />
-      <ChoiceBox fx:id="editicon" maxWidth="1.7976931348623157E308" GridPane.rowIndex="7" />
-      <TextField fx:id="editname" GridPane.rowIndex="1" />
-      <Label text="%label.name" />
       <Label text="%label.topicpub" GridPane.rowIndex="4" />
       <TextField fx:id="edittopicpub" GridPane.rowIndex="5" />
+      <Label text="%label.icon" GridPane.rowIndex="6" />
+      <ChoiceBox fx:id="editicon" maxWidth="1.7976931348623157E308" GridPane.rowIndex="7" />
       <Label text="%label.color" GridPane.rowIndex="8" />
       <HBox alignment="CENTER_LEFT" spacing="10.0" GridPane.rowIndex="9">
          <children>
