@@ -101,8 +101,6 @@ public class HelloIoTApp {
     private EventHandler<ActionEvent> exitevent = null;
     private final Runnable styleConnection;
     
-    private int runningstatus;
-
     public HelloIoTApp(Map<String, MiniVar> config) {
 
         // Load resources
@@ -173,12 +171,12 @@ public class HelloIoTApp {
         topicsmanager = new TopicsManager(manager);
         topicsmanager.setOnConnectionLost(t -> {
             LOGGER.log(Level.WARNING, "Connection lost to broker.", t);
-             Platform.runLater(() -> {
+            Platform.runLater(() -> {
                 stopUnits();
                 Futures.addCallback(topicsmanager.close(), new FutureCallback<Object>() {
                     @Override
                     public void onSuccess(Object v) {
-                        showConnectionException(t);
+                        ultraConnection(3, Duration.seconds(2.5));
                     }
                     @Override
                     public void onFailure(Throwable ex) {
@@ -306,38 +304,38 @@ public class HelloIoTApp {
     }
 
     private void oneConnection() {
-        mainnode.showConnecting();
-        Futures.addCallback(topicsmanager.open(), new FutureCallback<Object>() {
-            @Override
-            public void onSuccess(Object v) {
-                mainnode.hideConnecting();
-                startUnits();
-            }
-
-            @Override
-            public void onFailure(Throwable t) {
-                mainnode.hideConnecting();
-                showConnectionException(t);
-            }
-        }, CompletableAsync.fxThread());
+        ultraConnection(3, Duration.ZERO);
     }
 
     private void tryConnection() {
+        ultraConnection(Integer.MAX_VALUE, Duration.ZERO);
+    }
+    
+    private void ultraConnection(int retries, Duration d) {
         mainnode.showConnecting();
-        Futures.addCallback(topicsmanager.open(), new FutureCallback<Object>() {
-            @Override
-            public void onSuccess(Object v) {
-                mainnode.hideConnecting();
-                startUnits();
-            }
+        ultraConnectionImpl(retries, d);
+    }
+    
+    private void ultraConnectionImpl(int retries, Duration d) {
+        doTimeout(d, e -> {
+            Futures.addCallback(topicsmanager.open(), new FutureCallback<Object>() {
+                @Override
+                public void onSuccess(Object v) {
+                    mainnode.hideConnecting();
+                    startUnits();
+                }
 
-            @Override
-            public void onFailure(Throwable ex) {
-                new Timeline(new KeyFrame(Duration.millis(2500), ev -> {
-                    tryConnection();
-                })).play();
-            }
-        }, CompletableAsync.fxThread());
+                @Override
+                public void onFailure(Throwable t) {
+                    if (retries == 0) {
+                        mainnode.hideConnecting();
+                        showConnectionException(t);
+                    } else {
+                        ultraConnection(retries - 1, Duration.seconds(2.5));
+                    }     
+                }
+            }, CompletableAsync.fxThread());        
+        });        
     }
     
     private void showConnectionException(Throwable t) {
@@ -497,5 +495,13 @@ public class HelloIoTApp {
             apppublic = new HelloIoTAppPublic(this);
         }
         return apppublic;
+    }
+    
+    private void doTimeout(Duration duration, EventHandler<ActionEvent> eventhandler) {
+        if (duration.greaterThan(Duration.ZERO)) {
+            new Timeline(new KeyFrame(duration, eventhandler)).play();
+        } else {
+            eventhandler.handle(new ActionEvent());
+        }
     }
 }
