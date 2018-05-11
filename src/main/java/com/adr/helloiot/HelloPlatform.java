@@ -80,7 +80,6 @@ public abstract class HelloPlatform {
     private void init() {
         // Init phone status
         phone = getDiagonal() <= MAX_PHONE_DIAGONAL;      
-        phone = true;
         // Load the properties
         appproperties = new Properties();     
         try (InputStream in = new FileInputStream(HelloPlatform.getInstance().getFile(APP_PROPERTIES))) {
