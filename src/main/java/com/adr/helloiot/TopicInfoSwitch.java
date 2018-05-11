@@ -43,7 +43,7 @@ public class TopicInfoSwitch implements TopicInfo {
     private String name = null;
     private String topic = null;
     private String topicpub = null;
-    private String icon = null;
+    private String icon = "TOGGLE";
     private Color color;
 
     public TopicInfoSwitch(TopicInfoSwitchNode editnode) {
@@ -81,7 +81,7 @@ public class TopicInfoSwitch implements TopicInfo {
         name = properties.getProperty(".name");
         topic = properties.getProperty(".topic", null);
         topicpub = properties.getProperty(".topicpub", null);
-        icon = properties.getProperty(".icon");
+        icon = properties.getProperty(".icon", "TOGGLE");
         String c = properties.getProperty(".color", null);
         color = c == null ? null : Color.valueOf(c);
     }
