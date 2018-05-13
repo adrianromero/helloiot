@@ -49,12 +49,8 @@
                   <center>
                      <ScrollPane fitToWidth="true" focusTraversable="false" styleClass="unitscontainer" BorderPane.alignment="CENTER">
                         <content>
-                           <StackPane>
-                              <children>
                                  <VBox fx:id="container" disable="true" styleClass="gridcontainer">
                                  </VBox>
-                              </children>
-                           </StackPane>
                         </content>
                      </ScrollPane>
                   </center>
