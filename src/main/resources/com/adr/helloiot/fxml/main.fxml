@@ -47,7 +47,7 @@
                   </HBox>
                </top>
                   <center>
-                     <ScrollPane fitToWidth="true" focusTraversable="false" styleClass="unitscontainer" BorderPane.alignment="CENTER">
+                     <ScrollPane fx:id="scrollcontainer" fitToWidth="true" focusTraversable="false" styleClass="unitscontainer" BorderPane.alignment="CENTER">
                         <content>
                                  <VBox fx:id="container" disable="true" styleClass="gridcontainer">
                                  </VBox>

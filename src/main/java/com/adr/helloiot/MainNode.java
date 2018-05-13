@@ -78,6 +78,8 @@ public final class MainNode {
     @FXML
     private BorderPane appcontainer;
     @FXML
+    private ScrollPane scrollcontainer;
+    @FXML
     private VBox container;
     @FXML
     private ScrollPane scrollpages;
@@ -362,6 +364,10 @@ public final class MainNode {
             VBox.setVgrow(l, Priority.SOMETIMES);
             container.getChildren().add(l);
         }
+        
+        // Set position to origin
+        scrollcontainer.setHvalue(0.0);
+        scrollcontainer.setVvalue(0.0);
 
         // Modify panel if system
         if (menubutton != null) {
