@@ -39,7 +39,7 @@ import javafx.stage.Screen;
 public abstract class HelloPlatform {
 
     private final static String APP_PROPERTIES = ".helloiot-app.properties";    
-    private final static double MAX_PHONE_DIAGONAL = 6.5;
+    private final static double MAX_PHONE_DIAGONAL = 7.1;
     
     private static HelloPlatform instance = null;
     
@@ -90,13 +90,12 @@ public abstract class HelloPlatform {
     }
     
     public double getDiagonal() {       
-        Rectangle2D rect = Screen.getPrimary().getBounds();   
+        Rectangle2D rect = Screen.getPrimary().getVisualBounds();   
         double dpi = Screen.getPrimary().getDpi();
         double width = rect.getWidth() / dpi;
         double height = rect.getHeight() / dpi;
         return Math.sqrt(width * width + height * height); 
     }
-    
     
     public boolean isPhone() {
         return phone;
