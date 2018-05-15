@@ -94,4 +94,8 @@ public class CryptUtils {
             return hashsaltPassword(password, salt).equals(hashsalt);
         }
     }
+    
+    public static String generateID() {
+        return "HelloIoT-" + String.format("%09d", new SecureRandom().nextInt(1000000000));
+    }
 }

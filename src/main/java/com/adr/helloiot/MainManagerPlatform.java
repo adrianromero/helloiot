@@ -22,7 +22,9 @@ import com.adr.helloiot.device.format.MiniVar;
 import com.adr.helloiot.device.format.MiniVarBoolean;
 import com.adr.helloiot.device.format.MiniVarInt;
 import com.adr.helloiot.device.format.MiniVarString;
+import com.adr.helloiot.util.CryptUtils;
 import java.io.IOException;
+import java.security.SecureRandom;
 import java.util.HashMap;
 import java.util.Map;
 import javafx.application.Application.Parameters;
@@ -61,7 +63,7 @@ public class MainManagerPlatform implements MainManager {
         config.put("mqtt.truststorepassword", new MiniVarString(namedParams.getOrDefault("mqtt.truststorepassword", "")));
         config.put("mqtt.username", new MiniVarString(namedParams.getOrDefault("mqtt.username", "")));
         config.put("mqtt.password", new MiniVarString(namedParams.getOrDefault("mqtt.password", "")));
-        config.put("mqtt.clientid", new MiniVarString(configprops.getProperty("mqtt.clientid", "")));
+        config.put("mqtt.clientid", new MiniVarString(configprops.getProperty("mqtt.clientid", CryptUtils.generateID())));
         config.put("mqtt.connectiontimeout", new MiniVarInt(Integer.parseInt(configprops.getProperty("mqtt.connectiontimeout", Integer.toString(MqttConnectOptions.CONNECTION_TIMEOUT_DEFAULT)))));
         config.put("mqtt.keepaliveinterval", new MiniVarInt(Integer.parseInt(configprops.getProperty("mqtt.keepaliveinterval", Integer.toString(MqttConnectOptions.KEEP_ALIVE_INTERVAL_DEFAULT)))));
         config.put("mqtt.maxinflight", new MiniVarInt(Integer.parseInt(configprops.getProperty("mqtt.maxinflight", Integer.toString(MqttConnectOptions.MAX_INFLIGHT_DEFAULT)))));

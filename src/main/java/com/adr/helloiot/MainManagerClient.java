@@ -30,6 +30,7 @@ import com.adr.helloiot.mqtt.ConnectMQTT;
 import com.adr.helloiot.tradfri.ConnectTradfri;
 import com.adr.helloiot.unit.UnitPage;
 import com.adr.helloiot.util.CompletableAsync;
+import com.adr.helloiot.util.CryptUtils;
 import com.adr.helloiot.util.Dialogs;
 import com.adr.helloiot.util.HTTPUtils;
 import com.google.common.base.Strings;
@@ -192,7 +193,7 @@ public class MainManagerClient implements MainManager {
         config.put("mqtt.truststorepassword", new MiniVarString(configprops.getProperty("mqtt.truststorepassword")));
         config.put("mqtt.username", new MiniVarString(configprops.getProperty("mqtt.username", "")));
         config.put("mqtt.password", new MiniVarString(configprops.getProperty("mqtt.password", "")));
-        config.put("mqtt.clientid", new MiniVarString(configprops.getProperty("mqtt.clientid", "")));
+        config.put("mqtt.clientid", new MiniVarString(configprops.getProperty("mqtt.clientid", CryptUtils.generateID())));
         config.put("mqtt.connectiontimeout", new MiniVarInt(Integer.parseInt(configprops.getProperty("mqtt.connectiontimeout", Integer.toString(MqttConnectOptions.CONNECTION_TIMEOUT_DEFAULT)))));
         config.put("mqtt.keepaliveinterval", new MiniVarInt(Integer.parseInt(configprops.getProperty("mqtt.keepaliveinterval", Integer.toString(MqttConnectOptions.KEEP_ALIVE_INTERVAL_DEFAULT)))));
         config.put("mqtt.maxinflight", new MiniVarInt(Integer.parseInt(configprops.getProperty("mqtt.maxinflight", Integer.toString(MqttConnectOptions.MAX_INFLIGHT_DEFAULT)))));

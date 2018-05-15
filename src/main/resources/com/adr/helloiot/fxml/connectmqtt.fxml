@@ -65,7 +65,7 @@
       <PasswordField fx:id="password" prefWidth="171.0" GridPane.columnIndex="3" GridPane.rowIndex="6" />
       <Label fx:id="labelextendedproperties" maxWidth="1.7976931348623157E308" styleClass="formsubsection" text="%label.extendedproperties" GridPane.columnSpan="2147483647" GridPane.rowIndex="7" />
       <Label fx:id="labelclientid" text="%label.clientid" GridPane.rowIndex="8" />
-      <TextField fx:id="clientid" promptText="%label.generateid" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+      <TextField fx:id="clientid" GridPane.columnIndex="1" GridPane.rowIndex="8" />
       <Label fx:id="labeltimeout" text="%label.timeout" GridPane.columnIndex="2" GridPane.rowIndex="8" />
       <TextField fx:id="timeout" GridPane.columnIndex="3" GridPane.rowIndex="8" />
       <Label fx:id="labelkeepalive" text="%label.keepalive" GridPane.rowIndex="9" />

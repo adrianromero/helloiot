@@ -109,7 +109,7 @@ public class ManagerMQTT implements MqttCallback, ManagerProtocol {
         }        
         
         try {
-            mqttClient = new MqttAsyncClient(url, clientid == null || clientid.isEmpty() ? MqttAsyncClient.generateClientId() : clientid, new MemoryPersistence());
+            mqttClient = new MqttAsyncClient(url, clientid, new MemoryPersistence());
             MqttConnectOptions options = new MqttConnectOptions();
             if (!Strings.isNullOrEmpty(username)) {
                 options.setUserName(username);

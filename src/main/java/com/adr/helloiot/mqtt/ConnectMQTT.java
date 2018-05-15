@@ -20,6 +20,7 @@ package com.adr.helloiot.mqtt;
 
 import com.adr.helloiot.ConfigProperties;
 import com.adr.helloiot.SSLProtocol;
+import com.adr.helloiot.util.CryptUtils;
 import com.adr.helloiot.util.FXMLNames;
 import com.adr.helloiot.util.HTTPUtils;
 import javafx.collections.FXCollections;
@@ -107,7 +108,7 @@ public class ConnectMQTT {
         truststorepassword.setText(configprops.getProperty("mqtt.truststorepassword", ""));
         username.setText(configprops.getProperty("mqtt.username", ""));
         password.setText(configprops.getProperty("mqtt.password", ""));
-        clientid.setText(configprops.getProperty("mqtt.clientid", ""));
+        clientid.setText(configprops.getProperty("mqtt.clientid", CryptUtils.generateID()));
         timeout.setText(configprops.getProperty("mqtt.connectiontimeout", Integer.toString(MqttConnectOptions.CONNECTION_TIMEOUT_DEFAULT)));
         keepalive.setText(configprops.getProperty("mqtt.keepaliveinterval", Integer.toString(MqttConnectOptions.KEEP_ALIVE_INTERVAL_DEFAULT)));
         maxinflight.setText(configprops.getProperty("mqtt.maxinflight", Integer.toString(MqttConnectOptions.MAX_INFLIGHT_DEFAULT)));
