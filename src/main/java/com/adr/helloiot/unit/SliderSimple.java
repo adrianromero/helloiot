@@ -37,9 +37,11 @@ import javafx.scene.layout.VBox;
 public class SliderSimple extends Tile {
 
     private Slider slider;
+    private double slidervalue;
+    private boolean sliderpending = false;  
+    private boolean sliderupdating = false;
     private Label level;
 
-    private boolean levelupdating = false;
     private DeviceNumber device = null;
     private final Object messageHandler = Units.messageHandler(this::updateStatus);
 
@@ -69,18 +71,31 @@ public class SliderSimple extends Tile {
 
     public void initialize() {
         slider.valueProperty().addListener((ObservableValue<? extends Number> ov, Number old_val, Number new_val) -> {
-            if (!levelupdating) {
+            if (!sliderupdating) {
                 device.sendStatus(new MiniVarDouble(device.adjustLevel(new_val.doubleValue())));
             }
         });
-        level.setText(null);
+        slider.valueChangingProperty().addListener((ObservableValue<? extends Boolean> ov, Boolean old_val, Boolean new_val) -> {
+           if (!new_val && sliderpending) {
+               sliderpending = false;
+               sliderupdating = true;
+               slider.setValue(slidervalue);
+               sliderupdating = false;
+           }
+        });        
+        level.setText(null);                 
     }
 
-    private void updateStatus(byte[] status) {
-        levelupdating = true;
+    private void updateStatus(byte[] status) {       
         level.setText(device.getFormat().format(device.getFormat().value(status)));
-        slider.setValue(device.getFormat().value(status).asDouble());
-        levelupdating = false;
+        if (slider.isValueChanging()) {
+            slidervalue = device.getFormat().value(status).asDouble();
+            sliderpending = true;
+        } else {
+            sliderupdating = true;
+            slider.setValue(device.getFormat().value(status).asDouble());
+            sliderupdating = false;
+        }       
     }
 
     @Override
@@ -101,11 +116,11 @@ public class SliderSimple extends Tile {
         if (getLabel() == null) {
             setLabel(device.getProperties().getProperty("label"));
         }
-        levelupdating = true;
+        sliderupdating = true;
         slider.setBlockIncrement(device.getIncrement());
         slider.setMax(device.getLevelMax());
         slider.setMin(device.getLevelMin());
-        levelupdating = false;
+        sliderupdating = false;
     }
 
     public DeviceNumber getDevice() {

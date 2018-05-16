@@ -44,11 +44,13 @@ public class ControlIntensity extends Tile {
     
     private Button action;
     private Slider slider;
+    private double slidervalue;
+    private boolean sliderpending = false;
+    private boolean sliderupdating = false;    
     
     private DeviceSimple deviceon = null;
     private final Object messageonHandler = Units.messageHandler(this::updateStatusOn);
     
-    private boolean levelupdating = false;
     private DeviceNumber devicedim = null;
     private final Object messagedimHandler = Units.messageHandler(this::updateStatusDim);
     
@@ -79,17 +81,30 @@ public class ControlIntensity extends Tile {
     
     private void initialize() {
         slider.valueProperty().addListener((ObservableValue<? extends Number> ov, Number old_val, Number new_val) -> {
-            if (!levelupdating) {
+            if (!sliderupdating) {
                 devicedim.sendStatus(new MiniVarDouble(devicedim.adjustLevel(new_val.doubleValue())));
             }
         });
+        slider.valueChangingProperty().addListener((ObservableValue<? extends Boolean> ov, Boolean old_val, Boolean new_val) -> {
+           if (!new_val && sliderpending) {
+               sliderpending = false;
+               sliderupdating = true;
+               slider.setValue(slidervalue);
+               sliderupdating = false;
+           }
+        });         
     } 
     
     private void updateStatusDim(byte[] status) {
-        levelupdating = true;
 //        level.setText(device.getFormat().format(status));
-        slider.setValue(devicedim.getFormat().value(status).asDouble());
-        levelupdating = false;
+        if (slider.isValueChanging()) {
+            slidervalue = devicedim.getFormat().value(status).asDouble();
+            sliderpending = true;
+        } else {
+            sliderupdating = true;
+            slider.setValue(devicedim.getFormat().value(status).asDouble());
+            sliderupdating = false;
+        }
     }
     
     private void updateStatusOn(byte[] status) {
@@ -114,11 +129,11 @@ public class ControlIntensity extends Tile {
     
     public void setDeviceDim(DeviceNumber device) {
         this.devicedim = device;
-        levelupdating = true;
+        sliderupdating = true;
         slider.setBlockIncrement(device.getIncrement());
         slider.setMax(device.getLevelMax());
         slider.setMin(device.getLevelMin());
-        levelupdating = false;
+        sliderupdating = false;
     }
 
     public DeviceNumber getDeviceDim() {
