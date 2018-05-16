@@ -100,7 +100,7 @@ public class HelloIoTApp {
 
     private EventHandler<ActionEvent> exitevent = null;
     private final Runnable styleConnection;
-    
+
     public HelloIoTApp(Map<String, MiniVar> config) {
 
         // Load resources
@@ -115,16 +115,16 @@ public class HelloIoTApp {
                 "_LOCAL_/",
                 new ManagerLocal(
                         config.get("client.topicapp").asString()));
-        
+
         if (HTTPUtils.getAddress(config.get("tradfri.host").asString()) != null) {
             manager.addManagerProtocol(
                     "TRÅDFRI/",
                     new ManagerTradfri(
-                                    config.get("tradfri.host").asString(),
-                                    config.get("tradfri.identity").asString(),
-                                    config.get("tradfri.psk").asString()));
+                            config.get("tradfri.host").asString(),
+                            config.get("tradfri.identity").asString(),
+                            config.get("tradfri.psk").asString()));
         }
-        
+
         if (HTTPUtils.getAddress(config.get("mqtt.host").asString()) != null) {
             boolean websockets = config.get("mqtt.websockets").asBoolean();
             boolean ssl = config.get("mqtt.ssl").asBoolean();
@@ -140,24 +140,25 @@ public class HelloIoTApp {
                 sslproperties.setProperty("com.ibm.ssl.keyStoreType", "JKS");
                 sslproperties.setProperty("com.ibm.ssl.trustStore", config.get("mqtt.truststore").asString());
                 sslproperties.setProperty("com.ibm.ssl.trustStorePassword", config.get("mqtt.truststorepassword").asString());
-                sslproperties.setProperty("com.ibm.ssl.trustStoreType", "JKS");                
+                sslproperties.setProperty("com.ibm.ssl.trustStoreType", "JKS");
             } else {
                 sslproperties = null;
             }
-            String mqtturl = protocol + "://" + config.get("mqtt.host").asString()  + ":" + Integer.toString(config.get("mqtt.port").asInt());     
+            String mqtturl = protocol + "://" + config.get("mqtt.host").asString() + ":" + Integer.toString(config.get("mqtt.port").asInt());
             manager.addManagerProtocol(
                     "",
                     new ManagerMQTT(
-                                    mqtturl,
-                                    config.get("mqtt.username").asString(),
-                                    config.get("mqtt.password").asString(),
-                                    config.get("mqtt.clientid").asString(),
-                                    config.get("mqtt.connectiontimeout").asInt(),
-                                    config.get("mqtt.keepaliveinterval").asInt(),
-                                    config.get("mqtt.defaultqos").asInt(),
-                                    config.get("mqtt.version").asInt(),
-                                    config.get("mqtt.maxinflight").asInt(),
-                                    sslproperties));
+                            mqtturl,
+                            config.get("mqtt.username").asString(),
+                            config.get("mqtt.password").asString(),
+                            config.get("mqtt.clientid").asString(),
+                            config.get("mqtt.connectiontimeout").asInt(),
+                            config.get("mqtt.keepaliveinterval").asInt(),
+                            config.get("mqtt.defaultqos").asInt(),
+                            config.get("mqtt.version").asInt(),
+                            config.get("mqtt.maxinflight").asInt(),
+                            config.get("client.topicsys").asString(),
+                            sslproperties));
         }
 
         styleConnection = config.get("app.retryconnection").asBoolean() ? this::tryConnection : this::oneConnection;
@@ -167,7 +168,7 @@ public class HelloIoTApp {
                 Platform.isSupported(ConditionalFeature.MEDIA) ? new StandardClipFactory() : new SilentClipFactory(),
                 config.get("app.clock").asBoolean(),
                 config.get("app.exitbutton").asBoolean());
-        
+
         topicsmanager = new TopicsManager(manager);
         topicsmanager.setOnConnectionLost(t -> {
             LOGGER.log(Level.WARNING, "Connection lost to broker.", t);
@@ -178,16 +179,17 @@ public class HelloIoTApp {
                     public void onSuccess(Object v) {
                         ultraConnection(3, Duration.seconds(2.5));
                     }
+
                     @Override
                     public void onFailure(Throwable ex) {
                         showConnectionException(t);
                     }
                 }, CompletableAsync.fxThread());
-                
+
             });
-        });        
+        });
     }
-    
+
     public void addUnitPages(List<UnitPage> unitpages) {
         appunitpages.addAll(unitpages);
     }
@@ -295,7 +297,7 @@ public class HelloIoTApp {
     }
 
     private boolean existsUnitPageMain() {
-        return appunitpages.stream().anyMatch((p) -> ("main".equals(p.getName()))); 
+        return appunitpages.stream().anyMatch((p) -> ("main".equals(p.getName())));
     }
 
     private void connection() {
@@ -310,12 +312,12 @@ public class HelloIoTApp {
     private void tryConnection() {
         ultraConnection(Integer.MAX_VALUE, Duration.ZERO);
     }
-    
+
     private void ultraConnection(int retries, Duration d) {
         mainnode.showConnecting();
         ultraConnectionImpl(retries, d);
     }
-    
+
     private void ultraConnectionImpl(int retries, Duration d) {
         doTimeout(d, e -> {
             Futures.addCallback(topicsmanager.open(), new FutureCallback<Object>() {
@@ -332,49 +334,49 @@ public class HelloIoTApp {
                         showConnectionException(t);
                     } else {
                         ultraConnection(retries - 1, Duration.seconds(2.5));
-                    }     
+                    }
                 }
-            }, CompletableAsync.fxThread());        
-        });        
+            }, CompletableAsync.fxThread());
+        });
     }
-    
+
     private void showConnectionException(Throwable t) {
-        
+
         AtomicBoolean isok = new AtomicBoolean(false);
-    
+
         DialogView dialog = new DialogView();
         dialog.setTitle(resources.getString("title.errorconnection"));
         DialogException contentex = new DialogException();
         contentex.setMessage(t.getLocalizedMessage());
-        contentex.setException(t);   
-        dialog.setContent(contentex.getNode());     
+        contentex.setException(t);
+        dialog.setContent(contentex.getNode());
         dialog.setIndicator(IconBuilder.create(FontAwesome.FA_TIMES_CIRCLE, 48.0).apply(new FillPaint(Color.web("#FF9999"))).apply(new Shine(Color.RED)).build());
         dialog.setActionDispose((ActionEvent event) -> {
             if (isok.get()) {
                 connection();
             } else {
                 exitevent.handle(event);
-            }    
+            }
         });
-        
-        Button cancel = new Button (resources.getString("button.cancel"));
+
+        Button cancel = new Button(resources.getString("button.cancel"));
         cancel.setOnAction((ActionEvent event) -> {
             dialog.dispose();
         });
-        ButtonBar.setButtonData(cancel, ButtonBar.ButtonData.CANCEL_CLOSE);   
-       
-        Button retry = new Button (resources.getString("button.retry"));
+        ButtonBar.setButtonData(cancel, ButtonBar.ButtonData.CANCEL_CLOSE);
+
+        Button retry = new Button(resources.getString("button.retry"));
         retry.setOnAction((ActionEvent event) -> {
             isok.set(true);
             dialog.dispose();
         });
         retry.setDefaultButton(true);
-        ButtonBar.setButtonData(retry, ButtonBar.ButtonData.OK_DONE);           
-        
+        ButtonBar.setButtonData(retry, ButtonBar.ButtonData.OK_DONE);
+
         dialog.addButtons(contentex.createButtonDetails(), cancel, retry);
-        dialog.show(MessageUtils.getRoot(mainnode.getNode()));                  
+        dialog.show(MessageUtils.getRoot(mainnode.getNode()));
     }
-    
+
     public void stopAndDestroy() {
         stopUnits();
         Futures.addCallback(topicsmanager.close(), new FutureCallback<Object>() {
@@ -496,7 +498,7 @@ public class HelloIoTApp {
         }
         return apppublic;
     }
-    
+
     private void doTimeout(Duration duration, EventHandler<ActionEvent> eventhandler) {
         if (duration.greaterThan(Duration.ZERO)) {
             new Timeline(new KeyFrame(duration, eventhandler)).play();
