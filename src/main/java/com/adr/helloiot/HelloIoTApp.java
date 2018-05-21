@@ -286,18 +286,23 @@ public class HelloIoTApp {
         mainnode.construct(appunitpages);
 
         // Construct All
-        appunits.forEach((s) -> {
+        for (Unit s : appunits) {
             s.construct(this.getAppPublic());
-        });
-        appdevices.forEach((d) -> {
+        }
+        for (Device d : appdevices) {
             d.construct(topicsmanager);
-        });
+        }
 
         connection();
     }
 
     private boolean existsUnitPageMain() {
-        return appunitpages.stream().anyMatch((p) -> ("main".equals(p.getName())));
+        for (UnitPage p : appunitpages) {
+            if ("main".equals(p.getName())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private void connection() {
@@ -383,8 +388,12 @@ public class HelloIoTApp {
             @Override
             public void onSuccess(Object v) {
                 // Destroy all units
-                appunits.forEach(Unit::destroy);
-                appdevices.forEach(Device::destroy);
+                for (Unit s : appunits) {
+                    s.destroy();
+                }
+                for (Device d : appdevices) {
+                    d.destroy();
+                }
 
                 mainnode.destroy();
             }
@@ -392,8 +401,12 @@ public class HelloIoTApp {
             @Override
             public void onFailure(Throwable ex) {
                 // Destroy all units
-                appunits.forEach(Unit::destroy);
-                appdevices.forEach(Device::destroy);
+                for (Unit s : appunits) {
+                    s.destroy();
+                }
+                for (Device d : appdevices) {
+                    d.destroy();
+                }
 
                 mainnode.destroy();
             }
@@ -401,13 +414,17 @@ public class HelloIoTApp {
     }
 
     private void startUnits() {
-        appunits.forEach(Unit::start);
+        for (Unit s : appunits) {
+            s.start();
+        }
         mainnode.start();
     }
 
     private void stopUnits() {
         mainnode.stop();
-        appunits.forEach(Unit::stop);
+        for (Unit s : appunits) {
+            s.stop();
+        }
     }
 
     public MainNode getMainNode() {
