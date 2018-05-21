@@ -1,7 +1,8 @@
 # build application files
 /helloiot.properties
 /Californium.properties
-target/
+/my-release-key.jks
+/target/
 /nbproject/
 /.gradle/
 /.nb-gradle/
