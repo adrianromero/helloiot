@@ -36,6 +36,8 @@ import com.adr.helloiot.unit.Unit;
 import com.adr.helloiot.util.ExternalFonts;
 import java.util.Arrays;
 import java.util.ResourceBundle;
+import javafx.beans.property.ReadOnlyProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.paint.Color;
@@ -56,10 +58,11 @@ public class TopicInfoEdit implements TopicInfo {
     private final static String STYLEQOS = "{} {-fx-background-color: darkblue; -fx-background-radius: 10px; -fx-fill:white; -fx-padding: 0 5 0 5; -fx-pref-width: 30px; -fx-text-alignment: center;}";
     private final static String STYLEQOSSPACE = "{} {-fx-padding: 0 5 0 5; -fx-pref-width: 30px;}";
 
-    private final String type;
+    private final String type;  
     private final TopicInfoEditNode editnode;
 
     private String topic = null;
+    private SimpleStringProperty name = new SimpleStringProperty();
     private String topicpub = null;
     private String format = "STRING";
     private String jsonpath = null;
@@ -80,8 +83,8 @@ public class TopicInfoEdit implements TopicInfo {
     }
 
     @Override
-    public String getLabel() {
-        return topic == null ? null : capitalize(leaf(topic));
+    public ReadOnlyProperty<String> getLabel() {
+        return name;
     }
     
     @Override
@@ -111,6 +114,7 @@ public class TopicInfoEdit implements TopicInfo {
     @Override
     public void load(SubProperties properties) {
         topic = properties.getProperty(".topic", null);
+        name.setValue(topic == null ? null : capitalize(leaf(topic)));
         topicpub = properties.getProperty(".topicpub", null);
         format = properties.getProperty(".format", "STRING");
         jsonpath = properties.getProperty(".jsonpath", null);
@@ -143,7 +147,7 @@ public class TopicInfoEdit implements TopicInfo {
         
         if (topic == null || topic.isEmpty()) {
             ResourceBundle resources = ResourceBundle.getBundle("com/adr/helloiot/fxml/main");
-            String label = getLabel();
+            String label = getLabel().getValue();
             throw new HelloIoTException(resources.getString("exception.topicinfoedit"));
         }
         
@@ -179,6 +183,7 @@ public class TopicInfoEdit implements TopicInfo {
     @Override
     public void readFromEditNode() {
         topic = editnode.edittopic.getText();
+        name.setValue(topic == null ? null : capitalize(leaf(topic)));
         if ("Subscription".equals(type)) {
             topicpub = null;
             editnode.edittopicpub.setDisable(true);
@@ -277,7 +282,7 @@ public class TopicInfoEdit implements TopicInfo {
 
         EditEvent u = isMultiline() ? new EditAreaEvent() : new EditEvent();
         u.setPrefWidth(320.0);
-        u.setLabel(getLabel());
+        u.setLabel(getLabel().getValue());
         u.setFooter(getTopic() + getQOSBadge(getQos()) + getFormatBadge(d.getFormat()));
         setStyle(u);
         u.setDevice(d);
@@ -298,7 +303,7 @@ public class TopicInfoEdit implements TopicInfo {
 
         EditStatus u = isMultiline() ? new EditAreaStatus() : new EditStatus();
         u.setPrefWidth(320.0);
-        u.setLabel(getLabel());
+        u.setLabel(getLabel().getValue());
         u.setFooter(getTopic() + getQOSBadge(getQos()) + getFormatBadge(d.getFormat()));
         setStyle(u);
         u.setDevice(d);
@@ -319,7 +324,7 @@ public class TopicInfoEdit implements TopicInfo {
 
         EditView u = isMultiline() ? new EditAreaView() : new EditView();
         u.setPrefWidth(320.0);
-        u.setLabel(getLabel());
+        u.setLabel(getLabel().getValue());
         u.setFooter(getTopic() + getQOSBadge(getQos()) + getFormatBadge(d.getFormat()));
         setStyle(u);
         u.setDevice(d);

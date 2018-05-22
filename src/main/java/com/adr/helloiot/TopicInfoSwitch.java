@@ -23,6 +23,8 @@ import com.adr.helloiot.graphic.IconStatus;
 import com.adr.helloiot.unit.ButtonSimple;
 import com.adr.helloiot.util.ExternalFonts;
 import java.util.Arrays;
+import javafx.beans.property.ReadOnlyProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.paint.Color;
@@ -40,7 +42,7 @@ public class TopicInfoSwitch implements TopicInfo {
 
     private final TopicInfoSwitchNode editnode;
 
-    private String name = null;
+    private SimpleStringProperty name = new SimpleStringProperty();
     private String topic = null;
     private String topicpub = null;
     private String icon = "TOGGLE";
@@ -56,7 +58,7 @@ public class TopicInfoSwitch implements TopicInfo {
     }
 
     @Override
-    public String getLabel() {
+    public ReadOnlyProperty<String> getLabel() {
         return name;
     }
     
@@ -78,7 +80,7 @@ public class TopicInfoSwitch implements TopicInfo {
     
     @Override
     public void load(SubProperties properties) {
-        name = properties.getProperty(".name");
+        name.setValue(properties.getProperty(".name"));
         topic = properties.getProperty(".topic", null);
         topicpub = properties.getProperty(".topicpub", null);
         icon = properties.getProperty(".icon", "TOGGLE");
@@ -107,7 +109,7 @@ public class TopicInfoSwitch implements TopicInfo {
         l.setRetained(false);
 
         ButtonSimple s = new ButtonSimple();
-        s.setText(getLabel());
+        s.setText(getLabel().getValue());
         s.setDevice(l);
         s.setIconStatus(IconStatus.valueOf((getIcon())));
         Color c = getColor();
@@ -133,7 +135,7 @@ public class TopicInfoSwitch implements TopicInfo {
 
     @Override
     public void readFromEditNode() {
-        name = editnode.editname.getText();
+        name.setValue(editnode.editname.getText());
         topic = editnode.edittopic.getText();
         topicpub = editnode.edittopicpub.getText() == null || editnode.edittopicpub.getText().isEmpty() ? null : editnode.edittopicpub.getText();
         icon = editnode.editicon.getValue();
@@ -141,7 +143,7 @@ public class TopicInfoSwitch implements TopicInfo {
     }  
     
     public String getName() {
-        return name;
+        return name.getValue();
     }
     
     public String getTopic() {

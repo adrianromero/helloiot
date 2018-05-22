@@ -25,6 +25,7 @@ import com.google.common.io.Resources;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.ResourceBundle;
+import javafx.beans.Observable;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
@@ -66,7 +67,7 @@ import javafx.scene.layout.VBox;
  */
 public class ClientLoginNode {
 
-    private ResourceBundle resources;
+    private final ResourceBundle resources;
     private BorderPane rootpane;
     private Button nextbutton;
     private VBox connections;
@@ -197,7 +198,10 @@ public class ClientLoginNode {
         HBox.setHgrow(devicesunitslist, Priority.NEVER);    
         devicesunitslist.setCellFactory((ListView<TopicInfo> list) -> new DevicesUnitsListCell());
         devicesunitsselection = devicesunitslist.getSelectionModel();
-        devicesunitsitems = devicesunitslist.getItems();
+        devicesunitsitems = FXCollections.observableArrayList(t -> new Observable[]{
+            t.getLabel()
+        });
+        devicesunitslist.setItems(devicesunitsitems);
         ////
 
         deviceunitform = new ScrollPane();
@@ -390,7 +394,10 @@ public class ClientLoginNode {
         devicesunitslist_mobile.setButtonCell(new DevicesUnitsListCell()); 
         devicesunitslist_mobile.setCellFactory((ListView<TopicInfo> list) -> new DevicesUnitsListCell());           
         devicesunitsselection = devicesunitslist_mobile.getSelectionModel();
-        devicesunitsitems = devicesunitslist_mobile.getItems();  
+        devicesunitsitems = FXCollections.observableArrayList(t -> new Observable[]{
+            t.getLabel()
+        });
+        devicesunitslist_mobile.setItems(devicesunitsitems);  
         devicesunitsselection.selectedIndexProperty().addListener((ObservableValue<? extends Number> observable, Number oldValue, Number newValue) -> {
             changeCounterLabel(newValue.intValue(), devicesunitsitems.size());
         });
@@ -512,7 +519,7 @@ public class ClientLoginNode {
                 setText(null);
             } else {
                 setGraphic(item.getGraphic());
-                String label = item.getLabel();
+                String label = item.getLabel().getValue();
                 setText((label == null || label.isEmpty()) ? resources.getString("label.empty") : label);
             }
         }        
@@ -594,13 +601,13 @@ public class ClientLoginNode {
                 // TopicInfo -> TopicInfoNode
                 topic.writeToEditNode(); 
                 updating = false;
+                
+                devicesunitsitems.set(index, topic);
+                devicesunitsselection.select(topic);
             } else {      
                 // TopicInfoNode -> TopicInfo
                 topic.readFromEditNode();
             }
-
-            devicesunitsitems.set(index, topic);
-            devicesunitsselection.select(topic);
         }
     }
 

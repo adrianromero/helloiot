@@ -1,5 +1,5 @@
 //    HelloIoT is a dashboard creator for MQTT
-//    Copyright (C) 2017 Adrián Romero Corchado.
+//    Copyright (C) 2017-2018 Adrián Romero Corchado.
 //
 //    This file is part of HelloIot.
 //
@@ -18,6 +18,7 @@
 //
 package com.adr.helloiot;
 
+import javafx.beans.property.ReadOnlyProperty;
 import javafx.scene.Node;
 
 /**
@@ -27,7 +28,7 @@ import javafx.scene.Node;
 public interface TopicInfo {
 
     public String getType();
-    public String getLabel();
+    public ReadOnlyProperty<String> getLabel();
     public Node getGraphic();
     
     public void load(SubProperties properties);

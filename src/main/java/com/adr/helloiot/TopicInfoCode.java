@@ -28,6 +28,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import javafx.beans.property.ReadOnlyProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
@@ -44,7 +46,7 @@ import javafx.scene.text.TextFlow;
  */
 public class TopicInfoCode implements TopicInfo {
 
-    private String name;
+    private final SimpleStringProperty name = new SimpleStringProperty();
     private String code;
 
     private final TopicInfoCodeNode editnode;
@@ -59,7 +61,7 @@ public class TopicInfoCode implements TopicInfo {
     }
 
     @Override
-    public String getLabel() {
+    public ReadOnlyProperty<String> getLabel() {
         return name;
     }
 
@@ -82,7 +84,7 @@ public class TopicInfoCode implements TopicInfo {
 
     @Override
     public void load(SubProperties properties) {
-        name = properties.getProperty(".name");
+        name.setValue(properties.getProperty(".name"));
         code = properties.getProperty(".code");
     }
 
@@ -128,7 +130,7 @@ public class TopicInfoCode implements TopicInfo {
             return new TopicStatus(devices, units);
         } catch (IOException ex) {
             ResourceBundle resources = ResourceBundle.getBundle("com/adr/helloiot/fxml/main");
-            String label = getLabel();
+            String label = getLabel().getValue();
             throw new HelloIoTException(String.format(resources.getString("exception.topicinfocode"), label == null || label.isEmpty() ? resources.getString("label.empty") : label), ex);
         }
     }
@@ -146,16 +148,15 @@ public class TopicInfoCode implements TopicInfo {
 
     @Override
     public void readFromEditNode() {
-        name = editnode.name.getText();
+        name.setValue(editnode.name.getText());
         code = editnode.code.getText();
     }
 
     public String getName() {
-        return name;
+        return name.getValue();
     }
 
     public String getCode() {
         return code;
     }
-
 }
