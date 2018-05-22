@@ -24,9 +24,10 @@ import com.adr.helloiot.device.format.MiniVarInt;
 import com.adr.helloiot.device.format.MiniVarString;
 import com.adr.helloiot.util.CryptUtils;
 import java.io.IOException;
-import java.security.SecureRandom;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Application.Parameters;
 import javafx.scene.layout.StackPane;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
@@ -83,7 +84,11 @@ public class MainManagerPlatform implements MainManager {
         config.put("app.retryconnection", MiniVarBoolean.TRUE);
         Style.changeStyle(root, Style.valueOf(configprops.getProperty("app.style", Style.PRETTY.name())));
 
-        helloiotapp = new HelloIoTApp(config);
+        try {
+            helloiotapp = new HelloIoTApp(config);
+        } catch (HelloIoTException ex) {
+            throw new RuntimeException("HelloIoT application cannot be loaded.", ex);
+        }
 
         // Add all devices and units
         helloiotapp.addServiceDevicesUnits();

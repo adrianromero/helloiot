@@ -101,7 +101,7 @@ public class HelloIoTApp {
     private EventHandler<ActionEvent> exitevent = null;
     private final Runnable styleConnection;
 
-    public HelloIoTApp(Map<String, MiniVar> config) {
+    public HelloIoTApp(Map<String, MiniVar> config) throws HelloIoTException {
 
         // Load resources
         resources = ResourceBundle.getBundle("com/adr/helloiot/fxml/main");
@@ -159,6 +159,13 @@ public class HelloIoTApp {
                             config.get("mqtt.maxinflight").asInt(),
                             config.get("client.topicsys").asString(),
                             sslproperties));
+            
+            // Broker panel
+            if ("1".equals(config.get("client.broker").asString())) {
+                UnitPage info = new UnitPage("info", IconBuilder.create(FontAwesome.FA_INFO, 24.0).styleClass("icon-fill").build(), resources.getString("page.info"));
+                addUnitPages(Arrays.asList(info));
+                addFXMLFileDevicesUnits("local:com/adr/helloiot/panes/mosquitto");
+            }          
         }
 
         styleConnection = config.get("app.retryconnection").asBoolean() ? this::tryConnection : this::oneConnection;

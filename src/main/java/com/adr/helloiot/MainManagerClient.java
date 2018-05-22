@@ -214,16 +214,9 @@ public class MainManagerClient implements MainManager {
         Style.changeStyle(root, Style.valueOf(configprops.getProperty("app.style", Style.PRETTY.name())));  
 
         helloiotapp = new HelloIoTApp(config);
-
         try {
             // add sample panes
             ResourceBundle resources = ResourceBundle.getBundle("com/adr/helloiot/fxml/main");
-
-            if ("1".equals(config.get("client.broker").asString())) {
-                UnitPage info = new UnitPage("info", IconBuilder.create(FontAwesome.FA_INFO, 24.0).styleClass("icon-fill").build(), resources.getString("page.info"));
-                helloiotapp.addUnitPages(Arrays.asList(info));
-                helloiotapp.addFXMLFileDevicesUnits("local:com/adr/helloiot/panes/mosquitto");
-            }
 
             TopicInfoBuilder topicinfobuilder = new TopicInfoBuilder();
             int topicinfosize = Integer.parseInt(configprops.getProperty("topicinfo.size", "0"));
