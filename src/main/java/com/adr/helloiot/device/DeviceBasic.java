@@ -34,7 +34,7 @@ public class DeviceBasic extends DeviceSubscribe {
     public DeviceBasic() {
         setRetained(true);
     }
-    
+
     @Override
     public void construct(TopicsManager manager) {
         status.set(getFormat().value(null));
@@ -46,7 +46,7 @@ public class DeviceBasic extends DeviceSubscribe {
         super.destroy();
         status.set(getFormat().value(null));
     }
-    
+
     // Overwrite this  method
     @Override
     public String getDeviceName() {
@@ -57,9 +57,12 @@ public class DeviceBasic extends DeviceSubscribe {
     protected void consumeMessage(EventMessage message) {
         status.set(getFormat().value(message.getMessage()));
     }
-    
+
     public MiniVar varStatus() {
-        return status.updateAndGet(s -> s == null ? getFormat().value(null) : s);
+        MiniVar s = status.get();
+        s = s == null ? getFormat().value(null) : s;
+        status.set(s);
+        return s;
     }
 
     public String formatStatus() {
