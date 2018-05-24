@@ -28,13 +28,14 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Slider;
+import javafx.scene.image.Image;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 public abstract class MainApp extends Application {
 
-    private MainManager manager; 
+    private MainManager manager;
     private Stage stage;
 
     protected abstract MainManager createManager();
@@ -71,6 +72,13 @@ public abstract class MainApp extends Application {
             }
         }
 
+        stage.getIcons().addAll(
+                new Image(MainApp.class.getResource("/com/adr/helloiot/res/mipmap-hdpi/ic_launcher.png").toExternalForm()),
+                new Image(MainApp.class.getResource("/com/adr/helloiot/res/mipmap-ldpi/ic_launcher.png").toExternalForm()),
+                new Image(MainApp.class.getResource("/com/adr/helloiot/res/mipmap-mdpi/ic_launcher.png").toExternalForm()),
+                new Image(MainApp.class.getResource("/com/adr/helloiot/res/mipmap-xhdpi/ic_launcher.png").toExternalForm()),
+                new Image(MainApp.class.getResource("/com/adr/helloiot/res/mipmap-xxhdpi/ic_launcher.png").toExternalForm()),
+                new Image(MainApp.class.getResource("/com/adr/helloiot/res/mipmap-xxxhdpi/ic_launcher.png").toExternalForm()));
         stage.setScene(scene);
 
         // hack to avoid slider to get the focus.
@@ -94,11 +102,11 @@ public abstract class MainApp extends Application {
         HelloPlatform.getInstance().setProperty("window.width", Double.toString(stage.getWidth()));
         HelloPlatform.getInstance().setProperty("window.maximized", Boolean.toString(stage.isMaximized()));
         HelloPlatform.getInstance().saveAppProperties();
-        
+
         manager.destroy();
         manager = null;
         stage = null;
-        
+
         CompletableAsync.shutdown();
         System.exit(0);
     }
