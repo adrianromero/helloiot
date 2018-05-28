@@ -18,6 +18,7 @@
 //
 package com.adr.helloiot.unit;
 
+import com.adr.helloiot.HelloIoTAppPublic;
 import java.util.ResourceBundle;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
@@ -40,15 +41,15 @@ public class LabelSection extends Label implements Unit {
         setMaxSize(Integer.MAX_VALUE, Integer.MAX_VALUE);
         setFocusTraversable(false);
     }
-
+    
     @Override
-    public void start() {
+    public void construct(HelloIoTAppPublic app) {
     }
 
     @Override
-    public void stop() {
+    public void destroy() {
     }
-
+    
     @Override
     public Node getNode() {
         return this;

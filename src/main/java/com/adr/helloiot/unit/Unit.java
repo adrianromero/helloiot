@@ -1,5 +1,5 @@
 //    HelloIoT is a dashboard creator for MQTT
-//    Copyright (C) 2017 Adrián Romero Corchado.
+//    Copyright (C) 2017-2018 Adrián Romero Corchado.
 //
 //    This file is part of HelloIot.
 //
@@ -27,15 +27,7 @@ import javafx.scene.Node;
  */
 public interface Unit {
 
-    public default void construct(HelloIoTAppPublic app) {
-    }
-
-    public default void destroy() {
-    }
-
-    public void start();
-
-    public void stop();
-
+    public void construct(HelloIoTAppPublic app);
+    public void destroy();
     public Node getNode();
 }

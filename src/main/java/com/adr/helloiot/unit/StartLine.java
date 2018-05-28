@@ -1,5 +1,5 @@
 //    HelloIoT is a dashboard creator for MQTT
-//    Copyright (C) 2017 Adrián Romero Corchado.
+//    Copyright (C) 2017-2018 Adrián Romero Corchado.
 //
 //    This file is part of HelloIot.
 //
@@ -18,6 +18,7 @@
 //
 package com.adr.helloiot.unit;
 
+import com.adr.helloiot.HelloIoTAppPublic;
 import javafx.scene.Node;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
@@ -33,15 +34,15 @@ public class StartLine extends HBox implements UnitLine {
         getStyleClass().add("linecontainer");
         VBox.setVgrow(this, Priority.NEVER);
     }
-
+    
     @Override
-    public void start() {
+    public void construct(HelloIoTAppPublic app) {
     }
 
     @Override
-    public void stop() {
+    public void destroy() {
     }
-
+    
     @Override
     public Node getNode() {
         return this;

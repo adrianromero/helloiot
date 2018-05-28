@@ -1,5 +1,5 @@
 //    HelloIoT is a dashboard creator for MQTT
-//    Copyright (C) 2017 Adrián Romero Corchado.
+//    Copyright (C) 2017-2018 Adrián Romero Corchado.
 //
 //    This file is part of HelloIot.
 //
@@ -38,14 +38,12 @@ public abstract class ReceiverBase implements Unit {
     
     @Override
     public void construct(HelloIoTAppPublic app) {
-        Unit.super.construct(app);
         this.app = app;
         device.subscribeStatus(this);
     }
 
     @Override
     public void destroy() {
-        Unit.super.destroy();
         device.unsubscribeStatus(this);
     }
 
@@ -55,14 +53,6 @@ public abstract class ReceiverBase implements Unit {
 
     public DeviceSubscribe getDevice() {
         return device;
-    }
-
-    @Override
-    public void start() {
-    }
-
-    @Override
-    public void stop() {
     }
 
     @Override

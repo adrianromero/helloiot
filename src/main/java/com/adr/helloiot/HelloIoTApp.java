@@ -180,7 +180,7 @@ public class HelloIoTApp {
         topicsmanager.setOnConnectionLost(t -> {
             LOGGER.log(Level.WARNING, "Connection lost to broker.", t);
             Platform.runLater(() -> {
-                stopUnits();
+                mainnode.stop();
                 Futures.addCallback(topicsmanager.close(), new FutureCallback<Object>() {
                     @Override
                     public void onSuccess(Object v) {
@@ -336,7 +336,7 @@ public class HelloIoTApp {
                 @Override
                 public void onSuccess(Object v) {
                     mainnode.hideConnecting();
-                    startUnits();
+                    mainnode.start();
                 }
 
                 @Override
@@ -390,7 +390,7 @@ public class HelloIoTApp {
     }
 
     public void stopAndDestroy() {
-        stopUnits();
+        mainnode.stop();
         Futures.addCallback(topicsmanager.close(), new FutureCallback<Object>() {
             @Override
             public void onSuccess(Object v) {
@@ -418,20 +418,6 @@ public class HelloIoTApp {
                 mainnode.destroy();
             }
         }, CompletableAsync.fxThread());
-    }
-
-    private void startUnits() {
-        for (Unit s : appunits) {
-            s.start();
-        }
-        mainnode.start();
-    }
-
-    private void stopUnits() {
-        mainnode.stop();
-        for (Unit s : appunits) {
-            s.stop();
-        }
     }
 
     public MainNode getMainNode() {

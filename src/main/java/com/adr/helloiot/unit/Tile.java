@@ -64,7 +64,6 @@ public abstract class Tile extends BorderPane implements Unit {
     
     @Override
     public void construct(HelloIoTAppPublic app) {
-        Unit.super.construct(app);
         if (deviceavailable != null) {
             deviceavailable.subscribeStatus(messageHandler);
         }
@@ -72,19 +71,10 @@ public abstract class Tile extends BorderPane implements Unit {
 
     @Override
     public void destroy() {
-        Unit.super.destroy();
         if (deviceavailable != null) {
             deviceavailable.unsubscribeStatus(messageHandler);
         }
     }    
-
-    @Override
-    public void start() {
-    }
-
-    @Override
-    public void stop() {
-    }
 
     @Override
     public Node getNode() {
