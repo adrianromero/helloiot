@@ -40,20 +40,6 @@ public class CompletableAsync<T> {
     private final static Logger logger = Logger.getLogger(CompletableAsync.class.getName());
     private final static ListeningScheduledExecutorService service = MoreExecutors.listeningDecorator(Executors.newScheduledThreadPool(5));
 
-    public static Executor fxThread() {
-        return new Executor() {
-            @Override
-            public void execute(Runnable command) {
-                if (Platform.isFxApplicationThread()) {
-                    command.run();
-                } else {
-                    Platform.runLater(() -> {
-                        command.run();
-                    });        
-                }
-            }
-        };
-    }
     public static ListenableScheduledFuture<?> scheduleTask(long millis, Runnable r) {
         return service.schedule(r, millis, TimeUnit.MILLISECONDS);
     }
@@ -115,4 +101,19 @@ public class CompletableAsync<T> {
     public interface HandlerConsumer<T> {
         public void accept(T value);
     }
+    
+    private static Executor fxThread() {
+        return new Executor() {
+            @Override
+            public void execute(Runnable command) {
+                if (Platform.isFxApplicationThread()) {
+                    command.run();
+                } else {
+                    Platform.runLater(() -> {
+                        command.run();
+                    });        
+                }
+            }
+        };
+    }    
 }
