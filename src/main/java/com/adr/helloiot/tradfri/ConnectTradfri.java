@@ -27,8 +27,6 @@ import com.adr.helloiot.util.Dialogs;
 import com.adr.helloiot.util.FXMLNames;
 import com.adr.helloiot.util.HTTPUtils;
 import com.google.common.io.Resources;
-import com.google.common.util.concurrent.FutureCallback;
-import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -103,9 +101,8 @@ public class ConnectTradfri {
     void findTradfriBridge(ActionEvent event) {
         DialogView loading = Dialogs.createLoading(resources.getString("message.findtradfri"));
         loading.show(MessageUtils.getRoot(root));
-        Futures.addCallback(findBridge(), new FutureCallback<String[]>() {
-            @Override
-            public void onSuccess(String[] v) {
+        CompletableAsync.handle(findBridge(),
+            v -> {
                 loading.dispose();
                 if (v.length > 0) {       
                         tradfrihost.setText(v[0]);   
@@ -113,13 +110,11 @@ public class ConnectTradfri {
                     } else {
                     MessageUtils.showWarning(MessageUtils.getRoot(root), resources.getString("label.tradfrigateway"), resources.getString("message.cannotfindtradfri"));
                 }
-            }
-            @Override
-            public void onFailure(Throwable ex) {
+            },
+            ex -> {
                 loading.dispose();
                 MessageUtils.showException(MessageUtils.getRoot(root), resources.getString("label.tradfrigateway"), resources.getString("message.cannotfindtradfri"), ex);
-            }
-        }, CompletableAsync.fxThread());
+            });
     }    
     
 
@@ -137,19 +132,16 @@ public class ConnectTradfri {
         dialog.setActionOK(ev -> {
             DialogView loading2 = Dialogs.createLoading(resources.getString("message.newidentity"));
             loading2.show(MessageUtils.getRoot(root));    
-            Futures.addCallback(requestSharedKey(host, contentex.getPSK()), new FutureCallback<Pair<String, String>>() {
-                @Override
-                public void onSuccess(Pair<String, String> key) {    
+            CompletableAsync.handle(requestSharedKey(host, contentex.getPSK()), 
+                key -> {
                     loading2.dispose();
                     tradfriidentity.setText(key.getKey());
                     tradfripsk = key.getValue();
-                }                    
-                @Override
-                public void onFailure(Throwable ex) {                               
+                },
+                ex -> {                               
                     loading2.dispose();
                     MessageUtils.showException(MessageUtils.getRoot(root), resources.getString("label.tradfrigateway"), resources.getString("message.cannotgenerateidentity"), ex);
-                }
-            }, CompletableAsync.fxThread());                        
+                });                        
         });
         dialog.show(MessageUtils.getRoot(root));          
     }

@@ -39,8 +39,6 @@ import com.adr.helloiot.tradfri.ManagerTradfri;
 import com.adr.helloiot.unit.UnitPage;
 import com.adr.helloiot.util.CompletableAsync;
 import com.adr.helloiot.util.HTTPUtils;
-import com.google.common.util.concurrent.FutureCallback;
-import com.google.common.util.concurrent.Futures;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -181,18 +179,13 @@ public class HelloIoTApp {
             LOGGER.log(Level.WARNING, "Connection lost to broker.", t);
             Platform.runLater(() -> {
                 mainnode.stop();
-                Futures.addCallback(topicsmanager.close(), new FutureCallback<Object>() {
-                    @Override
-                    public void onSuccess(Object v) {
+                CompletableAsync.handle(topicsmanager.close(), 
+                    v -> {
                         ultraConnection(3, Duration.seconds(2.5));
-                    }
-
-                    @Override
-                    public void onFailure(Throwable ex) {
+                    },
+                    ex -> {
                         showConnectionException(t);
-                    }
-                }, CompletableAsync.fxThread());
-
+                    });
             });
         });
     }
@@ -332,23 +325,19 @@ public class HelloIoTApp {
 
     private void ultraConnectionImpl(int retries, Duration d) {
         doTimeout(d, e -> {
-            Futures.addCallback(topicsmanager.open(), new FutureCallback<Object>() {
-                @Override
-                public void onSuccess(Object v) {
+            CompletableAsync.handle(topicsmanager.open(), 
+                v -> {
                     mainnode.hideConnecting();
                     mainnode.start();
-                }
-
-                @Override
-                public void onFailure(Throwable t) {
+                },
+                ex -> {
                     if (retries == 0) {
                         mainnode.hideConnecting();
-                        showConnectionException(t);
+                        showConnectionException(ex);
                     } else {
-                        ultraConnection(retries - 1, Duration.seconds(2.5));
+                        ultraConnectionImpl(retries - 1, Duration.seconds(2.5));
                     }
-                }
-            }, CompletableAsync.fxThread());
+                });
         });
     }
 
@@ -391,9 +380,8 @@ public class HelloIoTApp {
 
     public void stopAndDestroy() {
         mainnode.stop();
-        Futures.addCallback(topicsmanager.close(), new FutureCallback<Object>() {
-            @Override
-            public void onSuccess(Object v) {
+        CompletableAsync.handle(topicsmanager.close(),
+             v -> {
                 // Destroy all units
                 for (Unit s : appunits) {
                     s.destroy();
@@ -403,10 +391,8 @@ public class HelloIoTApp {
                 }
 
                 mainnode.destroy();
-            }
-
-            @Override
-            public void onFailure(Throwable ex) {
+            },
+            ex -> {
                 // Destroy all units
                 for (Unit s : appunits) {
                     s.destroy();
@@ -416,8 +402,7 @@ public class HelloIoTApp {
                 }
 
                 mainnode.destroy();
-            }
-        }, CompletableAsync.fxThread());
+            });
     }
 
     public MainNode getMainNode() {

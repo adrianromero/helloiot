@@ -20,10 +20,8 @@ package com.adr.helloiot.unit;
 
 import com.adr.helloiot.EventMessage;
 import com.adr.helloiot.HelloIoTAppPublic;
+import com.adr.helloiot.util.CompletableAsync;
 import com.google.common.eventbus.Subscribe;
-import com.google.common.util.concurrent.FutureCallback;
-import com.google.common.util.concurrent.Futures;
-import com.google.common.util.concurrent.MoreExecutors;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -54,15 +52,10 @@ public class ReceiverScript extends ReceiverBase {
                 mergedParams.put("_device", getDevice());
                 mergedParams.put("_topic", topic);
                 mergedParams.put("_status", status);
-                Futures.addCallback(code.run(mergedParams), new FutureCallback<Object>() {
-                    @Override
-                    public void onSuccess(Object v) {}
-                    @Override
-                    public void onFailure(Throwable ex) {
+                CompletableAsync.handleError(code.run(mergedParams),
+                    ex -> {
                         logger.log(Level.WARNING, "There has been an error running this action", ex);
-                    }
-                
-                }, MoreExecutors.directExecutor());
+                    });
             }
         }
     }

@@ -1,5 +1,5 @@
 //    HelloIoT is a dashboard creator for MQTT
-//    Copyright (C) 2017 Adrián Romero Corchado.
+//    Copyright (C) 2017-2018 Adrián Romero Corchado.
 //
 //    This file is part of HelloIot.
 //
@@ -21,8 +21,6 @@ package com.adr.helloiot.unit;
 import com.adr.hellocommon.dialog.MessageUtils;
 import com.adr.helloiot.HelloIoTAppPublic;
 import com.adr.helloiot.util.CompletableAsync;
-import com.google.common.util.concurrent.FutureCallback;
-import com.google.common.util.concurrent.Futures;
 import java.util.HashMap;
 import java.util.Map;
 import javafx.event.ActionEvent;
@@ -59,14 +57,10 @@ public class ButtonScript extends ButtonBase {
         if (code == null) {
             MessageUtils.showError(MessageUtils.getRoot(this), getLabel(), resources.getString("message.nocode"));
         } else {
-            Futures.addCallback(code.run(params), new FutureCallback<Object>() {
-                @Override
-                public void onSuccess(Object v) {}
-                @Override
-                public void onFailure(Throwable ex) {
+            CompletableAsync.handleError(code.run(params), 
+                ex -> {
                     MessageUtils.showException(MessageUtils.getRoot(ButtonScript.this), getLabel(), resources.getString("message.erroraction"), ex);
-                }
-            }, CompletableAsync.fxThread());            
+                });       
         }
     }
 }

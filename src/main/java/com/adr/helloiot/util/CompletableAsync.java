@@ -18,6 +18,8 @@
 //
 package com.adr.helloiot.util;
 
+import com.google.common.util.concurrent.FutureCallback;
+import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.ListenableScheduledFuture;
 import com.google.common.util.concurrent.ListeningScheduledExecutorService;
@@ -67,8 +69,50 @@ public class CompletableAsync<T> {
     public static ListenableFuture<?> runAsync(Runnable runnable) {
         return service.submit(runnable);
     }
+    
+    public static <T> void handle(ListenableFuture<T> future, HandlerConsumer<T> success, HandlerConsumer<Throwable> failure) {
+        Futures.addCallback(future, new FutureCallback<T>() {
+            @Override
+            public void onSuccess(T v) {
+                success.accept(v);
+            }
+            @Override
+            public void onFailure(Throwable ex) {
+                failure.accept(ex);
+            }
+        }, CompletableAsync.fxThread());          
+    }
+    
+    public static <T> void handle(ListenableFuture<T> future, HandlerConsumer<T> success) {
+        Futures.addCallback(future, new FutureCallback<T>() {
+            @Override
+            public void onSuccess(T v) {
+                success.accept(v);
+            }
+            @Override
+            public void onFailure(Throwable ex) {
+            }
+        }, CompletableAsync.fxThread());          
+    }
+    
+    public static <T> void handleError(ListenableFuture<T> future, HandlerConsumer<Throwable> failure) {
+        Futures.addCallback(future, new FutureCallback<T>() {
+            @Override
+            public void onSuccess(T v) {
+            }
+            @Override
+            public void onFailure(Throwable ex) {
+                failure.accept(ex);
+            }
+        }, CompletableAsync.fxThread());          
+    }
 
     public static void shutdown() {       
         MoreExecutors.shutdownAndAwaitTermination(service, 60, TimeUnit.SECONDS);
+    }
+    
+    @FunctionalInterface
+    public interface HandlerConsumer<T> {
+        public void accept(T value);
     }
 }

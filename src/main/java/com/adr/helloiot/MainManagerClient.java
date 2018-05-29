@@ -34,8 +34,6 @@ import com.adr.helloiot.util.CryptUtils;
 import com.adr.helloiot.util.Dialogs;
 import com.adr.helloiot.util.HTTPUtils;
 import com.google.common.base.Strings;
-import com.google.common.util.concurrent.FutureCallback;
-import com.google.common.util.concurrent.Futures;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -318,23 +316,20 @@ public class MainManagerClient implements MainManager {
             DialogView loading2 = Dialogs.createLoading(resources.getString("title.tradfridiscovery"));
             loading2.show(MessageUtils.getRoot(root));    
 
-            Futures.addCallback(clienttradfri.requestSample(
+            CompletableAsync.handle(clienttradfri.requestSample(
                     tempconfig.getProperty("tradfri.host"), 
                     tempconfig.getProperty("tradfri.identity"), 
-                    tempconfig.getProperty("tradfri.psk")), new FutureCallback<Map<String, String>>() {
-                @Override
-                public void onSuccess(Map<String, String> units) {    
+                    tempconfig.getProperty("tradfri.psk")), 
+                units -> {
                     loading2.dispose();
                     for(Map.Entry<String, String> entry: units.entrySet()) {
                         clientlogin.addCodeUnit(entry.getKey(), entry.getValue());
                     }
-                }                    
-                @Override
-                public void onFailure(Throwable ex) {                               
+                },
+                ex -> {                             
                     loading2.dispose();
                     MessageUtils.showException(MessageUtils.getRoot(root), resources.getString("title.tradfridiscovery"), ex.getLocalizedMessage(), ex);
-                }
-            }, CompletableAsync.fxThread());  
+                });  
         });
         return b;
     }      
