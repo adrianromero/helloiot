@@ -560,7 +560,7 @@ public class ClientLoginNode {
             }
         });
 
-//        Platform.runLater(host::requestFocus);
+//      (host::requestFocus);
     }
 
     private void constructSampleButtons() {      
