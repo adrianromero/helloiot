@@ -33,6 +33,7 @@ import com.adr.helloiot.unit.EditEvent;
 import com.adr.helloiot.unit.EditStatus;
 import com.adr.helloiot.unit.EditView;
 import com.adr.helloiot.unit.Unit;
+import com.adr.helloiot.unit.UnitPage;
 import com.adr.helloiot.util.ExternalFonts;
 import java.util.Arrays;
 import java.util.ResourceBundle;
@@ -61,8 +62,9 @@ public class TopicInfoEdit implements TopicInfo {
     private final String type;  
     private final TopicInfoEditNode editnode;
 
+    private String page = null;
     private String topic = null;
-    private SimpleStringProperty name = new SimpleStringProperty();
+    private final SimpleStringProperty name = new SimpleStringProperty();
     private String topicpub = null;
     private String format = "STRING";
     private String jsonpath = null;
@@ -113,6 +115,7 @@ public class TopicInfoEdit implements TopicInfo {
     
     @Override
     public void load(SubProperties properties) {
+        page = properties.getProperty(".page", null);
         topic = properties.getProperty(".topic", null);
         name.setValue(topic == null ? null : capitalize(leaf(topic)));
         topicpub = properties.getProperty(".topicpub", null);
@@ -131,15 +134,16 @@ public class TopicInfoEdit implements TopicInfo {
     public void store(SubProperties properties) {
         properties.setProperty(".type", getType());
 
-        properties.setProperty(".topic", getTopic());
-        properties.setProperty(".topicpub", getTopicpub());
-        properties.setProperty(".format", getFormat());
-        properties.setProperty(".jsonpath", getJsonpath());
-        properties.setProperty(".multiline", Boolean.toString(isMultiline()));
-        properties.setProperty(".color", getColor() == null ? null : getColor().toString());
-        properties.setProperty(".background", getBackground() == null ? null : getBackground().toString());
-        properties.setProperty(".qos", Integer.toString(getQos()));
-        properties.setProperty(".retained", Integer.toString(getRetained()));        
+        properties.setProperty(".page", page);
+        properties.setProperty(".topic", topic);
+        properties.setProperty(".topicpub", topicpub);
+        properties.setProperty(".format", format);
+        properties.setProperty(".jsonpath", jsonpath);
+        properties.setProperty(".multiline", Boolean.toString(multiline));
+        properties.setProperty(".color", color == null ? null : color.toString());
+        properties.setProperty(".background", background == null ? null : background.toString());
+        properties.setProperty(".qos", Integer.toString(qos));
+        properties.setProperty(".retained", Integer.toString(retained));        
     }
     
     @Override
@@ -167,21 +171,23 @@ public class TopicInfoEdit implements TopicInfo {
 
     @Override
     public void writeToEditNode() {
-        editnode.edittopic.setText(getTopic());
-        editnode.edittopicpub.setText(getTopicpub());
+        editnode.editpage.setValue(page);
+        editnode.edittopic.setText(topic);
+        editnode.edittopicpub.setText(topicpub);
         editnode.edittopicpub.setDisable("Subscription".equals(getType()));
-        editnode.editformat.getSelectionModel().select(getFormat());
-        editnode.editjsonpath.setText(getJsonpath());
-        editnode.editjsonpath.setDisable("BASE64".equals(getFormat()) || "HEX".equals(getFormat()) || "SWITCH".equals(getFormat()));
-        editnode.editmultiline.setSelected(isMultiline());
-        editnode.editcolor.setValue(getColor());
-        editnode.editbackground.setValue(getBackground());
-        editnode.editqos.setValue(getQos());
-        editnode.editretained.setValue(getRetained());     
+        editnode.editformat.getSelectionModel().select(format);
+        editnode.editjsonpath.setText(jsonpath);
+        editnode.editjsonpath.setDisable("BASE64".equals(format) || "HEX".equals(format) || "SWITCH".equals(format));
+        editnode.editmultiline.setSelected(multiline);
+        editnode.editcolor.setValue(color);
+        editnode.editbackground.setValue(background);
+        editnode.editqos.setValue(qos);
+        editnode.editretained.setValue(retained);     
     }
 
     @Override
     public void readFromEditNode() {
+        page = editnode.editpage.getEditor().getText();
         topic = editnode.edittopic.getText();
         name.setValue(topic == null ? null : capitalize(leaf(topic)));
         if ("Subscription".equals(type)) {
@@ -205,42 +211,6 @@ public class TopicInfoEdit implements TopicInfo {
         qos = editnode.editqos.getValue();
         retained = editnode.editretained.getValue();  
     }  
-    
-    public String getTopic() {
-        return topic;
-    }
-
-    public String getTopicpub() {
-        return topicpub;
-    }
-
-    public String getFormat() {
-        return format;
-    }
-
-    public String getJsonpath() {
-        return jsonpath;
-    }
-
-    public boolean isMultiline() {
-        return multiline;
-    }
-
-    public Color getColor() {
-        return color;
-    }
-
-    public Color getBackground() {
-        return background;
-    }
-
-    public int getQos() {
-        return qos;
-    }
-
-    public int getRetained() {
-        return retained;
-    }
 
     private static String capitalize(String s) {
         final char[] buffer = s.toCharArray();
@@ -272,20 +242,21 @@ public class TopicInfoEdit implements TopicInfo {
     private TopicStatus buildTopicPublish() {
 
         TransmitterSimple d = new TransmitterSimple();
-        d.setTopic(getTopic());
-        d.setTopicPublish(getTopicpub());
-        d.setQos(getQos());
-        if (getRetained() >= 0) {
-            d.setRetained(getRetained() != 0);
+        d.setTopic(topic);
+        d.setTopicPublish(topicpub);
+        d.setQos(qos);
+        if (retained >= 0) {
+            d.setRetained(retained != 0);
         }
         d.setFormat(createFormat());
 
-        EditEvent u = isMultiline() ? new EditAreaEvent() : new EditEvent();
+        EditEvent u = multiline ? new EditAreaEvent() : new EditEvent();
         u.setPrefWidth(320.0);
         u.setLabel(getLabel().getValue());
-        u.setFooter(getTopic() + getQOSBadge(getQos()) + getFormatBadge(d.getFormat()));
+        u.setFooter(topic + getQOSBadge(qos) + getFormatBadge(d.getFormat()));
         setStyle(u);
         u.setDevice(d);
+        UnitPage.setPage(u, page);
 
         return new TopicStatus(Arrays.asList(d), Arrays.asList(u));
     }
@@ -293,20 +264,21 @@ public class TopicInfoEdit implements TopicInfo {
     private TopicStatus buildTopicPublishSubscription() {
 
         DeviceSimple d = new DeviceSimple();
-        d.setTopic(getTopic());
-        d.setTopicPublish(getTopicpub());
-        d.setQos(getQos());
-        if (getRetained() >= 0) {
-            d.setRetained(getRetained() != 0);
+        d.setTopic(topic);
+        d.setTopicPublish(topicpub);
+        d.setQos(qos);
+        if (retained >= 0) {
+            d.setRetained(retained != 0);
         }
         d.setFormat(createFormat());
 
-        EditStatus u = isMultiline() ? new EditAreaStatus() : new EditStatus();
+        EditStatus u = multiline ? new EditAreaStatus() : new EditStatus();
         u.setPrefWidth(320.0);
         u.setLabel(getLabel().getValue());
-        u.setFooter(getTopic() + getQOSBadge(getQos()) + getFormatBadge(d.getFormat()));
+        u.setFooter(topic + getQOSBadge(qos) + getFormatBadge(d.getFormat()));
         setStyle(u);
         u.setDevice(d);
+        UnitPage.setPage(u, page);
         
         return new TopicStatus(Arrays.asList(d), Arrays.asList(u));
     }
@@ -314,31 +286,32 @@ public class TopicInfoEdit implements TopicInfo {
     private TopicStatus buildTopicSubscription() {
 
         DeviceBasic d = new DeviceBasic();
-        d.setTopic(getTopic());
-        d.setTopicPublish(getTopicpub());
-        d.setQos(getQos());
-        if (getRetained() >= 0) {
-            d.setRetained(getRetained() != 0);
+        d.setTopic(topic);
+        d.setTopicPublish(topicpub);
+        d.setQos(qos);
+        if (retained >= 0) {
+            d.setRetained(retained != 0);
         }
         d.setFormat(createFormat());
 
-        EditView u = isMultiline() ? new EditAreaView() : new EditView();
+        EditView u = multiline ? new EditAreaView() : new EditView();
         u.setPrefWidth(320.0);
         u.setLabel(getLabel().getValue());
-        u.setFooter(getTopic() + getQOSBadge(getQos()) + getFormatBadge(d.getFormat()));
+        u.setFooter(topic + getQOSBadge(qos) + getFormatBadge(d.getFormat()));
         setStyle(u);
         u.setDevice(d);
+        UnitPage.setPage(u, page);
 
         return new TopicStatus(Arrays.asList(d), Arrays.asList(u));
     }
     
     private void setStyle(Unit u) {
         StringBuilder style = new StringBuilder();
-        if (getColor() != null) {
-            style.append("-fx-unit-fill: ").append(webColor(getColor())).append(";");
+        if (color != null) {
+            style.append("-fx-unit-fill: ").append(webColor(color)).append(";");
         }
-        if (getBackground() != null) {
-            style.append("-fx-background-color: ").append(webColor(getBackground())).append(";");
+        if (background != null) {
+            style.append("-fx-background-color: ").append(webColor(background)).append(";");
         }
         u.getNode().setStyle(style.toString());        
     }
@@ -360,20 +333,20 @@ public class TopicInfoEdit implements TopicInfo {
     }
 
     private StringFormat createFormat() {
-        if ("STRING".equals(getFormat())) {
-            return new StringFormatIdentity(getJsonpath() == null || getJsonpath().isEmpty() ? null : getJsonpath());
-        } else if ("INT".equals(getFormat())) {
-            return new StringFormatDecimal(getJsonpath() == null || getJsonpath().isEmpty() ? null : getJsonpath(), "0");
-        } else if ("BASE64".equals(getFormat())) {
+        if ("STRING".equals(format)) {
+            return new StringFormatIdentity(jsonpath == null || jsonpath.isEmpty() ? null : jsonpath);
+        } else if ("INT".equals(format)) {
+            return new StringFormatDecimal(jsonpath == null || jsonpath.isEmpty() ? null : jsonpath, "0");
+        } else if ("BASE64".equals(format)) {
             return new StringFormatBase64();
-        } else if ("HEX".equals(getFormat())) {
+        } else if ("HEX".equals(format)) {
             return new StringFormatHex();
-        } else if ("DOUBLE".equals(getFormat())) {
-            return new StringFormatDecimal(getJsonpath() == null || getJsonpath().isEmpty() ? null : getJsonpath(), "0.00");
-        } else if ("DECIMAL".equals(getFormat())) {
-            return new StringFormatDecimal(getJsonpath() == null || getJsonpath().isEmpty() ? null : getJsonpath(), "0.000");
-        } else if ("DEGREES".equals(getFormat())) {
-            return new StringFormatDecimal(getJsonpath() == null || getJsonpath().isEmpty() ? null : getJsonpath(), "0.0°");
+        } else if ("DOUBLE".equals(format)) {
+            return new StringFormatDecimal(jsonpath == null || jsonpath.isEmpty() ? null : jsonpath, "0.00");
+        } else if ("DECIMAL".equals(format)) {
+            return new StringFormatDecimal(jsonpath == null || jsonpath.isEmpty() ? null : jsonpath, "0.000");
+        } else if ("DEGREES".equals(format)) {
+            return new StringFormatDecimal(jsonpath == null || jsonpath.isEmpty() ? null : jsonpath, "0.0°");
         } else {
             return StringFormatIdentity.INSTANCE;
         }

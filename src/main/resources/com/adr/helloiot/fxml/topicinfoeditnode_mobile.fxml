@@ -5,6 +5,7 @@
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.ColorPicker?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -17,6 +18,8 @@
       <ColumnConstraints hgrow="SOMETIMES" />
    </columnConstraints>
    <rowConstraints>
+      <RowConstraints minHeight="10.0" prefHeight="30.0" />
+      <RowConstraints minHeight="10.0" prefHeight="30.0" />
       <RowConstraints />
       <RowConstraints minHeight="10.0" prefHeight="30.0" />
       <RowConstraints />
@@ -37,23 +40,25 @@
       <RowConstraints minHeight="10.0" prefHeight="30.0" />
    </rowConstraints>
    <children>
-      <Label text="%label.topic" />
-      <TextField fx:id="edittopic" GridPane.rowIndex="1" />
-      <Label text="%label.topicpub" GridPane.rowIndex="2" />
-      <TextField fx:id="edittopicpub" GridPane.rowIndex="3" />
-      <Label text="%label.format" GridPane.rowIndex="4" />
-      <ChoiceBox fx:id="editformat" maxWidth="1.7976931348623157E308" GridPane.rowIndex="5" />
-      <Label text="%label.jsonpath" GridPane.rowIndex="6" />
-      <TextField fx:id="editjsonpath" GridPane.rowIndex="7" />
-      <Label text="%label.color" GridPane.rowIndex="8" />
-      <HBox alignment="CENTER_LEFT" spacing="10.0" GridPane.rowIndex="9">
+      <Label text="%label.page" />
+      <ComboBox fx:id="editpage" editable="true" maxWidth="1.7976931348623157E308" GridPane.rowIndex="1" />
+      <Label text="%label.topic" GridPane.rowIndex="2" />
+      <TextField fx:id="edittopic" GridPane.rowIndex="3" />
+      <Label text="%label.topicpub" GridPane.rowIndex="4" />
+      <TextField fx:id="edittopicpub" GridPane.rowIndex="5" />
+      <Label text="%label.format" GridPane.rowIndex="6" />
+      <ChoiceBox fx:id="editformat" maxWidth="1.7976931348623157E308" GridPane.rowIndex="7" />
+      <Label text="%label.jsonpath" GridPane.rowIndex="8" />
+      <TextField fx:id="editjsonpath" GridPane.rowIndex="9" />
+      <Label text="%label.color" GridPane.rowIndex="10" />
+      <HBox alignment="CENTER_LEFT" spacing="10.0" GridPane.rowIndex="11">
          <children>
             <ColorPicker fx:id="editcolor" maxWidth="1.7976931348623157E308" HBox.hgrow="SOMETIMES" />
             <Button fx:id="clearcolor" mnemonicParsing="false" onAction="#onClearColor" />
          </children>
       </HBox>
-      <Label text="%label.background" GridPane.rowIndex="10" />
-      <HBox alignment="CENTER_LEFT" spacing="10.0" GridPane.rowIndex="11">
+      <Label text="%label.background" GridPane.rowIndex="12" />
+      <HBox alignment="CENTER_LEFT" spacing="10.0" GridPane.rowIndex="13">
          <children>
             <ColorPicker fx:id="editbackground" maxWidth="1.7976931348623157E308" HBox.hgrow="SOMETIMES" />
             <Button fx:id="clearbackground" mnemonicParsing="false" onAction="#onClearBackground" />
@@ -62,12 +67,12 @@
             <Insets />
          </GridPane.margin>
       </HBox>
-      <CheckBox fx:id="editmultiline" mnemonicParsing="false" text="%label.multiline" GridPane.rowIndex="12" />
-      <Label maxWidth="1.7976931348623157E308" styleClass="formsection" text="%label.extendedproperties" GridPane.columnSpan="2147483647" GridPane.rowIndex="13" />
-      <Label text="%label.qos" GridPane.rowIndex="14" />
-      <ChoiceBox fx:id="editqos" maxWidth="1.7976931348623157E308" GridPane.rowIndex="15" />
-      <Label text="%label.retained" GridPane.rowIndex="16" />
-      <ChoiceBox fx:id="editretained" maxWidth="1.7976931348623157E308" GridPane.rowIndex="17" />
+      <CheckBox fx:id="editmultiline" mnemonicParsing="false" text="%label.multiline" GridPane.rowIndex="14" />
+      <Label maxWidth="1.7976931348623157E308" styleClass="formsection" text="%label.extendedproperties" GridPane.columnSpan="2147483647" GridPane.rowIndex="15" />
+      <Label text="%label.qos" GridPane.rowIndex="16" />
+      <ChoiceBox fx:id="editqos" maxWidth="1.7976931348623157E308" GridPane.rowIndex="17" />
+      <Label text="%label.retained" GridPane.rowIndex="18" />
+      <ChoiceBox fx:id="editretained" maxWidth="1.7976931348623157E308" GridPane.rowIndex="19" />
    </children>
    <padding>
       <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />

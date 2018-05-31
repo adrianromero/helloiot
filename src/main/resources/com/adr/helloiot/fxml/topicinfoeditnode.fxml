@@ -5,6 +5,7 @@
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.ColorPicker?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -29,28 +30,31 @@
       <RowConstraints minHeight="10.0" prefHeight="30.0" />
       <RowConstraints minHeight="10.0" prefHeight="30.0" />
       <RowConstraints minHeight="10.0" prefHeight="30.0" />
+      <RowConstraints minHeight="10.0" prefHeight="30.0" />
    </rowConstraints>
    <children>
-      <Label text="%label.topic" />
-      <TextField fx:id="edittopic" GridPane.columnIndex="1" GridPane.columnSpan="2" />
-      <Label text="%label.topicpub" GridPane.rowIndex="1" />
-      <TextField fx:id="edittopicpub" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="1" />
-      <Label text="%label.format" GridPane.rowIndex="2" />
-      <ChoiceBox fx:id="editformat" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-      <Label text="%label.jsonpath" GridPane.rowIndex="3" />
-      <TextField fx:id="editjsonpath" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-      <Label text="%label.color" GridPane.rowIndex="4" />
-      <ColorPicker fx:id="editcolor" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-      <Button fx:id="clearcolor" mnemonicParsing="false" onAction="#onClearColor" GridPane.columnIndex="2" GridPane.rowIndex="4" />
-      <Label text="%label.background" GridPane.rowIndex="5" />
-      <ColorPicker fx:id="editbackground" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-      <Button fx:id="clearbackground" mnemonicParsing="false" onAction="#onClearBackground" GridPane.columnIndex="2" GridPane.rowIndex="5" />
-      <CheckBox fx:id="editmultiline" mnemonicParsing="false" text="%label.multiline" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-      <Label maxWidth="1.7976931348623157E308" styleClass="formsection" text="%label.extendedproperties" GridPane.columnSpan="2147483647" GridPane.rowIndex="7" />
-      <Label text="%label.qos" GridPane.rowIndex="8" />
-      <ChoiceBox fx:id="editqos" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="8" />
-      <Label text="%label.retained" GridPane.rowIndex="9" />
-      <ChoiceBox fx:id="editretained" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="9" />
+      <Label text="%label.page" />
+      <ComboBox fx:id="editpage" editable="true" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" />
+      <Label text="%label.topic" GridPane.rowIndex="1" />
+      <TextField fx:id="edittopic" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="1" />
+      <Label text="%label.topicpub" GridPane.rowIndex="2" />
+      <TextField fx:id="edittopicpub" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="2" />
+      <Label text="%label.format" GridPane.rowIndex="3" />
+      <ChoiceBox fx:id="editformat" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+      <Label text="%label.jsonpath" GridPane.rowIndex="4" />
+      <TextField fx:id="editjsonpath" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+      <Label text="%label.color" GridPane.rowIndex="5" />
+      <ColorPicker fx:id="editcolor" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+      <Button fx:id="clearcolor" mnemonicParsing="false" onAction="#onClearColor" GridPane.columnIndex="2" GridPane.rowIndex="5" />
+      <Label text="%label.background" GridPane.rowIndex="6" />
+      <ColorPicker fx:id="editbackground" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+      <Button fx:id="clearbackground" mnemonicParsing="false" onAction="#onClearBackground" GridPane.columnIndex="2" GridPane.rowIndex="6" />
+      <CheckBox fx:id="editmultiline" mnemonicParsing="false" text="%label.multiline" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+      <Label maxWidth="1.7976931348623157E308" styleClass="formsection" text="%label.extendedproperties" GridPane.columnSpan="2147483647" GridPane.rowIndex="8" />
+      <Label text="%label.qos" GridPane.rowIndex="9" />
+      <ChoiceBox fx:id="editqos" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="9" />
+      <Label text="%label.retained" GridPane.rowIndex="10" />
+      <ChoiceBox fx:id="editretained" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="10" />
    </children>
    <padding>
       <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />

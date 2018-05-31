@@ -21,6 +21,7 @@ package com.adr.helloiot;
 import com.adr.helloiot.device.DeviceSwitch;
 import com.adr.helloiot.graphic.IconStatus;
 import com.adr.helloiot.unit.ButtonSimple;
+import com.adr.helloiot.unit.UnitPage;
 import com.adr.helloiot.util.ExternalFonts;
 import java.util.Arrays;
 import javafx.beans.property.ReadOnlyProperty;
@@ -42,7 +43,8 @@ public class TopicInfoSwitch implements TopicInfo {
 
     private final TopicInfoSwitchNode editnode;
 
-    private SimpleStringProperty name = new SimpleStringProperty();
+    private final SimpleStringProperty name = new SimpleStringProperty();
+    private String page = null;
     private String topic = null;
     private String topicpub = null;
     private String icon = "TOGGLE";
@@ -81,6 +83,7 @@ public class TopicInfoSwitch implements TopicInfo {
     @Override
     public void load(SubProperties properties) {
         name.setValue(properties.getProperty(".name"));
+        page = properties.getProperty(".page", null);
         topic = properties.getProperty(".topic", null);
         topicpub = properties.getProperty(".topicpub", null);
         icon = properties.getProperty(".icon", "TOGGLE");
@@ -92,30 +95,31 @@ public class TopicInfoSwitch implements TopicInfo {
     public void store(SubProperties properties) {
         properties.setProperty(".type", getType());
 
-        properties.setProperty(".name", getName());
-        properties.setProperty(".topic", getTopic());
-        properties.setProperty(".topicpub", getTopicpub());
-        properties.setProperty(".icon", getIcon());
-        properties.setProperty(".color", getColor() == null ? null : getColor().toString());
-
+        properties.setProperty(".name", name.getValue());
+        properties.setProperty(".page", page);
+        properties.setProperty(".topic", topic);
+        properties.setProperty(".topicpub", topicpub);
+        properties.setProperty(".icon", icon);
+        properties.setProperty(".color", color == null ? null : color.toString());
     }
     
     @Override
     public TopicStatus getTopicStatus() throws HelloIoTException {
         DeviceSwitch l = new DeviceSwitch();
-        l.setTopic(getTopic());
-        l.setTopicPublish(getTopicpub());
+        l.setTopic(topic);
+        l.setTopicPublish(topicpub);
         l.setQos(1);
         l.setRetained(false);
 
         ButtonSimple s = new ButtonSimple();
         s.setText(getLabel().getValue());
         s.setDevice(l);
-        s.setIconStatus(IconStatus.valueOf((getIcon())));
-        Color c = getColor();
+        s.setIconStatus(IconStatus.valueOf(icon));
+        Color c = color;
         if (c != null) {
             s.setStyle("-fx-base:" + webColor(c) + "; -fx-button-fill:" + webColor(c) + ";");
         }
+        UnitPage.setPage(s, page);
         return new TopicStatus(Arrays.asList(l), Arrays.asList(s));
     }
 
@@ -126,41 +130,23 @@ public class TopicInfoSwitch implements TopicInfo {
 
     @Override
     public void writeToEditNode() {
-        editnode.editname.setText(getName());
-        editnode.edittopic.setText(getTopic());
-        editnode.edittopicpub.setText(getTopicpub());
-        editnode.editicon.setValue(getIcon());
-        editnode.editcolor.setValue(getColor());
+        editnode.editname.setText(name.getValue());
+        editnode.editpage.setValue(page);
+        editnode.edittopic.setText(topic);
+        editnode.edittopicpub.setText(topicpub);
+        editnode.editicon.setValue(icon);
+        editnode.editcolor.setValue(color);
     }
 
     @Override
     public void readFromEditNode() {
         name.setValue(editnode.editname.getText());
+        page = editnode.editpage.getEditor().getText();
         topic = editnode.edittopic.getText();
         topicpub = editnode.edittopicpub.getText() == null || editnode.edittopicpub.getText().isEmpty() ? null : editnode.edittopicpub.getText();
         icon = editnode.editicon.getValue();
         color = editnode.editcolor.getValue();
     }  
-    
-    public String getName() {
-        return name.getValue();
-    }
-    
-    public String getTopic() {
-        return topic;
-    }
-
-    public String getTopicpub() {
-        return topicpub;
-    }
-
-    public String getIcon() {
-        return icon;
-    }
-    
-    public Color getColor() {
-        return color;
-    }
     
     private String webColor(Color color) {
         return String.format("#%02X%02X%02X%02X",

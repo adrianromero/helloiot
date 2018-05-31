@@ -31,6 +31,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ColorPicker;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
@@ -47,7 +48,9 @@ public class TopicInfoEditNode implements TopicInfoNode {
     @FXML
     private ResourceBundle resources;  
     @FXML
-    GridPane container;
+    private GridPane container;
+    @FXML
+    public ComboBox<String> editpage;    
     @FXML
     public TextField edittopic;
     @FXML
@@ -93,6 +96,12 @@ public class TopicInfoEditNode implements TopicInfoNode {
 
     @FXML
     public void initialize() {
+        
+        editpage.getItems().addAll("Lights", "Numbers");
+        editpage.getEditor().textProperty().addListener((ObservableValue<? extends String> ov, String old_val, String new_val) -> {
+            updateCurrentTopic();
+        });  
+        
         edittopicpub.promptTextProperty().bind(edittopic.textProperty());
         edittopic.textProperty().addListener((ObservableValue<? extends String> ov, String old_val, String new_val) -> {
             updateCurrentTopic();
