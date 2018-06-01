@@ -18,6 +18,8 @@
 //
 package com.adr.helloiot;
 
+import com.adr.fonticon.FontAwesome;
+import com.adr.fonticon.IconBuilder;
 import com.adr.helloiot.device.DeviceBasic;
 import com.adr.helloiot.device.DeviceSimple;
 import com.adr.helloiot.device.TransmitterSimple;
@@ -91,26 +93,22 @@ public class TopicInfoEdit implements TopicInfo {
     
     @Override
     public Node getGraphic() {
-
-        Text t = new Text();
-        t.setFill(Color.WHITE);
-        t.setFont(Font.font(ExternalFonts.SOURCESANSPRO_BOLD, FontWeight.BOLD, 10.0));
-        TextFlow tf = new TextFlow(t);
-        tf.setPrefWidth(55);
-        tf.setTextAlignment(TextAlignment.CENTER);
-        tf.setPadding(new Insets(2, 5, 2, 5));
-
+        
+        Text t;
         if ("Subscription".equals(getType())) {
-            t.setText("SUB");
-            tf.setStyle("-fx-background-color: #001A80; -fx-background-radius: 12px;");
+            t = IconBuilder.create(FontAwesome.FA_COMMENT, 12.0).build();
         } else if ("Publication".equals(getType())) {
-            t.setText("PUB");
-            tf.setStyle("-fx-background-color: #4D001A; -fx-background-radius: 12px;");
+            t = IconBuilder.create(FontAwesome.FA_SEND, 12.0).build();
         } else { // "Publication/Subscription"
-            t.setText("P/SUB");
-            tf.setStyle("-fx-background-color: #003300; -fx-background-radius: 12px;");
-        }
-        return tf;
+            t = IconBuilder.create(FontAwesome.FA_PENCIL, 12.0).build();
+        }        
+        t.setFill(Color.WHITE);
+        TextFlow tf = new TextFlow(t);
+        tf.setTextAlignment(TextAlignment.CENTER);
+        tf.setPadding(new Insets(5, 8, 5, 8));
+        tf.setStyle("-fx-background-color: #4559d4; -fx-background-radius: 5px;");
+        tf.setPrefWidth(30.0);
+        return tf;         
     }
     
     @Override

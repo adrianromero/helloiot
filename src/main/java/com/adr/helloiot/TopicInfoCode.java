@@ -18,9 +18,10 @@
 //
 package com.adr.helloiot;
 
+import com.adr.fonticon.FontAwesome;
+import com.adr.fonticon.IconBuilder;
 import com.adr.helloiot.device.Device;
 import com.adr.helloiot.unit.Unit;
-import com.adr.helloiot.util.ExternalFonts;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -34,8 +35,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.scene.text.TextFlow;
@@ -68,18 +67,14 @@ public class TopicInfoCode implements TopicInfo {
     @Override
     public Node getGraphic() {
 
-        Text t = new Text();
+        Text t = IconBuilder.create(FontAwesome.FA_FILE_CODE_O, 12.0).build();
         t.setFill(Color.WHITE);
-        t.setFont(Font.font(ExternalFonts.SOURCESANSPRO_BOLD, FontWeight.BOLD, 10.0));
         TextFlow tf = new TextFlow(t);
-        tf.setPrefWidth(55);
         tf.setTextAlignment(TextAlignment.CENTER);
-        tf.setPadding(new Insets(2, 5, 2, 5));
-
-        t.setText("CODE");
-        tf.setStyle("-fx-background-color: #808080; -fx-background-radius: 12px;");
-
-        return tf;
+        tf.setPadding(new Insets(5, 8, 5, 8));
+        tf.setStyle("-fx-background-color: #4559d4; -fx-background-radius: 5px;");
+        tf.setPrefWidth(30.0);        
+        return tf; 
     }
 
     @Override
