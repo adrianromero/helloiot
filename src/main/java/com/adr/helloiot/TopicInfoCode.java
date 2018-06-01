@@ -72,7 +72,7 @@ public class TopicInfoCode implements TopicInfo {
         TextFlow tf = new TextFlow(t);
         tf.setTextAlignment(TextAlignment.CENTER);
         tf.setPadding(new Insets(5, 8, 5, 8));
-        tf.setStyle("-fx-background-color: #4559d4; -fx-background-radius: 5px;");
+        tf.setStyle("-fx-background-color: #d48545; -fx-background-radius: 5px;");
         tf.setPrefWidth(30.0);        
         return tf; 
     }
