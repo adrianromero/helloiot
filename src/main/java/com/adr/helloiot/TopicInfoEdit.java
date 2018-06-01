@@ -115,9 +115,9 @@ public class TopicInfoEdit implements TopicInfo {
     
     @Override
     public void load(SubProperties properties) {
+        name.setValue(properties.getProperty(".name"));
         page = properties.getProperty(".page", null);
         topic = properties.getProperty(".topic", null);
-        name.setValue(topic == null ? null : capitalize(leaf(topic)));
         topicpub = properties.getProperty(".topicpub", null);
         format = properties.getProperty(".format", "STRING");
         jsonpath = properties.getProperty(".jsonpath", null);
@@ -134,6 +134,7 @@ public class TopicInfoEdit implements TopicInfo {
     public void store(SubProperties properties) {
         properties.setProperty(".type", getType());
 
+        properties.setProperty(".name", name.getValue());
         properties.setProperty(".page", page);
         properties.setProperty(".topic", topic);
         properties.setProperty(".topicpub", topicpub);
@@ -171,6 +172,7 @@ public class TopicInfoEdit implements TopicInfo {
 
     @Override
     public void writeToEditNode() {
+        editnode.editname.setText(name.getValue());
         editnode.editpage.setValue(page);
         editnode.edittopic.setText(topic);
         editnode.edittopicpub.setText(topicpub);
@@ -187,9 +189,8 @@ public class TopicInfoEdit implements TopicInfo {
 
     @Override
     public void readFromEditNode() {
-        page = editnode.editpage.getEditor().getText();
+        name.setValue(editnode.editname.getText());
         topic = editnode.edittopic.getText();
-        name.setValue(topic == null ? null : capitalize(leaf(topic)));
         if ("Subscription".equals(type)) {
             topicpub = null;
             editnode.edittopicpub.setDisable(true);
@@ -211,33 +212,6 @@ public class TopicInfoEdit implements TopicInfo {
         qos = editnode.editqos.getValue();
         retained = editnode.editretained.getValue();  
     }  
-
-    private static String capitalize(String s) {
-        final char[] buffer = s.toCharArray();
-        boolean capitalizeNext = true;
-        for (int i = 0; i < buffer.length; i++) {
-            final char ch = buffer[i];
-            if (ch == '_' || ch == ' ') {
-                buffer[i] = ' ';
-                capitalizeNext = true;
-            } else if (capitalizeNext) {
-                buffer[i] = Character.toTitleCase(ch);
-                capitalizeNext = false;
-            }
-        }
-        return new String(buffer);
-    }
-
-    private static String leaf(String s) {
-        int i = s.lastIndexOf('/');
-        if (i < 0) {
-            return s;
-        } else if (i == s.length() - 1) {
-            return leaf(s.substring(0, s.length() - 1));
-        } else {
-            return s.substring(i + 1);
-        }
-    }
     
     private TopicStatus buildTopicPublish() {
 
@@ -308,10 +282,10 @@ public class TopicInfoEdit implements TopicInfo {
     private void setStyle(Unit u) {
         StringBuilder style = new StringBuilder();
         if (color != null) {
-            style.append("-fx-unit-fill: ").append(webColor(color)).append(";");
+            style.append("-fx-level-fill: ").append(webColor(color)).append(";");
         }
         if (background != null) {
-            style.append("-fx-background-color: ").append(webColor(background)).append(";");
+            style.append("-fx-background-unit: ").append(webColor(background)).append(";");
         }
         u.getNode().setStyle(style.toString());        
     }

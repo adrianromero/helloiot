@@ -50,6 +50,8 @@ public class TopicInfoEditNode implements TopicInfoNode {
     @FXML
     private GridPane container;
     @FXML
+    public TextField editname;    
+    @FXML
     public ComboBox<String> editpage;    
     @FXML
     public TextField edittopic;
@@ -96,6 +98,9 @@ public class TopicInfoEditNode implements TopicInfoNode {
 
     @FXML
     public void initialize() {
+        editname.textProperty().addListener((ObservableValue<? extends String> ov, String old_val, String new_val) -> {
+            updateCurrentTopic();
+        });      
         
         editpage.getItems().addAll("Lights", "Numbers");
         editpage.getEditor().textProperty().addListener((ObservableValue<? extends String> ov, String old_val, String new_val) -> {
