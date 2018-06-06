@@ -116,6 +116,8 @@ public final class MainNode {
     private final boolean appexitbutton;
     private Button backbutton;
     
+    private String currentpage = null;
+    
     public MainNode(
             HelloIoTApp app,
             ClipFactory factory,
@@ -333,7 +335,15 @@ public final class MainNode {
         if (unitpage == null) {
             unitpage = unitpages.get("notfound");
         }
+        
+        // Check if page to display is already displayed
+        if (unitpage.getName().equals(currentpage)) {
+            return; 
+        }
 
+        // Sets currentpage
+        currentpage = unitpage.getName();
+        
         // clean everything
         container.getChildren().clear();
         
