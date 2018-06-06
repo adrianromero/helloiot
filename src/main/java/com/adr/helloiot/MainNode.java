@@ -336,6 +336,9 @@ public final class MainNode {
             unitpage = unitpages.get("notfound");
         }
         
+        // Hide Menu
+        animateListPages(-1.0);
+        
         // Check if page to display is already displayed
         if (unitpage.getName().equals(currentpage)) {
             return; 
@@ -383,8 +386,6 @@ public final class MainNode {
         if (menubutton != null) {
             menubutton.setDisable(unitpage.isSystem());
         }
-        
-        animateListPages(-1.0);
     }
     
     public void showConnecting() {
