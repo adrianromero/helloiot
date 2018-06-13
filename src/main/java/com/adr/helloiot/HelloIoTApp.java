@@ -133,12 +133,16 @@ public class HelloIoTApp {
             if (ssl) {
                 sslproperties = new Properties();
                 sslproperties.setProperty("com.ibm.ssl.protocol", config.get("mqtt.protocol").asString());
-                sslproperties.setProperty("com.ibm.ssl.keyStore", config.get("mqtt.keystore").asString());
-                sslproperties.setProperty("com.ibm.ssl.keyStorePassword", config.get("mqtt.keystorepassword").asString());
-                sslproperties.setProperty("com.ibm.ssl.keyStoreType", "JKS");
-                sslproperties.setProperty("com.ibm.ssl.trustStore", config.get("mqtt.truststore").asString());
-                sslproperties.setProperty("com.ibm.ssl.trustStorePassword", config.get("mqtt.truststorepassword").asString());
-                sslproperties.setProperty("com.ibm.ssl.trustStoreType", "JKS");
+                if (!config.get("mqtt.keystore").isEmpty()) {
+                    sslproperties.setProperty("com.ibm.ssl.keyStore", config.get("mqtt.keystore").asString());
+                    sslproperties.setProperty("com.ibm.ssl.keyStorePassword", config.get("mqtt.keystorepassword").asString());
+                    sslproperties.setProperty("com.ibm.ssl.keyStoreType", "JKS");                    
+                }
+                if (!config.get("mqtt.truststore").isEmpty()) {
+                    sslproperties.setProperty("com.ibm.ssl.trustStore", config.get("mqtt.truststore").asString());
+                    sslproperties.setProperty("com.ibm.ssl.trustStorePassword", config.get("mqtt.truststorepassword").asString());
+                    sslproperties.setProperty("com.ibm.ssl.trustStoreType", "JKS");
+                }
             } else {
                 sslproperties = null;
             }
