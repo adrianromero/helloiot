@@ -99,7 +99,7 @@ public class ConnectTradfri {
 
     @FXML
     void findTradfriBridge(ActionEvent event) {
-        DialogView loading = Dialogs.createLoading(resources.getString("message.findtradfri"));
+        DialogView loading = Dialogs.createLoading();
         loading.show(MessageUtils.getRoot(root));
         CompletableAsync.handle(findBridge(),
             v -> {
@@ -130,7 +130,7 @@ public class ConnectTradfri {
         dialog.setContent(contentex.getNode());     
         dialog.addButtons(dialog.createCancelButton(), dialog.createOKButton());
         dialog.setActionOK(ev -> {
-            DialogView loading2 = Dialogs.createLoading(resources.getString("message.newidentity"));
+            DialogView loading2 = Dialogs.createLoading();
             loading2.show(MessageUtils.getRoot(root));    
             CompletableAsync.handle(requestSharedKey(host, contentex.getPSK()), 
                 key -> {

@@ -390,7 +390,7 @@ public final class MainNode {
     
     public void showConnecting() {
         if (connectingdialog == null) {
-            connectingdialog = Dialogs.createLoading(resources.getString("message.waitingconnection"));
+            connectingdialog = Dialogs.createLoading();
             connectingdialog.show(MessageUtils.getRoot(rootpane));
         }
     }

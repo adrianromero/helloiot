@@ -313,7 +313,7 @@ public class MainManagerClient implements MainManager {
                 return;
             }
 
-            DialogView loading2 = Dialogs.createLoading(resources.getString("title.tradfridiscovery"));
+            DialogView loading2 = Dialogs.createLoading();
             loading2.show(MessageUtils.getRoot(root));    
 
             CompletableAsync.handle(clienttradfri.requestSample(

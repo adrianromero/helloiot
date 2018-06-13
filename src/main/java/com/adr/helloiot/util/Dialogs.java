@@ -19,11 +19,7 @@
 package com.adr.helloiot.util;
 
 import com.adr.hellocommon.dialog.DialogView;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
-import javafx.scene.layout.VBox;
 
 /**
  *
@@ -33,23 +29,14 @@ public class Dialogs {
     
     private Dialogs() {}
 
-    public static DialogView createLoading(String label) {
-        Label l = new Label(label);
-        l.getStyleClass().add("dialog-label");
-        l.setAlignment(Pos.CENTER);
-        l.setMaxSize(Integer.MAX_VALUE, Integer.MAX_VALUE);
-
-        ProgressBar p = new ProgressBar();
-        p.setMaxSize(Integer.MAX_VALUE, Integer.MAX_VALUE);
-
-        VBox box = new VBox();
-        box.setSpacing(5.0);
-        box.setPadding(new Insets(0.0, 0.0, 50.0, 0.0));
-        box.getChildren().addAll(l, p);
+    public static DialogView createLoading() {
+        ProgressBar p = new ProgressBar();    
+        p.getStyleClass().add("loading-bar");
 
         DialogView dialog = new DialogView();
         dialog.setMaster(true);
-        dialog.setContent(box);
+        dialog.setContent(p);
+        dialog.addStyleClass("loading-dialog");
         return dialog;
     }
 }
