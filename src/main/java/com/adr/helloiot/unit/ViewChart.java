@@ -91,7 +91,7 @@ public class ViewChart extends Tile {
         chart = new AreaChart<>(xAxis, yAxis, areaChartData);
         chart.setLegendVisible(legendVisible);
         chart.setLegendSide(legendSide);
-        chart.setAnimated(true);
+        chart.setAnimated(false);
         chart.setCreateSymbols(false);
         chart.setVerticalGridLinesVisible(false);
         chart.setHorizontalGridLinesVisible(false);

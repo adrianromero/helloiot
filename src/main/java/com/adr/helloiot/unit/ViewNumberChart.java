@@ -84,7 +84,7 @@ public class ViewNumberChart extends Tile {
         
         chart = new AreaChart<>(xAxis, yAxis, areaChartData);
         chart.setLegendVisible(false);
-        chart.setAnimated(true);
+        chart.setAnimated(false);
         chart.setCreateSymbols(false);
         chart.setVerticalGridLinesVisible(false);
         chart.setHorizontalGridLinesVisible(false);
