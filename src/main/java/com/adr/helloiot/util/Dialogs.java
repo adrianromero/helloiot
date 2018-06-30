@@ -35,6 +35,7 @@ public class Dialogs {
 
         DialogView dialog = new DialogView();
         dialog.setMaster(true);
+        dialog.setAnimate(false);
         dialog.setContent(p);
         dialog.addStyleClass("loading-dialog");
         return dialog;
