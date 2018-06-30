@@ -54,6 +54,7 @@ public class ViewNumberProgress extends Tile {
         // Get all data
 
         progress = new ProgressBar();
+        progress.getStyleClass().add("unitbar");
         progress.setFocusTraversable(false);
         progress.setMaxWidth(Double.MAX_VALUE);
         StackPane.setAlignment(progress, Pos.BOTTOM_CENTER);          
