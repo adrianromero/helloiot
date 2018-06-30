@@ -195,9 +195,6 @@
 }
 
 /* Dialog styles */
-.dialog-body {
-    -fx-background-color: -fx-background-container;  
-}
 .dialog-close-button:armed {
     -fx-background-color: -fx-armed-fill;
 }
@@ -253,15 +250,15 @@
 }
 
 /* Progresss style */
-.progress-bar > .bar {
+.unitbar > .bar {
     -fx-background-insets: 1;    
     -fx-background-radius: 2;
     -fx-padding: 0.75em;
 }
-.progress-bar:indeterminate > .bar {
+.unitbar:indeterminate > .bar {
     -fx-background-color: linear-gradient(to left, transparent, -fx-accent);
 }
-.progress-bar > .track {
+.unitbar > .track {
     -fx-background-color: -fx-border-fill,  derive(-fx-button-fill, 20%);
     -fx-background-insets: 0, 1;    
     -fx-background-radius: 2;    

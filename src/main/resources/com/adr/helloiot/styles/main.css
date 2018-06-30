@@ -199,7 +199,7 @@
     -fx-fill: -fx-buttoncontent-fill;
 }
 .keypadbutton:armed {
-        -fx-background-insets: -1, 3;
+    -fx-background-insets: -1, 3;
     -fx-background-color: -fx-buttonarmed-fill,  -fx-buttonaction-fill;             
 }
 .keypadbuttonnumber {
@@ -257,10 +257,6 @@
 }
 
 /* Dialog styles */
-.dialog-body {
-    -fx-background-color: -fx-background-container;  
-}
-
 .dialog-close-button {
     -fx-button-fill: -fx-secondary-fill;
 }
@@ -330,16 +326,16 @@
 }
 
 /* Progresss style */
-.progress-bar > .bar {
+.unitbar > .bar {
     -fx-background-insets: 0;    
     -fx-background-radius: 2;
     -fx-padding: 0.50em;
     -fx-background-color: -fx-primary-fill;
 }
-.progress-bar:indeterminate > .bar {
+.unitbar:indeterminate > .bar {
     -fx-background-color: linear-gradient(to left, transparent, -fx-button-fill);
 }
-.progress-bar > .track {
+.unitbar > .track {
     -fx-background-color: -fx-canvas-fill;
     -fx-background-insets: 0;    
     -fx-background-radius: 2;    
