@@ -122,7 +122,7 @@
     -fx-font-size: 36px;
 }
 
-.emptypanel {
+.unitsempty {
     -fx-font-size: 48px;
     -fx-font-family: 'Source Sans Pro Bold';
     -fx-text-fill: -fx-info-fill; 

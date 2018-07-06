@@ -23,11 +23,9 @@ import com.adr.fonticon.FontAwesome;
 import com.adr.fonticon.IconBuilder;
 import com.adr.hellocommon.dialog.DialogView;
 import com.adr.hellocommon.dialog.MessageUtils;
-import com.adr.hellocommon.utils.FXMLUtil;
 import com.adr.helloiot.device.format.StringFormatIdentity;
 import com.adr.helloiot.unit.Unit;
 import com.adr.helloiot.media.ClipFactory;
-import com.adr.helloiot.unit.UnitLine;
 import com.adr.helloiot.unit.Units;
 import com.adr.helloiot.util.Dialogs;
 import com.google.common.base.Strings;
@@ -44,7 +42,6 @@ import javafx.animation.Transition;
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
@@ -70,34 +67,17 @@ import javafx.util.Duration;
 
 public final class MainNode {
 
-//    @FXML private URL url;
-    @FXML
     private ResourceBundle resources;
-    @FXML
     private AnchorPane rootpane;
-    @FXML
     private BorderPane appcontainer;
-    @FXML
-    private ScrollPane scrollcontainer;
-    @FXML
-    private VBox container;
-    @FXML
     private ScrollPane scrollpages;
-    @FXML
     private VBox menupages;
-    @FXML
     private Pane listpagesgray;
-    @FXML
     private HBox headerbox;
-    @FXML
     private Button menubutton;
-    @FXML
     private Button exitbutton;
-    @FXML
     private Label headertitle;
-    @FXML
     private Label currenttime;
-    @FXML
     private Label alert;
     
     private DialogView connectingdialog = null;
@@ -127,10 +107,94 @@ public final class MainNode {
         this.app = app;
         this.appclock = appclock;
         this.appexitbutton = appexitbutton;
-        FXMLUtil.load(this, "/com/adr/helloiot/fxml/main.fxml", "com/adr/helloiot/fxml/main");
+        
+        resources = ResourceBundle.getBundle("com/adr/helloiot/fxml/main"); 
+        load();
+        initialize();
+        
         beeper = new Beeper(factory, alert);
         buzzer = new Buzzer(factory);
         backbutton = null;
+    }
+    
+    private void load() {
+        rootpane = new AnchorPane();
+        
+        AnchorPane anchormain = new AnchorPane();
+        AnchorPane.setTopAnchor(anchormain, 0.0);
+        AnchorPane.setLeftAnchor(anchormain, 0.0);
+        AnchorPane.setBottomAnchor(anchormain, 0.0);
+        AnchorPane.setRightAnchor(anchormain, 0.0);        
+        
+        appcontainer = new BorderPane();
+        AnchorPane.setTopAnchor(appcontainer, 0.0);
+        AnchorPane.setLeftAnchor(appcontainer, 0.0);
+        AnchorPane.setBottomAnchor(appcontainer, 0.0);
+        AnchorPane.setRightAnchor(appcontainer, 0.0); 
+        
+        headerbox = new HBox();
+        headerbox.setSpacing(5.0);
+        headerbox.getStyleClass().add("header");
+        BorderPane.setAlignment(headerbox, Pos.CENTER);
+        
+        menubutton = new Button();
+        menubutton.setId("menubutton");
+        menubutton.setFocusTraversable(false);
+        menubutton.setMnemonicParsing(false);
+        menubutton.setOnAction(this::onMenuAction);
+        menubutton.getStyleClass().add("headerbutton");
+        
+        headertitle = new Label();
+        headertitle.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+        headertitle.getStyleClass().add("headertitle");
+        HBox.setHgrow(headertitle, Priority.SOMETIMES);
+        
+        currenttime = new Label();
+        currenttime.setMaxHeight(Double.MAX_VALUE);
+        currenttime.getStyleClass().add("currenttime");
+        
+        exitbutton = new Button();
+        exitbutton.setId("exitbutton");
+        exitbutton.setFocusTraversable(false);
+        exitbutton.setMnemonicParsing(false);
+        exitbutton.getStyleClass().add("headerbutton");    
+        exitbutton.setVisible(false);
+        
+        headerbox.getChildren().addAll(menubutton, headertitle, currenttime, exitbutton);
+        
+        appcontainer.setTop(headerbox);
+        
+        listpagesgray = new Pane();
+        AnchorPane.setTopAnchor(listpagesgray, 0.0);
+        AnchorPane.setLeftAnchor(listpagesgray, 0.0);
+        AnchorPane.setBottomAnchor(listpagesgray, 0.0);
+        AnchorPane.setRightAnchor(listpagesgray, 0.0);         
+        listpagesgray.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+        listpagesgray.setOnMouseClicked(this::onMenuHide);
+        listpagesgray.setVisible(false);
+        
+        menupages = new VBox();
+        
+        scrollpages = new ScrollPane(menupages);
+        AnchorPane.setTopAnchor(scrollpages, 0.0);
+        AnchorPane.setLeftAnchor(scrollpages, 0.0);
+        AnchorPane.setBottomAnchor(scrollpages, 0.0); 
+        scrollpages.setPrefWidth(250.0);        
+        scrollpages.setFitToWidth(true);
+        scrollpages.setFocusTraversable(false);
+        scrollpages.setVisible(false);
+        
+        anchormain.getChildren().addAll(appcontainer, listpagesgray, scrollpages);
+                
+        alert = new Label();
+        AnchorPane.setTopAnchor(alert, 10.0);
+        AnchorPane.setLeftAnchor(alert, 0.0);
+        AnchorPane.setRightAnchor(alert, 0.0);           
+        alert.setAlignment(Pos.CENTER);
+        alert.setMouseTransparent(true);
+        alert.setVisible(false);
+        
+        rootpane.getChildren().addAll(anchormain, alert);
     }
     
     public Node getNode() {
@@ -163,7 +227,8 @@ public final class MainNode {
         Collections.sort(sortedunitpages);
         firstmenupage = null;
         for (UnitPage value : sortedunitpages) {
-            if (!value.isSystem() && value.getUnitLines().size() > 0 && (value.getName() == null || !value.getName().startsWith("."))) {
+            value.buildNode();
+            if (!value.isSystem() && !value.isEmpty() && (value.getName() == null || !value.getName().startsWith("."))) {
                 Label l = new Label();
                 l.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
                 l.setAlignment(Pos.CENTER);
@@ -214,11 +279,11 @@ public final class MainNode {
     }
 
     public void start() {
-        container.setDisable(false);
+        appcontainer.setDisable(false);
     }
     
     public void stop() {
-        container.setDisable(true);
+        appcontainer.setDisable(true);
     }
     
     public void setToolbarButton(EventHandler<ActionEvent> backevent, Node graphic, String text) {
@@ -239,7 +304,6 @@ public final class MainNode {
         backbutton.setVisible(backevent != null);
     }
     
-    @FXML
     public void initialize() {
         
         alert.setGraphic(IconBuilder.create(FontAwesome.FA_VOLUME_UP, 72.0).fill(Color.WHITE).shine(Color.RED).build());
@@ -291,12 +355,10 @@ public final class MainNode {
         });
     }
     
-    @FXML
     void onMenuAction(ActionEvent e) {
         animateListPages(-listpagestransition.getRate());
     }
     
-    @FXML
     void onMenuHide(MouseEvent event) {
         animateListPages(-1.0);
     }
@@ -347,41 +409,12 @@ public final class MainNode {
         // Sets currentpage
         currentpage = unitpage.getName();
         
-        // clean everything
-        container.getChildren().clear();
-        
-        FadeTransition s2 = new FadeTransition(Duration.millis(200), container);
-        s2.setInterpolator(Interpolator.EASE_IN);
-        s2.setFromValue(0.3);
-        s2.setToValue(1.0);
-        s2.playFromStart();
-
-        // Initialize grid
-        container.setMaxSize(unitpage.getMaxWidth(), unitpage.getMaxHeight());
-        for (UnitLine line : unitpage.getUnitLines()) {
-            container.getChildren().add(line.getNode());
-        }
+        // Display selected page everything
+        appcontainer.setCenter(unitpage.getNode());
+        unitpage.showNode();
         
         headertitle.setText(unitpage.getText());
-
-        // Set label if empty
-        if (container.getChildren().isEmpty()) {
-            
-            container.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-            
-            Label l = new Label();
-            l.setText(unitpage.getEmptyLabel());
-            l.setAlignment(Pos.CENTER);
-            l.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-            l.getStyleClass().add("emptypanel");
-            VBox.setVgrow(l, Priority.SOMETIMES);
-            container.getChildren().add(l);
-        }
-        
-        // Set position to origin
-        scrollcontainer.setHvalue(0.0);
-        scrollcontainer.setVvalue(0.0);
-
+ 
         // Modify panel if system
         if (menubutton != null) {
             menubutton.setDisable(unitpage.isSystem());

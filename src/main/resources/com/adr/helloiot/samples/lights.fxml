@@ -15,41 +15,33 @@
     <properties name="living_light5" label="Living light 5" tags="living lamp"/>
 </Light>                 
 
-<StartLine UnitPage.page="Lights" VBox.vgrow= "NEVER" />
-<LabelSection UnitPage.page="Lights" text="Living room lights"/>
+<LabelSection UnitPage.page="Lights" UnitPage.layout="StartLine" text="Living room lights"/>
    
-<StartLine UnitPage.page="Lights" VBox.vgrow= "SOMETIMES" />
-<ViewSimple UnitPage.page="Lights" device="$living_light1" iconStatus="BULBTEXT/1"/>        
+<ViewSimple UnitPage.page="Lights" UnitPage.layout="StartLine" device="$living_light1" iconStatus="BULBTEXT/1"/>        
 <ViewSimple UnitPage.page="Lights" device="$living_light2" iconStatus="BULBTEXT/2"/>
 <ViewSimple UnitPage.page="Lights" device="$living_light3" iconStatus="BULBTEXT/3"/>
 <ViewSimple UnitPage.page="Lights" device="$living_light4" iconStatus="BULBTEXT/4"/>
 <ViewSimple UnitPage.page="Lights" device="$living_light5" iconStatus="BULBTEXT/5"/>
+     
+<LabelSection UnitPage.page="Lights" UnitPage.layout="StartLine" text="Light status"/>
 
-<StartLine UnitPage.page="Lights" VBox.vgrow= "NEVER" />      
-<LabelSection UnitPage.page="Lights" text="Light status"/>
-
-<StartLine UnitPage.page="Lights" VBox.vgrow= "NEVER" />  
-<EditStatus UnitPage.page="Lights" device="$living_light1"/>
+<EditStatus UnitPage.page="Lights" UnitPage.layout="StartLine" device="$living_light1"/>
 <EditStatus UnitPage.page="Lights" device="$living_light2"/>
 <EditStatus UnitPage.page="Lights" device="$living_light3"/>
 <EditStatus UnitPage.page="Lights" device="$living_light4"/>
 <EditStatus UnitPage.page="Lights" device="$living_light5"/>
 
-<StartLine UnitPage.page="Lights" VBox.vgrow= "NEVER" />
-<LabelSection UnitPage.page="Lights" text="Light switchs"/>  
+<LabelSection UnitPage.page="Lights" UnitPage.layout="StartLine" text="Light switchs"/>  
   
-<StartLine UnitPage.page="Lights" VBox.vgrow= "SOMETIMES" />
-<ButtonSimple UnitPage.page="Lights" device="$living_light1" iconStatus="TOGGLE"/>
+<ButtonSimple UnitPage.page="Lights" UnitPage.layout="StartLine" device="$living_light1" iconStatus="TOGGLE"/>
 <ButtonSimple UnitPage.page="Lights" device="$living_light2" iconStatus="TOGGLE"/>
 <ButtonSimple UnitPage.page="Lights" device="$living_light3" iconStatus="TOGGLE"/>
 <ButtonSimple UnitPage.page="Lights" device="$living_light4" iconStatus="TOGGLE"/>
 <ButtonSimple UnitPage.page="Lights" device="$living_light5" iconStatus="TOGGLE"/>
 
-<StartLine UnitPage.page="Lights" VBox.vgrow= "NEVER" />
-<LabelSection UnitPage.page="Lights" text="More actions"/> 
+<LabelSection UnitPage.page="Lights" UnitPage.layout="StartLine" text="More actions"/> 
 
-<StartLine UnitPage.page="Lights" VBox.vgrow= "SOMETIMES" />
-<ButtonSimple UnitPage.page="Lights" device="$living_light1"
+<ButtonSimple UnitPage.page="Lights" UnitPage.layout="StartLine" device="$living_light1"
   label=""
   text="Light 1" 
   style="-fx-background-color: transparent;"/>

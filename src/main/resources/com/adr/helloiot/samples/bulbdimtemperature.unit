@@ -19,9 +19,9 @@
     </values>
 </DeviceSet> 
 
-<StartLine UnitPage.page="Tradfri lights" VBox.vgrow= "SOMETIMES" />
 <ControlIntensity 
-    UnitPage.page="Tradfri lights" 
+    UnitPage.page="Tradfri lights"
+    UnitPage.layout="StartLine"
     deviceOn="$${nameshort}on"
     deviceDim="$${nameshort}dim"
     prefHeight="160"

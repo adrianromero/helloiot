@@ -22,6 +22,7 @@
 
 package com.adr.helloiot.tradfri;
 
+import com.adr.helloiot.EventMessage;
 import com.adr.helloiot.GroupManagers;
 import com.adr.helloiot.ManagerProtocol;
 import com.adr.helloiot.util.CompletableAsync;
@@ -325,21 +326,21 @@ public class ManagerTradfri implements ManagerProtocol {
                 return; // skip this lamp for now
             }
 
-            group.distributeMessage("TRÅDFRI/bulb/" + name + "/on", Integer.toString(light.get(TradfriConstants.ONOFF).getAsInt()).getBytes(StandardCharsets.UTF_8));
+            group.distributeMessage(new EventMessage("TRÅDFRI/bulb/" + name + "/on", Integer.toString(light.get(TradfriConstants.ONOFF).getAsInt()).getBytes(StandardCharsets.UTF_8)));
             jsonregistry.addProperty("type", "bulb");
             if (light.has(TradfriConstants.DIMMER)) {
-                group.distributeMessage("TRÅDFRI/bulb/" + name + "/dim", Integer.toString(light.get(TradfriConstants.DIMMER).getAsInt()).getBytes(StandardCharsets.UTF_8));
+                group.distributeMessage(new EventMessage("TRÅDFRI/bulb/" + name + "/dim", Integer.toString(light.get(TradfriConstants.DIMMER).getAsInt()).getBytes(StandardCharsets.UTF_8)));
             }
             jsonregistry.addProperty("dim", light.has(TradfriConstants.DIMMER));
             if (light.has(TradfriConstants.COLOR)) {
-                group.distributeMessage("TRÅDFRI/bulb/" + name + "/temperature", valueOfTemperature(light.get(TradfriConstants.COLOR).getAsString()).getBytes(StandardCharsets.UTF_8));
+                group.distributeMessage(new EventMessage("TRÅDFRI/bulb/" + name + "/temperature", valueOfTemperature(light.get(TradfriConstants.COLOR).getAsString()).getBytes(StandardCharsets.UTF_8)));
             }
             jsonregistry.addProperty("temperature", light.has(TradfriConstants.COLOR));
         } else if (json.has(TradfriConstants.HS_ACCESSORY_LINK)) { // groups have this entry
-            group.distributeMessage("TRÅDFRI/group/" + name + "/on", Integer.toString(json.get(TradfriConstants.ONOFF).getAsInt()).getBytes(StandardCharsets.UTF_8));
+            group.distributeMessage(new EventMessage("TRÅDFRI/group/" + name + "/on", Integer.toString(json.get(TradfriConstants.ONOFF).getAsInt()).getBytes(StandardCharsets.UTF_8)));
             jsonregistry.addProperty("type", "group");
             if (json.has(TradfriConstants.DIMMER)) {
-                group.distributeMessage("TRÅDFRI/group/" + name + "/dim", Integer.toString(json.get(TradfriConstants.DIMMER).getAsInt()).getBytes(StandardCharsets.UTF_8));
+                group.distributeMessage(new EventMessage("TRÅDFRI/group/" + name + "/dim", Integer.toString(json.get(TradfriConstants.DIMMER).getAsInt()).getBytes(StandardCharsets.UTF_8)));
             }
             jsonregistry.addProperty("dim", json.has(TradfriConstants.DIMMER));
         } else {
@@ -348,7 +349,7 @@ public class ManagerTradfri implements ManagerProtocol {
         }
 
         if (register) {
-            group.distributeMessage("TRÅDFRI/registry", jsonregistry.toString().getBytes(StandardCharsets.UTF_8));
+            group.distributeMessage(new EventMessage("TRÅDFRI/registry", jsonregistry.toString().getBytes(StandardCharsets.UTF_8)));
         }
     }
 

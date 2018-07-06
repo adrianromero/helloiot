@@ -1,5 +1,5 @@
 //    HelloIoT is a dashboard creator for MQTT
-//    Copyright (C) 2017 Adrián Romero Corchado.
+//    Copyright (C) 2018 Adrián Romero Corchado.
 //
 //    This file is part of HelloIot.
 //
@@ -18,14 +18,18 @@
 //
 package com.adr.helloiot.unit;
 
-import javafx.collections.ObservableList;
 import javafx.scene.Node;
 
 /**
  *
  * @author adrian
  */
-public interface UnitLine extends Unit {
-
-    public ObservableList<Node> getChildren();
+public interface UnitsContainer {
+    Node getNode();
+    void showNode();
+    void addLayout(String layout);
+    void addChildren(Node n);
+    default boolean isEmpty() {
+        return false;
+    }
 }

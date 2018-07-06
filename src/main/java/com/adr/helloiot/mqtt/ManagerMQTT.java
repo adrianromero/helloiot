@@ -18,14 +18,18 @@
 //
 package com.adr.helloiot.mqtt;
 
+import com.adr.helloiot.EventMessage;
 import com.adr.helloiot.GroupManagers;
 import com.adr.helloiot.ManagerProtocol;
 import com.adr.helloiot.device.format.MiniVar;
 import com.adr.helloiot.device.format.MiniVarBoolean;
+import com.adr.helloiot.device.format.MiniVarInt;
 import com.adr.helloiot.device.format.StringFormatSwitch;
 import com.google.common.base.Strings;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 import java.util.ResourceBundle;
 import java.util.function.Consumer;
@@ -189,7 +193,10 @@ public class ManagerMQTT implements MqttCallback, ManagerProtocol {
 
     @Override
     public void messageArrived(String topic, MqttMessage mm) throws Exception {
-        group.distributeMessage(topic, mm.getPayload());
+        Map<String, MiniVar> properties = new HashMap<>();
+        properties.put("mqtt.retained", new MiniVarBoolean(mm.isRetained()));
+        properties.put("mqtt.qos", new MiniVarInt(mm.getQos()));
+        group.distributeMessage(new EventMessage(topic, mm.getPayload(), properties));
     }
 
     @Override

@@ -10,19 +10,15 @@
 </Thermostat> 
 
 
-<StartLine UnitPage.page="Temperature Chart" VBox.vgrow= "NEVER" />
-<LabelSection UnitPage.page="Temperature Chart" text="Temperature"/>
+<LabelSection UnitPage.page="Temperature Chart" UnitPage.layout="StartLine" text="Temperature"/>
    
-<StartLine UnitPage.page="Temperature Chart" VBox.vgrow= "SOMETIMES" />
-<SliderSimple UnitPage.page="Temperature Chart" device="$temperature1"/>
+<SliderSimple UnitPage.page="Temperature Chart" UnitPage.layout="StartLine" device="$temperature1"/>
 <SliderSimple UnitPage.page="Temperature Chart" device="$temperature2"/>
 <SliderSimple UnitPage.page="Temperature Chart" device="$temperature3"/>
 
-<StartLine UnitPage.page="Temperature Chart" VBox.vgrow= "NEVER" />
-<LabelSection UnitPage.page="Temperature Chart" text="Chart"/>
+<LabelSection UnitPage.page="Temperature Chart" UnitPage.layout="StartLine" text="Chart"/>
    
-<StartLine UnitPage.page="Temperature Chart" VBox.vgrow= "SOMETIMES" />
-<ViewChart UnitPage.page="Temperature Chart" label="Temperature bedrooms">
+<ViewChart UnitPage.page="Temperature Chart" UnitPage.layout="StartLine" label="Temperature bedrooms">
     <ViewChartSerie device="$temperature1"/>
     <ViewChartSerie device="$temperature2"/>
     <ViewChartSerie device="$temperature3"/>

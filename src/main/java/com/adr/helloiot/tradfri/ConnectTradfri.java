@@ -21,6 +21,7 @@ package com.adr.helloiot.tradfri;
 import com.adr.hellocommon.dialog.DialogView;
 import com.adr.hellocommon.dialog.MessageUtils;
 import com.adr.helloiot.ConfigProperties;
+import com.adr.helloiot.EventMessage;
 import com.adr.helloiot.GroupManagers;
 import com.adr.helloiot.util.CompletableAsync;
 import com.adr.helloiot.util.Dialogs;
@@ -221,10 +222,10 @@ public class ConnectTradfri {
         }
 
         @Override
-        public void distributeMessage(String topic, byte[] message) {
-            if ("TRÅDFRI/registry".equals(topic)) {
+        public void distributeMessage(EventMessage message) {
+            if ("TRÅDFRI/registry".equals(message.getTopic())) {
                 JsonParser gsonparser = new JsonParser();
-                JsonObject device = gsonparser.parse(new String(message, StandardCharsets.UTF_8)).getAsJsonObject();
+                JsonObject device = gsonparser.parse(new String(message.getMessage(), StandardCharsets.UTF_8)).getAsJsonObject();
                 if ("bulb".equals(device.get("type").getAsString())) {
                     String template;
                     String name = device.get("name").getAsString();

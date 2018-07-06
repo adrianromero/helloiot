@@ -9,11 +9,9 @@
         </values>
 </DeviceSet> 
 
-<StartLine UnitPage.page="Scenes" VBox.vgrow= "NEVER" />
-<LabelSection UnitPage.page="Scenes" text="Bedroom scenes"/>
+<LabelSection UnitPage.page="Scenes" UnitPage.layout="StartLine" text="Bedroom scenes"/>
 
-<StartLine UnitPage.page="Scenes" VBox.vgrow= "ALWAYS" />
-<ViewText  UnitPage.page="Scenes" device="$scenes"/>
+<ViewText UnitPage.page="Scenes" UnitPage.layout="StartLine" device="$scenes"/>
 <ButtonSimple UnitPage.page="Scenes" device="$scenes" />
 <ButtonsSpinner UnitPage.page="Scenes" device="$scenes"/>
 <ButtonPair UnitPage.page="Scenes" device="$scenes"/>

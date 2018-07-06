@@ -137,26 +137,27 @@ public final class TopicsManager {
         }        
     }
 
-    private void distributeMessage(String topic, byte[] message) {
-        distributeWilcardMessage(topic, topic, message);
-        distributeRecursiveMessage(topic, topic.length() - 1, message);
+    private void distributeMessage(EventMessage message) {
+        distributeWilcardMessage(message.getTopic(), message);
+        distributeRecursiveMessage(message.getTopic().length() - 1, message);
     }
 
-    private void distributeRecursiveMessage(String topic, int starting, byte[] message) {
+    private void distributeRecursiveMessage(int starting, EventMessage message) {
+        String topic = message.getTopic();
         int i = topic.lastIndexOf('/', starting);
         if (i < 0) {
-            distributeWilcardMessage("#", topic, message);
+            distributeWilcardMessage("#", message);
         } else {
-            distributeWilcardMessage(topic.substring(0, i) + "/#", topic, message);
-            distributeRecursiveMessage(topic, i - 1, message);
+            distributeWilcardMessage(topic.substring(0, i) + "/#", message);
+            distributeRecursiveMessage(i - 1, message);
         }
     }
 
-    private void distributeWilcardMessage(String subscriptiontopic, String topic, byte[] message) {
+    private void distributeWilcardMessage(String subscriptiontopic, EventMessage message) {
         List<Subscription> subs = subscriptions.get(subscriptiontopic);
         if (subs != null) {
             for (Subscription s : subs) {
-                s.consume(new EventMessage(topic, message));
+                s.consume(message);
             }
         }
     }

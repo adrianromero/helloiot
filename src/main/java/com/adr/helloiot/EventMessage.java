@@ -1,5 +1,5 @@
 //    HelloIoT is a dashboard creator for MQTT
-//    Copyright (C) 2017 Adrián Romero Corchado.
+//    Copyright (C) 2017-2018 Adrián Romero Corchado.
 //
 //    This file is part of HelloIot.
 //
@@ -18,6 +18,10 @@
 //
 package com.adr.helloiot;
 
+import com.adr.helloiot.device.format.MiniVar;
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  *
  * @author adrian
@@ -26,10 +30,18 @@ public class EventMessage {
 
     private final String topic;
     private final byte[] message;
+    private final Map<String, MiniVar> properties;
 
     public EventMessage(String topic, byte[] message) {
         this.topic = topic;
         this.message = message;
+        this.properties = new HashMap<>();
+    }
+
+    public EventMessage(String topic, byte[] message, Map<String, MiniVar> properties) {
+        this.topic = topic;
+        this.message = message;
+        this.properties = properties;
     }
 
     public String getTopic() {
@@ -38,5 +50,9 @@ public class EventMessage {
 
     public byte[] getMessage() {
         return message;
+    }
+    
+    public MiniVar getProperty(String key) {
+        return properties.get(key);
     }
 }

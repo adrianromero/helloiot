@@ -1,6 +1,6 @@
-<StartLine UnitPage.page="Tradfri lights" VBox.vgrow= "SOMETIMES" />
 <ButtonScript 
     UnitPage.page="Tradfri lights" 
+    UnitPage.layout="StartLine"
     confirm="true"
     prefHeight="160"
     label=""

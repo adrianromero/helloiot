@@ -68,7 +68,7 @@ public class ManagerLocal implements ManagerProtocol {
         readMapClient();                      
         for (Map.Entry<String, byte[]> entry : mapClient.entrySet()) {
             try {
-                group.distributeMessage(entry.getKey(), entry.getValue());
+                group.distributeMessage(new EventMessage(entry.getKey(), entry.getValue()));
                 logger.log(Level.INFO, "Init status: {0}", entry.getKey());
             } catch (Exception ex) {
                 logger.log(Level.SEVERE, "Cannot publish locally.", ex);
@@ -104,7 +104,7 @@ public class ManagerLocal implements ManagerProtocol {
                 if (isRetained) {
                     mapClient.put(topic, message);
                 }
-                group.distributeMessage(topic, message);
+                group.distributeMessage(new EventMessage(topic, message));
             } catch (Exception ex) {
                 logger.log(Level.SEVERE, "Cannot publish message to local. " + topic, ex);
             }
@@ -126,7 +126,7 @@ public class ManagerLocal implements ManagerProtocol {
             
             byte[] messagefirst = StringFormatIdentity.INSTANCE.devalue(StringFormatIdentity.INSTANCE.parse("_first"));
             mapClient.put(topicapp + "/unitpage", messagefirst);
-            group.distributeMessage(topicapp + "/unitpage", messagefirst);
+            group.distributeMessage(new EventMessage(topicapp + "/unitpage", messagefirst));
         }
     }
     

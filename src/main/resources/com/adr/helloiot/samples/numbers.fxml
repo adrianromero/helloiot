@@ -3,28 +3,23 @@
         <properties label="Numeric level"/>
 </DeviceNumber> 
 
-<StartLine UnitPage.page="Numbers" VBox.vgrow= "NEVER" />
-<LabelSection UnitPage.page="Numbers" text="Numeric units"/> 
-
-<StartLine UnitPage.page="Numbers" VBox.vgrow= "SOMETIMES" />   
-<ViewNumberChart UnitPage.page="Numbers" device="$number"/>
+<LabelSection UnitPage.page="Numbers" UnitPage.layout="StartLine" text="Numeric units"/> 
+  
+<ViewNumberChart UnitPage.page="Numbers" UnitPage.layout="StartLine" device="$number"/>
 <ViewNumberProgress UnitPage.page="Numbers" device="$number"/>
 <ButtonSimple UnitPage.page="Numbers" device="$number" />
 <ButtonsSpinner UnitPage.page="Numbers" device="$number"/>
 <ButtonPair UnitPage.page="Numbers" device="$number"/>
 <SliderSimple UnitPage.page="Numbers" device="$number"/>
 
-<StartLine UnitPage.page="Numbers" VBox.vgrow= "NEVER" />
-<LabelSection UnitPage.page="Numbers" text="Gauges"/>
+<LabelSection UnitPage.page="Numbers" UnitPage.layout="StartLine" text="Gauges"/>
 
-<StartLine UnitPage.page="Numbers" VBox.vgrow= "SOMETIMES" />
-<ViewGauge UnitPage.page="Numbers" device="$number" type="DASHBOARD"/>
+<ViewGauge UnitPage.page="Numbers" UnitPage.layout="StartLine" device="$number" type="DASHBOARD"/>
 <ViewGauge UnitPage.page="Numbers" device="$number" type="BASIC"/>
 <ViewGauge UnitPage.page="Numbers" device="$number" type="SPACEX"/>
 <ViewGauge UnitPage.page="Numbers" device="$number" barColor="RED" type="FLAT"/>
 
-<StartLine UnitPage.page="Numbers" VBox.vgrow= "SOMETIMES" />
-<ViewGauge UnitPage.page="Numbers" device="$number" barColor="GREEN" type="LINEAR"/>
+<ViewGauge UnitPage.page="Numbers" UnitPage.layout="StartLine" device="$number" barColor="GREEN" type="LINEAR"/>
 <ViewGauge UnitPage.page="Numbers" device="$number" barColor="LIGHTGREEN" type="TINY"/>
 <ViewGauge UnitPage.page="Numbers" device="$number" barColor="MAGENTA" type="INDICATOR"/>
 <ViewGauge UnitPage.page="Numbers" device="$number" type="QUARTER"/>

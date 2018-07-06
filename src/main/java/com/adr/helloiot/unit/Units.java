@@ -31,6 +31,10 @@ public class Units {
     public static Object messageHandler(StatusListener listener) {
         return new StatusSubscription(listener);
     }
+    
+    public static Object messageHandler(MessageListener listener) {
+        return new MessageSubscription(listener);
+    }
       
     @FunctionalInterface
     public static interface StatusListener {
@@ -49,4 +53,22 @@ public class Units {
             Platform.runLater(() -> listener.updateStatus(message.getMessage()));   
         }       
     }
+      
+    @FunctionalInterface
+    public static interface MessageListener {
+        public void updateStatus(EventMessage message);        
+    }
+            
+    private static class MessageSubscription {
+        private final MessageListener listener;
+        
+        public MessageSubscription(MessageListener listener) {
+            this.listener = listener;
+        }
+        
+        @Subscribe
+        public void receivedStatus(EventMessage message) {
+            Platform.runLater(() -> listener.updateStatus(message));   
+        }       
+    }    
 }

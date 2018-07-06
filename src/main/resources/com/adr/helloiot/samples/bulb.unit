@@ -4,9 +4,9 @@
     <properties tags="tradfrilight"/>
 </Light>
 
-<StartLine UnitPage.page="Tradfri lights" VBox.vgrow= "SOMETIMES" />
 <ButtonSimple 
-    UnitPage.page="Tradfri lights" 
+    UnitPage.page="Tradfri lights"
+    UnitPage.layout="StartLine"
     device="$${nameshort}on"
     prefHeight="160"
     text="${name}" />

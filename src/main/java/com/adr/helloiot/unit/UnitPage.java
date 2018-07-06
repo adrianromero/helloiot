@@ -18,10 +18,11 @@
 //
 package com.adr.helloiot.unit;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.ResourceBundle;
+import javafx.animation.FadeTransition;
+import javafx.animation.Interpolator;
 import javafx.scene.Node;
+import javafx.util.Duration;
 
 /**
  *
@@ -40,7 +41,8 @@ public class UnitPage implements Comparable<UnitPage> {
     private double maxheight;
     private int order = 10000;
 
-    private final List<UnitLine> unitlines = new ArrayList<>();
+    // RUNTIME 
+    private UnitsContainer unitscontainer = null;
 
     public UnitPage(String name, Node graphic, String text) {
         this.name = name;
@@ -109,37 +111,62 @@ public class UnitPage implements Comparable<UnitPage> {
     public void setOrder(int order) {
         this.order = order;
     }
-
-    public List<UnitLine> getUnitLines() {
-        return unitlines;
+    
+    public Node getNode() {
+        return unitscontainer.getNode();
+    }
+    
+    public void showNode() {
+        FadeTransition s2 = new FadeTransition(Duration.millis(200), unitscontainer.getNode());
+        s2.setInterpolator(Interpolator.EASE_IN);
+        s2.setFromValue(0.3);
+        s2.setToValue(1.0);
+        s2.playFromStart();
+        unitscontainer.showNode();
+    }
+    
+    public void buildNode() {
+        if (unitscontainer == null) {
+            unitscontainer = new UnitsContainerEmpty(getEmptyLabel());
+        }
+    }
+    
+    public boolean isEmpty() {
+        return unitscontainer.isEmpty();
     }
 
     public void addUnitNode(Node n) {
-        if (n instanceof UnitLine) {
-            unitlines.add((UnitLine) n);
-        } else {
-            UnitLine lastPane;
-            if (unitlines.isEmpty()) {
-                lastPane = new StartFlow();
-                unitlines.add(lastPane);
-            } else {
-                lastPane = unitlines.get(unitlines.size() - 1);
-            }
-            lastPane.getChildren().add(n);
-        }
-    }
 
+        if ("StartLine".equals(UnitPage.getLayout(n)) || "StartFlow".equals(UnitPage.getLayout(n))) {
+            if (unitscontainer == null) {
+                unitscontainer = new UnitsContainerClassic(getMaxWidth(), getMaxHeight());
+            }
+            unitscontainer.addLayout(UnitPage.getLayout(n)); 
+        } else if ("StartFull".equals(UnitPage.getLayout(n))) {
+            if (unitscontainer == null) {
+                unitscontainer = new UnitsContainerFull(getMaxWidth(), getMaxHeight());
+            }
+            unitscontainer.addLayout(UnitPage.getLayout(n));             
+        } else {
+            if (unitscontainer == null) {
+                unitscontainer = new UnitsContainerClassic(getMaxWidth(), getMaxHeight());
+                unitscontainer.addLayout("StartFlow"); 
+            }
+        }
+        unitscontainer.addChildren(n);   
+    }
+    
+    @Override
+    public int compareTo(UnitPage o) {
+        return Integer.compare(order, o.order);
+    }
+    
     public static void setPage(Node node, String value) {
         if (value == null) {
             node.getProperties().remove("UnitPage");
         } else {
             node.getProperties().put("UnitPage", value);
         }
-    }
-
-    @Override
-    public int compareTo(UnitPage o) {
-        return Integer.compare(order, o.order);
     }
 
     public static String getPage(Node node) {
@@ -151,4 +178,22 @@ public class UnitPage implements Comparable<UnitPage> {
         }
         return null;
     }
+    
+    public static void setLayout(Node node, String value) {
+        if (value == null) {
+            node.getProperties().remove("Layout");
+        } else {
+            node.getProperties().put("Layout", value);
+        }
+    }
+
+    public static String getLayout(Node node) {
+        if (node.hasProperties()) {
+            String value = (String) node.getProperties().get("Layout");
+            if (value != null) {
+                return value;
+            }
+        }
+        return null;
+    }    
 }

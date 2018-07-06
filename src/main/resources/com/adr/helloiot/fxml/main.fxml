@@ -39,21 +39,13 @@
                <top>
                   <HBox fx:id="headerbox" spacing="5.0" styleClass="header" BorderPane.alignment="CENTER">
                      <children>
-                        <Button fx:id="menubutton" focusTraversable="false" mnemonicParsing="false" styleClass="headerbutton" onAction="#onMenuAction"/>
+                        <Button fx:id="menubutton" focusTraversable="false" mnemonicParsing="false" onAction="#onMenuAction" styleClass="headerbutton" />
                         <Label fx:id="headertitle" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="headertitle" text="Hello IoT" HBox.hgrow="SOMETIMES" />
                         <Label fx:id="currenttime" maxHeight="1.7976931348623157E308" styleClass="currenttime" />
-                        <Button fx:id="exitbutton" focusTraversable="false" mnemonicParsing="false" styleClass="headerbutton" visible="false"/>
+                        <Button fx:id="exitbutton" focusTraversable="false" mnemonicParsing="false" styleClass="headerbutton" visible="false" />
                      </children>
                   </HBox>
                </top>
-                  <center>
-                     <ScrollPane fx:id="scrollcontainer" fitToWidth="true" focusTraversable="false" styleClass="unitscontainer" BorderPane.alignment="CENTER">
-                        <content>
-                                 <VBox fx:id="container" disable="true" styleClass="gridcontainer">
-                                 </VBox>
-                        </content>
-                     </ScrollPane>
-                  </center>
             </BorderPane>
             <Pane fx:id="listpagesgray" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onMouseClicked="#onMenuHide" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                <ScrollPane fx:id="scrollpages" fitToWidth="true" focusTraversable="false" prefWidth="250.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">

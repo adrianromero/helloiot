@@ -53,41 +53,29 @@
         <DeviceBasic fx:id="sent" topic="\$SYS/broker/messages/sent" format="INTEGER"/>      
     </devices>
     
-    <units>
-        <StartLine UnitPage.page="info" VBox.vgrow= "NEVER" />        
-        <LabelSection UnitPage.page="info" text="%title.broker"/>         
-        <StartLine UnitPage.page="info" VBox.vgrow= "NEVER" />        
-        <EditView UnitPage.page="info" label="%label.version" device="$version" />
-        <EditView UnitPage.page="info" label="%label.changeset" device="$changeset"/>
-        <StartLine UnitPage.page="info" VBox.vgrow= "NEVER" />        
-        <EditView UnitPage.page="info" label="%label.timestamp" device="$timestamp" />
-        <EditView UnitPage.page="info" label="%label.uptime" device="$uptime" />
-        <StartLine UnitPage.page="info" VBox.vgrow= "NEVER" />        
-        <EditView UnitPage.page="info" label="%label.clients" device="$clients" />
+    <units> 
+        <LabelSection UnitPage.page="info" UnitPage.layout="StartLine" text="%title.broker"/>              
+        <EditView UnitPage.page="info" UnitPage.layout="StartLine" label="%label.version" device="$version" />
+        <EditView UnitPage.page="info" label="%label.changeset" device="$changeset"/>      
+        <EditView UnitPage.page="info" UnitPage.layout="StartLine" label="%label.timestamp" device="$timestamp" />
+        <EditView UnitPage.page="info" label="%label.uptime" device="$uptime" />   
+        <EditView UnitPage.page="info" UnitPage.layout="StartLine" label="%label.clients" device="$clients" />
         <EditView UnitPage.page="info" label="%label.subscriptions" device="$subscriptions" />
-        
-        <StartLine UnitPage.page="info" VBox.vgrow= "NEVER" />        
-        <LabelSection UnitPage.page="info" text="%title.load"/>    
-        <StartLine UnitPage.page="info" VBox.vgrow= "NEVER" />        
-        <EditView UnitPage.page="info" label="%label.heapcurrent" device="$heapcurrent" />
-        <EditView UnitPage.page="info" label="%label.heapmax" device="$heapmax" />
-        <StartLine UnitPage.page="info" VBox.vgrow= "NEVER" />        
-        <EditView UnitPage.page="info" label="%label.bytesreceived" device="$bytesreceived" />
-        <EditView UnitPage.page="info" label="%label.loadbytesreceived" device="$loadbytesreceived" />
-        <StartLine UnitPage.page="info" VBox.vgrow= "NEVER" />        
-        <EditView UnitPage.page="info" label="%label.bytessent" device="$bytessent" />
+           
+        <LabelSection UnitPage.page="info" UnitPage.layout="StartLine" text="%title.load"/>           
+        <EditView UnitPage.page="info" UnitPage.layout="StartLine" label="%label.heapcurrent" device="$heapcurrent" />
+        <EditView UnitPage.page="info" label="%label.heapmax" device="$heapmax" />      
+        <EditView UnitPage.page="info" UnitPage.layout="StartLine" label="%label.bytesreceived" device="$bytesreceived" />
+        <EditView UnitPage.page="info" label="%label.loadbytesreceived" device="$loadbytesreceived" />      
+        <EditView UnitPage.page="info" UnitPage.layout="StartLine" label="%label.bytessent" device="$bytessent" />
         <EditView UnitPage.page="info" label="%label.loadbytessent" device="$loadbytessent" />
-
-        <StartLine UnitPage.page="info" VBox.vgrow= "NEVER" />        
-        <LabelSection UnitPage.page="info" text="%title.messages"/>    
-        <StartLine UnitPage.page="info" VBox.vgrow= "NEVER" />        
-        <EditView UnitPage.page="info" label="%label.retained" device="$retained" />
-        <EditView UnitPage.page="info" label="%label.stored" device="$stored" />
-        <StartLine UnitPage.page="info" VBox.vgrow= "NEVER" />        
-        <EditView UnitPage.page="info" label="%label.inflight" device="$inflight" />
-        <EditView UnitPage.page="info" label="%label.dropped" device="$dropped" />
-        <StartLine UnitPage.page="info" VBox.vgrow= "NEVER" />        
-        <EditView UnitPage.page="info" label="%label.received" device="$received" />
+      
+        <LabelSection UnitPage.page="info" UnitPage.layout="StartLine" text="%title.messages"/>           
+        <EditView UnitPage.page="info" UnitPage.layout="StartLine" label="%label.retained" device="$retained" />
+        <EditView UnitPage.page="info" label="%label.stored" device="$stored" />      
+        <EditView UnitPage.page="info" UnitPage.layout="StartLine" label="%label.inflight" device="$inflight" />
+        <EditView UnitPage.page="info" label="%label.dropped" device="$dropped" />      
+        <EditView UnitPage.page="info" UnitPage.layout="StartLine" label="%label.received" device="$received" />
         <EditView UnitPage.page="info" label="%label.sent" device="$sent" />
     </units>
 </DevicesUnits>

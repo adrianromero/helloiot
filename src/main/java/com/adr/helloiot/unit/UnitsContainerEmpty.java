@@ -1,5 +1,5 @@
 //    HelloIoT is a dashboard creator for MQTT
-//    Copyright (C) 2017-2018 Adrián Romero Corchado.
+//    Copyright (C) 2018 Adrián Romero Corchado.
 //
 //    This file is part of HelloIot.
 //
@@ -18,31 +18,49 @@
 //
 package com.adr.helloiot.unit;
 
-import com.adr.helloiot.HelloIoTAppPublic;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.layout.Region;
+import javafx.scene.control.Label;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
 
 /**
  *
  * @author adrian
  */
-@Deprecated
-public class StartLine extends Region implements Unit {
+public class UnitsContainerEmpty implements UnitsContainer {
 
-    public StartLine() {
-        UnitPage.setLayout(this, "StartLine");
+    private Label message;
+    
+    public UnitsContainerEmpty(String label) {
+        message = new Label(label);
+        message.setAlignment(Pos.TOP_CENTER);
+        message.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+        message.getStyleClass().add("unitsempty");
+        VBox.setVgrow(message, Priority.SOMETIMES);                    
     }
+    
+    @Override
+    public boolean isEmpty() {
+        return true;
+    }    
     
     @Override
     public Node getNode() {
-        return this;
+        return message;
     }
     
     @Override
-    public void construct(HelloIoTAppPublic app) {
+    public void showNode() {
     }
 
     @Override
-    public void destroy() {
-    }    
+    public void addLayout(String layout) {
+        throw new UnsupportedOperationException(); 
+    }
+
+    @Override
+    public void addChildren(Node n) {
+        throw new UnsupportedOperationException();
+    }
 }

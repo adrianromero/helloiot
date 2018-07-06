@@ -25,5 +25,5 @@ package com.adr.helloiot;
 @FunctionalInterface
 public interface GroupManagers {
     
-    void distributeMessage(String topic, byte[] message);
+    void distributeMessage(EventMessage message);
 }

@@ -6,32 +6,24 @@
     <properties name="living_light2" label="Living light 2" tags="living lamp"/>
 </Light>               
 
-<StartLine UnitPage.page="Lights" VBox.vgrow= "NEVER" />
-<LabelSection UnitPage.page="Lights" text="Living room lights"/>
+<LabelSection UnitPage.page="Lights" UnitPage.layout="StartLine" text="Living room lights"/>
    
-<StartLine UnitPage.page="Lights" VBox.vgrow= "SOMETIMES" />
-<ViewSimple UnitPage.page="Lights" device="$living_light1" iconStatus="BULBTEXT/1"/>        
+<ViewSimple UnitPage.page="Lights" UnitPage.layout="StartLine" device="$living_light1" iconStatus="BULBTEXT/1"/>        
 <ViewSimple UnitPage.page="Lights" device="$living_light2" iconStatus="BULBTEXT/2"/>
-
-<StartLine UnitPage.page="Lights" VBox.vgrow= "NEVER" />      
-<LabelSection UnitPage.page="Lights" text="Light status"/>
-
-<StartLine UnitPage.page="Lights" VBox.vgrow= "NEVER" />  
-<EditStatus UnitPage.page="Lights" device="$living_light1"/>
+     
+<LabelSection UnitPage.page="Lights" UnitPage.layout="StartLine" text="Light status"/>
+  
+<EditStatus UnitPage.page="Lights" UnitPage.layout="StartLine" device="$living_light1"/>
 <EditStatus UnitPage.page="Lights" device="$living_light2"/>
 
-<StartLine UnitPage.page="Lights" VBox.vgrow= "NEVER" />
-<LabelSection UnitPage.page="Lights" text="Light switchs"/>  
+<LabelSection UnitPage.page="Lights" UnitPage.layout="StartLine" text="Light switchs"/>  
   
-<StartLine UnitPage.page="Lights" VBox.vgrow= "SOMETIMES" />
-<ButtonSimple UnitPage.page="Lights" device="$living_light1" iconStatus="TOGGLE"/>
+<ButtonSimple UnitPage.page="Lights" UnitPage.layout="StartLine" device="$living_light1" iconStatus="TOGGLE"/>
 <ButtonSimple UnitPage.page="Lights" device="$living_light2" iconStatus="TOGGLE"/>
 
-<StartLine UnitPage.page="Lights" VBox.vgrow= "NEVER" />
-<LabelSection UnitPage.page="Lights" text="More actions"/> 
+<LabelSection UnitPage.page="Lights" UnitPage.layout="StartLine" text="More actions"/> 
 
-<StartLine UnitPage.page="Lights" VBox.vgrow= "SOMETIMES" />
-<ButtonSimple UnitPage.page="Lights" device="$living_light1"
+<ButtonSimple UnitPage.page="Lights" UnitPage.layout="StartLine" device="$living_light1"
   label=""
   text="Light 1" 
   style="-fx-background-color: transparent;"/>
@@ -44,8 +36,8 @@
         _allDevices().getByName('living_light1').sendON(5000);
     ]]></scriptCode>
 </ButtonScript>  
-<StartLine UnitPage.page="Lights" VBox.vgrow= "SOMETIMES" />                      
-<ButtonScript UnitPage.page="Lights" confirm="true"
+                   
+<ButtonScript UnitPage.page="Lights" UnitPage.layout="StartLine" confirm="true"
   label=""
   text="Switch lights off" 
   style="-fx-background-color: transparent; -fx-base:-fx-color3-fill; -fx-button-fill:-fx-color3-fill;">

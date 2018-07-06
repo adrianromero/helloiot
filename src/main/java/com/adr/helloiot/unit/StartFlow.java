@@ -20,31 +20,29 @@ package com.adr.helloiot.unit;
 
 import com.adr.helloiot.HelloIoTAppPublic;
 import javafx.scene.Node;
-import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.Region;
 
 /**
  *
  * @author adrian
  */
-public class StartFlow extends FlowPane implements UnitLine {
+@Deprecated
+public class StartFlow extends Region implements Unit {
 
     public StartFlow() {
-        getStyleClass().add("linecontainer");
-        VBox.setVgrow(this, Priority.NEVER);
+        UnitPage.setLayout(this, "StartFlow");
     }
     
+    @Override
+    public Node getNode() {
+        return this;
+    }
+
     @Override
     public void construct(HelloIoTAppPublic app) {
     }
 
     @Override
     public void destroy() {
-    }
-    
-    @Override
-    public Node getNode() {
-        return this;
     }
 }
