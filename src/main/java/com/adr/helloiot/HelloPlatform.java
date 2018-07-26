@@ -124,4 +124,5 @@ public abstract class HelloPlatform {
 
     public abstract Script getNewScript();
 
+    public abstract void keepON();
 }

@@ -42,4 +42,8 @@ public class HelloPlatformDefault extends HelloPlatform {
     public Script getNewScript() {
         return new Nashorn();
     }
+    
+    @Override
+    public void keepON() {
+    }    
 }

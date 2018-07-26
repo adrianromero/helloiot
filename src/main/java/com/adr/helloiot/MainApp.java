@@ -59,7 +59,7 @@ public abstract class MainApp extends Application {
             Rectangle2D dimension = Screen.getPrimary().getVisualBounds();
             scene = new Scene(root, dimension.getWidth(), dimension.getHeight());
             scene.setCursor(Cursor.NONE);
-
+            HelloPlatform.getInstance().keepON();
         } else {
             // Dimension properties only managed if not fullscreen
             scene = new Scene(root);

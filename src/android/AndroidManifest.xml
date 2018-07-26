@@ -6,7 +6,10 @@
         <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
         <uses-sdk android:minSdkVersion="4" android:targetSdkVersion="21"/>
         <application android:label="Dashboard" android:name="android.support.multidex.MultiDexApplication" android:icon="@mipmap/ic_launcher">
-                <activity android:name="javafxports.android.FXActivity" android:label="Dashboard" android:configChanges="orientation|screenSize">
+                <activity android:name="javafxports.android.FXActivity" 
+                          android:label="Dashboard" 
+                          android:configChanges="orientation|screenSize"
+                          android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
                         <meta-data android:name="main.class" android:value="com.adr.helloiot.MainAppClient"/>
                         <meta-data android:name="debug.port" android:value="0"/>
                         <intent-filter>

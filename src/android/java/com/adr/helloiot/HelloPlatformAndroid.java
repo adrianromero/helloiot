@@ -18,8 +18,10 @@
 //
 package com.adr.helloiot;
 
+import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import javafxports.android.FXActivity;
-import android.content.Context;
 import com.adr.helloiot.scripting.Rhino;
 import com.adr.helloiot.scripting.Script;
 import java.io.File;
@@ -29,7 +31,7 @@ import java.io.File;
  */
 public class HelloPlatformAndroid extends HelloPlatform {
     
-    private final Context context;
+    private final FXActivity context;
      
     public HelloPlatformAndroid(){
         context = FXActivity.getInstance();
@@ -48,5 +50,13 @@ public class HelloPlatformAndroid extends HelloPlatform {
     @Override
     public Script getNewScript() {
         return new Rhino();
-    }    
+    }
+
+    @Override
+    public void keepON() {
+        context.runOnUiThread(() -> {
+            Window window = context.getWindow();
+            window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        });
+    } 
 }

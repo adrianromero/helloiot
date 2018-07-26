@@ -132,7 +132,7 @@ jfxmobile {
                 host = 'raspberrypi.local'
                 username = 'pi'
                 password = 'raspberry'
-                workingDir = '/home/pi/helloiot'
+                workingDir = '/home/pi/helloiotproject'
                 jreLocation = '/usr/lib/jvm/jdk-8-oracle-arm32-vfp-hflt'
                 execPrefix = 'sudo'
             }
