@@ -22,20 +22,22 @@
     -fx-background-container: -fx-background;      
     -fx-separator-fill: -fx-box-border;
     
+    -fx-border-unit: #e0e0e0;
+    -fx-background-unit: #fafafa;
+    
+    -fx-button-fill: #f2f2f2;
+    -fx-buttonarmed-fill: derive(-fx-button-fill, -30%);/*#a4a4a4; */
+    -fx-buttonhover-fill:  derive(-fx-button-fill, -12%); /*#d0d0d0; */
+    -fx-selected-fill: #b9f2fa;
+
+    
+    
     -fx-background-title: white;    
     -fx-text-fill-title: #353535;
     
     -fx-border-fill: #909090;
 
-    -fx-button-fill: #f2f2f2;
-    -fx-buttonhover-fill:  derive(-fx-button-fill, -12%); /*#d0d0d0; */
-    -fx-armed-fill: derive(-fx-button-fill, -30%);/*#a4a4a4; */
-    -fx-selected-fill: #b9f2fa;
-    
     -fx-info-fill: #707070;
-    
-    -fx-border-unit: #e0e0e0;
-    -fx-background-unit: #fafafa;
 }
 
 .header {
@@ -59,7 +61,7 @@
 }
 
 .headerbutton:armed {
-    -fx-background-color: -fx-border-fill,  -fx-armed-fill;  
+    -fx-background-color: -fx-border-fill,  -fx-buttonarmed-fill;  
 }
 
 .menubutton {
@@ -67,7 +69,7 @@
 }
 
 .menubutton:armed  {
-    -fx-background-color:  -fx-armed-fill;       
+    -fx-background-color:  -fx-buttonarmed-fill;       
 }
 
 .currenttime {
@@ -76,18 +78,9 @@
     -fx-text-fill: -fx-info-fill;   
 }
 
-.unitbase {
-    -fx-background-radius: 0, 3, 2;
-    -fx-background-insets: 0, 6, 7;
-    -fx-background-color: transparent, -fx-border-unit, -fx-background-unit;        
-}
-
 .labelsection {
     -fx-font-family: 'Source Sans Pro Bold';
     -fx-font-size: 16px;
-    -fx-text-fill: -fx-info-fill;
-    -fx-background-insets: 0, 0 5 4 5, 0 5 5 5;
-    -fx-background-color:  -fx-background-container, -fx-separator-fill, -fx-background-container;     
 }
 
 .unitinput {
@@ -145,7 +138,7 @@
     -fx-alignment: center; 
 }
 .keypadbutton:armed {
-    -fx-background-color: -fx-border-fill,  -fx-armed-fill;             
+    -fx-background-color: -fx-border-fill,  -fx-buttonarmed-fill;             
 }
 .keypadbuttonleft {
     -fx-background-radius: 15 2 2 15;
@@ -174,8 +167,28 @@
     -fx-alignment: center;
 }
 .unitbutton:armed {
-    -fx-background-color: -fx-border-fill,  -fx-armed-fill;             
+    -fx-background-color: -fx-border-fill,  -fx-buttonarmed-fill;             
 }
+
+.unittogglebutton {
+    -fx-text-fill: -fx-text-fill-title;    
+    -fx-background-color:  -fx-border-fill, -fx-button-fill;  
+    -fx-background-insets: 0, 1;
+    -fx-alignment: center;
+}
+.unittogglebutton:armed {
+    -fx-background-color: -fx-border-fill,  -fx-buttonarmed-fill;             
+}
+.unittogglebutton:selected {
+    -fx-text-fill: -fx-text-fill-title;    
+    -fx-background-color:  -fx-border-fill, -fx-buttonhover-fill;  
+    -fx-background-insets: 0, 1;
+    -fx-alignment: center;
+}
+.unittogglebutton:selected:armed {
+    -fx-background-color: -fx-border-fill,  -fx-buttonarmed-fill;             
+}
+
 
 .buttonbase {
     -fx-font-family: 'Source Sans Pro Bold';
@@ -187,7 +200,7 @@
     -fx-alignment: center;    
 }
 .buttonbase:armed {
-    -fx-background-color: -fx-border-fill, -fx-armed-fill;             
+    -fx-background-color: -fx-border-fill, -fx-buttonarmed-fill;             
 }
 .buttonup {
 }
@@ -196,7 +209,7 @@
 
 /* Dialog styles */
 .dialog-close-button:armed {
-    -fx-background-color: -fx-armed-fill;
+    -fx-background-color: -fx-buttonarmed-fill;
 }
 .dialog-title-text {
     -fx-font-size: 14;
@@ -218,7 +231,7 @@
     -fx-alignment: center;        
 }
 .dialog-buttonlist .button:armed {
-    -fx-background-color: -fx-border-fill, -fx-armed-fill;             
+    -fx-background-color: -fx-border-fill, -fx-buttonarmed-fill;             
 }
 .dialog-buttonlist .button:default {
     -fx-background-color: -fx-border-fill, -fx-selected-fill;    
@@ -240,7 +253,7 @@
     -fx-padding: 1.5em /*1.583333em*/;    
 }
 .slider .thumb:pressed {
-    -fx-background-color: -fx-border-fill, -fx-armed-fill;
+    -fx-background-color: -fx-border-fill, -fx-buttonarmed-fill;
 }
 .slider .track {
     -fx-background-color: -fx-border-fill,  derive(-fx-button-fill, 15%);
@@ -262,4 +275,25 @@
     -fx-background-color: -fx-border-fill,  derive(-fx-button-fill, 20%);
     -fx-background-insets: 0, 1;    
     -fx-background-radius: 2;    
+}
+
+.messagestitle {
+    -fx-font-family: 'Source Sans Pro Regular';   
+}
+
+.messagestoolbar {
+    -fx-background-color: -fx-background-container;
+}
+
+.messageview {
+    -fx-font-family: 'Source Code Pro Bold';
+    -fx-font-size: 14px;  
+}
+
+.messagefooter {
+    -fx-font-family: 'Source Sans Pro Regular';    
+}
+
+.badge {
+    -fx-font-family: 'Source Sans Pro Regular';    
 }

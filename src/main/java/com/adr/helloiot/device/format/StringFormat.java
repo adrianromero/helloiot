@@ -59,11 +59,13 @@ public abstract class StringFormat {
         } else if (value.startsWith("DECIMAL/")) {
             return new StringFormatDecimal(null, value.substring(8));
         } else if ("SWITCH".equals(value)) {
-            return  new StringFormatSwitch();
+            return new StringFormatSwitch();
         } else if ("ON/OFF".equals(value)) {
             StringFormatSwitch onoff = new StringFormatSwitch();
             onoff.setValues("OFF,ON");
             return onoff;
+        } else if ("JSON".equals(value)) {
+            return StringFormatJSONPretty.INSTANCE;
         } else {
             throw new IllegalArgumentException("Cannot create StringFormat: " + value);
         }

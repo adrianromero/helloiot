@@ -20,6 +20,16 @@
 
 .maincontainer {
     -fx-background-container: -fx-background;
+    -fx-separator-fill: -fx-box-border;
+
+    -fx-border-unit: -fx-box-border;
+    -fx-background-unit: -fx-background;
+    
+    -fx-button-fill: -fx-accent;
+    -fx-buttonarmed-fill: -fx-accent;   
+    
+    
+    -fx-info-fill: -fx-text-base-color;
 }
 
 .unitmaintext {

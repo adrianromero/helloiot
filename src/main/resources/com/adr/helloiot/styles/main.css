@@ -22,6 +22,16 @@
     -fx-background-container: #F5F7FB;
     -fx-separator-fill: #E0E5EC;
     
+    -fx-border-unit: #E0E5EC;
+    -fx-background-unit: #FFFFFF;     
+    
+    -fx-button-fill: -fx-primary-fill;
+    -fx-buttonarmed-fill: derive(-fx-button-fill, 60%);    
+    -fx-buttoncontent-fill: ladder(-fx-button-fill, white 69%, black 70%);
+    -fx-buttonaction-fill: derive(-fx-button-fill, -20%);
+
+    
+    
     -fx-background-title: #FFFFFF;    
     -fx-title-fill: #4B4B4B;
     
@@ -34,19 +44,11 @@
     
     -fx-info-fill: #707070;
     -fx-level-fill: #4B5157;
-    
-    -fx-border-unit: #E0E5EC;
-    -fx-background-unit: #FFFFFF;   
-    
+        
     -fx-primary-fill: #007BFF;
     -fx-secondary-fill: #6C757D;
     
     -fx-menu-fill: black;
-    
-    -fx-button-fill: -fx-primary-fill;
-    -fx-buttoncontent-fill: ladder(-fx-button-fill, white 69%, black 70%);
-    -fx-buttonaction-fill: derive(-fx-button-fill, -20%);
-    -fx-buttonarmed-fill: derive(-fx-button-fill, 60%);
 }
 
 /* Header button flat */
@@ -116,18 +118,10 @@
 
 
 /* Unit component */
-.unitbase {
-    -fx-background-radius: 0, 3, 2;
-    -fx-background-insets: 0, 6, 7;
-    -fx-background-color: transparent, -fx-border-unit, -fx-background-unit;        
-}
 
 .labelsection {
     -fx-font-family: 'Source Sans Pro Bold';
     -fx-font-size: 16px;
-    -fx-text-fill: -fx-info-fill;
-    -fx-background-insets: 0, 0 5 4 0, 0 5 5 0;
-    -fx-background-color: -fx-background-container, -fx-info-fill, -fx-background-container;           
 }
 
 .unitinput {
@@ -232,6 +226,38 @@
 .unitbutton:armed {
     -fx-background-insets: -1, 1;
     -fx-background-color: -fx-buttonarmed-fill,  -fx-buttonaction-fill;             
+}
+
+/* Unit toggle buttons */
+.unittogglebutton { 
+    -fx-font-size: 14px;
+    -fx-font-family: 'Source Sans Pro Regular';    
+    -fx-text-fill: #999eaa;    
+    -fx-background-color:  -fx-border-unit, #ffffff;  
+    -fx-background-radius: 2, 0;
+    -fx-background-insets: 0, 1;
+    -fx-alignment: center;
+}
+.unittogglebutton .icon-fill {
+    -fx-fill: #999eaa;
+}
+.unittogglebutton:armed {
+    -fx-background-insets: -1, 1;
+    -fx-background-color: -fx-buttonarmed-fill,  #ffffff;             
+}
+.unittogglebutton:selected {   
+    -fx-text-fill: #497ccb;    
+    -fx-background-color:  -fx-buttonaction-fill, #edf1fa;  
+    -fx-background-radius: 2, 0;
+    -fx-background-insets: 0, 1;
+    -fx-alignment: center;
+}
+.unittogglebutton:selected .icon-fill {
+    -fx-fill: #497ccb;
+}
+.unittogglebutton:selected:armed {
+    -fx-background-insets: -1, 1;
+    -fx-background-color: -fx-buttonarmed-fill, #edf1fa;             
 }
 
 /* Button base */
@@ -339,4 +365,26 @@
     -fx-background-color: -fx-canvas-fill;
     -fx-background-insets: 0;    
     -fx-background-radius: 2;    
+}
+
+.messagestitle {
+    -fx-font-family: 'Source Sans Pro Regular';   
+}
+
+.messagestoolbar {
+    -fx-background-color: -fx-background-container;
+}
+
+.messageview {
+    -fx-font-family: 'Source Code Pro Bold';
+    -fx-font-size: 14px;   
+    -fx-text-fill: -fx-level-fill;  
+}
+
+.messagefooter {
+    -fx-font-family: 'Source Sans Pro Regular';    
+}
+
+.badge {
+    -fx-font-family: 'Source Sans Pro Regular';    
 }

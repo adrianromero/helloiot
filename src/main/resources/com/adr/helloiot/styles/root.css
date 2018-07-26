@@ -29,9 +29,15 @@
 @font-face { src: url('SourceSansPro-Regular.ttf'); }
 @font-face { src: url('SourceSansPro-SemiBold.ttf'); }
 @font-face { src: url('SourceSansPro-SemiBoldItalic.ttf'); }
+@font-face { src: url('SourceCodePro-Black.ttf'); }
+@font-face { src: url('SourceCodePro-Bold.ttf'); }
+@font-face { src: url('SourceCodePro-ExtraLight.ttf'); }
+@font-face { src: url('SourceCodePro-Light.ttf'); }
+@font-face { src: url('SourceCodePro-Medium.ttf'); }
+@font-face { src: url('SourceCodePro-Regular.ttf'); }
+@font-face { src: url('SourceCodePro-SemiBold.ttf'); }
 
 .maincontainer {
-    -fx-separator-fill: -fx-box-border;
     
     -fx-color1-fill: #28A745;
     -fx-color2-fill: #DC3545;
@@ -75,9 +81,10 @@
 }
 
 .labelsection {
+    -fx-text-fill: -fx-info-fill;
     -fx-font-weight: bold;
     -fx-background-insets: 0, 0 5 4 0, 0 5 5 0;
-    -fx-background-color:  -fx-background, -fx-separator-fill, -fx-background;      
+    -fx-background-color:  -fx-background-container, -fx-info-fill, -fx-background-container;      
     -fx-padding: 10px 10px 5px 10px;    
 }
 
@@ -100,10 +107,10 @@
 }
 
 .unitbase {
+    -fx-background-radius: 0, 3, 2;
     -fx-background-insets: 0, 6, 7;
-    -fx-background-color: transparent, derive(-fx-box-border, 25%), -fx-background;      
+    -fx-background-color: transparent, -fx-border-unit, -fx-background-unit;        
     -fx-padding: 12px 14px 12px 14px;
-    -fx-value-color: -fx-text-base-color;    
 }
 .unitinputview {
     -fx-focus-color: transparent;
@@ -252,3 +259,60 @@
     -fx-background-radius: 0;   
     -fx-background-color: #e0e0e0; 
 }
+
+.messagestitle {
+    -fx-text-fill: -fx-info-fill;
+    -fx-font-weight: bold;   
+    -fx-padding: 0px 5px 0px 5px;        
+}
+
+.message {
+    -fx-padding: 2 2 3 2;
+    -fx-background-insets: 0, 0 0 1 0;
+    -fx-background-color: -fx-border-unit, -fx-background-unit;
+}
+
+.list-cell:filled:selected:focused > .message, .list-cell:filled:selected > .message {
+    -fx-background-color: -fx-border-unit, -fx-buttonarmed-fill;
+}
+
+.messagefooter  {
+    -fx-padding: 0px 5px 0px 5px;
+    -fx-text-fill: -fx-info-fill;
+    -fx-font-size: 14px;    
+}
+
+.messageview {
+    -fx-font-family: 'Monospace';
+    -fx-focus-color: transparent;
+    -fx-background-color: transparent;
+}
+.messageview .scroll-pane {
+    -fx-background-color: transparent;
+}
+.messageview .scroll-pane .viewport {
+    -fx-background-color: transparent;
+}
+.messageview .scroll-pane .content {
+    -fx-background-color: transparent;
+}
+
+.badge {
+    -fx-background-radius: 0px, 10px; 
+    -fx-background-insets: 0px, 1px 5px 1px 5px; 
+    -fx-text-fill: white; 
+    -fx-alignment: center;
+    -fx-font-size: 14px;        
+}
+
+.badgeqos {
+    -fx-pref-width: 60px; 
+    -fx-background-color: transparent, #4c82e4;
+}
+
+.badgeretained {
+    -fx-pref-width: 90px; 
+    -fx-background-color: transparent, #b4b4b4;    
+}
+
+

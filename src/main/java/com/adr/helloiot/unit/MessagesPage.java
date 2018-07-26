@@ -20,17 +20,32 @@ package com.adr.helloiot.unit;
 
 import com.adr.fonticon.FontAwesome;
 import com.adr.fonticon.IconBuilder;
+import com.adr.hellocommon.dialog.MessageUtils;
 import com.adr.helloiot.EventMessage;
 import com.adr.helloiot.HelloIoTAppPublic;
 import com.adr.helloiot.device.DeviceSubscribe;
-import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.SimpleDoubleProperty;
+import com.adr.helloiot.device.format.StringFormat;
+import com.adr.helloiot.device.format.StringFormatBase64;
+import com.adr.helloiot.device.format.StringFormatHex;
+import com.adr.helloiot.device.format.StringFormatIdentity;
+import com.adr.helloiot.device.format.StringFormatJSONPretty;
+import java.util.ResourceBundle;
+import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
-import javafx.scene.control.ScrollPane;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
+import javafx.scene.control.Separator;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.Toggle;
+import javafx.scene.control.ToggleButton;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.ToolBar;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -43,62 +58,150 @@ import javafx.scene.layout.VBox;
  */
 public class MessagesPage extends BorderPane implements Unit {
 
-    private VBox messagescontainer;
-    private ScrollPane scroller;
+    private final ResourceBundle resources;
+    
+    private ListView<EventMessage> eventmessageslist;
+    private ObservableList<EventMessage> eventmessagesitems;
+    
+    private VBox payloadcontainer;
+    private Label topic;
+    private TextArea payload;
+    private EventMessage currentmessage = null;
+    
+    private Label title;
     private Button deletemessages;
+    private ToggleButton showdetails;
+    private ToggleGroup formatsgroup;
+    private ToggleButton formatplain;
+    private ToggleButton formatjson;
+    private ToggleButton formathex;
+    private ToggleButton formatbase64;
 
     private DeviceSubscribe device = null;
     private final Object messageHandler = Units.messageHandler(this::updateStatus);
-    private DoubleProperty wProperty;
-    private boolean following = false;
 
     public MessagesPage() {
+        resources = ResourceBundle.getBundle("com/adr/helloiot/fxml/messages");
         load();
+        
+        formatplain.setSelected(true);
     }
 
     private void load() {
 
         HBox.setHgrow(this, Priority.ALWAYS);
+        
+        title = new Label();
+        title.getStyleClass().add("messagestitle");
+        
+        Separator sep = new Separator();
+        sep.setOrientation(Orientation.VERTICAL);
+        sep.setFocusTraversable(false);
 
         deletemessages = new Button();
         deletemessages.setMnemonicParsing(false);
         deletemessages.setFocusTraversable(false);
+        deletemessages.getStyleClass().add("unitbutton");
         deletemessages.setGraphic(IconBuilder.create(FontAwesome.FA_TRASH, 18.0).styleClass("icon-fill").build());
         deletemessages.setOnAction(this::actionDelete);
+        
+        showdetails = new ToggleButton("Details");
+        showdetails.setMnemonicParsing(false);
+        showdetails.setFocusTraversable(false);
+        showdetails.getStyleClass().add("unittogglebutton");
+        showdetails.setGraphic(IconBuilder.create(FontAwesome.FA_PLUS, 18.0).styleClass("icon-fill").build());
+        showdetails.selectedProperty().addListener((ObservableValue<? extends Boolean> ov, Boolean old_val, Boolean new_val) -> {
+            displayPayload(new_val);
+        });
+        
+        
+        formatsgroup = new ToggleGroup();
+        formatsgroup.selectedToggleProperty().addListener((ObservableValue<? extends Toggle> ov, Toggle old_val, Toggle new_val) -> {
+            printPayload();
+        });
+        
+        formatplain = new ToggleButton("Plain");
+        formatplain.setMnemonicParsing(false);
+        formatplain.setFocusTraversable(false);
+        formatplain.setToggleGroup(formatsgroup);
+        formatplain.getStyleClass().add("unittogglebutton");
+        formatplain.setUserData(StringFormatIdentity.INSTANCE);
+        formatplain.setDisable(true);
+        
+        formatjson = new ToggleButton("JSON");
+        formatjson.setMnemonicParsing(false);
+        formatjson.setFocusTraversable(false);
+        formatjson.setToggleGroup(formatsgroup);
+        formatjson.getStyleClass().add("unittogglebutton");    
+        formatjson.setUserData(StringFormatJSONPretty.INSTANCE);
+        formatjson.setDisable(true);
+        
+        formathex = new ToggleButton("Hex");
+        formathex.setMnemonicParsing(false);
+        formathex.setFocusTraversable(false);
+        formathex.setToggleGroup(formatsgroup);
+        formathex.getStyleClass().add("unittogglebutton");
+        formathex.setUserData(StringFormatHex.INSTANCE);        
+        formathex.setDisable(true);
+        
+        formatbase64 = new ToggleButton("Base64");
+        formatbase64.setMnemonicParsing(false);
+        formatbase64.setFocusTraversable(false);
+        formatbase64.setToggleGroup(formatsgroup);
+        formatbase64.getStyleClass().add("unittogglebutton");  
+        formatbase64.setUserData(StringFormatBase64.INSTANCE);        
+        formatbase64.setDisable(true);
+        
 
         ToolBar toolbar = new ToolBar();
         BorderPane.setAlignment(toolbar, Pos.CENTER);
-        toolbar.getItems().addAll(deletemessages);
+        toolbar.getStyleClass().add("messagestoolbar");
+        toolbar.getItems().addAll(title, sep, deletemessages, showdetails, formatplain, formatjson, formathex, formatbase64);
         setTop(toolbar);
 
-        messagescontainer = new VBox();
-        scroller = new ScrollPane(messagescontainer);
-        scroller.setFitToWidth(true);
-        scroller.setFocusTraversable(false);
-        scroller.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-        BorderPane.setAlignment(scroller, Pos.CENTER);
+        eventmessageslist = new ListView<>();
 
-        setCenter(scroller);
-
-        wProperty = new SimpleDoubleProperty();
-        wProperty.bind(messagescontainer.heightProperty());
-        wProperty.addListener((ObservableValue<? extends Number> ov, Number t, Number t1) -> {
-            if (following) {
-                scroller.setVvalue(scroller.getVmax());
-                following = false;
-            }
+        eventmessageslist.setFocusTraversable(false);
+        eventmessageslist.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+        eventmessageslist.setCellFactory((ListView<EventMessage> list) -> new MessageCell());
+        eventmessageslist.getSelectionModel().selectedItemProperty().addListener((ObservableValue<? extends EventMessage> ov, EventMessage old_val, EventMessage new_val) -> {
+            selectPayload(new_val);
         });
+    
+        eventmessagesitems = FXCollections.observableArrayList();
+        eventmessageslist.setItems(eventmessagesitems);        
+        BorderPane.setAlignment(eventmessageslist, Pos.CENTER);
+
+        setCenter(eventmessageslist);
+        
+        payload = new TextArea();
+        payload.setEditable(false);
+        payload.setFocusTraversable(false);
+        payload.getStyleClass().add("messageview");
+        BorderPane.setAlignment(payload, Pos.CENTER);    
+        
+        topic = new Label();
+        topic.getStyleClass().add("messagefooter");
+        
+        payloadcontainer = new VBox(payload, topic);
+        payloadcontainer.getStyleClass().add("message");
     }
 
     @Override
     public void construct(HelloIoTAppPublic app) {
         device.subscribeStatus(messageHandler);
-        messagescontainer.getChildren().clear();
+        eventmessagesitems.clear();
     }
 
     private void updateStatus(EventMessage message) {
-        following = scroller.getHeight() > messagescontainer.getHeight() || scroller.getVmax() == scroller.getVvalue();
-        messagescontainer.getChildren().add(new MessageItem(message, device.getFormat()));
+
+        eventmessagesitems.add(message);
+        
+        int index = eventmessageslist.getSelectionModel().getSelectedIndex();
+        if (index < 0 || index == eventmessagesitems.size() - 2) { 
+            eventmessageslist.getSelectionModel().select(message);
+            eventmessageslist.scrollTo(message);
+        }
     }
 
     @Override
@@ -110,9 +213,21 @@ public class MessagesPage extends BorderPane implements Unit {
     public Node getNode() {
         return this;
     }
+    
+    public void setLabel(String label) {
+        title.setText(label);
+    }
 
+    public String getLabel() {
+        return title.getText();
+    }
+    
     public void setDevice(DeviceSubscribe device) {
         this.device = device;
+        if (getLabel() == null || getLabel().isEmpty()) {
+            String proplabel = device.getProperties().getProperty("label");
+            setLabel(proplabel == null || proplabel.isEmpty() ? device.getTopic() : proplabel);
+        }        
     }
 
     public DeviceSubscribe getDevice() {
@@ -120,6 +235,39 @@ public class MessagesPage extends BorderPane implements Unit {
     }
     
     private void actionDelete(ActionEvent ev) {
-        messagescontainer.getChildren().clear();
+        MessageUtils.showConfirm(MessageUtils.getRoot(this), resources.getString("title.deletemessages"), resources.getString("body.deletemessages"), e -> {
+            eventmessagesitems.clear();
+        });     
+    }
+
+    private void selectPayload(EventMessage message) {
+        currentmessage = message;
+        printPayload();      
+    }
+    
+    private void printPayload() {
+        
+        if (currentmessage == null) {
+            topic.setText(null);
+            topic.setVisible(false);
+            payload.setText(null);
+            payload.setVisible(false);
+        } else {
+            topic.setText(currentmessage.getTopic());
+            topic.setVisible(true);
+
+            StringFormat format = (StringFormat) formatsgroup.getSelectedToggle().getUserData();
+            String txt = format.format(format.value(currentmessage.getMessage()));
+            payload.setText(txt); 
+            payload.setVisible(true);
+        }
+    }
+    
+    private void displayPayload(Boolean b) {
+        setBottom(b ? payloadcontainer : null); 
+        formatplain.setDisable(!b);
+        formatjson.setDisable(!b);
+        formathex.setDisable(!b);
+        formatbase64.setDisable(!b);      
     }
 }
