@@ -120,7 +120,7 @@ public abstract class Tile extends BorderPane implements Unit {
                 footerpane.getStyleClass().add("unitfooter");            
                 setBottom(footerpane);
             } catch (IOException ex) {
-                Logger.getLogger(Tile.class.getName()).log(Level.WARNING, null, ex);;
+                Logger.getLogger(Tile.class.getName()).log(Level.WARNING, null, ex);
             }
         }
     }
