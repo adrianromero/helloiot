@@ -231,11 +231,11 @@ public class MainManagerClient implements MainManager {
 
             helloiotapp.addUnitPages(Arrays.asList(
                     new UnitPage("Lights", IconBuilder.create(FontAwesome.FA_LIGHTBULB_O, 24.0).styleClass("icon-fill").build(), resources.getString("page.lights")))
-            );
+            );     
             helloiotapp.addUnitPages(Arrays.asList(
-                    new UnitPage("Temperature", IconBuilder.create(FontAwesome.FA_DASHBOARD, 24.0).styleClass("icon-fill").build(), resources.getString("page.temperature")))
-            );        
-
+                    new UnitPage("Messages", IconBuilder.create(FontAwesome.FA_ENVELOPE_O, 24.0).styleClass("icon-fill").build(), resources.getString("page.messages")))
+            );
+ 
             EventHandler<ActionEvent> showloginevent = (event -> {
                 hideApplication();
                 showLogin();           
