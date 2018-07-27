@@ -32,7 +32,6 @@ import com.adr.helloiotlib.format.StringFormatHex;
 import com.adr.helloiotlib.format.StringFormatIdentity;
 import com.adr.helloiotlib.format.StringFormatJSONPretty;
 import java.util.ResourceBundle;
-import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -107,7 +106,7 @@ public class MessagesPage extends BorderPane implements Unit {
         deletemessages.setGraphic(IconBuilder.create(FontAwesome.FA_TRASH, 18.0).styleClass("icon-fill").build());
         deletemessages.setOnAction(this::actionDelete);
         
-        showdetails = new ToggleButton("Details");
+        showdetails = new ToggleButton(resources.getString("label.details"));
         showdetails.setMnemonicParsing(false);
         showdetails.setFocusTraversable(false);
         showdetails.getStyleClass().add("unittogglebutton");
@@ -122,7 +121,7 @@ public class MessagesPage extends BorderPane implements Unit {
             printPayload();
         });
         
-        formatplain = new ToggleButton("Plain");
+        formatplain = new ToggleButton(resources.getString("label.plain"));
         formatplain.setMnemonicParsing(false);
         formatplain.setFocusTraversable(false);
         formatplain.setToggleGroup(formatsgroup);
@@ -130,7 +129,7 @@ public class MessagesPage extends BorderPane implements Unit {
         formatplain.setUserData(StringFormatIdentity.INSTANCE);
         formatplain.setDisable(true);
         
-        formatjson = new ToggleButton("JSON");
+        formatjson = new ToggleButton(resources.getString("label.json"));
         formatjson.setMnemonicParsing(false);
         formatjson.setFocusTraversable(false);
         formatjson.setToggleGroup(formatsgroup);
@@ -138,7 +137,7 @@ public class MessagesPage extends BorderPane implements Unit {
         formatjson.setUserData(StringFormatJSONPretty.INSTANCE);
         formatjson.setDisable(true);
         
-        formathex = new ToggleButton("Hex");
+        formathex = new ToggleButton(resources.getString("label.hex"));
         formathex.setMnemonicParsing(false);
         formathex.setFocusTraversable(false);
         formathex.setToggleGroup(formatsgroup);
@@ -146,7 +145,7 @@ public class MessagesPage extends BorderPane implements Unit {
         formathex.setUserData(StringFormatHex.INSTANCE);        
         formathex.setDisable(true);
         
-        formatbase64 = new ToggleButton("Base64");
+        formatbase64 = new ToggleButton(resources.getString("label.base64"));
         formatbase64.setMnemonicParsing(false);
         formatbase64.setFocusTraversable(false);
         formatbase64.setToggleGroup(formatsgroup);
