@@ -18,10 +18,11 @@
 //
 package com.adr.helloiot.unit;
 
-import com.adr.helloiot.HelloIoTAppPublic;
+import com.adr.helloiotlib.unit.Units;
+import com.adr.helloiotlib.app.IoTApp;
 import com.adr.helloiot.device.DeviceNumber;
 import com.adr.helloiot.device.DeviceSimple;
-import com.adr.helloiot.device.format.MiniVarDouble;
+import com.adr.helloiotlib.format.MiniVarDouble;
 import com.adr.helloiot.graphic.IconNull;
 import com.adr.helloiot.graphic.IconStatus;
 import javafx.beans.value.ObservableValue;
@@ -112,7 +113,7 @@ public class ControlIntensity extends Tile {
     }
     
     @Override
-    public void construct(HelloIoTAppPublic app) {
+    public void construct(IoTApp app) {
         super.construct(app);
         devicedim.subscribeStatus(messagedimHandler);
         updateStatusDim(null);
