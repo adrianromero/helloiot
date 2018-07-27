@@ -1,5 +1,5 @@
 //    HelloIoT is a dashboard creator for MQTT
-//    Copyright (C) 2017 Adrián Romero Corchado.
+//    Copyright (C) 2017-2018 Adrián Romero Corchado.
 //
 //    This file is part of HelloIot.
 //
@@ -16,12 +16,8 @@
 //    You should have received a copy of the GNU General Public License
 //    along with HelloIot.  If not, see <http://www.gnu.org/licenses/>.
 //
-package com.adr.helloiot.device;
+package com.adr.helloiotlib.device;
 
-/**
- *
- * @author adrian
- */
 @FunctionalInterface
 public interface DeviceProvider<T> {
     public void accept(T t);

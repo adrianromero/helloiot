@@ -1,5 +1,5 @@
 //    HelloIoT is a dashboard creator for MQTT
-//    Copyright (C) 2017 Adrián Romero Corchado.
+//    Copyright (C) 2018 Adrián Romero Corchado.
 //
 //    This file is part of HelloIot.
 //
@@ -15,14 +15,36 @@
 //
 //    You should have received a copy of the GNU General Public License
 //    along with HelloIot.  If not, see <http://www.gnu.org/licenses/>.
-//
-package com.adr.helloiot.device;
+
+package com.adr.helloiotlib.app;
+
+import java.util.function.Consumer;
 
 /**
  *
  * @author adrian
  */
-@FunctionalInterface
-public interface DevicePredicate<T> {
-    public boolean test(T t);
+public class TopicSubscription {
+
+    private final String topic;
+    private Consumer<EventMessage> consumer = null;
+
+    public TopicSubscription(String topic) {
+        this.topic = topic;
+    }
+
+    public String getTopic() {
+        return topic;
+    }
+
+    public void consume(EventMessage message) {
+        if (consumer != null) {
+            consumer.accept(message);
+        }
+    }
+
+    public void setConsumer(Consumer<EventMessage> consumer) {
+        this.consumer = consumer;
+    }
+ 
 }

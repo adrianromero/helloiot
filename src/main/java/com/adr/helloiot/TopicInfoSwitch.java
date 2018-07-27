@@ -22,6 +22,7 @@ import com.adr.fonticon.FontAwesome;
 import com.adr.fonticon.IconBuilder;
 import com.adr.helloiot.device.DeviceSwitch;
 import com.adr.helloiot.graphic.IconStatus;
+import com.adr.helloiot.mqtt.MQTTProperties;
 import com.adr.helloiot.unit.ButtonSimple;
 import com.adr.helloiot.unit.UnitPage;
 import java.util.Arrays;
@@ -104,8 +105,8 @@ public class TopicInfoSwitch implements TopicInfo {
         DeviceSwitch l = new DeviceSwitch();
         l.setTopic(topic);
         l.setTopicPublish(topicpub);
-        l.setQos(1);
-        l.setRetained(false);
+        MQTTProperties.setQoS(l, 0);
+        MQTTProperties.setRetained(l, false);
 
         ButtonSimple s = new ButtonSimple();
         s.setText(getLabel().getValue());

@@ -18,6 +18,8 @@
 //
 package com.adr.helloiot;
 
+import com.adr.helloiotlib.app.TopicSubscription;
+import com.adr.helloiotlib.app.EventMessage;
 import com.adr.helloiot.util.CompletableAsync;
 import com.google.common.util.concurrent.ListenableFuture;
 import java.util.ArrayList;
@@ -30,24 +32,26 @@ import java.util.Set;
 import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import com.adr.helloiotlib.app.TopicManager;
+import com.adr.helloiotlib.format.MiniVar;
 
 /**
  *
  * @author adrian
  */
-public final class TopicsManager {
+public final class ApplicationTopicsManager implements TopicManager {
 
-    private final static Logger logger = Logger.getLogger(TopicsManager.class.getName());
+    private final static Logger logger = Logger.getLogger(TopicManager.class.getName());
 
     private Consumer<Throwable> lostCallback = null;
 
     private final Set<TopicQos> topicsubscriptions;
-    private final Map<String, List<Subscription>> subscriptions;
+    private final Map<String, List<TopicSubscription>> subscriptions;
     private final ResourceBundle resources;    
     
     private final ManagerProtocol protocol;
 
-    public TopicsManager(ManagerProtocol protocol) {
+    public ApplicationTopicsManager(ManagerProtocol protocol) {
 
         this.resources = ResourceBundle.getBundle("com/adr/helloiot/resources/helloiot");
         this.subscriptions = new HashMap<>();
@@ -64,7 +68,7 @@ public final class TopicsManager {
                     throw new RuntimeException(resources.getString("exception.topicscannotbeempty"));
                 });
             }
-            protocol.registerSubscription(tq.getTopic(), tq.getQos());
+            protocol.registerSubscription(tq.getTopic(), tq.getMessageProperties());
         }
 
         return CompletableAsync.runAsync(() -> {         
@@ -88,29 +92,31 @@ public final class TopicsManager {
         protocol.disconnect();  
     }
 
-    public Subscription subscribe(String topic, int qos) {
+    @Override
+    public TopicSubscription subscribe(String topic, Map<String, MiniVar> properties) {
 
 //        if (notConnected) {
 //            throw new RuntimeException("Status incorrect. All subscriptions must be done before connection.");
 //        }
 
         // To be subscribed
-        topicsubscriptions.add(new TopicQos(topic, qos));
+        topicsubscriptions.add(new TopicQos(topic, properties));
 
         // To be invoked in JavaFX Thread 
-        List<Subscription> subs = subscriptions.get(topic);
+        List<TopicSubscription> subs = subscriptions.get(topic);
         if (subs == null) {
             subs = new ArrayList<>();
         }
-        Subscription s = new Subscription(topic);
+        TopicSubscription s = new TopicSubscription(topic);
         subs.add(s);
         subscriptions.put(topic, subs);
         return s;
     }
 
-    public void unsubscribe(Subscription s) {
+    @Override
+    public void unsubscribe(TopicSubscription s) {
         // To be invoked in JavaFX Thread 
-        List<Subscription> subs = subscriptions.get(s.getTopic());
+        List<TopicSubscription> subs = subscriptions.get(s.getTopic());
         if (subs != null) {
             subs.remove(s);
             if (subs.isEmpty()) {
@@ -119,9 +125,10 @@ public final class TopicsManager {
         }
     }
 
-    public void publish(String topic, int qos, byte[] message, boolean isRetained) {
+    @Override
+    public void publish(EventMessage message) {
         // To be executed in Executor thread
-        protocol.publish(topic, qos, message, isRetained);
+        protocol.publish(message);
     }
 
     public void setOnConnectionLost(Consumer<Throwable> callback) {
@@ -154,54 +161,30 @@ public final class TopicsManager {
     }
 
     private void distributeWilcardMessage(String subscriptiontopic, EventMessage message) {
-        List<Subscription> subs = subscriptions.get(subscriptiontopic);
+        List<TopicSubscription> subs = subscriptions.get(subscriptiontopic);
         if (subs != null) {
-            for (Subscription s : subs) {
+            for (TopicSubscription s : subs) {
                 s.consume(message);
             }
-        }
-    }
-
-    public static class Subscription {
-
-        private final String topic;
-        private Consumer<EventMessage> consumer = null;
-
-        private Subscription(String topic) {
-            this.topic = topic;
-        }
-
-        public String getTopic() {
-            return topic;
-        }
-
-        public void consume(EventMessage message) {
-            if (consumer != null) {
-                consumer.accept(message);
-            }
-        }
-
-        public void setConsumer(Consumer<EventMessage> consumer) {
-            this.consumer = consumer;
         }
     }
 
     private static class TopicQos {
 
         private final String topic;
-        private final int qos;
+        private final Map<String, MiniVar> messageProperties;
 
-        public TopicQos(String topic, int qos) {
+        public TopicQos(String topic, Map<String, MiniVar> messageProperties) {
             this.topic = topic;
-            this.qos = qos;
+            this.messageProperties = messageProperties;
         }
 
         public String getTopic() {
             return topic;
         }
 
-        public int getQos() {
-            return qos;
+        public Map<String, MiniVar> getMessageProperties() {
+            return messageProperties;
         }
     }
 }

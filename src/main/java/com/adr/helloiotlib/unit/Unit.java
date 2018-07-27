@@ -16,9 +16,9 @@
 //    You should have received a copy of the GNU General Public License
 //    along with HelloIot.  If not, see <http://www.gnu.org/licenses/>.
 //
-package com.adr.helloiot.unit;
+package com.adr.helloiotlib.unit;
 
-import com.adr.helloiot.HelloIoTAppPublic;
+import com.adr.helloiotlib.app.IoTApp;
 import javafx.scene.Node;
 
 /**
@@ -27,7 +27,7 @@ import javafx.scene.Node;
  */
 public interface Unit {
 
-    public void construct(HelloIoTAppPublic app);
+    public void construct(IoTApp app);
     public void destroy();
     public Node getNode();
 }

@@ -18,9 +18,9 @@
 //
 package com.adr.helloiot.unitsensor;
 
-import com.adr.helloiot.HelloIoTAppPublic;
+import com.adr.helloiotlib.app.IoTApp;
 import com.adr.helloiot.device.DeviceSend;
-import com.adr.helloiot.unit.Unit;
+import com.adr.helloiotlib.unit.Unit;
 import com.adr.helloiot.util.CompletableAsync;
 import java.util.concurrent.ScheduledFuture;
 import javafx.scene.Node;
@@ -39,7 +39,7 @@ public abstract class SensorTimer implements Unit {
     protected abstract void execEvent(DeviceSend device);
 
     @Override
-    public void construct(HelloIoTAppPublic app) {
+    public void construct(IoTApp app) {
         if (sf == null) {
             sf = CompletableAsync.scheduleTask(0, millis, () -> {
                 execEvent(device);

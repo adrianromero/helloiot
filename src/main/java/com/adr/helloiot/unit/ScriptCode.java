@@ -18,7 +18,7 @@
 //
 package com.adr.helloiot.unit;
 
-import com.adr.helloiot.HelloIoTAppPublic;
+import com.adr.helloiotlib.app.IoTApp;
 import com.adr.helloiot.HelloPlatform;
 import com.adr.helloiot.scripting.Script;
 import com.adr.helloiot.util.CompletableAsync;
@@ -36,7 +36,7 @@ import javafx.beans.DefaultProperty;
 public class ScriptCode {
 
     private String text = null;
-    private HelloIoTAppPublic app;
+    private IoTApp app;
 
     public String getText() {
         return text;
@@ -46,7 +46,7 @@ public class ScriptCode {
         this.text = text;
     }
 
-    public void construct(HelloIoTAppPublic app) {
+    public void construct(IoTApp app) {
         this.app = app;
     }
 

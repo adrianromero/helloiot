@@ -18,15 +18,19 @@
 //
 package com.adr.helloiot;
 
-import com.adr.helloiot.device.format.StringFormatIdentity;
+import com.adr.helloiotlib.app.EventMessage;
+import com.adr.helloiotlib.format.StringFormatIdentity;
 import com.adr.helloiot.util.CompletableAsync;
 import com.adr.helloiot.util.CryptUtils;
+import com.adr.helloiotlib.format.MiniVar;
+import com.adr.helloiotlib.format.MiniVarBoolean;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -58,7 +62,7 @@ public class ManagerLocal implements ManagerProtocol {
     }
     
     @Override
-    public void registerSubscription(String topic, int qos) {
+    public void registerSubscription(String topic, Map<String, MiniVar> messageProperties) {
         // DO NOTHING
     }
     
@@ -68,8 +72,11 @@ public class ManagerLocal implements ManagerProtocol {
         readMapClient();                      
         for (Map.Entry<String, byte[]> entry : mapClient.entrySet()) {
             try {
-                group.distributeMessage(new EventMessage(entry.getKey(), entry.getValue()));
-                logger.log(Level.INFO, "Init status: {0}", entry.getKey());
+                Map<String, MiniVar> props = new HashMap<>();
+                props.put("mqtt.retained", MiniVarBoolean.TRUE);
+                EventMessage messagelocal = new EventMessage(entry.getKey(), entry.getValue(), props);
+                group.distributeMessage(messagelocal);
+                logger.log(Level.INFO, "Init status: {0}", messagelocal.getTopic());
             } catch (Exception ex) {
                 logger.log(Level.SEVERE, "Cannot publish locally.", ex);
             }                        
@@ -91,22 +98,22 @@ public class ManagerLocal implements ManagerProtocol {
     }
     
     @Override
-    public void publish(String topic, int qos, byte[] message, boolean isRetained) {
+    public void publish(EventMessage message) {
         
         // To be executed in Executor thread
         if (mapClient == null) {
             return;
         }
         
-        logger.log(Level.INFO, "Publishing message to local. {0}", topic);
+        logger.log(Level.INFO, "Publishing message to local. {0}", message.getTopic());
         CompletableAsync.runAsync(() -> {
             try {
-                if (isRetained) {
-                    mapClient.put(topic, message);
+                if (message.getProperty("mqtt.retained").asBoolean()) {
+                    mapClient.put(message.getTopic(), message.getMessage());
                 }
-                group.distributeMessage(new EventMessage(topic, message));
+                group.distributeMessage(message);
             } catch (Exception ex) {
-                logger.log(Level.SEVERE, "Cannot publish message to local. " + topic, ex);
+                logger.log(Level.SEVERE, "Cannot publish message to local. " + message.getTopic(), ex);
             }
         });        
     }
@@ -115,8 +122,8 @@ public class ManagerLocal implements ManagerProtocol {
     private void readMapClient() {
         mapClient = null;
         File dbfile = HelloPlatform.getInstance().getFile(".helloiot-localmsg-" + CryptUtils.hashSHA512(topicapp) + ".map"); 
-        try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(dbfile))) {                
-            mapClient = (ConcurrentMap<String, byte[]>) in.readObject(); 
+        try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(dbfile))) {  
+            mapClient = (ConcurrentMap<String, byte[]>) in.readObject();
         } catch (IOException | ClassNotFoundException ex) {
             logger.log(Level.WARNING, String.format("Creating map. Local map file not found: %s.", dbfile));
         }
@@ -124,16 +131,20 @@ public class ManagerLocal implements ManagerProtocol {
         if (mapClient == null) {
             mapClient = new ConcurrentHashMap<>();
             
-            byte[] messagefirst = StringFormatIdentity.INSTANCE.devalue(StringFormatIdentity.INSTANCE.parse("_first"));
-            mapClient.put(topicapp + "/unitpage", messagefirst);
-            group.distributeMessage(new EventMessage(topicapp + "/unitpage", messagefirst));
+            byte[] payloadfirst = StringFormatIdentity.INSTANCE.devalue(StringFormatIdentity.INSTANCE.parse("_first"));
+            Map<String, MiniVar> props = new HashMap<>();
+            props.put("mqtt.retained", MiniVarBoolean.TRUE);
+            EventMessage messagefirst = new EventMessage(topicapp + "/unitpage", payloadfirst, props);
+            
+            mapClient.put(messagefirst.getTopic(), messagefirst.getMessage());
+            group.distributeMessage(messagefirst);
         }
     }
     
     private void writeMapClient() throws IOException {
         File dbfile = HelloPlatform.getInstance().getFile(".helloiot-localmsg-" + CryptUtils.hashSHA512(topicapp) + ".map"); 
         try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(dbfile))) {
-            out.writeObject(mapClient);
+            out.writeObject(mapClient); 
         }      
     }    
 }

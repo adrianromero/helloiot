@@ -18,17 +18,19 @@
 //
 package com.adr.helloiot.unit;
 
+import com.adr.helloiotlib.unit.Units;
+import com.adr.helloiotlib.unit.Unit;
 import com.adr.fonticon.FontAwesome;
 import com.adr.fonticon.IconBuilder;
 import com.adr.hellocommon.dialog.MessageUtils;
-import com.adr.helloiot.EventMessage;
-import com.adr.helloiot.HelloIoTAppPublic;
+import com.adr.helloiotlib.app.EventMessage;
+import com.adr.helloiotlib.app.IoTApp;
 import com.adr.helloiot.device.DeviceSubscribe;
-import com.adr.helloiot.device.format.StringFormat;
-import com.adr.helloiot.device.format.StringFormatBase64;
-import com.adr.helloiot.device.format.StringFormatHex;
-import com.adr.helloiot.device.format.StringFormatIdentity;
-import com.adr.helloiot.device.format.StringFormatJSONPretty;
+import com.adr.helloiotlib.format.StringFormat;
+import com.adr.helloiotlib.format.StringFormatBase64;
+import com.adr.helloiotlib.format.StringFormatHex;
+import com.adr.helloiotlib.format.StringFormatIdentity;
+import com.adr.helloiotlib.format.StringFormatJSONPretty;
 import java.util.ResourceBundle;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -188,7 +190,7 @@ public class MessagesPage extends BorderPane implements Unit {
     }
 
     @Override
-    public void construct(HelloIoTAppPublic app) {
+    public void construct(IoTApp app) {
         device.subscribeStatus(messageHandler);
         eventmessagesitems.clear();
     }

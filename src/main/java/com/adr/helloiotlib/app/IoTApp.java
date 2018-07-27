@@ -16,43 +16,22 @@
 //    You should have received a copy of the GNU General Public License
 //    along with HelloIot.  If not, see <http://www.gnu.org/licenses/>.
 //
-package com.adr.helloiot;
+package com.adr.helloiotlib.app;
 
-import com.adr.helloiot.device.format.MiniVar;
-import java.util.HashMap;
-import java.util.Map;
+import com.adr.helloiotlib.device.Device;
+import com.adr.helloiotlib.device.ListDevice;
 
 /**
  *
  * @author adrian
  */
-public class EventMessage {
-
-    private final String topic;
-    private final byte[] message;
-    private final Map<String, MiniVar> properties;
-
-    public EventMessage(String topic, byte[] message) {
-        this.topic = topic;
-        this.message = message;
-        this.properties = new HashMap<>();
-    }
-
-    public EventMessage(String topic, byte[] message, Map<String, MiniVar> properties) {
-        this.topic = topic;
-        this.message = message;
-        this.properties = properties;
-    }
-
-    public String getTopic() {
-        return topic;
-    }
-
-    public byte[] getMessage() {
-        return message;
-    }
+public interface IoTApp {
+    public final static String SYS_VALUE_ID = "SYSVALUESID";
+    public final static String SYS_EVENT_ID = "SYSEVENTSID";
+    public final static String SYS_UNITPAGE_ID = "SYSUNITPAGEID";
+    public final static String SYS_BEEPER_ID = "SYSBEEPERID";
+    public final static String SYS_BUZZER_ID = "SYSBUZZERID";
     
-    public MiniVar getProperty(String key) {
-        return properties.get(key);
-    }
+    public ListDevice getAllDevices();
+    public Device getDevice(String id);
 }

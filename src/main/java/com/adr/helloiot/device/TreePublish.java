@@ -18,11 +18,17 @@
 //
 package com.adr.helloiot.device;
 
-import com.adr.helloiot.TopicsManager;
-import com.adr.helloiot.device.format.MiniVar;
-import com.adr.helloiot.device.format.MiniVarString;
+import com.adr.helloiotlib.device.Device;
+import com.adr.helloiotlib.format.MiniVar;
+import com.adr.helloiotlib.format.MiniVarString;
 import com.adr.helloiot.util.CompletableAsync;
+import com.adr.helloiotlib.app.EventMessage;
+import com.adr.helloiotlib.format.MiniVarBoolean;
+import com.adr.helloiotlib.format.MiniVarInt;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.ScheduledFuture;
+import com.adr.helloiotlib.app.TopicManager;
 
 /**
  *
@@ -30,7 +36,7 @@ import java.util.concurrent.ScheduledFuture;
  */
 public class TreePublish extends Device {
 
-    protected TopicsManager manager;
+    protected TopicManager manager;
     private ScheduledFuture<?> sf = null;
     private final Object sflock = new Object();
 
@@ -44,7 +50,7 @@ public class TreePublish extends Device {
     }
 
     @Override
-    public void construct(TopicsManager manager) {
+    public void construct(TopicManager manager) {
         this.manager = manager;
     }
 
@@ -52,9 +58,12 @@ public class TreePublish extends Device {
     public void destroy() {
     }
 
-    public final void sendMessage(String branch, MiniVar message) {
+    public final void sendMessage(String branch, MiniVar value) {
         cancelTimer();
-        manager.publish(getTopicPublish() + "/" + branch, getQos(), getFormat().devalue(message), isRetained());
+        
+        Map<String, MiniVar> props = new HashMap<>();
+        EventMessage message = new EventMessage(getTopicPublish() + "/" + branch, getFormat().devalue(value), getMessageProperties());
+        manager.publish(message);    
     }
 
     public final void sendMessage(String branch, String message) {

@@ -18,9 +18,10 @@
 //
 package com.adr.helloiot.unit;
 
+import com.adr.helloiotlib.unit.Units;
 import com.adr.helloiot.device.DeviceNumber;
-import com.adr.helloiot.HelloIoTAppPublic;
-import com.adr.helloiot.device.format.MiniVarDouble;
+import com.adr.helloiotlib.app.IoTApp;
+import com.adr.helloiotlib.format.MiniVarDouble;
 import javafx.beans.value.ObservableValue;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -99,7 +100,7 @@ public class SliderSimple extends Tile {
     }
 
     @Override
-    public void construct(HelloIoTAppPublic app) {
+    public void construct(IoTApp app) {
         super.construct(app);
         device.subscribeStatus(messageHandler);
         updateStatus(null);

@@ -18,6 +18,7 @@
 //
 package com.adr.helloiot;
 
+import com.adr.helloiotlib.app.IoTApp;
 import com.adr.helloiot.mqtt.ManagerMQTT;
 import com.adr.fonticon.FontAwesome;
 import com.adr.fonticon.IconBuilder;
@@ -26,13 +27,14 @@ import com.adr.fonticon.decorator.Shine;
 import com.adr.hellocommon.dialog.DialogException;
 import com.adr.hellocommon.dialog.DialogView;
 import com.adr.hellocommon.dialog.MessageUtils;
-import com.adr.helloiot.unit.Unit;
-import com.adr.helloiot.device.Device;
+import com.adr.helloiotlib.unit.Unit;
+import com.adr.helloiotlib.device.Device;
 import com.adr.helloiot.device.DeviceSimple;
 import com.adr.helloiot.device.DeviceSwitch;
+import com.adr.helloiotlib.device.ListDevice;
 import com.adr.helloiot.device.TreePublish;
 import com.adr.helloiot.device.TreePublishSubscribe;
-import com.adr.helloiot.device.format.MiniVar;
+import com.adr.helloiotlib.format.MiniVar;
 import com.adr.helloiot.media.SilentClipFactory;
 import com.adr.helloiot.media.StandardClipFactory;
 import com.adr.helloiot.tradfri.ManagerTradfri;
@@ -72,29 +74,17 @@ import javafx.util.Duration;
  *
  * @author adrian
  */
-public class HelloIoTApp {
+public class HelloIoTApp implements IoTApp {
 
     private final static Logger LOGGER = Logger.getLogger(HelloIoTApp.class.getName());
-
-    public final static String SYS_VALUE_ID = "SYSVALUESID";
-    public final static String SYS_EVENT_ID = "SYSEVENTSID";
-
-    public final static String SYS_UNITPAGE_ID = "SYSUNITPAGEID";
-    public final static String SYS_BEEPER_ID = "SYSBEEPERID";
-    public final static String SYS_BUZZER_ID = "SYSBUZZERID";
 
     private final List<UnitPage> appunitpages = new ArrayList<>();
     private final List<Unit> appunits = new ArrayList<>();
     private final List<Device> appdevices = new ArrayList<>();
 
-    private final TopicsManager topicsmanager;
+    private final ApplicationTopicsManager topicsmanager;
     private final MainNode mainnode;
     private final ResourceBundle resources;
-
-    private HelloIoTAppPublic apppublic = null;
-    private DeviceSimple appunitpage;
-    private DeviceSwitch appbeeper;
-    private DeviceSimple appbuzzer;
 
     private EventHandler<ActionEvent> exitevent = null;
     private final Runnable styleConnection;
@@ -156,7 +146,6 @@ public class HelloIoTApp {
                             config.get("mqtt.clientid").asString(),
                             config.get("mqtt.connectiontimeout").asInt(),
                             config.get("mqtt.keepaliveinterval").asInt(),
-                            config.get("mqtt.defaultqos").asInt(),
                             config.get("mqtt.version").asInt(),
                             config.get("mqtt.maxinflight").asInt(),
                             config.get("client.topicsys").asString(),
@@ -178,7 +167,7 @@ public class HelloIoTApp {
                 config.get("app.clock").asBoolean(),
                 config.get("app.exitbutton").asBoolean());
 
-        topicsmanager = new TopicsManager(manager);
+        topicsmanager = new ApplicationTopicsManager(manager);
         topicsmanager.setOnConnectionLost(t -> {
             LOGGER.log(Level.WARNING, "Connection lost to broker.", t);
             Platform.runLater(() -> {
@@ -291,7 +280,7 @@ public class HelloIoTApp {
 
         // Construct All
         for (Unit s : appunits) {
-            s.construct(this.getAppPublic());
+            s.construct(this);
         }
         for (Device d : appdevices) {
             d.construct(topicsmanager);
@@ -413,27 +402,6 @@ public class HelloIoTApp {
         return mainnode;
     }
 
-    public DeviceSimple getUnitPage() {
-        if (appunitpage == null) {
-            appunitpage = ((DeviceSimple) getDevice(SYS_UNITPAGE_ID));
-        }
-        return appunitpage;
-    }
-
-    public DeviceSwitch getBeeper() {
-        if (appbeeper == null) {
-            appbeeper = ((DeviceSwitch) getDevice(SYS_BEEPER_ID));
-        }
-        return appbeeper;
-    }
-
-    public DeviceSimple getBuzzer() {
-        if (appbuzzer == null) {
-            appbuzzer = ((DeviceSimple) getDevice(SYS_BUZZER_ID));
-        }
-        return appbuzzer;
-    }
-
     public List<Unit> getUnits() {
         return appunits;
     }
@@ -442,6 +410,7 @@ public class HelloIoTApp {
         return appdevices;
     }
 
+    @Override
     public Device getDevice(String id) {
         for (Device d : appdevices) {
             if (id.equals(d.getId())) {
@@ -450,53 +419,11 @@ public class HelloIoTApp {
         }
         return null;
     }
-
-    public MiniVar readSYSStatus(String branch) {
-        return ((TreePublishSubscribe) getDevice(SYS_VALUE_ID)).readMessage(branch);
-    }
-
-    public String loadSYSStatus(String branch) {
-        return ((TreePublishSubscribe) getDevice(SYS_VALUE_ID)).loadMessage(branch);
-    }
-
-    public void sendSYSStatus(String branch, String message) {
-        ((TreePublishSubscribe) getDevice(SYS_VALUE_ID)).sendMessage(branch, message);
-    }
-
-    public void sendSYSStatus(String branch, MiniVar message) {
-        ((TreePublishSubscribe) getDevice(SYS_VALUE_ID)).sendMessage(branch, message);
-    }
-
-    public final void sendSYSEvent(String branch, String message) {
-        ((TreePublish) getDevice(SYS_EVENT_ID)).sendMessage(branch, message);
-    }
-
-    public final void sendSYSEvent(String branch, MiniVar message) {
-        ((TreePublish) getDevice(SYS_EVENT_ID)).sendMessage(branch, message);
-    }
-
-    public void sendSYSEvent(String branch, String message, long delay) {
-        ((TreePublish) getDevice(SYS_EVENT_ID)).sendMessage(branch, message, delay);
-    }
-
-    public void sendSYSEvent(String branch, MiniVar message, long delay) {
-        ((TreePublish) getDevice(SYS_EVENT_ID)).sendMessage(branch, message, delay);
-    }
-
-    public final void sendSYSEvent(String branch) {
-        ((TreePublish) getDevice(SYS_EVENT_ID)).sendMessage(branch);
-    }
-
-    public void cancelSYSEventTimer() {
-        ((TreePublish) getDevice(SYS_EVENT_ID)).cancelTimer();
-    }
-
-    public HelloIoTAppPublic getAppPublic() {
-        if (apppublic == null) {
-            apppublic = new HelloIoTAppPublic(this);
-        }
-        return apppublic;
-    }
+    
+    @Override
+    public ListDevice getAllDevices() {
+        return new ListDevice(appdevices);
+    }    
 
     private void doTimeout(Duration duration, EventHandler<ActionEvent> eventhandler) {
         if (duration.greaterThan(Duration.ZERO)) {

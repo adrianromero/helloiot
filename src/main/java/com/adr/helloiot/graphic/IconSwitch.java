@@ -18,7 +18,7 @@
 //
 package com.adr.helloiot.graphic;
 
-import com.adr.helloiot.device.format.ValueFormatValue;
+import com.adr.helloiotlib.format.ValueFormatValue;
 import javafx.scene.Node;
 
 /**

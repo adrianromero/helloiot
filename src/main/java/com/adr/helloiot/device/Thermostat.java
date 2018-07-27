@@ -18,7 +18,7 @@
 //
 package com.adr.helloiot.device;
 
-import com.adr.helloiot.device.format.StringFormatDecimal;
+import com.adr.helloiotlib.format.StringFormatDecimal;
 
 /**
  *

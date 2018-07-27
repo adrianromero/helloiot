@@ -16,7 +16,7 @@
 //    You should have received a copy of the GNU General Public License
 //    along with HelloIot.  If not, see <http://www.gnu.org/licenses/>.
 //
-package com.adr.helloiot.device.format;
+package com.adr.helloiotlib.format;
 
 import com.google.common.base.Joiner;
 import java.util.logging.Level;

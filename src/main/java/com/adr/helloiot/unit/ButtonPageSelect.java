@@ -18,6 +18,8 @@
 //
 package com.adr.helloiot.unit;
 
+import com.adr.helloiotlib.app.IoTApp;
+import com.adr.helloiot.device.DeviceSimple;
 import javafx.event.ActionEvent;
 
 /**
@@ -38,6 +40,6 @@ public class ButtonPageSelect extends ButtonBase {
 
     @Override
     protected void doRun(ActionEvent event) {
-        app.unitPage().sendStatus(page);
+        ((DeviceSimple) app.getDevice(IoTApp.SYS_UNITPAGE_ID)).sendStatus(page);
     }
 }

@@ -20,7 +20,7 @@ package com.adr.helloiot.graphic;
 
 import com.adr.fonticon.FontAwesome;
 import com.adr.fonticon.IconFontList;
-import com.adr.helloiot.device.format.ValueFormatValue;
+import com.adr.helloiotlib.format.ValueFormatValue;
 import java.util.ResourceBundle;
 import javafx.scene.Node;
 

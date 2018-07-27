@@ -18,8 +18,9 @@
 //
 package com.adr.helloiot.unit;
 
+import com.adr.helloiotlib.unit.Units;
 import com.adr.helloiot.device.DeviceSubscribe;
-import com.adr.helloiot.HelloIoTAppPublic;
+import com.adr.helloiotlib.app.IoTApp;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
@@ -61,7 +62,7 @@ public class ViewText extends Tile {
     }
 
     @Override
-    public void construct(HelloIoTAppPublic app) {
+    public void construct(IoTApp app) {
         super.construct(app);
         device.subscribeStatus(messageHandler);
         updateStatus(null);

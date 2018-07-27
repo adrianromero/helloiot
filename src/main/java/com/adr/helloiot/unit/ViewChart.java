@@ -18,7 +18,7 @@
 //
 package com.adr.helloiot.unit;
 
-import com.adr.helloiot.HelloIoTAppPublic;
+import com.adr.helloiotlib.app.IoTApp;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.animation.Animation;
@@ -57,7 +57,7 @@ public class ViewChart extends Tile {
     }
 
     @Override
-    public void construct(HelloIoTAppPublic app) {
+    public void construct(IoTApp app) {
         super.construct(app);
         
         // Get all data

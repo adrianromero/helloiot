@@ -1,5 +1,5 @@
 //    HelloIoT is a dashboard creator for MQTT
-//    Copyright (C) 2017 Adrián Romero Corchado.
+//    Copyright (C) 2017-2018 Adrián Romero Corchado.
 //
 //    This file is part of HelloIot.
 //
@@ -18,9 +18,10 @@
 //
 package com.adr.helloiot.unit;
 
-import com.adr.helloiot.graphic.IconStatus;
 import com.adr.helloiot.device.DeviceSubscribe;
-import com.adr.helloiot.HelloIoTAppPublic;
+import com.adr.helloiotlib.unit.Units;
+import com.adr.helloiot.graphic.IconStatus;
+import com.adr.helloiotlib.app.IoTApp;
 import com.adr.helloiot.graphic.IconNull;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -59,7 +60,7 @@ public class ViewSimple extends Tile {
     }
 
     @Override
-    public void construct(HelloIoTAppPublic app) {
+    public void construct(IoTApp app) {
         super.construct(app);
         device.subscribeStatus(messageHandler);
         updateStatus(null);

@@ -18,7 +18,7 @@
 //
 package com.adr.helloiot.device;
 
-import com.adr.helloiot.device.format.MiniVar;
+import com.adr.helloiotlib.format.MiniVar;
 
 /**
  *

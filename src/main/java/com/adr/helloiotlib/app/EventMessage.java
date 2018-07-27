@@ -16,47 +16,44 @@
 //    You should have received a copy of the GNU General Public License
 //    along with HelloIot.  If not, see <http://www.gnu.org/licenses/>.
 //
-package com.adr.helloiot.device;
+package com.adr.helloiotlib.app;
 
-import com.adr.helloiotlib.app.EventMessage;
-import com.adr.helloiotlib.device.Device;
 import com.adr.helloiotlib.format.MiniVar;
-import com.adr.helloiotlib.format.MiniVarBoolean;
 import com.adr.helloiotlib.format.MiniVarInt;
 import java.util.HashMap;
 import java.util.Map;
-import com.adr.helloiotlib.app.TopicManager;
 
 /**
  *
  * @author adrian
  */
-public class TransmitterSimple extends Device implements DeviceSend {
+public class EventMessage {
+
+    private final String topic;
+    private final byte[] message;
+    private final Map<String, MiniVar> properties;
+
+    public EventMessage(String topic, byte[] message) {
+        this.topic = topic;
+        this.message = message;
+        this.properties = new HashMap<>();
+    }
+
+    public EventMessage(String topic, byte[] message, Map<String, MiniVar> properties) {
+        this.topic = topic;
+        this.message = message;
+        this.properties = properties;
+    }
+
+    public String getTopic() {
+        return topic;
+    }
+
+    public byte[] getMessage() {
+        return message;
+    }
     
-    protected TopicManager manager;
-    
-    @Override
-    public final void construct(TopicManager manager) {
-        this.manager = manager;
-    }
-
-    @Override
-    public final void destroy() {
-    }
-
-    @Override
-    public String getDeviceName() {
-        return resources.getString("devicename.transmittersimple");
-    }
-
-    @Override
-    public void sendStatus(MiniVar event) {
-        EventMessage message = new EventMessage(getTopicPublish(), getFormat().devalue(event), getMessageProperties());
-        manager.publish(message);
-    }
-
-    @Override
-    public void sendStatus(String event) {
-        sendStatus(getFormat().parse(event));
+    public MiniVar getProperty(String key) {
+        return properties.getOrDefault(key, MiniVarInt.NULL);
     }
 }

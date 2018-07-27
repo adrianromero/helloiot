@@ -18,15 +18,18 @@
 //
 package com.adr.helloiot;
 
+import com.adr.helloiotlib.app.IoTApp;
 import com.adr.helloiot.unit.UnitPage;
 import com.adr.fonticon.FontAwesome;
 import com.adr.fonticon.IconBuilder;
 import com.adr.hellocommon.dialog.DialogView;
 import com.adr.hellocommon.dialog.MessageUtils;
-import com.adr.helloiot.device.format.StringFormatIdentity;
-import com.adr.helloiot.unit.Unit;
+import com.adr.helloiot.device.DeviceSimple;
+import com.adr.helloiot.device.DeviceSwitch;
+import com.adr.helloiotlib.format.StringFormatIdentity;
+import com.adr.helloiotlib.unit.Unit;
 import com.adr.helloiot.media.ClipFactory;
-import com.adr.helloiot.unit.Units;
+import com.adr.helloiotlib.unit.Units;
 import com.adr.helloiot.util.Dialogs;
 import com.google.common.base.Strings;
 import java.util.ArrayList;
@@ -67,7 +70,7 @@ import javafx.util.Duration;
 
 public final class MainNode {
 
-    private ResourceBundle resources;
+    private final ResourceBundle resources;
     private AnchorPane rootpane;
     private BorderPane appcontainer;
     private ScrollPane scrollpages;
@@ -95,6 +98,10 @@ public final class MainNode {
     private final boolean appclock;
     private final boolean appexitbutton;
     private Button backbutton;
+
+    private DeviceSimple appunitpage;
+    private DeviceSwitch appbeeper;
+    private DeviceSimple appbuzzer;    
     
     private String currentpage = null;
     
@@ -107,6 +114,10 @@ public final class MainNode {
         this.app = app;
         this.appclock = appclock;
         this.appexitbutton = appexitbutton;
+        
+        appunitpage = ((DeviceSimple) app.getDevice(IoTApp.SYS_UNITPAGE_ID));
+        appbeeper = ((DeviceSwitch) app.getDevice(IoTApp.SYS_BEEPER_ID));
+        appbuzzer = ((DeviceSimple) app.getDevice(IoTApp.SYS_BUZZER_ID));
         
         resources = ResourceBundle.getBundle("com/adr/helloiot/fxml/main"); 
         load();
@@ -203,9 +214,9 @@ public final class MainNode {
     
     public void construct(List<UnitPage> appunitpages) {
         
-        app.getUnitPage().subscribeStatus(messagePageHandler);
-        app.getBeeper().subscribeStatus(beeper.getMessageHandler());
-        app.getBuzzer().subscribeStatus(buzzer.getMessageHandler());
+        appunitpage.subscribeStatus(messagePageHandler);
+        appbeeper.subscribeStatus(beeper.getMessageHandler());
+        appbuzzer.subscribeStatus(buzzer.getMessageHandler());
 
         // Add configured unitpages.
         for (UnitPage up : appunitpages) {
@@ -241,7 +252,7 @@ public final class MainNode {
                 buttonmenu.setFocusTraversable(false);
                 buttonmenu.setMnemonicParsing(false);
                 buttonmenu.setOnAction(e -> {
-                    app.getUnitPage().sendStatus(value.getName());              
+                    appunitpage.sendStatus(value.getName());              
                 });
                 menupages.getChildren().add(buttonmenu); // Last button is disconnect button
                 if (firstmenupage == null) {
@@ -272,9 +283,9 @@ public final class MainNode {
     }
     
     public void destroy() {
-        app.getUnitPage().unsubscribeStatus(messagePageHandler);
-        app.getBeeper().unsubscribeStatus(beeper.getMessageHandler());
-        app.getBuzzer().unsubscribeStatus(buzzer.getMessageHandler());
+        appunitpage.unsubscribeStatus(messagePageHandler);
+        appbeeper.unsubscribeStatus(beeper.getMessageHandler());
+        appbuzzer.unsubscribeStatus(buzzer.getMessageHandler());
         unitpages.clear();
     }
 

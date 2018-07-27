@@ -18,6 +18,8 @@
 //
 package com.adr.helloiot;
 
+import com.adr.helloiotlib.app.EventMessage;
+
 /**
  *
  * @author adrian

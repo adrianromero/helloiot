@@ -34,6 +34,7 @@ import javafx.application.Platform;
 /**
  *
  * @author adrian
+ * @param <T>
  */
 public class CompletableAsync<T> {
 

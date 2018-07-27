@@ -20,8 +20,8 @@ package com.adr.helloiot;
 
 import com.adr.fonticon.FontAwesome;
 import com.adr.fonticon.IconBuilder;
-import com.adr.helloiot.device.Device;
-import com.adr.helloiot.unit.Unit;
+import com.adr.helloiotlib.device.Device;
+import com.adr.helloiotlib.unit.Unit;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;

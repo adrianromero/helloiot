@@ -18,7 +18,7 @@
 //
 package com.adr.helloiot.device;
 
-import com.adr.helloiot.device.format.StringFormatSwitch;
+import com.adr.helloiotlib.format.StringFormatSwitch;
 
 /**
  *

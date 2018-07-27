@@ -18,8 +18,10 @@
 //
 package com.adr.helloiot.unit;
 
-import com.adr.helloiot.HelloIoTAppPublic;
+import com.adr.helloiotlib.app.IoTApp;
 import com.adr.helloiot.device.DeviceSubscribe;
+import com.adr.helloiotlib.unit.Unit;
+import com.adr.helloiotlib.unit.Units;
 import com.adr.textflow.TextContainer;
 import java.io.IOException;
 import java.util.logging.Level;
@@ -63,7 +65,7 @@ public abstract class Tile extends BorderPane implements Unit {
     }   
     
     @Override
-    public void construct(HelloIoTAppPublic app) {
+    public void construct(IoTApp app) {
         if (deviceavailable != null) {
             deviceavailable.subscribeStatus(messageHandler);
         }

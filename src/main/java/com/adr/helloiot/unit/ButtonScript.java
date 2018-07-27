@@ -19,7 +19,7 @@
 package com.adr.helloiot.unit;
 
 import com.adr.hellocommon.dialog.MessageUtils;
-import com.adr.helloiot.HelloIoTAppPublic;
+import com.adr.helloiotlib.app.IoTApp;
 import com.adr.helloiot.util.CompletableAsync;
 import java.util.HashMap;
 import java.util.Map;
@@ -35,7 +35,7 @@ public class ButtonScript extends ButtonBase {
     private ScriptCode code = null;
 
     @Override
-    public void construct(HelloIoTAppPublic app) {
+    public void construct(IoTApp app) {
         super.construct(app);
         code.construct(app);
     }

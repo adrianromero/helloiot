@@ -22,10 +22,10 @@ import com.adr.fonticon.FontAwesome;
 import com.adr.fonticon.IconBuilder;
 import com.adr.hellocommon.dialog.DialogView;
 import com.adr.hellocommon.dialog.MessageUtils;
-import com.adr.helloiot.device.format.MiniVar;
-import com.adr.helloiot.device.format.MiniVarBoolean;
-import com.adr.helloiot.device.format.MiniVarInt;
-import com.adr.helloiot.device.format.MiniVarString;
+import com.adr.helloiotlib.format.MiniVar;
+import com.adr.helloiotlib.format.MiniVarBoolean;
+import com.adr.helloiotlib.format.MiniVarInt;
+import com.adr.helloiotlib.format.MiniVarString;
 import com.adr.helloiot.mqtt.ConnectMQTT;
 import com.adr.helloiot.tradfri.ConnectTradfri;
 import com.adr.helloiot.unit.UnitPage;
@@ -195,7 +195,6 @@ public class MainManagerClient implements MainManager {
         config.put("mqtt.connectiontimeout", new MiniVarInt(Integer.parseInt(configprops.getProperty("mqtt.connectiontimeout", Integer.toString(MqttConnectOptions.CONNECTION_TIMEOUT_DEFAULT)))));
         config.put("mqtt.keepaliveinterval", new MiniVarInt(Integer.parseInt(configprops.getProperty("mqtt.keepaliveinterval", Integer.toString(MqttConnectOptions.KEEP_ALIVE_INTERVAL_DEFAULT)))));
         config.put("mqtt.maxinflight", new MiniVarInt(Integer.parseInt(configprops.getProperty("mqtt.maxinflight", Integer.toString(MqttConnectOptions.MAX_INFLIGHT_DEFAULT)))));
-        config.put("mqtt.defaultqos", new MiniVarInt(Integer.parseInt(configprops.getProperty("mqtt.defaultqos", "1"))));
         config.put("mqtt.version", new MiniVarInt(Integer.parseInt(configprops.getProperty("mqtt.version", Integer.toString(MqttConnectOptions.MQTT_VERSION_DEFAULT))))); // MQTT_VERSION_DEFAULT = 0; MQTT_VERSION_3_1 = 3; MQTT_VERSION_3_1_1 = 4;
         config.put("client.broker", new MiniVarString(configprops.getProperty("client.broker", "0")));
         

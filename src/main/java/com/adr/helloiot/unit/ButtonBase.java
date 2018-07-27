@@ -20,9 +20,9 @@ package com.adr.helloiot.unit;
 
 import com.adr.hellocommon.dialog.DialogView;
 import com.adr.hellocommon.dialog.MessageUtils;
-import com.adr.helloiot.HelloIoTAppPublic;
+import com.adr.helloiotlib.app.IoTApp;
+import com.adr.helloiot.device.TreePublishSubscribe;
 import com.adr.helloiot.util.CryptUtils;
-import com.google.common.base.Strings;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.scene.Node;
@@ -42,7 +42,7 @@ public abstract class ButtonBase extends Tile {
     protected String securitykey = null;
     protected ResourceBundle resources = ResourceBundle.getBundle("com/adr/helloiot/fxml/basic");
 
-    protected HelloIoTAppPublic app;
+    protected IoTApp app;
 
     @Override
     public Node constructContent() {
@@ -58,7 +58,7 @@ public abstract class ButtonBase extends Tile {
     }
 
     @Override
-    public void construct(HelloIoTAppPublic app) {
+    public void construct(IoTApp app) {
         super.construct(app);
         this.app = app;
     }
@@ -98,7 +98,7 @@ public abstract class ButtonBase extends Tile {
     void onScriptAction(ActionEvent event) {
         if (confirm) {
             String title = getLabel();
-            if (Strings.isNullOrEmpty(title)) {
+            if (title == null || title.isEmpty()) {
                 title = getText();
             }
             MessageUtils.showConfirm(MessageUtils.getRoot(this), title, resources.getString("message.confirm"), this::doSecurityAction);
@@ -114,14 +114,15 @@ public abstract class ButtonBase extends Tile {
             SecurityKeyboard sec = new SecurityKeyboard();
             DialogView dialog = new DialogView();           
             String title = getLabel();
-            if (Strings.isNullOrEmpty(title)) {
+            if (title == null || title.isEmpty()) {
                 title = getText();
             }
             String titletodisplay = title;
             dialog.setTitle(titletodisplay);
             dialog.setContent(sec.getNode());
             dialog.setActionOK((ActionEvent evok) -> {
-                if (CryptUtils.validatePassword(sec.getPassword(), app.loadSYSStatus(securitykey))) {
+                String hashsalt = ((TreePublishSubscribe) app.getDevice(IoTApp.SYS_VALUE_ID)).loadMessage(securitykey);
+                if (CryptUtils.validatePassword(sec.getPassword(), hashsalt)) {
                     doRun(evok);
                 } else {
                     evok.consume();

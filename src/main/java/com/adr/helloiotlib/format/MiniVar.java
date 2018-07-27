@@ -1,5 +1,5 @@
 //    HelloIoT is a dashboard creator for MQTT
-//    Copyright (C) 2017 Adrián Romero Corchado.
+//    Copyright (C) 2017-2018 Adrián Romero Corchado.
 //
 //    This file is part of HelloIot.
 //
@@ -16,29 +16,17 @@
 //    You should have received a copy of the GNU General Public License
 //    along with HelloIot.  If not, see <http://www.gnu.org/licenses/>.
 //
-package com.adr.helloiot.device;
-
-import com.adr.helloiotlib.format.StringFormatDecimal;
+package com.adr.helloiotlib.format;
 
 /**
  *
  * @author adrian
  */
-public class Temperature extends TransmitterNumber {
-
-    public Temperature() {
-        setLevelMin(-40.0);
-        setLevelMax(70.0);
-        setFormat(StringFormatDecimal.DEGREES);
-    }
-
-    @Override
-    public String getDeviceName() {
-        return resources.getString("devicename.temperature");
-    }
-
-    @Override
-    public String getUnit() {
-        return "°C";
-    }
+public interface MiniVar {
+    public boolean isEmpty();
+    public String asString();
+    public int asInt();
+    public double asDouble();
+    public boolean asBoolean();
+    public byte[] asBytes();
 }

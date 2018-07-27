@@ -18,10 +18,10 @@
 //
 package com.adr.helloiot.unit;
 
-import com.adr.helloiot.EventMessage;
-import com.adr.helloiot.device.format.MiniVar;
-import com.adr.helloiot.device.format.StringFormat;
-import com.adr.helloiot.device.format.StringFormatIdentity;
+import com.adr.helloiotlib.app.EventMessage;
+import com.adr.helloiotlib.format.MiniVar;
+import com.adr.helloiotlib.format.StringFormat;
+import com.adr.helloiotlib.format.StringFormatIdentity;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;

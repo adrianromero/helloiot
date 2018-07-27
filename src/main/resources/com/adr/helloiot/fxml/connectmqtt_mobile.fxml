@@ -50,7 +50,6 @@
       <RowConstraints minHeight="10.0" prefHeight="30.0" />
       <RowConstraints minHeight="10.0" prefHeight="30.0" />
       <RowConstraints minHeight="10.0" prefHeight="30.0" />
-      <RowConstraints minHeight="10.0" prefHeight="30.0" />
    </rowConstraints>
    <children>
       <Label maxWidth="1.7976931348623157E308" styleClass="formsection" text="%label.mqttbroker" GridPane.columnSpan="2147483647" />
@@ -100,19 +99,7 @@
             <RadioButton fx:id="version311" mnemonicParsing="false" text="3.1.1" toggleGroup="$version" />
          </children>
       </HBox>
-      <HBox alignment="CENTER_LEFT" spacing="10.0" GridPane.rowIndex="31">
-         <children>
-            <Label fx:id="labeldefaultqos" text="%label.defaultqos" />
-            <RadioButton fx:id="qos0" mnemonicParsing="false" selected="true" text="0">
-               <toggleGroup>
-                  <ToggleGroup fx:id="qos" />
-               </toggleGroup>
-            </RadioButton>
-            <RadioButton fx:id="qos1" mnemonicParsing="false" text="1" toggleGroup="$qos" />
-            <RadioButton fx:id="qos2" mnemonicParsing="false" text="2" toggleGroup="$qos" />
-         </children>
-      </HBox>
-      <HBox alignment="CENTER_LEFT" spacing="10.0" GridPane.rowIndex="32" GridPane.valignment="BASELINE">
+      <HBox alignment="CENTER_LEFT" spacing="10.0" GridPane.rowIndex="31" GridPane.valignment="BASELINE">
          <children>
             <Label fx:id="labelbrokerpane" text="%label.brokerpane" />
             <RadioButton fx:id="brokernone" mnemonicParsing="false" selected="true" text="%label.brokernone">

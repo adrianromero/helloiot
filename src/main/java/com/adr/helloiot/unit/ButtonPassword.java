@@ -20,6 +20,8 @@ package com.adr.helloiot.unit;
 
 import com.adr.hellocommon.dialog.DialogView;
 import com.adr.hellocommon.dialog.MessageUtils;
+import com.adr.helloiotlib.app.IoTApp;
+import com.adr.helloiot.device.TreePublishSubscribe;
 import com.adr.helloiot.util.CryptUtils;
 import java.util.HashMap;
 import java.util.Map;
@@ -40,7 +42,7 @@ public class ButtonPassword extends ButtonBase {
         displayPasswordDialog(resources.getString("label.newpassword"), (String p1) -> {
             displayPasswordDialog(resources.getString("label.repeatpassword"), (String p2) -> {
                 if (p1.equals(p2)) {
-                    app.sendSYSStatus(securitykey, CryptUtils.hashsaltPassword(p2, CryptUtils.generateSalt()));
+                    ((TreePublishSubscribe) app.getDevice(IoTApp.SYS_VALUE_ID)).sendMessage(securitykey, CryptUtils.hashsaltPassword(p2, CryptUtils.generateSalt()));
                     MessageUtils.showInfo(MessageUtils.getRoot(this), getLabel(), resources.getString("message.passworchangesuccess"));
                 } else {
                     MessageUtils.showWarning(MessageUtils.getRoot(this), getLabel(), resources.getString("message.passworchangeerror"));

@@ -18,10 +18,10 @@
 //
 package com.adr.helloiot.device;
 
-import com.adr.helloiot.TopicsManager;
-import com.adr.helloiot.device.format.MiniVar;
+import com.adr.helloiotlib.format.MiniVar;
 import com.adr.helloiot.graphic.IconStatus;
 import com.adr.helloiot.graphic.IconText;
+import com.adr.helloiotlib.app.TopicManager;
 
 /**
  *
@@ -29,7 +29,7 @@ import com.adr.helloiot.graphic.IconText;
  */
 public class DeviceCommand extends DeviceSimple {
 
-    protected TopicsManager manager;
+    protected TopicManager manager;
     private String value;
     
     @Override

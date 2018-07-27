@@ -18,8 +18,8 @@
 //
 package com.adr.helloiot;
 
-import com.adr.helloiot.unit.Unit;
-import com.adr.helloiot.device.Device;
+import com.adr.helloiotlib.unit.Unit;
+import com.adr.helloiotlib.device.Device;
 import java.util.List;
 
 /**

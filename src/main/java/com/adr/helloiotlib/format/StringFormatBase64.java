@@ -1,5 +1,5 @@
 //    HelloIoT is a dashboard creator for MQTT
-//    Copyright (C) 2018 Adrián Romero Corchado.
+//    Copyright (C) 2017-2018 Adrián Romero Corchado.
 //
 //    This file is part of HelloIot.
 //
@@ -16,30 +16,22 @@
 //    You should have received a copy of the GNU General Public License
 //    along with HelloIot.  If not, see <http://www.gnu.org/licenses/>.
 //
-package com.adr.helloiot.device.format;
+package com.adr.helloiotlib.format;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonIOException;
-import com.google.gson.JsonParser;
-import com.google.gson.JsonSyntaxException;
-import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 import javafx.geometry.Pos;
 
 /**
  *
  * @author adrian
  */
-public class StringFormatJSONPretty extends StringFormat {
+public class StringFormatBase64 extends StringFormat {
 
-    public static final StringFormat INSTANCE = new StringFormatJSONPretty();
-    
-    private JsonParser parser = new JsonParser();
-    private Gson gson = new GsonBuilder().setPrettyPrinting().create();
+    public static final StringFormat INSTANCE = new StringFormatBase64();
 
     @Override
     public String toString() {
-        return "JSON";
+        return "BASE64";
     }
 
     @Override
@@ -47,11 +39,7 @@ public class StringFormatJSONPretty extends StringFormat {
         if (value.isEmpty()) {
             return "";
         } else {
-            try {
-                return gson.toJson(parser.parse(value.asString()));
-            } catch (JsonSyntaxException |JsonIOException ex) {
-                return "<Not a JSON value>";
-            }
+            return Base64.getMimeEncoder().encodeToString(value.asBytes());
         }
     }
 
@@ -60,18 +48,18 @@ public class StringFormatJSONPretty extends StringFormat {
         if (value == null) {
             return MiniVarBytes.NULL;
         } else {
-            return new MiniVarString(new String(value, StandardCharsets.UTF_8));
+            return new MiniVarBytes(value);
         }
     }
     
     @Override
     public MiniVar parse(String formattedvalue) {
-        return new MiniVarString(formattedvalue);
+        return new MiniVarBytes(Base64.getMimeDecoder().decode(formattedvalue));
     }
     
     @Override
     public byte[] devalue(MiniVar formattedvalue) {
-        return formattedvalue.asString().getBytes(StandardCharsets.UTF_8);
+        return formattedvalue.asBytes();
     }
 
     @Override

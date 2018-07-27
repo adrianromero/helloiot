@@ -1,5 +1,5 @@
 //    HelloIoT is a dashboard creator for MQTT
-//    Copyright (C) 2017 Adrián Romero Corchado.
+//    Copyright (C) 2017-2018 Adrián Romero Corchado.
 //
 //    This file is part of HelloIot.
 //
@@ -16,13 +16,16 @@
 //    You should have received a copy of the GNU General Public License
 //    along with HelloIot.  If not, see <http://www.gnu.org/licenses/>.
 //
-package com.adr.helloiot.device;
+package com.adr.helloiotlib.device;
 
-import com.adr.helloiot.TopicsManager;
-import com.adr.helloiot.device.format.StringFormat;
-import com.adr.helloiot.device.format.StringFormatIdentity;
+import com.adr.helloiotlib.format.MiniVar;
+import com.adr.helloiotlib.format.StringFormat;
+import com.adr.helloiotlib.format.StringFormatIdentity;
+import java.util.Map;
 import java.util.Properties;
 import java.util.ResourceBundle;
+import com.adr.helloiotlib.app.TopicManager;
+import java.util.HashMap;
 
 /**
  *
@@ -35,10 +38,9 @@ public abstract class Device {
     private String id = null; // can be null
     private String subscriptiontopic = null;
     private String publicationtopic = null;
-    private int qos = -1;
-    private boolean retained = false;
     private StringFormat format;
     private final Properties properties = new Properties();
+    private final Map<String, MiniVar> messageProperties = new HashMap<>();
 
     public Device() {
         setFormat(StringFormatIdentity.INSTANCE);
@@ -71,22 +73,6 @@ public abstract class Device {
         this.publicationtopic = topic;
     }
 
-    public final int getQos() {
-        return qos;
-    }
-
-    public final void setQos(int qos) {
-        this.qos = qos;
-    }
-
-    public final boolean isRetained() {
-        return retained;
-    }
-
-    public final void setRetained(boolean retained) {
-        this.retained = retained;
-    }
-
     public final StringFormat getFormat() {
         return format;
     }
@@ -99,8 +85,12 @@ public abstract class Device {
         return properties;
     }
 
+    public final Map<String, MiniVar> getMessageProperties() {
+        return messageProperties;
+    }
+
     // Runtime methods
-    public abstract void construct(TopicsManager manager);
+    public abstract void construct(TopicManager manager);
 
     public abstract void destroy();
 }

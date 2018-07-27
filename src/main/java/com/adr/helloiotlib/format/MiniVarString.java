@@ -16,51 +16,49 @@
 //    You should have received a copy of the GNU General Public License
 //    along with HelloIot.  If not, see <http://www.gnu.org/licenses/>.
 //
-package com.adr.helloiot.device.format;
+package com.adr.helloiotlib.format;
 
 /**
  *
  * @author adrian
  */
-public class MiniVarBoolean implements MiniVar {
+public class MiniVarString implements MiniVar {
+
+    public final static MiniVar NULL = new MiniVarString(null);
     
-    public final static MiniVar NULL = new MiniVarBoolean(null);
-    public final static MiniVar TRUE = new MiniVarBoolean(true);
-    public final static MiniVar FALSE = new MiniVarBoolean(false);
+    public final String value;
     
-    public final Boolean value;
-    
-    public MiniVarBoolean(Boolean value) {
+    public MiniVarString(String value) {
         this.value = value;
     }
 
     @Override
     public String asString() {
-        return value == null ? "" : value.toString();
+        return value == null ? "" : value;
     }
 
     @Override
     public double asDouble() {
-        throw new UnsupportedOperationException("Not supported.");
+        return value == null ? 0.0 : Double.parseDouble(value);
     }
     
     @Override
     public int asInt() {
-        throw new UnsupportedOperationException("Not supported.");
-    }
+        return value == null ? 0 : Integer.parseInt(value);
+    }     
 
     @Override
     public boolean asBoolean() {
-        return value == null ? false : value;
-    }   
-
-    @Override
-    public boolean isEmpty() {
-        return value == null;
+        return value == null ? false : Boolean.parseBoolean(value);
     }
 
     @Override
     public byte[] asBytes() {
         throw new UnsupportedOperationException("Not supported.");
     }
+    
+    @Override
+    public boolean isEmpty() {
+        return value == null || value.isEmpty();
+    }        
 }

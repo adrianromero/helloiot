@@ -18,11 +18,11 @@
 //
 package com.adr.helloiot;
 
-import com.adr.helloiot.device.format.StringFormat;
-import com.adr.helloiot.device.format.StringFormatSwitch;
+import com.adr.helloiotlib.format.StringFormat;
+import com.adr.helloiotlib.format.StringFormatSwitch;
 import com.adr.helloiot.media.Clip;
 import com.adr.helloiot.media.ClipFactory;
-import com.adr.helloiot.unit.Units;
+import com.adr.helloiotlib.unit.Units;
 import javafx.scene.control.Label;
 import javafx.scene.media.AudioClip;
 

@@ -1,5 +1,5 @@
 //    HelloIoT is a dashboard creator for MQTT
-//    Copyright (C) 2017 Adrián Romero Corchado.
+//    Copyright (C) 2017-2018 Adrián Romero Corchado.
 //
 //    This file is part of HelloIot.
 //
@@ -16,26 +16,9 @@
 //    You should have received a copy of the GNU General Public License
 //    along with HelloIot.  If not, see <http://www.gnu.org/licenses/>.
 //
-package com.adr.helloiot.device.format;
+package com.adr.helloiotlib.device;
 
-/**
- *
- * @author adrian
- */
-public class ValueFormatValue {
-    private final MiniVar value;
-    private final String formatValue;
-
-    public ValueFormatValue(MiniVar value, String formatValue) {
-        this.value = value;
-        this.formatValue = formatValue;
-    }
-
-    public MiniVar getValue() {
-        return value;
-    }
-
-    public String getFormatValue() {
-        return formatValue;
-    }  
+@FunctionalInterface
+public interface DevicePredicate<T> {
+    public boolean test(T t);
 }

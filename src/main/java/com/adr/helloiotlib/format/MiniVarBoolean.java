@@ -1,5 +1,5 @@
 //    HelloIoT is a dashboard creator for MQTT
-//    Copyright (C) 2018 Adrián Romero Corchado.
+//    Copyright (C) 2017-2018 Adrián Romero Corchado.
 //
 //    This file is part of HelloIot.
 //
@@ -16,51 +16,51 @@
 //    You should have received a copy of the GNU General Public License
 //    along with HelloIot.  If not, see <http://www.gnu.org/licenses/>.
 //
-package com.adr.helloiot.device.format;
-
-import java.util.Arrays;
+package com.adr.helloiotlib.format;
 
 /**
  *
  * @author adrian
  */
-public class MiniVarBytes implements MiniVar {
+public class MiniVarBoolean implements MiniVar {
     
-    public final static MiniVar NULL = new MiniVarBytes(null);
+    public final static MiniVar NULL = new MiniVarBoolean(null);
+    public final static MiniVar TRUE = new MiniVarBoolean(true);
+    public final static MiniVar FALSE = new MiniVarBoolean(false);
     
-    public final byte[] value;
+    public final Boolean value;
     
-    public MiniVarBytes(byte[] value) {
+    public MiniVarBoolean(Boolean value) {
         this.value = value;
     }
 
     @Override
     public String asString() {
-        return value == null ? "" : Arrays.toString(value);
+        return value == null ? "" : value.toString();
     }
 
     @Override
     public double asDouble() {
-        throw new UnsupportedOperationException("Not supported.");
+        return value != null && value ? 1.0 : 0.0;
     }
     
     @Override
     public int asInt() {
-        throw new UnsupportedOperationException("Not supported.");
+        return value != null && value ? 1 : 0;
     }
 
     @Override
     public boolean asBoolean() {
-        throw new UnsupportedOperationException("Not supported.");
+        return value == null ? false : value;
     }   
 
     @Override
-    public byte[] asBytes() {
-        return value;
-    }
-    
-    @Override
     public boolean isEmpty() {
         return value == null;
+    }
+
+    @Override
+    public byte[] asBytes() {
+        throw new UnsupportedOperationException("Not supported.");
     }
 }

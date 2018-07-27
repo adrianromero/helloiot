@@ -21,7 +21,7 @@ package com.adr.helloiot.tradfri;
 import com.adr.hellocommon.dialog.DialogView;
 import com.adr.hellocommon.dialog.MessageUtils;
 import com.adr.helloiot.ConfigProperties;
-import com.adr.helloiot.EventMessage;
+import com.adr.helloiotlib.app.EventMessage;
 import com.adr.helloiot.GroupManagers;
 import com.adr.helloiot.util.CompletableAsync;
 import com.adr.helloiot.util.Dialogs;

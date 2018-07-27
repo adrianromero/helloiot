@@ -22,11 +22,12 @@
 
 package com.adr.helloiot.tradfri;
 
-import com.adr.helloiot.EventMessage;
+import com.adr.helloiotlib.app.EventMessage;
 import com.adr.helloiot.GroupManagers;
 import com.adr.helloiot.ManagerProtocol;
 import com.adr.helloiot.util.CompletableAsync;
 import com.adr.helloiot.util.HTTPUtils;
+import com.adr.helloiotlib.format.MiniVar;
 import com.google.common.util.concurrent.ListenableScheduledFuture;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -100,7 +101,7 @@ public class ManagerTradfri implements ManagerProtocol {
     }
 
     @Override
-    public void registerSubscription(String topic, int qos) {
+    public void registerSubscription(String topic, Map<String, MiniVar> messageProperties) {
         // DO NOTHING
     }
 
@@ -142,13 +143,13 @@ public class ManagerTradfri implements ManagerProtocol {
     }
 
     @Override
-    public void publish(String topic, int qos, byte[] message, boolean isRetained) {
+    public void publish(EventMessage message) {
 
-        LOGGER.log(Level.FINE, "Publishing: {0}, {1}", new Object[]{topic, message});
+        LOGGER.log(Level.FINE, "Publishing: {0}, {1}", new Object[]{message.getTopic(), message.getMessage()});
 
-        String[] parts = topic.split("/");
+        String[] parts = message.getTopic().split("/");
         if (parts.length < 4) {
-            LOGGER.log(Level.WARNING, "Topic not valid for Tradfri: {0}", topic);
+            LOGGER.log(Level.WARNING, "Topic not valid for Tradfri: {0}", message.getTopic());
             return;
         }
 
@@ -162,7 +163,7 @@ public class ManagerTradfri implements ManagerProtocol {
             return;
         }
 
-        String payload = new String(message, StandardCharsets.UTF_8);
+        String payload = new String(message.getMessage(), StandardCharsets.UTF_8);
         JsonObject json = new JsonObject();
         if ("bulb".equals(type)) { // single bulb
             JsonObject settings = new JsonObject();

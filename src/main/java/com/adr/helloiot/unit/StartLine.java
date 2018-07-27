@@ -18,7 +18,8 @@
 //
 package com.adr.helloiot.unit;
 
-import com.adr.helloiot.HelloIoTAppPublic;
+import com.adr.helloiotlib.unit.Unit;
+import com.adr.helloiotlib.app.IoTApp;
 import javafx.scene.Node;
 import javafx.scene.layout.Region;
 
@@ -39,7 +40,7 @@ public class StartLine extends Region implements Unit {
     }
     
     @Override
-    public void construct(HelloIoTAppPublic app) {
+    public void construct(IoTApp app) {
     }
 
     @Override

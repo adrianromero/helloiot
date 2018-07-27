@@ -23,18 +23,19 @@ import com.adr.fonticon.IconBuilder;
 import com.adr.helloiot.device.DeviceBasic;
 import com.adr.helloiot.device.DeviceSimple;
 import com.adr.helloiot.device.TransmitterSimple;
-import com.adr.helloiot.device.format.StringFormat;
-import com.adr.helloiot.device.format.StringFormatBase64;
-import com.adr.helloiot.device.format.StringFormatDecimal;
-import com.adr.helloiot.device.format.StringFormatHex;
-import com.adr.helloiot.device.format.StringFormatIdentity;
+import com.adr.helloiot.mqtt.MQTTProperties;
+import com.adr.helloiotlib.format.StringFormat;
+import com.adr.helloiotlib.format.StringFormatBase64;
+import com.adr.helloiotlib.format.StringFormatDecimal;
+import com.adr.helloiotlib.format.StringFormatHex;
+import com.adr.helloiotlib.format.StringFormatIdentity;
 import com.adr.helloiot.unit.EditAreaEvent;
 import com.adr.helloiot.unit.EditAreaStatus;
 import com.adr.helloiot.unit.EditAreaView;
 import com.adr.helloiot.unit.EditEvent;
 import com.adr.helloiot.unit.EditStatus;
 import com.adr.helloiot.unit.EditView;
-import com.adr.helloiot.unit.Unit;
+import com.adr.helloiotlib.unit.Unit;
 import com.adr.helloiot.unit.UnitPage;
 import java.util.Arrays;
 import java.util.ResourceBundle;
@@ -70,8 +71,8 @@ public class TopicInfoEdit implements TopicInfo {
     private boolean multiline = false;
     private Color color = null;
     private Color background = null;
-    private int qos = -1;
-    private int retained = -1;
+    private int qos = 0;
+    private boolean retained = false;
 
     public TopicInfoEdit(String type, TopicInfoEditNode editnode) {
         this.type = type;
@@ -125,8 +126,8 @@ public class TopicInfoEdit implements TopicInfo {
         color = c == null ? null : Color.valueOf(c);
         c = properties.getProperty(".background", null);
         background = c == null ? null : Color.valueOf(c);    
-        qos = Integer.parseInt(properties.getProperty(".qos", "-1"));
-        retained = Integer.parseInt(properties.getProperty(".retained", "-1"));
+        qos = Integer.parseInt(properties.getProperty(".qos", ""));
+        retained = Boolean.parseBoolean(properties.getProperty(".retained", "false"));
    }
     
     @Override
@@ -143,7 +144,7 @@ public class TopicInfoEdit implements TopicInfo {
         properties.setProperty(".color", color == null ? null : color.toString());
         properties.setProperty(".background", background == null ? null : background.toString());
         properties.setProperty(".qos", Integer.toString(qos));
-        properties.setProperty(".retained", Integer.toString(retained));        
+        properties.setProperty(".retained", Boolean.toString(retained));        
     }
     
     @Override
@@ -217,10 +218,8 @@ public class TopicInfoEdit implements TopicInfo {
         TransmitterSimple d = new TransmitterSimple();
         d.setTopic(topic);
         d.setTopicPublish(topicpub);
-        d.setQos(qos);
-        if (retained >= 0) {
-            d.setRetained(retained != 0);
-        }
+        MQTTProperties.setQoS(d, qos);
+        MQTTProperties.setRetained(d, retained);
         d.setFormat(createFormat());
 
         EditEvent u = multiline ? new EditAreaEvent() : new EditEvent();
@@ -239,10 +238,8 @@ public class TopicInfoEdit implements TopicInfo {
         DeviceSimple d = new DeviceSimple();
         d.setTopic(topic);
         d.setTopicPublish(topicpub);
-        d.setQos(qos);
-        if (retained >= 0) {
-            d.setRetained(retained != 0);
-        }
+        MQTTProperties.setQoS(d, qos);
+        MQTTProperties.setRetained(d, retained);
         d.setFormat(createFormat());
 
         EditStatus u = multiline ? new EditAreaStatus() : new EditStatus();
@@ -261,10 +258,8 @@ public class TopicInfoEdit implements TopicInfo {
         DeviceBasic d = new DeviceBasic();
         d.setTopic(topic);
         d.setTopicPublish(topicpub);
-        d.setQos(qos);
-        if (retained >= 0) {
-            d.setRetained(retained != 0);
-        }
+        MQTTProperties.setQoS(d, qos);
+        MQTTProperties.setRetained(d, retained);
         d.setFormat(createFormat());
 
         EditView u = multiline ? new EditAreaView() : new EditView();

@@ -18,10 +18,11 @@
 //
 package com.adr.helloiot.device;
 
-import com.adr.helloiot.EventMessage;
-import com.adr.helloiot.TopicsManager;
-import com.adr.helloiot.device.format.MiniVar;
+import com.adr.helloiot.mqtt.MQTTProperties;
+import com.adr.helloiotlib.app.EventMessage;
+import com.adr.helloiotlib.format.MiniVar;
 import java.util.concurrent.atomic.AtomicReference;
+import com.adr.helloiotlib.app.TopicManager;
 
 /**
  *
@@ -32,11 +33,11 @@ public class DeviceBasic extends DeviceSubscribe {
     private final AtomicReference<MiniVar> status = new AtomicReference<>(null);
 
     public DeviceBasic() {
-        setRetained(true);
+        MQTTProperties.setRetained(this, true);
     }
 
     @Override
-    public void construct(TopicsManager manager) {
+    public void construct(TopicManager manager) {
         status.set(getFormat().value(null));
         super.construct(manager);
     }
@@ -57,7 +58,7 @@ public class DeviceBasic extends DeviceSubscribe {
     protected void consumeMessage(EventMessage message) {
         status.set(getFormat().value(message.getMessage()));
     }
-
+    
     public MiniVar varStatus() {
         MiniVar s = status.get();
         s = s == null ? getFormat().value(null) : s;

@@ -18,8 +18,9 @@
 //
 package com.adr.helloiot.device;
 
-import com.adr.helloiot.device.format.MiniVar;
+import com.adr.helloiotlib.format.MiniVar;
 import com.adr.helloiot.util.CompletableAsync;
+import com.adr.helloiotlib.app.EventMessage;
 import java.util.concurrent.ScheduledFuture;
 
 /**
@@ -75,7 +76,9 @@ public class DeviceSimple extends DeviceBasic implements DeviceSend {
     @Override
     public void sendStatus(MiniVar status) {
         cancelTimer();
-        manager.publish(getTopicPublish(), getQos(), getFormat().devalue(status), isRetained());
+        
+        EventMessage message = new EventMessage(getTopicPublish(), getFormat().devalue(status), getMessageProperties());
+        manager.publish(message);
     }
 
     @Override

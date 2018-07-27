@@ -18,7 +18,7 @@
 //
 package com.adr.helloiot.unit;
 
-import com.adr.helloiot.EventMessage;
+import com.adr.helloiotlib.app.EventMessage;
 import javafx.geometry.Insets;
 import javafx.scene.control.ListCell;
 

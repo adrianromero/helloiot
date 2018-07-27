@@ -16,49 +16,34 @@
 //    You should have received a copy of the GNU General Public License
 //    along with HelloIot.  If not, see <http://www.gnu.org/licenses/>.
 //
-package com.adr.helloiot.device.format;
+package com.adr.helloiot.mqtt;
+
+import com.adr.helloiotlib.device.Device;
+import com.adr.helloiotlib.format.MiniVarBoolean;
+import com.adr.helloiotlib.format.MiniVarInt;
 
 /**
  *
  * @author adrian
  */
-public class MiniVarInt implements MiniVar {
-
-    public final static MiniVar NULL = new MiniVarInt(null);
+public class MQTTProperties {
     
-    public final Integer value;
-    
-    public MiniVarInt(Integer value) {
-        this.value = value;
-    }
-
-    @Override
-    public String asString() {
-        return value == null ? "" : value.toString();
-    }
-
-    @Override
-    public double asDouble() {
-        return value == null ? 0.0 : value.doubleValue();
+    private MQTTProperties() {
     }
     
-    @Override
-    public int asInt() {
-        return value == null ? 0 : value;
+    public static void setQoS(Device device, int value) {
+        device.getProperties().put("mqtt.qos", new MiniVarInt(value));
+    }
+
+    public static int getQoS(Device device) {
+        return device.getMessageProperties().get("mqtt.qos").asInt();
+    }
+    
+    public static void setRetained(Device device, boolean value) {
+        device.getProperties().put("mqtt.retained", value ? MiniVarBoolean.TRUE : MiniVarBoolean.FALSE);
+    }
+
+    public static boolean isRetained(Device device) {
+        return device.getMessageProperties().get("mqtt.retained").asBoolean();
     }    
-
-    @Override
-    public boolean asBoolean() {
-        throw new UnsupportedOperationException("Not supported.");
-    }
-
-    @Override
-    public byte[] asBytes() {
-        throw new UnsupportedOperationException("Not supported.");
-    }
-    
-    @Override
-    public boolean isEmpty() {
-        return value == null;
-    }        
 }

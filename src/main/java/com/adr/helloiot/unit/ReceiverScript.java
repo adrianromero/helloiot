@@ -18,8 +18,8 @@
 //
 package com.adr.helloiot.unit;
 
-import com.adr.helloiot.EventMessage;
-import com.adr.helloiot.HelloIoTAppPublic;
+import com.adr.helloiotlib.app.EventMessage;
+import com.adr.helloiotlib.app.IoTApp;
 import com.adr.helloiot.util.CompletableAsync;
 import com.google.common.eventbus.Subscribe;
 import java.util.HashMap;
@@ -61,7 +61,7 @@ public class ReceiverScript extends ReceiverBase {
     }
 
     @Override
-    public void construct(HelloIoTAppPublic app) {
+    public void construct(IoTApp app) {
         super.construct(app);
         code.construct(app);
     }

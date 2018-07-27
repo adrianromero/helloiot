@@ -18,13 +18,13 @@
 //
 package com.adr.helloiot.mqtt;
 
-import com.adr.helloiot.EventMessage;
+import com.adr.helloiotlib.app.EventMessage;
 import com.adr.helloiot.GroupManagers;
 import com.adr.helloiot.ManagerProtocol;
-import com.adr.helloiot.device.format.MiniVar;
-import com.adr.helloiot.device.format.MiniVarBoolean;
-import com.adr.helloiot.device.format.MiniVarInt;
-import com.adr.helloiot.device.format.StringFormatSwitch;
+import com.adr.helloiotlib.format.MiniVar;
+import com.adr.helloiotlib.format.MiniVarBoolean;
+import com.adr.helloiotlib.format.MiniVarInt;
+import com.adr.helloiotlib.format.StringFormatSwitch;
 import com.google.common.base.Strings;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -59,7 +59,6 @@ public class ManagerMQTT implements MqttCallback, ManagerProtocol {
     private final String clientid;
     private final int timeout;
     private final int keepalive;
-    private final int defaultqos;
     private final int version;
     private final int maxinflight;
     private final String topicsys;
@@ -74,7 +73,7 @@ public class ManagerMQTT implements MqttCallback, ManagerProtocol {
     private final List<Integer> workqos = new ArrayList<>();
     private final ResourceBundle resources;
 
-    public ManagerMQTT(String url, String username, String password, String clientid, int timeout, int keepalive, int defaultqos, int version, int maxinflight, String topicsys, Properties sslproperties) {
+    public ManagerMQTT(String url, String username, String password, String clientid, int timeout, int keepalive, int version, int maxinflight, String topicsys, Properties sslproperties) {
 
         this.url = url;
         this.username = username;
@@ -82,7 +81,6 @@ public class ManagerMQTT implements MqttCallback, ManagerProtocol {
         this.clientid = clientid;
         this.timeout = timeout;
         this.keepalive = keepalive;
-        this.defaultqos = defaultqos;
         this.version = version;
         this.maxinflight = maxinflight;
         this.topicsys = topicsys;
@@ -99,9 +97,11 @@ public class ManagerMQTT implements MqttCallback, ManagerProtocol {
     }
 
     @Override
-    public void registerSubscription(String topic, int qos) {
+    public void registerSubscription(String topic, Map<String, MiniVar> messageProperties) {
         worktopics.add(topic);
-        workqos.add(qos < 0 ? defaultqos : qos);
+        
+        MiniVar varqos = messageProperties.getOrDefault("mqtt.qos", MiniVarInt.NULL);
+        workqos.add(varqos.asInt());
     }
 
     @Override
@@ -127,7 +127,7 @@ public class ManagerMQTT implements MqttCallback, ManagerProtocol {
             options.setAutomaticReconnect(false);
             options.setMaxInflight(maxinflight);
             options.setSSLProperties(sslproperties);
-            options.setWill(topicsys + "/app/" + clientid, new StringFormatSwitch().devalue(MiniVarBoolean.FALSE), defaultqos, true);
+            options.setWill(topicsys + "/app/" + clientid, new StringFormatSwitch().devalue(MiniVarBoolean.FALSE), 0, true);
             mqttClient.connect(options).waitForCompletion(1000);
             mqttClient.setCallback(this);
             mqttClient.subscribe(listtopics, listqos);
@@ -140,7 +140,7 @@ public class ManagerMQTT implements MqttCallback, ManagerProtocol {
 
     private void statusPublish(MiniVar value) throws MqttException {
         MqttMessage mm = new MqttMessage(new StringFormatSwitch().devalue(value));
-        mm.setQos(defaultqos);
+        mm.setQos(0);
         mm.setRetained(true);
         mqttClient.publish(topicsys + "/app/" + clientid, mm).waitForCompletion();
     }
@@ -166,22 +166,22 @@ public class ManagerMQTT implements MqttCallback, ManagerProtocol {
     }
 
     @Override
-    public void publish(String topic, int qos, byte[] message, boolean isRetained) {
+    public void publish(EventMessage message) {
 
         // To be executed in Executor thread
         if (mqttClient == null) {
             return;
         }
 
-        logger.log(Level.INFO, "Publishing message to broker. {0}", topic);
+        logger.log(Level.INFO, "Publishing message to broker. {0}", message.getTopic());
         try {
-            MqttMessage mm = new MqttMessage(message);
-            mm.setQos(qos < 0 ? defaultqos : qos);
-            mm.setRetained(isRetained);
-            mqttClient.publish(topic, mm);
+            MqttMessage mm = new MqttMessage(message.getMessage());
+            mm.setQos(message.getProperty("mqtt.qos").asInt());
+            mm.setRetained(message.getProperty("mqtt.retained").asBoolean());
+            mqttClient.publish(message.getTopic(), mm);
         } catch (MqttException ex) {
             // TODO: Review in case of paho exception too much publications              
-            logger.log(Level.WARNING, "Cannot publish message to broker. " + topic, ex);
+            logger.log(Level.WARNING, "Cannot publish message to broker. " + message.getTopic(), ex);
             // throw new RuntimeException(ex); 
         }
     }

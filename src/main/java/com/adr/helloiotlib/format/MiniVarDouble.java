@@ -16,7 +16,7 @@
 //    You should have received a copy of the GNU General Public License
 //    along with HelloIot.  If not, see <http://www.gnu.org/licenses/>.
 //
-package com.adr.helloiot.device.format;
+package com.adr.helloiotlib.format;
 
 /**
  *
@@ -49,7 +49,7 @@ public class MiniVarDouble implements MiniVar {
 
     @Override
     public boolean asBoolean() {
-        throw new UnsupportedOperationException("Not supported.");
+        return value == null ? false : value != 0.0;
     }
 
     @Override

@@ -16,29 +16,26 @@
 //    You should have received a copy of the GNU General Public License
 //    along with HelloIot.  If not, see <http://www.gnu.org/licenses/>.
 //
-package com.adr.helloiot.device;
-
-import com.adr.helloiotlib.format.StringFormatDecimal;
+package com.adr.helloiotlib.format;
 
 /**
  *
  * @author adrian
  */
-public class Temperature extends TransmitterNumber {
+public class ValueFormatValue {
+    private final MiniVar value;
+    private final String formatValue;
 
-    public Temperature() {
-        setLevelMin(-40.0);
-        setLevelMax(70.0);
-        setFormat(StringFormatDecimal.DEGREES);
+    public ValueFormatValue(MiniVar value, String formatValue) {
+        this.value = value;
+        this.formatValue = formatValue;
     }
 
-    @Override
-    public String getDeviceName() {
-        return resources.getString("devicename.temperature");
+    public MiniVar getValue() {
+        return value;
     }
 
-    @Override
-    public String getUnit() {
-        return "°C";
-    }
+    public String getFormatValue() {
+        return formatValue;
+    }  
 }

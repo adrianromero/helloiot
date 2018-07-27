@@ -16,17 +16,17 @@
 //    You should have received a copy of the GNU General Public License
 //    along with HelloIot.  If not, see <http://www.gnu.org/licenses/>.
 //
-package com.adr.helloiot.device.format;
+package com.adr.helloiotlib.app;
+
+import com.adr.helloiotlib.format.MiniVar;
+import java.util.Map;
 
 /**
  *
  * @author adrian
  */
-public interface MiniVar {
-    public boolean isEmpty();
-    public String asString();
-    public int asInt();
-    public double asDouble();
-    public boolean asBoolean();
-    public byte[] asBytes();
+public interface TopicManager {
+    public void publish(EventMessage message);
+    public TopicSubscription subscribe(String topic, Map<String, MiniVar> properties);
+    public void unsubscribe(TopicSubscription s);
 }

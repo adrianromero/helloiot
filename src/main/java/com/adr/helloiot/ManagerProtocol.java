@@ -18,6 +18,9 @@
 //
 package com.adr.helloiot;
 
+import com.adr.helloiotlib.app.EventMessage;
+import com.adr.helloiotlib.format.MiniVar;
+import java.util.Map;
 import java.util.function.Consumer;
 
 /**
@@ -27,8 +30,8 @@ import java.util.function.Consumer;
 public interface ManagerProtocol {
     
     void registerTopicsManager(GroupManagers group, Consumer<Throwable> lost);
-    void registerSubscription(String topic, int qos);
+    void registerSubscription(String topic, Map<String, MiniVar> messageProperties);
     void connect();
     void disconnect();
-    void publish(String topic, int qos, byte[] message, boolean isRetained);
+    void publish(EventMessage message);
 }

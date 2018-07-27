@@ -18,9 +18,10 @@
 //
 package com.adr.helloiot.unit;
 
+import com.adr.helloiotlib.unit.Units;
 import com.adr.fonticon.FontAwesome;
 import com.adr.fonticon.IconBuilder;
-import com.adr.helloiot.HelloIoTAppPublic;
+import com.adr.helloiotlib.app.IoTApp;
 import com.adr.helloiot.device.DeviceSimple;
 import java.util.ResourceBundle;
 import javafx.scene.Node;
@@ -87,7 +88,7 @@ public class ButtonPair extends Tile {
     }
     
     @Override
-    public void construct(HelloIoTAppPublic app) {
+    public void construct(IoTApp app) {
         super.construct(app);
         device.subscribeStatus(messageHandler);
         updateStatus(null);

@@ -70,7 +70,7 @@ public class TopicInfoEditNode implements TopicInfoNode {
     @FXML
     public ChoiceBox<Integer> editqos;
     @FXML
-    public ChoiceBox<Integer> editretained;
+    public ChoiceBox<Boolean> editretained;
     @FXML
     public TextField editjsonpath;
     @FXML
@@ -163,32 +163,26 @@ public class TopicInfoEditNode implements TopicInfoNode {
                 return Integer.getInteger(string);
             }
         });
-        editqos.setItems(FXCollections.observableArrayList(-1, 0, 1, 2));
+        editqos.setItems(FXCollections.observableArrayList(0, 1, 2));
         editqos.getSelectionModel().clearSelection();
         editqos.valueProperty().addListener((ObservableValue<? extends Integer> ov, Integer old_val, Integer new_val) -> {
             updateCurrentTopic();
         });
 
-        editretained.setConverter(new StringConverter<Integer>() {
+        editretained.setConverter(new StringConverter<Boolean>() {
             @Override
-            public String toString(Integer object) {
-                if (object < 0) {
-                    return resources.getString("label.default");
-                } else if (object == 0) {
-                    return resources.getString("label.no");
-                } else {
-                    return resources.getString("label.yes");
-                }
+            public String toString(Boolean object) {
+                return resources.getString(object ? "label.yes" : "label.no");
             }
 
             @Override
-            public Integer fromString(String value) {
-                return Integer.getInteger(value);
+            public Boolean fromString(String value) {
+                return Boolean.parseBoolean(value);
             }
         });
-        editretained.setItems(FXCollections.observableArrayList(-1, 0, 1));
+        editretained.setItems(FXCollections.observableArrayList(false, true));
         editretained.getSelectionModel().clearSelection();
-        editretained.valueProperty().addListener((ObservableValue<? extends Integer> ov, Integer old_val, Integer new_val) -> {
+        editretained.valueProperty().addListener((ObservableValue<? extends Boolean> ov, Boolean old_val, Boolean new_val) -> {
             updateCurrentTopic();
         });
         

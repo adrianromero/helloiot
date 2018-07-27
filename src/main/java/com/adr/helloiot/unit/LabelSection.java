@@ -18,7 +18,8 @@
 //
 package com.adr.helloiot.unit;
 
-import com.adr.helloiot.HelloIoTAppPublic;
+import com.adr.helloiotlib.unit.Unit;
+import com.adr.helloiotlib.app.IoTApp;
 import java.util.ResourceBundle;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
@@ -43,7 +44,7 @@ public class LabelSection extends Label implements Unit {
     }
     
     @Override
-    public void construct(HelloIoTAppPublic app) {
+    public void construct(IoTApp app) {
     }
 
     @Override

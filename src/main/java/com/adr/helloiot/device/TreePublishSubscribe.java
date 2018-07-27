@@ -18,11 +18,13 @@
 //
 package com.adr.helloiot.device;
 
-import com.adr.helloiot.EventMessage;
-import com.adr.helloiot.TopicsManager;
-import com.adr.helloiot.device.format.MiniVar;
+import com.adr.helloiot.mqtt.MQTTProperties;
+import com.adr.helloiotlib.app.EventMessage;
+import com.adr.helloiotlib.app.TopicSubscription;
+import com.adr.helloiotlib.format.MiniVar;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import com.adr.helloiotlib.app.TopicManager;
 
 /**
  *
@@ -30,12 +32,12 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class TreePublishSubscribe extends TreePublish {
 
-    private TopicsManager.Subscription status = null;
+    private TopicSubscription status = null;
     private final Map<String, MiniVar> statusmap = new ConcurrentHashMap<>();
 
     public TreePublishSubscribe() {
         super();
-        setRetained(true); // by default retained
+        MQTTProperties.setRetained(this, true);
     }
 
     @Override
@@ -48,9 +50,9 @@ public class TreePublishSubscribe extends TreePublish {
     }
 
     @Override
-    public void construct(TopicsManager manager) {
+    public void construct(TopicManager manager) {
         super.construct(manager);
-        status = manager.subscribe(getTopic() + "/#", getQos());
+        status = manager.subscribe(getTopic() + "/#", getMessageProperties());
         status.setConsumer(this::consumeMessage);
     }
 

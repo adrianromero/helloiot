@@ -18,8 +18,11 @@
 //
 package com.adr.helloiot;
 
+import com.adr.helloiotlib.app.EventMessage;
+import com.adr.helloiotlib.format.MiniVar;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Consumer;
 import java.util.logging.Logger;
 import javafx.util.Pair;
@@ -46,10 +49,10 @@ public class ManagerComposed implements ManagerProtocol {
     }
 
     @Override
-    public void registerSubscription(String topic, int qos) {
+    public void registerSubscription(String topic,  Map<String, MiniVar> messageProperties) {
         for (Pair<String, ManagerProtocol> managerpair : managers) {
             if (topic.startsWith(managerpair.getKey())) {
-                managerpair.getValue().registerSubscription(topic, qos);
+                managerpair.getValue().registerSubscription(topic, messageProperties);
                 return;
             }
         }        
@@ -71,13 +74,13 @@ public class ManagerComposed implements ManagerProtocol {
     }
 
     @Override
-    public void publish(String topic, int qos, byte[] message, boolean isRetained) {
+    public void publish(EventMessage message) {
         for (Pair<String, ManagerProtocol> managerpair : managers) {
-            if (topic.startsWith(managerpair.getKey())) {
-                managerpair.getValue().publish(topic, qos, message, isRetained);
+            if (message.getTopic().startsWith(managerpair.getKey())) {
+                managerpair.getValue().publish(message);
                 return;
             }
         } 
-        LOGGER.warning(String.format("Message not published. It does not exist any topic manager for topic \"%s\"", topic));
+        LOGGER.warning(String.format("Message not published. It does not exist any topic manager for topic \"%s\"", message.getTopic()));
     }
 }

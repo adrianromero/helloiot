@@ -18,9 +18,10 @@
 //
 package com.adr.helloiot.unit;
 
-import com.adr.helloiot.HelloIoTAppPublic;
+import com.adr.helloiotlib.unit.Units;
+import com.adr.helloiotlib.app.IoTApp;
 import com.adr.helloiot.device.DeviceNumber;
-import com.adr.helloiot.device.format.MiniVar;
+import com.adr.helloiotlib.format.MiniVar;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
@@ -79,7 +80,7 @@ public class ViewNumberProgress extends Tile {
     }
 
     @Override
-    public void construct(HelloIoTAppPublic app) {
+    public void construct(IoTApp app) {
         super.construct(app);       
         device.subscribeStatus(messageHandler);
     }
