@@ -5,7 +5,7 @@ HelloIoT is a [MQTT](https://en.wikipedia.org/wiki/MQTT) and [IKEA Tradfri](http
 You can use HelloIoT as a MQTT and IKEA Tradfri client application to publish and subscribe to topics or you can use HelloIoT as a client platform to create your own dashboard. 
 HelloIoT is a Java multiplatform application and it can run on Windows, MacOS, Linux or Android.
 
-![Screenshot](https://i.imgur.com/xYyRObb.png)
+![Screenshot](https://i.imgur.com/qgvpxgy.png) 
 
 Getting started
 ===============
