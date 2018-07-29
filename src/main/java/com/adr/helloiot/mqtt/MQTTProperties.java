@@ -32,7 +32,7 @@ public class MQTTProperties {
     }
     
     public static void setQoS(Device device, int value) {
-        device.getProperties().put("mqtt.qos", new MiniVarInt(value));
+        device.getMessageProperties().put("mqtt.qos", new MiniVarInt(value));
     }
 
     public static int getQoS(Device device) {
@@ -40,7 +40,7 @@ public class MQTTProperties {
     }
     
     public static void setRetained(Device device, boolean value) {
-        device.getProperties().put("mqtt.retained", value ? MiniVarBoolean.TRUE : MiniVarBoolean.FALSE);
+        device.getMessageProperties().put("mqtt.retained", value ? MiniVarBoolean.TRUE : MiniVarBoolean.FALSE);
     }
 
     public static boolean isRetained(Device device) {
