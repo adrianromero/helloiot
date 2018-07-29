@@ -293,7 +293,7 @@ public class TopicInfoEdit implements TopicInfo {
     }
 
     private String getQOSBadge(int i) {
-        if (i < 0) {
+        if (i == 0) {
             return STYLEQOSSPACE;
         } else {
             return STYLEQOS + Integer.toString(i);
