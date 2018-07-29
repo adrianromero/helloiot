@@ -54,6 +54,7 @@ public class EventMessage {
     }
     
     public MiniVar getProperty(String key) {
-        return properties.getOrDefault(key, MiniVarInt.NULL);
+        MiniVar value;
+        return ((value = properties.get(key)) != null) ? value : MiniVarInt.NULL;
     }
 }

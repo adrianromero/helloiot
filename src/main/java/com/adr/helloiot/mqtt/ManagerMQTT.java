@@ -100,8 +100,8 @@ public class ManagerMQTT implements MqttCallback, ManagerProtocol {
     public void registerSubscription(String topic, Map<String, MiniVar> messageProperties) {
         worktopics.add(topic);
         
-        MiniVar varqos = messageProperties.getOrDefault("mqtt.qos", MiniVarInt.NULL);
-        workqos.add(varqos.asInt());
+        MiniVar value = messageProperties.get("mqtt.qos");
+        workqos.add(value == null ? 0 : value.asInt());
     }
 
     @Override

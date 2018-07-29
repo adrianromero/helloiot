@@ -64,7 +64,8 @@ public class TreePublishSubscribe extends TreePublish {
     }
 
     public MiniVar readMessage(String branch) {
-        return statusmap.getOrDefault(getTopic() + "/" + branch, getFormat().value(null));
+        MiniVar value;
+        return ((value = statusmap.get(getTopic() + "/" + branch)) != null) ? value : getFormat().value(null);
     }
 
     public String loadMessage(String branch) {

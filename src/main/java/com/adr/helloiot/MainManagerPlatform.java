@@ -26,8 +26,6 @@ import com.adr.helloiot.util.CryptUtils;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.application.Application.Parameters;
 import javafx.scene.layout.StackPane;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
@@ -59,11 +57,11 @@ public class MainManagerPlatform implements MainManager {
         config.put("mqtt.websockets", new MiniVarBoolean(Boolean.parseBoolean(configprops.getProperty("mqtt.websockets", "false"))));
         config.put("mqtt.protocol", new MiniVarString(SSLProtocol.valueOfDefault(configprops.getProperty("mqtt.protocol", "TLSv12")).getDisplayName()));
         config.put("mqtt.keystore", new MiniVarString(configprops.getProperty("mqtt.keystore", "")));
-        config.put("mqtt.keystorepassword", new MiniVarString(namedParams.getOrDefault("mqtt.keystorepassword", "")));
+        config.put("mqtt.keystorepassword", new MiniVarString(getNamedParam(namedParams, "mqtt.keystorepassword", "")));
         config.put("mqtt.truststore", new MiniVarString(configprops.getProperty("mqtt.truststore", "")));
-        config.put("mqtt.truststorepassword", new MiniVarString(namedParams.getOrDefault("mqtt.truststorepassword", "")));
-        config.put("mqtt.username", new MiniVarString(namedParams.getOrDefault("mqtt.username", "")));
-        config.put("mqtt.password", new MiniVarString(namedParams.getOrDefault("mqtt.password", "")));
+        config.put("mqtt.truststorepassword", new MiniVarString(getNamedParam(namedParams, "mqtt.truststorepassword", "")));
+        config.put("mqtt.username", new MiniVarString(getNamedParam(namedParams, "mqtt.username", "")));
+        config.put("mqtt.password", new MiniVarString(getNamedParam(namedParams, "mqtt.password", "")));
         config.put("mqtt.clientid", new MiniVarString(configprops.getProperty("mqtt.clientid", CryptUtils.generateID())));
         config.put("mqtt.connectiontimeout", new MiniVarInt(Integer.parseInt(configprops.getProperty("mqtt.connectiontimeout", Integer.toString(MqttConnectOptions.CONNECTION_TIMEOUT_DEFAULT)))));
         config.put("mqtt.keepaliveinterval", new MiniVarInt(Integer.parseInt(configprops.getProperty("mqtt.keepaliveinterval", Integer.toString(MqttConnectOptions.KEEP_ALIVE_INTERVAL_DEFAULT)))));
@@ -72,8 +70,8 @@ public class MainManagerPlatform implements MainManager {
         config.put("client.broker", new MiniVarString(configprops.getProperty("client.broker", "0")));
 
         config.put("tradfri.host", new MiniVarString(configprops.getProperty("tradfri.host", "")));
-        config.put("tradfri.identity", new MiniVarString(namedParams.getOrDefault("tradfri.identity", "")));
-        config.put("tradfri.psk", new MiniVarString(namedParams.getOrDefault("tradfri.psk", "")));
+        config.put("tradfri.identity", new MiniVarString(getNamedParam(namedParams, "tradfri.identity", "")));
+        config.put("tradfri.psk", new MiniVarString(getNamedParam(namedParams, "tradfri.psk", "")));
 
         config.put("client.topicapp", new MiniVarString(configprops.getProperty("client.topicapp", "_LOCAL_/mainapp")));
         config.put("client.topicsys", new MiniVarString(configprops.getProperty("client.topicsys", "system")));
@@ -113,5 +111,10 @@ public class MainManagerPlatform implements MainManager {
     public void destroy() {
         helloiotapp.stopAndDestroy();
         helloiotapp = null;
+    }
+    
+    private final String getNamedParam(Map<String, String> namedparams, String key, String defaultValue) {
+        String value;
+        return ((value = namedparams.get(key)) != null) ? value : defaultValue;        
     }
 }
