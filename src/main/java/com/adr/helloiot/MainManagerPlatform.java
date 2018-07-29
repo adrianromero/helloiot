@@ -72,7 +72,7 @@ public class MainManagerPlatform implements MainManager {
         config.put("client.broker", new MiniVarString(configprops.getProperty("client.broker", "0")));
 
         config.put("tradfri.host", new MiniVarString(configprops.getProperty("tradfri.host", "")));
-        config.put("tradfri.psk", new MiniVarString(namedParams.getOrDefault("tradfri.identity", "")));
+        config.put("tradfri.identity", new MiniVarString(namedParams.getOrDefault("tradfri.identity", "")));
         config.put("tradfri.psk", new MiniVarString(namedParams.getOrDefault("tradfri.psk", "")));
 
         config.put("client.topicapp", new MiniVarString(configprops.getProperty("client.topicapp", "_LOCAL_/mainapp")));
