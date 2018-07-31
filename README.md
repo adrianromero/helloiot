@@ -15,8 +15,8 @@ Install and execute HelloIoT
 
 To run HelloIoT just download and install the appropiate release file:
 
-* [helloiot-1.0.31.zip](https://github.com/adrianromero/helloiot/releases/download/1.0.31/helloiot-1.0.31.zip) Windows / MacOS / Linux
-* [helloiot-1.0.31.apk](https://github.com/adrianromero/helloiot/releases/download/1.0.31/helloiot-1.0.31.apk) Android
+* [helloiot-1.0.32.zip](https://github.com/adrianromero/helloiot/releases/download/1.0.32/helloiot-1.0.32.zip) Windows / MacOS / Linux
+* [helloiot-1.0.32.apk](https://github.com/adrianromero/helloiot/releases/download/1.0.32/helloiot-1.0.32.apk) Android
 
 [![Installing HelloIoT](https://img.youtube.com/vi/RuxUUHpTbR0/0.jpg)](https://www.youtube.com/watch?v=RuxUUHpTbR0)
 
