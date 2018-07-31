@@ -133,6 +133,10 @@
 .buttonbase {   
 }
 
+.unitgauge {
+    -fx-value-color: -fx-text-base-color;
+}
+
 .textinput-right *.text {
     -fx-text-alignment: right;
     -fx-alignment: center-right;

@@ -52,6 +52,9 @@ public class ViewGauge extends Tile {
     private final StyleableObjectProperty<Color> valueColor = new SimpleStyleableObjectProperty<>(VALUECOLOR, this, "value-color");
     private Color barColor = Color.web("#29b1ff"); // blue cyan
 
+    public ViewGauge() {
+         getStyleClass().add("unitgauge");
+    }
 
     public ObjectProperty<Color> valueColorProperty() {
         return valueColor;
