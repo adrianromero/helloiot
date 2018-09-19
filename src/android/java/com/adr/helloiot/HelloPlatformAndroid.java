@@ -18,7 +18,6 @@
 //
 package com.adr.helloiot;
 
-import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import javafxports.android.FXActivity;
