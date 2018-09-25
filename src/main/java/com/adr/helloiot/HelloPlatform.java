@@ -39,7 +39,7 @@ import javafx.stage.Screen;
 public abstract class HelloPlatform {
 
     private final static String APP_PROPERTIES = ".helloiot-app.properties";    
-    private final static double MAX_PHONE_DIAGONAL = 7.1;
+    private final static double MAX_PHONE_DIAGONAL = 7.6;
     
     private static HelloPlatform instance = null;
     
