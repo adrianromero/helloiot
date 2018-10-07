@@ -23,8 +23,6 @@ import com.adr.helloiotlib.format.MiniVar;
 import com.adr.helloiotlib.format.MiniVarString;
 import com.adr.helloiot.util.CompletableAsync;
 import com.adr.helloiotlib.app.EventMessage;
-import com.adr.helloiotlib.format.MiniVarBoolean;
-import com.adr.helloiotlib.format.MiniVarInt;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ScheduledFuture;
