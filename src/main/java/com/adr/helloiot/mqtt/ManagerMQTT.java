@@ -130,7 +130,9 @@ public class ManagerMQTT implements MqttCallback, ManagerProtocol {
             options.setWill(topicsys + "/app/" + clientid, new StringFormatSwitch().devalue(MiniVarBoolean.FALSE), 0, true);
             mqttClient.connect(options).waitForCompletion(1000);
             mqttClient.setCallback(this);
-            mqttClient.subscribe(listtopics, listqos);
+            if (listtopics.length > 0) {
+                mqttClient.subscribe(listtopics, listqos);
+            }
             statusPublish(MiniVarBoolean.TRUE);
         } catch (MqttException ex) {
             logger.log(Level.WARNING, null, ex);
