@@ -42,7 +42,7 @@ public class UnitsContainerFull implements UnitsContainer {
 
     @Override
     public void addLayout(String layout) {
-        if ("StartFull".equals(layout)) {
+        if ("StartFull".equals(layout) || "StartLine".equals(layout) || "StartFlow".equals(layout)) {
             HBox line = new HBox();
             line.getStyleClass().add("linecontainer");
             VBox.setVgrow(line, Priority.ALWAYS);
