@@ -18,7 +18,7 @@
 //
 package com.adr.helloiot.graphic;
 
-import com.adr.helloiotlib.format.ValueFormatValue;
+import com.adr.helloiotlib.format.StringFormat;
 import javafx.scene.Node;
 
 /**
@@ -28,7 +28,7 @@ import javafx.scene.Node;
 public class IconNull extends IconStatus {
 
     @Override
-    public Node buildIcon(ValueFormatValue value) {
+    public Node buildIcon(StringFormat format, byte[] value) {
         return null;
     }
 }

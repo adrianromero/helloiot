@@ -31,26 +31,26 @@
 <DevicesUnits xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1">
 
     <devices>       
-        <DeviceBasic fx:id="version" topic="\$SYS/broker/version"/>      
-        <DeviceBasic fx:id="changeset" topic="\$SYS/broker/changeset"/>      
-        <DeviceBasic fx:id="timestamp" topic="\$SYS/broker/timestamp"/>      
-        <DeviceBasic fx:id="uptime" topic="\$SYS/broker/uptime"/>      
-        <DeviceBasic fx:id="clients" topic="\$SYS/broker/clients/total" format="INTEGER"/>      
-        <DeviceBasic fx:id="subscriptions" topic="\$SYS/broker/subscriptions/count" format="INTEGER"/>
+        <DeviceStatus fx:id="version" topic="\$SYS/broker/version"/>      
+        <DeviceStatus fx:id="changeset" topic="\$SYS/broker/changeset"/>      
+        <DeviceStatus fx:id="timestamp" topic="\$SYS/broker/timestamp"/>      
+        <DeviceStatus fx:id="uptime" topic="\$SYS/broker/uptime"/>      
+        <DeviceStatus fx:id="clients" topic="\$SYS/broker/clients/total" format="INTEGER"/>      
+        <DeviceStatus fx:id="subscriptions" topic="\$SYS/broker/subscriptions/count" format="INTEGER"/>
         
-        <DeviceBasic fx:id="heapcurrent" topic="\$SYS/broker/heap/current" format="INTEGER"/>
-        <DeviceBasic fx:id="heapmax" topic="\$SYS/broker/heap/maximum" format="INTEGER"/>
-        <DeviceBasic fx:id="bytesreceived" topic="\$SYS/broker/bytes/received" format="INTEGER"/>
-        <DeviceBasic fx:id="loadbytesreceived" topic="\$SYS/broker/load/bytes/received/5min" format="DECIMAL"/>
-        <DeviceBasic fx:id="bytessent" topic="\$SYS/broker/bytes/sent" format="INTEGER"/>
-        <DeviceBasic fx:id="loadbytessent" topic="\$SYS/broker/load/bytes/sent/5min" format="DECIMAL"/>        
+        <DeviceStatus fx:id="heapcurrent" topic="\$SYS/broker/heap/current" format="INTEGER"/>
+        <DeviceStatus fx:id="heapmax" topic="\$SYS/broker/heap/maximum" format="INTEGER"/>
+        <DeviceStatus fx:id="bytesreceived" topic="\$SYS/broker/bytes/received" format="INTEGER"/>
+        <DeviceStatus fx:id="loadbytesreceived" topic="\$SYS/broker/load/bytes/received/5min" format="DECIMAL"/>
+        <DeviceStatus fx:id="bytessent" topic="\$SYS/broker/bytes/sent" format="INTEGER"/>
+        <DeviceStatus fx:id="loadbytessent" topic="\$SYS/broker/load/bytes/sent/5min" format="DECIMAL"/>        
             
-        <DeviceBasic fx:id="retained" topic="\$SYS/broker/retained messages/count" format="INTEGER"/>      
-        <DeviceBasic fx:id="stored" topic="\$SYS/broker/messages/stored" format="INTEGER"/>      
-        <DeviceBasic fx:id="inflight" topic="\$SYS/broker/messages/inflight" format="INTEGER"/>      
-        <DeviceBasic fx:id="dropped" topic="\$SYS/broker/messages/dropped" format="INTEGER"/>      
-        <DeviceBasic fx:id="received" topic="\$SYS/broker/messages/received" format="INTEGER"/>      
-        <DeviceBasic fx:id="sent" topic="\$SYS/broker/messages/sent" format="INTEGER"/>      
+        <DeviceStatus fx:id="retained" topic="\$SYS/broker/retained messages/count" format="INTEGER"/>      
+        <DeviceStatus fx:id="stored" topic="\$SYS/broker/messages/stored" format="INTEGER"/>      
+        <DeviceStatus fx:id="inflight" topic="\$SYS/broker/messages/inflight" format="INTEGER"/>      
+        <DeviceStatus fx:id="dropped" topic="\$SYS/broker/messages/dropped" format="INTEGER"/>      
+        <DeviceStatus fx:id="received" topic="\$SYS/broker/messages/received" format="INTEGER"/>      
+        <DeviceStatus fx:id="sent" topic="\$SYS/broker/messages/sent" format="INTEGER"/>      
     </devices>
     
     <units>    

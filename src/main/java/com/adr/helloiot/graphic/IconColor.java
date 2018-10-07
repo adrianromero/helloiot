@@ -21,7 +21,7 @@ package com.adr.helloiot.graphic;
 import com.adr.fonticon.FontAwesome;
 import com.adr.fonticon.IconBuilder;
 import com.adr.fonticon.IconFont;
-import com.adr.helloiotlib.format.ValueFormatValue;
+import com.adr.helloiotlib.format.StringFormat;
 import javafx.scene.Node;
 import javafx.scene.paint.Color;
 
@@ -42,10 +42,10 @@ public class IconColor extends IconStatus {
     }
 
     @Override
-    public Node buildIcon(ValueFormatValue value) {
+    public Node buildIcon(StringFormat format, byte[] value) {
         Color  c;   
         try {
-            c = Color.valueOf(value.getValue().asString());    
+            c = Color.valueOf(format.value(value).asString());    
         } catch (Exception e) {
             c = Color.BLACK;
         }

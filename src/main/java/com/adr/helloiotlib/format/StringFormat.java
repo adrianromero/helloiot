@@ -33,11 +33,6 @@ public abstract class StringFormat {
     public abstract byte[] devalue(MiniVar formattedvalue);
 
     public abstract Pos alignment();
-    
-    public final ValueFormatValue getValueFormat(byte[] value) {
-        MiniVar v = value(value);
-        return new ValueFormatValue(v, format(v));        
-    }
 
     public static StringFormat valueOf(String value) {
         if ("STRING".equals(value) || "IDENTITY".equals(value)) {

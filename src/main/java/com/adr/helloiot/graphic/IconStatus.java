@@ -20,7 +20,7 @@ package com.adr.helloiot.graphic;
 
 import com.adr.fonticon.FontAwesome;
 import com.adr.fonticon.IconFontList;
-import com.adr.helloiotlib.format.ValueFormatValue;
+import com.adr.helloiotlib.format.StringFormat;
 import java.util.ResourceBundle;
 import javafx.scene.Node;
 
@@ -32,7 +32,7 @@ public abstract class IconStatus {
 
     public static final ResourceBundle RESOURCES = ResourceBundle.getBundle("com/adr/helloiot/fxml/main");
 
-    public abstract Node buildIcon(ValueFormatValue value);
+    public abstract Node buildIcon(StringFormat format, byte[] value);
 
     public static IconStatus valueOf(String value) {
         if ("NULL".equals(value)) {

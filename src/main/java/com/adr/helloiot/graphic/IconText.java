@@ -18,8 +18,8 @@
 //
 package com.adr.helloiot.graphic;
 
-import com.adr.helloiotlib.format.ValueFormatValue;
 import com.adr.helloiot.util.ExternalFonts;
+import com.adr.helloiotlib.format.StringFormat;
 import javafx.scene.Node;
 import javafx.scene.effect.BlurType;
 import javafx.scene.effect.DropShadow;
@@ -35,8 +35,8 @@ import javafx.scene.text.Text;
 public class IconText extends IconStatus {
 
     @Override
-    public Node buildIcon(ValueFormatValue value) {
-        Text t = new Text(value.getFormatValue());
+    public Node buildIcon(StringFormat format, byte[] value) {
+        Text t = new Text(format.format(format.value(value)));
         t.setFont(Font.font(ExternalFonts.SOURCESANSPRO_BLACK, FontWeight.BOLD, 32.0));
         t.setFill(Color.WHITE);
         

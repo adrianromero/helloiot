@@ -27,7 +27,7 @@ import java.util.concurrent.ScheduledFuture;
  *
  * @author adrian
  */
-public class DeviceSimple extends DeviceBasic implements DeviceSend {
+public class DeviceSimple extends DeviceStatus implements DeviceSend {
 
     private ScheduledFuture<?> sf = null;
     private final Object sflock = new Object();
@@ -106,7 +106,7 @@ public class DeviceSimple extends DeviceBasic implements DeviceSend {
         }
     }
 
-    private void cancelTimer() {
+    public void cancelTimer() {
         synchronized (sflock) {
             if (sf != null) {
                 sf.cancel(false);

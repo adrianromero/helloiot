@@ -18,7 +18,7 @@
 //
 package com.adr.helloiot.unit;
 
-import com.adr.helloiot.device.DeviceSubscribe;
+import com.adr.helloiot.device.DeviceStatus;
 import com.adr.helloiotlib.unit.Units;
 import com.adr.helloiot.graphic.IconStatus;
 import com.adr.helloiotlib.app.IoTApp;
@@ -42,7 +42,7 @@ public class ViewSimple extends Tile {
     private final static IconStatus ICONNULL = new IconNull();
     private IconStatus iconbuilder = ICONNULL;
 
-    private DeviceSubscribe device = null;
+    private DeviceStatus device = null;
     private final Object messageHandler = Units.messageHandler(this::updateStatus);        
 
     @Override
@@ -56,7 +56,7 @@ public class ViewSimple extends Tile {
     }
 
     private void updateStatus(byte[] status) {
-        content.setGraphic(iconbuilder.buildIcon(device.getFormat().getValueFormat(status)));
+        content.setGraphic(iconbuilder.buildIcon(device.getFormat(), status));
     }
 
     @Override
@@ -72,7 +72,7 @@ public class ViewSimple extends Tile {
         device.unsubscribeStatus(messageHandler);
     }
 
-    public void setDevice(DeviceSubscribe device) {
+    public void setDevice(DeviceStatus device) {
         this.device = device;
         if (getLabel() == null) {
             setLabel(device.getProperties().getProperty("label"));
@@ -82,7 +82,7 @@ public class ViewSimple extends Tile {
         }
     }
 
-    public DeviceSubscribe getDevice() {
+    public DeviceStatus getDevice() {
         return device;
     }
 

@@ -109,7 +109,7 @@ public class ControlIntensity extends Tile {
     }
     
     private void updateStatusOn(byte[] status) {
-        action.setGraphic(iconbuilder.buildIcon(deviceon.getFormat().getValueFormat(status)));
+        action.setGraphic(iconbuilder.buildIcon(deviceon.getFormat(), status));
     }
     
     @Override

@@ -18,6 +18,8 @@
 //
 package com.adr.helloiot.device;
 
+import com.adr.helloiot.graphic.IconStatus;
+import com.adr.helloiot.graphic.IconText;
 import com.adr.helloiot.mqtt.MQTTProperties;
 import com.adr.helloiotlib.app.EventMessage;
 import com.adr.helloiotlib.format.MiniVar;
@@ -28,11 +30,11 @@ import com.adr.helloiotlib.app.TopicManager;
  *
  * @author adrian
  */
-public class DeviceBasic extends DeviceSubscribe {
+public class DeviceStatus extends DeviceSubscribe {
 
     private final AtomicReference<MiniVar> status = new AtomicReference<>(null);
 
-    public DeviceBasic() {
+    public DeviceStatus() {
         MQTTProperties.setRetained(this, true);
     }
 
@@ -51,7 +53,7 @@ public class DeviceBasic extends DeviceSubscribe {
     // Overwrite this  method
     @Override
     public String getDeviceName() {
-        return resources.getString("devicename.devicebasic");
+        return resources.getString("devicename.devicestatus");
     }
 
     @Override
@@ -69,4 +71,8 @@ public class DeviceBasic extends DeviceSubscribe {
     public String formatStatus() {
         return getFormat().format(status.get());
     }
+    
+    public IconStatus getIconStatus() {
+        return new IconText();
+    }    
 }

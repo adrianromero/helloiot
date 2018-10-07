@@ -20,7 +20,7 @@ package com.adr.helloiot;
 
 import com.adr.fonticon.FontAwesome;
 import com.adr.fonticon.IconBuilder;
-import com.adr.helloiot.device.DeviceBasic;
+import com.adr.helloiot.device.DeviceStatus;
 import com.adr.helloiot.device.DeviceSimple;
 import com.adr.helloiot.device.TransmitterSimple;
 import com.adr.helloiot.mqtt.MQTTProperties;
@@ -255,7 +255,7 @@ public class TopicInfoEdit implements TopicInfo {
 
     private TopicStatus buildTopicSubscription() {
 
-        DeviceBasic d = new DeviceBasic();
+        DeviceStatus d = new DeviceStatus();
         d.setTopic(topic);
         d.setTopicPublish(topicpub);
         MQTTProperties.setQoS(d, qos);
