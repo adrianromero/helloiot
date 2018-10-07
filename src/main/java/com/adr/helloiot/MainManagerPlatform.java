@@ -26,6 +26,8 @@ import com.adr.helloiot.util.CryptUtils;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Application.Parameters;
 import javafx.scene.layout.StackPane;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
@@ -89,6 +91,13 @@ public class MainManagerPlatform implements MainManager {
 
         // Add all devices and units
         helloiotapp.addServiceDevicesUnits();
+
+        try {
+            helloiotapp.addFXMLFileDevicesUnits(configprops.getProperty("devicesunits"));
+        } catch (HelloIoTException ex) {
+            Logger.getLogger(MainManagerPlatform.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
 
 //        TopicInfoBuilder topicinfobuilder = new TopicInfoBuilder();
 //        int topicinfosize = Integer.parseInt(configprops.getProperty("topicinfo.size", "0"));
