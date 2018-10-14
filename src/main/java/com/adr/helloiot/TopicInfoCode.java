@@ -90,7 +90,7 @@ public class TopicInfoCode implements TopicInfo {
     }
 
     @Override
-    public TopicStatus getTopicStatus() throws HelloIoTException {
+    public DevicesUnits getDevicesUnits() throws HelloIoTException {
 
         String fxml
                 = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
@@ -122,7 +122,7 @@ public class TopicInfoCode implements TopicInfo {
                     units.add((Unit) o);
                 }
             }
-            return new TopicStatus(devices, units);
+            return new DevicesUnits(devices, units);
         } catch (IOException ex) {
             ResourceBundle resources = ResourceBundle.getBundle("com/adr/helloiot/fxml/main");
             String label = getLabel().getValue();

@@ -28,7 +28,6 @@ import com.adr.helloiotlib.format.MiniVarInt;
 import com.adr.helloiotlib.format.MiniVarString;
 import com.adr.helloiot.mqtt.ConnectMQTT;
 import com.adr.helloiot.tradfri.ConnectTradfri;
-import com.adr.helloiot.unit.UnitPage;
 import com.adr.helloiot.util.CompletableAsync;
 import com.adr.helloiot.util.CryptUtils;
 import com.adr.helloiot.util.Dialogs;
@@ -39,7 +38,6 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -219,7 +217,7 @@ public class MainManagerClient implements MainManager {
             int i = 0;
             while (i++ < topicinfosize) {
                 TopicInfo topicinfo = topicinfobuilder.fromProperties(new ConfigSubProperties(configprops, "topicinfo" + Integer.toString(i)));
-                TopicStatus ts = topicinfo.getTopicStatus();
+                DevicesUnits ts = topicinfo.getDevicesUnits();
                 helloiotapp.addDevicesUnits(ts.getDevices(), ts.getUnits());               
             }            
             

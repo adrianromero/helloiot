@@ -148,7 +148,7 @@ public class TopicInfoEdit implements TopicInfo {
     }
     
     @Override
-    public TopicStatus getTopicStatus() throws HelloIoTException {
+    public DevicesUnits getDevicesUnits() throws HelloIoTException {
         
         if (topic == null || topic.isEmpty()) {
             ResourceBundle resources = ResourceBundle.getBundle("com/adr/helloiot/fxml/main");
@@ -213,7 +213,7 @@ public class TopicInfoEdit implements TopicInfo {
         retained = editnode.editretained.getValue();  
     }  
     
-    private TopicStatus buildTopicPublish() {
+    private DevicesUnits buildTopicPublish() {
 
         TransmitterSimple d = new TransmitterSimple();
         d.setTopic(topic);
@@ -230,10 +230,10 @@ public class TopicInfoEdit implements TopicInfo {
         u.setDevice(d);
         UnitPage.setPage(u, page);
 
-        return new TopicStatus(Arrays.asList(d), Arrays.asList(u));
+        return new DevicesUnits(Arrays.asList(d), Arrays.asList(u));
     }
 
-    private TopicStatus buildTopicPublishSubscription() {
+    private DevicesUnits buildTopicPublishSubscription() {
 
         DeviceSimple d = new DeviceSimple();
         d.setTopic(topic);
@@ -250,10 +250,10 @@ public class TopicInfoEdit implements TopicInfo {
         u.setDevice(d);
         UnitPage.setPage(u, page);
         
-        return new TopicStatus(Arrays.asList(d), Arrays.asList(u));
+        return new DevicesUnits(Arrays.asList(d), Arrays.asList(u));
     }
 
-    private TopicStatus buildTopicSubscription() {
+    private DevicesUnits buildTopicSubscription() {
 
         DeviceStatus d = new DeviceStatus();
         d.setTopic(topic);
@@ -270,7 +270,7 @@ public class TopicInfoEdit implements TopicInfo {
         u.setDevice(d);
         UnitPage.setPage(u, page);
 
-        return new TopicStatus(Arrays.asList(d), Arrays.asList(u));
+        return new DevicesUnits(Arrays.asList(d), Arrays.asList(u));
     }
     
     private void setStyle(Unit u) {

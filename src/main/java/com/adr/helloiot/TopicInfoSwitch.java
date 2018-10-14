@@ -101,7 +101,7 @@ public class TopicInfoSwitch implements TopicInfo {
     }
     
     @Override
-    public TopicStatus getTopicStatus() throws HelloIoTException {
+    public DevicesUnits getDevicesUnits() throws HelloIoTException {
         DeviceSwitch l = new DeviceSwitch();
         l.setTopic(topic);
         l.setTopicPublish(topicpub);
@@ -117,7 +117,7 @@ public class TopicInfoSwitch implements TopicInfo {
             s.setStyle("-fx-base:" + webColor(c) + "; -fx-button-fill:" + webColor(c) + ";");
         }
         UnitPage.setPage(s, page);
-        return new TopicStatus(Arrays.asList(l), Arrays.asList(s));
+        return new DevicesUnits(Arrays.asList(l), Arrays.asList(s));
     }
 
     @Override

@@ -34,7 +34,7 @@ public interface TopicInfo {
     public void load(SubProperties properties);
     public void store(SubProperties properties);
     
-    public TopicStatus getTopicStatus() throws HelloIoTException;
+    public DevicesUnits getDevicesUnits() throws HelloIoTException;
     
     public TopicInfoNode getEditNode();
     public void writeToEditNode();
