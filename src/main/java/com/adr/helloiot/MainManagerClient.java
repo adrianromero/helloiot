@@ -211,9 +211,8 @@ public class MainManagerClient implements MainManager {
         Style.changeStyle(root, Style.valueOf(configprops.getProperty("app.style", Style.PRETTY.name())));  
 
         helloiotapp = new HelloIoTApp(config);
-        try {
-            // add sample panes
-            ResourceBundle resources = ResourceBundle.getBundle("com/adr/helloiot/fxml/main");
+        ResourceBundle resources = ResourceBundle.getBundle("com/adr/helloiot/fxml/main");
+        try {         
 
             TopicInfoBuilder topicinfobuilder = new TopicInfoBuilder();
             int topicinfosize = Integer.parseInt(configprops.getProperty("topicinfo.size", "0"));
@@ -228,13 +227,6 @@ public class MainManagerClient implements MainManager {
                 throw new HelloIoTException(resources.getString("exception.emptyunits"));
            }
 
-            helloiotapp.addUnitPages(Arrays.asList(
-                    new UnitPage("Lights", IconBuilder.create(FontAwesome.FA_LIGHTBULB_O, 24.0).styleClass("icon-fill").build(), resources.getString("page.lights")))
-            );     
-            helloiotapp.addUnitPages(Arrays.asList(
-                    new UnitPage("Messages", IconBuilder.create(FontAwesome.FA_ENVELOPE_O, 24.0).styleClass("icon-fill").build(), resources.getString("page.messages")))
-            );
-            
             // Add all devices and units
             helloiotapp.addServiceDevicesUnits();
         
@@ -249,7 +241,7 @@ public class MainManagerClient implements MainManager {
             throw ex;            
         } catch (Exception ex2) {
             helloiotapp = null;
-            throw new HelloIoTException("Unexpected exception", ex2);
+            throw new HelloIoTException(resources.getString("exception.unexpected"), ex2);
         }               
           
         // ALL the job is done
