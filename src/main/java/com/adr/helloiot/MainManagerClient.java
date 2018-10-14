@@ -234,7 +234,10 @@ public class MainManagerClient implements MainManager {
             helloiotapp.addUnitPages(Arrays.asList(
                     new UnitPage("Messages", IconBuilder.create(FontAwesome.FA_ENVELOPE_O, 24.0).styleClass("icon-fill").build(), resources.getString("page.messages")))
             );
- 
+            
+            // Add all devices and units
+            helloiotapp.addServiceDevicesUnits();
+        
             EventHandler<ActionEvent> showloginevent = (event -> {
                 hideApplication();
                 showLogin();           
@@ -243,7 +246,10 @@ public class MainManagerClient implements MainManager {
             helloiotapp.getMainNode().setToolbarButton(showloginevent, IconBuilder.create(FontAwesome.FA_SIGN_OUT, 24.0).styleClass("icon-fill").build(), resources.getString("label.disconnect"));
         } catch (HelloIoTException ex) {
             helloiotapp = null;
-            throw ex;
+            throw ex;            
+        } catch (Exception ex2) {
+            helloiotapp = null;
+            throw new HelloIoTException("Unexpected exception", ex2);
         }               
           
         // ALL the job is done
