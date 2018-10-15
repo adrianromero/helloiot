@@ -120,6 +120,10 @@ public class TopicInfoCode implements TopicInfo {
                     devices.add((Device) o);
                 } else if (o instanceof Unit) {
                     units.add((Unit) o);
+                } else if (o instanceof ApplicationDevicesUnits) {
+                    ApplicationDevicesUnits du = (ApplicationDevicesUnits) o;
+                    devices.addAll(du.getDevices());
+                    units.addAll(du.getUnits());
                 }
             }
             return new DevicesUnits(devices, units);
