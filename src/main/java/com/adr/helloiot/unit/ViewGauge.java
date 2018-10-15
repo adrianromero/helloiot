@@ -1,5 +1,5 @@
 //    HelloIoT is a dashboard creator for MQTT
-//    Copyright (C) 2017 Adrián Romero Corchado.
+//    Copyright (C) 2017-2018 Adrián Romero Corchado.
 //
 //    This file is part of HelloIot.
 //
@@ -91,7 +91,7 @@ public class ViewGauge extends Tile {
         double newvalue = device.getFormat().value(status).asDouble();
         if (newvalue < gauge.getMinValue()) {
             newvalue = gauge.getMinValue();
-        }
+    }
         if (newvalue > gauge.getMaxValue()) {
             newvalue = gauge.getMaxValue();
         }
@@ -149,6 +149,7 @@ public class ViewGauge extends Tile {
         gauge.unitColorProperty().bind(valueColor);
         gauge.tickLabelColorProperty().bind(valueColor);
         gauge.setUnit(device.getUnit());
+        gauge.setFocusTraversable(false);
         gaugecontainer.getChildren().add(gauge);
 
         if (getLabel() == null) {
