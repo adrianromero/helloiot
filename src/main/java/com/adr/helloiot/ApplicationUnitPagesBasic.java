@@ -43,10 +43,30 @@ public class ApplicationUnitPagesBasic implements ApplicationUnitPages {
         UnitPage start = new UnitPage("start", IconBuilder.create(FontAwesome.FA_STAR_O, 24.0).styleClass("icon-fill").build(), resources.getString("page.start"));
         start.setEmptyLabel(resources.getString("label.start"));
         start.setSystem(true);
+        
+        // Security pages       
+        UnitPage security = new UnitPage("security", IconBuilder.create(FontAwesome.FA_KEY, 24.0).build(), resources.getString("page.security"));
+        security.setEmptyLabel(resources.getString("label.locked"));
+        security.setMaxSize(400.0, 150.0);        
+        security.setSystem(true);
+
+        UnitPage securityarming = new UnitPage("security_arming", IconBuilder.create(FontAwesome.FA_KEY, 24.0).build(), resources.getString("page.securityarming"));
+        securityarming.setEmptyLabel(resources.getString("label.locked"));
+        securityarming.setMaxSize(400.0, 150.0);
+        securityarming.setSystem(true);
+
+        UnitPage securitylocked = new UnitPage("security_locked", IconBuilder.create(FontAwesome.FA_LOCK, 24.0).build(), resources.getString("page.securitylocked"));
+        securitylocked.setEmptyLabel(resources.getString("label.locked"));
+        securitylocked.setSystem(true);
+
+        UnitPage emergency = new UnitPage("emergency", IconBuilder.create(FontAwesome.FA_HEARTBEAT, 24.0).build(), resources.getString("page.emergency"));
+        emergency.setEmptyLabel(resources.getString("label.locked"));
+        emergency.setMaxSize(400.0, 150.0);        
+        emergency.setSystem(true);        
 
         return Arrays.asList(
-                notfound, 
-                start,
+                notfound, start,
+                security, securityarming, securitylocked, emergency,
                 new UnitPage("config", IconBuilder.create(FontAwesome.FA_SLIDERS, 24.0).styleClass("icon-fill").build(), resources.getString("page.config")),
                 new UnitPage("Lights", IconBuilder.create(FontAwesome.FA_LIGHTBULB_O, 24.0).styleClass("icon-fill").build(), resources.getString("page.lights")),
                 new UnitPage("Messages", IconBuilder.create(FontAwesome.FA_ENVELOPE_O, 24.0).styleClass("icon-fill").build(), resources.getString("page.messages")));
