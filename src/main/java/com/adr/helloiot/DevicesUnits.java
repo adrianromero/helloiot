@@ -20,6 +20,7 @@ package com.adr.helloiot;
 
 import com.adr.helloiotlib.device.Device;
 import com.adr.helloiotlib.unit.Unit;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -30,6 +31,11 @@ public class DevicesUnits {
 
     private final List<Unit> units;
     private final List<Device> devices;
+    
+    public DevicesUnits() {
+        this.devices = new ArrayList<Device>();
+        this.units = new ArrayList<Unit>();
+    }
     
     public DevicesUnits(List<Device> devices, List<Unit> units) {
         this.devices = devices;
