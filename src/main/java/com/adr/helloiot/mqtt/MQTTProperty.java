@@ -26,16 +26,16 @@ import com.adr.helloiotlib.format.MiniVarInt;
  *
  * @author adrian
  */
-public class MQTTProperties {
+public class MQTTProperty {
     
-    private MQTTProperties() {
+    private MQTTProperty() {
     }
     
-    public static void setQoS(Device device, int value) {
+    public static void setQos(Device device, int value) {
         device.getMessageProperties().put("mqtt.qos", new MiniVarInt(value));
     }
 
-    public static int getQoS(Device device) {
+    public static int getQos(Device device) {
         return device.getMessageProperties().get("mqtt.qos").asInt();
     }
     

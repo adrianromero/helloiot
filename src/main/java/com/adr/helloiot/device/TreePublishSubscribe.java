@@ -18,7 +18,7 @@
 //
 package com.adr.helloiot.device;
 
-import com.adr.helloiot.mqtt.MQTTProperties;
+import com.adr.helloiot.mqtt.MQTTProperty;
 import com.adr.helloiotlib.app.EventMessage;
 import com.adr.helloiotlib.app.TopicSubscription;
 import com.adr.helloiotlib.format.MiniVar;
@@ -37,7 +37,7 @@ public class TreePublishSubscribe extends TreePublish {
 
     public TreePublishSubscribe() {
         super();
-        MQTTProperties.setRetained(this, true);
+        MQTTProperty.setRetained(this, true);
     }
 
     @Override

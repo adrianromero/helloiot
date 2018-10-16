@@ -37,6 +37,7 @@ import com.adr.helloiot.device.TreePublishSubscribe;
 import com.adr.helloiotlib.format.MiniVar;
 import com.adr.helloiot.media.SilentClipFactory;
 import com.adr.helloiot.media.StandardClipFactory;
+import com.adr.helloiot.mqtt.MQTTProperty;
 import com.adr.helloiot.tradfri.ManagerTradfri;
 import com.adr.helloiot.unit.UnitPage;
 import com.adr.helloiot.util.CompletableAsync;
@@ -211,7 +212,7 @@ public class HelloIoTApp implements IoTApp {
         beeper.setId(SYS_BEEPER_ID);
 
         DeviceSimple buzzer = new DeviceSimple();
-        buzzer.getMessageProperties().put("mqtt.retained", MiniVarBoolean.FALSE);
+        MQTTProperty.setRetained(buzzer, false);
         buzzer.setTopic(topicapp + "/buzzer");
         buzzer.setId(SYS_BUZZER_ID);
 

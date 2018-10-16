@@ -27,10 +27,10 @@ import com.adr.helloiot.device.DeviceSubscribe;
 import com.adr.helloiot.device.MessageStatus;
 import com.adr.helloiot.device.TransmitterSimple;
 import com.adr.helloiot.device.TreePublish;
+import com.adr.helloiot.mqtt.MQTTProperty;
 import com.adr.helloiot.unit.ButtonBase;
 import com.adr.helloiot.unit.LabelSection;
 import com.adr.helloiot.unit.UnitPage;
-import com.adr.helloiotlib.format.MiniVarBoolean;
 import com.adr.helloiotlib.unit.Unit;
 import java.util.Arrays;
 import java.util.List;
@@ -54,21 +54,21 @@ public class HomeConfig implements ApplicationDevicesUnits {
         TreePublish lightactions = new TreePublish();
         lightactions.setId("lights");
         lightactions.setTopic("lightevents/devicesmanager");
-        lightactions.getMessageProperties().put("mqtt.retained", MiniVarBoolean.FALSE);
+        MQTTProperty.setRetained(lightactions, false);
         
         DeviceSubscribe lightevents = new MessageStatus();
         lightevents.setId("lightevents");
-        lightevents.getMessageProperties().put("mqtt.retained", MiniVarBoolean.FALSE);
         lightevents.setTopic("lightevents/devicesmanager/#");
+        MQTTProperty.setRetained(lightevents, false);
         
         DeviceSimple secstatus = new DeviceSimple();
-        secstatus.getMessageProperties().put("mqtt.retained", MiniVarBoolean.TRUE);
         secstatus.setTopic("securityevents/security/status");
+        MQTTProperty.setRetained(secstatus, true);
         
         DeviceSimple secactions = new DeviceSimple();
         secactions.setId("security");
-        secactions.getMessageProperties().put("mqtt.retained", MiniVarBoolean.FALSE);
         secactions.setTopic("securityevents/security/action");
+        MQTTProperty.setRetained(secactions, false);
       
         TransmitterSimple secalarm = new TransmitterSimple();
         secalarm.setTopic("home/master/alarm");

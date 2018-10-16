@@ -20,7 +20,7 @@ package com.adr.helloiot.device;
 
 import com.adr.helloiot.graphic.IconStatus;
 import com.adr.helloiot.graphic.IconText;
-import com.adr.helloiot.mqtt.MQTTProperties;
+import com.adr.helloiot.mqtt.MQTTProperty;
 import com.adr.helloiotlib.app.EventMessage;
 import com.adr.helloiotlib.format.MiniVar;
 import java.util.concurrent.atomic.AtomicReference;
@@ -35,7 +35,7 @@ public class DeviceStatus extends DeviceSubscribe {
     private final AtomicReference<MiniVar> status = new AtomicReference<>(null);
 
     public DeviceStatus() {
-        MQTTProperties.setRetained(this, true);
+        MQTTProperty.setRetained(this, true);
     }
 
     @Override

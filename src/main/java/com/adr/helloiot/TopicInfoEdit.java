@@ -23,7 +23,7 @@ import com.adr.fonticon.IconBuilder;
 import com.adr.helloiot.device.DeviceStatus;
 import com.adr.helloiot.device.DeviceSimple;
 import com.adr.helloiot.device.TransmitterSimple;
-import com.adr.helloiot.mqtt.MQTTProperties;
+import com.adr.helloiot.mqtt.MQTTProperty;
 import com.adr.helloiotlib.format.StringFormat;
 import com.adr.helloiotlib.format.StringFormatBase64;
 import com.adr.helloiotlib.format.StringFormatDecimal;
@@ -218,8 +218,8 @@ public class TopicInfoEdit implements TopicInfo {
         TransmitterSimple d = new TransmitterSimple();
         d.setTopic(topic);
         d.setTopicPublish(topicpub);
-        MQTTProperties.setQoS(d, qos);
-        MQTTProperties.setRetained(d, retained);
+        MQTTProperty.setQos(d, qos);
+        MQTTProperty.setRetained(d, retained);
         d.setFormat(createFormat());
 
         EditEvent u = multiline ? new EditAreaEvent() : new EditEvent();
@@ -238,8 +238,8 @@ public class TopicInfoEdit implements TopicInfo {
         DeviceSimple d = new DeviceSimple();
         d.setTopic(topic);
         d.setTopicPublish(topicpub);
-        MQTTProperties.setQoS(d, qos);
-        MQTTProperties.setRetained(d, retained);
+        MQTTProperty.setQos(d, qos);
+        MQTTProperty.setRetained(d, retained);
         d.setFormat(createFormat());
 
         EditStatus u = multiline ? new EditAreaStatus() : new EditStatus();
@@ -258,8 +258,8 @@ public class TopicInfoEdit implements TopicInfo {
         DeviceStatus d = new DeviceStatus();
         d.setTopic(topic);
         d.setTopicPublish(topicpub);
-        MQTTProperties.setQoS(d, qos);
-        MQTTProperties.setRetained(d, retained);
+        MQTTProperty.setQos(d, qos);
+        MQTTProperty.setRetained(d, retained);
         d.setFormat(createFormat());
 
         EditView u = multiline ? new EditAreaView() : new EditView();
