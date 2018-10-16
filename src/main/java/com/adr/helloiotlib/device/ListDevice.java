@@ -33,9 +33,10 @@ public class ListDevice {
         this.devices = devices;
     }
 
-    public void forEach(DeviceProvider<? super Device> action) {
+    public void forEach(DeviceProvider<? super Device> action) throws InterruptedException {
         for (Device d : devices) {
             action.accept(d);
+            // Thread.sleep(200);            
         }
     }
 
