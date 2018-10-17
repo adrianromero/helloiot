@@ -31,6 +31,7 @@ import com.adr.helloiotlib.format.StringFormatBase64;
 import com.adr.helloiotlib.format.StringFormatHex;
 import com.adr.helloiotlib.format.StringFormatIdentity;
 import com.adr.helloiotlib.format.StringFormatJSONPretty;
+import java.util.Arrays;
 import java.util.ResourceBundle;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -69,15 +70,18 @@ public class MessagesPage extends BorderPane implements Unit {
     private TextArea payload;
     private EventMessage currentmessage = null;
     
+    private ToolBar toolbar;
     private Label title;
+    private Separator titlesep;
     private Button deletemessages;
+    private ToggleButton playpause;
     private ToggleButton showdetails;
     private ToggleGroup formatsgroup;
     private ToggleButton formatplain;
     private ToggleButton formatjson;
     private ToggleButton formathex;
     private ToggleButton formatbase64;
-
+    
     private DeviceSubscribe device = null;
     private final Object messageHandler = Units.messageHandler(this::updateStatus);
 
@@ -95,9 +99,9 @@ public class MessagesPage extends BorderPane implements Unit {
         title = new Label();
         title.getStyleClass().add("messagestitle");
         
-        Separator sep = new Separator();
-        sep.setOrientation(Orientation.VERTICAL);
-        sep.setFocusTraversable(false);
+        titlesep = new Separator();
+        titlesep.setOrientation(Orientation.VERTICAL);
+        titlesep.setFocusTraversable(false);
 
         deletemessages = new Button();
         deletemessages.setMnemonicParsing(false);
@@ -105,6 +109,16 @@ public class MessagesPage extends BorderPane implements Unit {
         deletemessages.getStyleClass().add("unitbutton");
         deletemessages.setGraphic(IconBuilder.create(FontAwesome.FA_TRASH, 18.0).styleClass("icon-fill").build());
         deletemessages.setOnAction(this::actionDelete);
+        
+        playpause = new ToggleButton();
+        playpause.setMnemonicParsing(false);
+        playpause.setFocusTraversable(false);
+        playpause.getStyleClass().add("unittogglebutton");
+        playpause.setGraphic(IconBuilder.create(FontAwesome.FA_PLAY_CIRCLE, 18.0).styleClass("icon-fill").build());
+        playpause.setSelected(true);
+        playpause.selectedProperty().addListener((ObservableValue<? extends Boolean> ov, Boolean old_val, Boolean new_val) -> {
+            playpause.setGraphic(IconBuilder.create(new_val ? FontAwesome.FA_PLAY_CIRCLE : FontAwesome.FA_PAUSE, 18.0).styleClass("icon-fill").build());
+        });        
         
         showdetails = new ToggleButton(resources.getString("label.details"));
         showdetails.setMnemonicParsing(false);
@@ -154,10 +168,10 @@ public class MessagesPage extends BorderPane implements Unit {
         formatbase64.setDisable(true);
         
 
-        ToolBar toolbar = new ToolBar();
+        toolbar = new ToolBar();
         BorderPane.setAlignment(toolbar, Pos.CENTER);
         toolbar.getStyleClass().add("messagestoolbar");
-        toolbar.getItems().addAll(title, sep, deletemessages, showdetails, formatplain, formatjson, formathex, formatbase64);
+        toolbar.getItems().addAll(deletemessages, playpause, showdetails, formatplain, formatjson, formathex, formatbase64);
         setTop(toolbar);
 
         eventmessageslist = new ListView<>();
@@ -195,6 +209,10 @@ public class MessagesPage extends BorderPane implements Unit {
     }
 
     private void updateStatus(EventMessage message) {
+        
+        if (!playpause.isSelected()) {
+            return; // subscription paused
+        }
 
         eventmessagesitems.add(message);
         
@@ -216,7 +234,15 @@ public class MessagesPage extends BorderPane implements Unit {
     }
     
     public void setLabel(String label) {
+        if (getLabel() != null && !getLabel().isEmpty()) {
+            toolbar.getItems().removeAll(title, titlesep);
+        }
+        
         title.setText(label);
+        
+        if (label != null && !label.isEmpty()) {
+            toolbar.getItems().addAll(0, Arrays.asList(title, titlesep));
+        }
     }
 
     public String getLabel() {

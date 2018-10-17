@@ -95,6 +95,7 @@ public class TopicInfoMessagesSubscribe implements TopicInfo {
         
         MessagesPage messagespage = new MessagesPage();
         messagespage.setDevice(messagestatus);
+        messagespage.setLabel(null);
         UnitPage.setPage(messagespage, "FA_ENVELOPE_O//" + getTopic());
         UnitPage.setLayout(messagespage, "StartFull");
         units.add(messagespage);
