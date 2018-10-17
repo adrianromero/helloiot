@@ -160,7 +160,7 @@ public class TopicInfoEditNode implements TopicInfoNode {
 
             @Override
             public Integer fromString(String string) {
-                return Integer.getInteger(string);
+                return Integer.parseInt(string);
             }
         });
         editqos.setItems(FXCollections.observableArrayList(0, 1, 2));
