@@ -24,13 +24,14 @@ package com.adr.helloiot;
  */
 public class TopicInfoBuilder {
     
-    TopicInfoEditNode editnode = null;
-    TopicInfoCodeNode codenode = null;
-    TopicInfoSwitchNode switchnode = null;
+    private TopicInfoEditNode editnode = null;
+    private TopicInfoCodeNode codenode = null;
+    private TopicInfoSwitchNode switchnode = null;
+    private TopicInfoMessagesSubscribeNode messagessubscribenode = null;
     
     public TopicInfo fromProperties(SubProperties subproperties) {
         
-        TopicInfo topicinfo = create(subproperties.getProperty(".type", "Publication/Subscription"));
+        TopicInfo topicinfo = create(subproperties.getProperty(".type", "PublicationSubscription"));
         // load subproperties
         topicinfo.load(subproperties);
         return topicinfo; 
@@ -38,7 +39,7 @@ public class TopicInfoBuilder {
     
     public TopicInfo create() {
         // Default new 
-        return create("Publication/Subscription");
+        return create("PublicationSubscription");
     }
     
     public TopicInfo create(String type) {
@@ -47,6 +48,8 @@ public class TopicInfoBuilder {
             topicinfo = new TopicInfoCode(codenode == null ? (codenode = new TopicInfoCodeNode()) : codenode);
         } else if ("Switch".equals(type)) {
             topicinfo = new TopicInfoSwitch(switchnode == null ? (switchnode = new TopicInfoSwitchNode()) : switchnode);
+        } else if ("MessagesSubscribe".equals(type)) {
+            topicinfo = new TopicInfoMessagesSubscribe(messagessubscribenode == null ? (messagessubscribenode = new TopicInfoMessagesSubscribeNode()) : messagessubscribenode);
         } else {
             topicinfo = new TopicInfoEdit(type, editnode == null ? (editnode = new TopicInfoEditNode()) : editnode);
         }

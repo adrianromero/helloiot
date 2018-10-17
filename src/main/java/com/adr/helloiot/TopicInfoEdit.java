@@ -100,7 +100,7 @@ public class TopicInfoEdit implements TopicInfo {
         } else if ("Publication".equals(getType())) {
             t = IconBuilder.create(FontAwesome.FA_SEND, 12.0).build();
             s = "-fx-background-color: #d445d2; -fx-background-radius: 5px;";
-        } else { // "Publication/Subscription"
+        } else { // "PublicationSubscription"
             t = IconBuilder.create(FontAwesome.FA_PENCIL, 12.0).build();
             s = "-fx-background-color: #9245d4; -fx-background-radius: 5px;";
         }        
@@ -160,7 +160,7 @@ public class TopicInfoEdit implements TopicInfo {
             return buildTopicSubscription();
         } else if ("Publication".equals(getType())) {
             return buildTopicPublish();
-        } else { // "Publication/Subscription"
+        } else { // "PublicationSubscription"
             return buildTopicPublishSubscription();
         }
     }

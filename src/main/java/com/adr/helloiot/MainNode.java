@@ -453,7 +453,18 @@ public final class MainNode {
     private UnitPage buildUnitPage(String name) {
         UnitPage unitpage = unitpages.get(Strings.isNullOrEmpty(name) ? "main" : name);
         if (unitpage == null) {
-            unitpage = new UnitPage(name, IconBuilder.create(FontAwesome.FA_CUBES, 24.0).styleClass("icon-fill").build(), name);
+            FontAwesome fa;
+            String label;
+            int i = name.indexOf("//");
+            if (i > 0) {
+                fa = FontAwesome.valueOf(name.substring(0, i));
+                label = name.substring(i + 2);
+            } else {
+                fa = FontAwesome.FA_CUBES;
+                label = name;                
+            }
+
+            unitpage = new UnitPage(name, IconBuilder.create(fa, 24.0).styleClass("icon-fill").build(), label);
             addUnitPage(unitpage);
         }
         return unitpage;

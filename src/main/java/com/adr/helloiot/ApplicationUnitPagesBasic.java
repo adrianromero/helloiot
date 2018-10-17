@@ -1,5 +1,5 @@
 //    HelloIoT is a dashboard creator for MQTT
-//    Copyright (C) 2017 Adrián Romero Corchado.
+//    Copyright (C) 2017-2018 Adrián Romero Corchado.
 //
 //    This file is part of HelloIot.
 //
@@ -68,7 +68,6 @@ public class ApplicationUnitPagesBasic implements ApplicationUnitPages {
                 notfound, start,
                 security, securityarming, securitylocked, emergency,
                 new UnitPage("config", IconBuilder.create(FontAwesome.FA_SLIDERS, 24.0).styleClass("icon-fill").build(), resources.getString("page.config")),
-                new UnitPage("Lights", IconBuilder.create(FontAwesome.FA_LIGHTBULB_O, 24.0).styleClass("icon-fill").build(), resources.getString("page.lights")),
-                new UnitPage("Messages", IconBuilder.create(FontAwesome.FA_ENVELOPE_O, 24.0).styleClass("icon-fill").build(), resources.getString("page.messages")));
+                new UnitPage("Lights", IconBuilder.create(FontAwesome.FA_LIGHTBULB_O, 24.0).styleClass("icon-fill").build(), resources.getString("page.lights")));
     }
 }

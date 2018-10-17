@@ -60,6 +60,7 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.util.StringConverter;
 
 /**
  *
@@ -540,7 +541,15 @@ public class ClientLoginNode {
         
         menubutton.setGraphic(IconBuilder.create(FontAwesome.FA_MAGIC, 18.0).styleClass("icon-fill").build());
 
-        edittype.setItems(FXCollections.observableArrayList("Publication/Subscription", "Subscription", "Publication", "Switch", "Code"));
+        edittype.setItems(FXCollections.observableArrayList("PublicationSubscription", "Subscription", "Publication", "Switch", "Code", "MessagesSubscribe"));
+        edittype.setConverter(new StringConverter<String>() {
+            @Override public String toString(String object) {
+                return resources.getString("label.topicinfo." + object);
+            }
+            @Override public String fromString(String string) {
+                throw new UnsupportedOperationException("Not supported yet."); // Not needed for non editable selector lists
+            }
+        });
         edittype.getSelectionModel().clearSelection();
         edittype.valueProperty().addListener((ObservableValue<? extends String> ov, String old_val, String new_val) -> {
             updateCurrentTopic();
