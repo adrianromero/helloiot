@@ -43,6 +43,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.Separator;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.Toggle;
@@ -77,10 +78,10 @@ public class MessagesPage extends BorderPane implements Unit {
     private ToggleButton playpause;
     private ToggleButton showdetails;
     private ToggleGroup formatsgroup;
-    private ToggleButton formatplain;
-    private ToggleButton formatjson;
-    private ToggleButton formathex;
-    private ToggleButton formatbase64;
+    private RadioButton formatplain;
+    private RadioButton formatjson;
+    private RadioButton formathex;
+    private RadioButton formatbase64;
     
     private DeviceSubscribe device = null;
     private final Object messageHandler = Units.messageHandler(this::updateStatus);
@@ -135,35 +136,39 @@ public class MessagesPage extends BorderPane implements Unit {
             printPayload();
         });
         
-        formatplain = new ToggleButton(resources.getString("label.plain"));
+        formatplain = new RadioButton(resources.getString("label.plain"));
         formatplain.setMnemonicParsing(false);
         formatplain.setFocusTraversable(false);
         formatplain.setToggleGroup(formatsgroup);
-        formatplain.getStyleClass().add("unittogglebutton");
+        formatplain.getStyleClass().remove("radio-button");
+        formatplain.getStyleClass().addAll("toggle-button", "unittogglebutton");        
         formatplain.setUserData(StringFormatIdentity.INSTANCE);
         formatplain.setDisable(true);
         
-        formatjson = new ToggleButton(resources.getString("label.json"));
+        formatjson = new RadioButton(resources.getString("label.json"));
         formatjson.setMnemonicParsing(false);
         formatjson.setFocusTraversable(false);
         formatjson.setToggleGroup(formatsgroup);
-        formatjson.getStyleClass().add("unittogglebutton");    
+        formatjson.getStyleClass().remove("radio-button");
+        formatjson.getStyleClass().addAll("toggle-button", "unittogglebutton");           
         formatjson.setUserData(StringFormatJSONPretty.INSTANCE);
         formatjson.setDisable(true);
         
-        formathex = new ToggleButton(resources.getString("label.hex"));
+        formathex = new RadioButton(resources.getString("label.hex"));
         formathex.setMnemonicParsing(false);
         formathex.setFocusTraversable(false);
         formathex.setToggleGroup(formatsgroup);
-        formathex.getStyleClass().add("unittogglebutton");
+        formathex.getStyleClass().remove("radio-button");
+        formathex.getStyleClass().addAll("toggle-button", "unittogglebutton");        
         formathex.setUserData(StringFormatHex.INSTANCE);        
         formathex.setDisable(true);
         
-        formatbase64 = new ToggleButton(resources.getString("label.base64"));
+        formatbase64 = new RadioButton(resources.getString("label.base64"));
         formatbase64.setMnemonicParsing(false);
         formatbase64.setFocusTraversable(false);
         formatbase64.setToggleGroup(formatsgroup);
-        formatbase64.getStyleClass().add("unittogglebutton");  
+        formatbase64.getStyleClass().remove("radio-button");
+        formatbase64.getStyleClass().addAll("toggle-button", "unittogglebutton");        
         formatbase64.setUserData(StringFormatBase64.INSTANCE);        
         formatbase64.setDisable(true);
         
