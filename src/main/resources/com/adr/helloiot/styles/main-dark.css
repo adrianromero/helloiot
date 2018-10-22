@@ -111,6 +111,23 @@
     -fx-font-size: 14px;    
 }
 
+.comboinput {
+    -fx-font-family: 'Source Sans Pro Bold';
+    -fx-font-size: 14px;    
+}
+
+.comboinput > .arrow-button {
+    -fx-text-fill: -fx-text-fill-title;    
+    -fx-background-color: -fx-button-fill;  
+    -fx-background-insets: 1;
+    -fx-alignment: center;
+}
+
+.comboinput > .arrow-button > .arrow {
+    -fx-background-color: white;
+    -fx-fill: -fx-buttoncontent-fill;
+}
+
 .unittitle {
     -fx-font-family: 'Source Sans Pro Regular';
     -fx-font-size: 16px;   

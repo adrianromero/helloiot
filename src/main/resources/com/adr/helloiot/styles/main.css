@@ -146,6 +146,39 @@
     -fx-text-fill: -fx-level-fill;    
 }
 
+.comboinput {
+    -fx-font-family: 'Source Sans Pro Black';
+    -fx-font-size: 16px;
+    -fx-text-fill: -fx-level-fill;
+    
+    -fx-background-radius: 2, 1;
+    -fx-background-color:  -fx-inputborder-fill, -fx-inputback-fill;  
+    -fx-background-insets: 0, 1;       
+}
+
+.comboinput:focused {
+    -fx-background-radius: 4, 2, 1;
+    -fx-background-color:  -fx-inputfocusext-fill, -fx-inputfocus-fill, -fx-inputback-fill;  
+    -fx-background-insets: -2, 0, 1;    
+}
+
+.comboinput > .text-field {
+    -fx-background-color: -fx-inputback-fill;  
+}
+
+.comboinput > .arrow-button {
+    -fx-text-fill: -fx-buttoncontent-fill;    
+    -fx-background-color:  -fx-button-fill, -fx-button-fill;  
+    -fx-background-radius: 2, 0;
+    -fx-background-insets: 2, 4;
+    -fx-alignment: center;
+}
+
+.comboinput > .arrow-button > .arrow {
+    -fx-background-color: white;
+    -fx-fill: -fx-buttoncontent-fill;
+}
+
 .unittitle {
     -fx-font-family: 'Source Sans Pro Regular';
     -fx-font-size: 16px;   
