@@ -130,7 +130,10 @@ public class MessagesPage extends BorderPane implements Unit {
             displayPayload(new_val);
         });
         
-        
+        Separator formatsep = new Separator();
+        formatsep.setOrientation(Orientation.VERTICAL);
+        formatsep.setFocusTraversable(false);        
+                
         formatsgroup = new ToggleGroup();
         formatsgroup.selectedToggleProperty().addListener((ObservableValue<? extends Toggle> ov, Toggle old_val, Toggle new_val) -> {
             printPayload();
@@ -176,7 +179,7 @@ public class MessagesPage extends BorderPane implements Unit {
         toolbar = new ToolBar();
         BorderPane.setAlignment(toolbar, Pos.CENTER);
         toolbar.getStyleClass().add("messagestoolbar");
-        toolbar.getItems().addAll(deletemessages, playpause, showdetails, formatplain, formatjson, formathex, formatbase64);
+        toolbar.getItems().addAll(deletemessages, playpause, showdetails, formatsep, formatplain, formatjson, formathex, formatbase64);
         setTop(toolbar);
 
         eventmessageslist = new ListView<>();
