@@ -20,14 +20,20 @@ package com.adr.helloiot.unit;
 
 import com.adr.fonticon.FontAwesome;
 import com.adr.fonticon.IconBuilder;
+import com.adr.hellocommon.dialog.MessageUtils;
 import com.adr.helloiot.device.TreePublish;
+import com.adr.helloiot.mqtt.MQTTProperty;
 import com.adr.helloiotlib.app.IoTApp;
 import com.adr.helloiotlib.app.TopicManager;
+import com.adr.helloiotlib.format.MiniVar;
+import com.adr.helloiotlib.format.StringFormat;
 import com.adr.helloiotlib.format.StringFormatBase64;
+import com.adr.helloiotlib.format.StringFormatDecimal;
 import com.adr.helloiotlib.format.StringFormatHex;
 import com.adr.helloiotlib.format.StringFormatIdentity;
 import com.adr.helloiotlib.format.StringFormatJSONPretty;
 import com.adr.helloiotlib.unit.Unit;
+import java.util.Arrays;
 import java.util.ResourceBundle;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -37,6 +43,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.Separator;
 import javafx.scene.control.TextArea;
@@ -63,6 +70,9 @@ public class PublicationsPage extends VBox implements Unit {
     
     private ToolBar toolbar;
     private HBox topiccontainer;
+    private Label title;
+    private String label = null;
+    private Separator titlesep;    
     private ComboBox topic;
     private TextField delay;
     private Button sendmessage;
@@ -84,12 +94,19 @@ public class PublicationsPage extends VBox implements Unit {
 
     public PublicationsPage() {
         resources = ResourceBundle.getBundle("com/adr/helloiot/fxml/publications");
+        load();
     }
 
-    @Override
-    public void construct(IoTApp app) {
+    public void load() {
         
         HBox.setHgrow(this, Priority.ALWAYS);
+        
+        title = new Label();
+        title.getStyleClass().add("messagestitle");
+        
+        titlesep = new Separator();
+        titlesep.setOrientation(Orientation.VERTICAL);
+        titlesep.setFocusTraversable(false);        
         
         topic = new ComboBox();
         topic.setPromptText(resources.getString("input.topic"));
@@ -124,6 +141,7 @@ public class PublicationsPage extends VBox implements Unit {
         qosgroup = new ToggleGroup();
         
         qos0 = new RadioButton(resources.getString("label.qos0"));
+        qos0.setUserData(0);
         qos0.setMnemonicParsing(false);
         qos0.setFocusTraversable(false);
         qos0.setToggleGroup(qosgroup);
@@ -132,6 +150,7 @@ public class PublicationsPage extends VBox implements Unit {
         qos0.setSelected(true);
         
         qos1 = new RadioButton(resources.getString("label.qos1"));
+        qos1.setUserData(1);
         qos1.setMnemonicParsing(false);
         qos1.setFocusTraversable(false);
         qos1.setToggleGroup(qosgroup);
@@ -139,6 +158,7 @@ public class PublicationsPage extends VBox implements Unit {
         qos1.getStyleClass().addAll("toggle-button", "unittogglebutton");  
         
         qos2 = new RadioButton(resources.getString("label.qos2"));
+        qos2.setUserData(2);
         qos2.setMnemonicParsing(false);
         qos2.setFocusTraversable(false);
         qos2.setToggleGroup(qosgroup);
@@ -201,10 +221,13 @@ public class PublicationsPage extends VBox implements Unit {
         VBox.setVgrow(payload, Priority.ALWAYS);
         BorderPane.setAlignment(payload, Pos.CENTER);   
         
-        
         getChildren().addAll(toolbar, topiccontainer, payload);
     }
-
+    
+    @Override
+    public void construct(IoTApp app) {
+    }
+    
     @Override
     public void destroy() {
     }
@@ -214,8 +237,30 @@ public class PublicationsPage extends VBox implements Unit {
         return this;
     }
     
+    public void setLabel(String label) {
+        if (getLabel() != null && !getLabel().isEmpty()) {
+            toolbar.getItems().removeAll(title, titlesep);
+        }
+        
+        this.label = label;
+        title.setText(label + "/");
+        
+        if (label != null && !label.isEmpty()) {
+            toolbar.getItems().addAll(0, Arrays.asList(title, titlesep));
+        }
+    }
+
+    public String getLabel() {
+        return label;
+    }    
+    
     public void setDevice(TreePublish device) {
         this.device = device;
+        
+        if (getLabel() == null || getLabel().isEmpty()) {
+            String proplabel = device.getProperties().getProperty("label");
+            setLabel(proplabel == null || proplabel.isEmpty() ? device.getTopic() : proplabel);
+        }                 
     }
     
     public TreePublish getDevice() {
@@ -223,6 +268,39 @@ public class PublicationsPage extends VBox implements Unit {
     }
     
     private void actionSendMessage(ActionEvent ev) {
-//        device.sendMessage(topic.getEditor().getText(), , delay);
+        MiniVar delayvalue;
+        try {
+            delayvalue = StringFormatDecimal.INTEGER.parse(delay.getText());
+        } catch (IllegalArgumentException ex) {
+            MessageUtils.showException(MessageUtils.getRoot(this), resources.getString("label.sendmessage"), resources.getString("message.delayerror"), ex);
+            return;
+        }
+        
+        if (delayvalue.asInt() < 0) {
+            MessageUtils.showError(MessageUtils.getRoot(this), resources.getString("label.sendmessage"), resources.getString("message.delayerror"));
+            return;                
+        }        
+        
+        try {
+            MQTTProperty.setQos(device, (int) qosgroup.getSelectedToggle().getUserData());
+            MQTTProperty.setRetained(device, persistent.isSelected());
+
+            StringFormat format = (StringFormat) formatsgroup.getSelectedToggle().getUserData();
+            device.setFormat(format);
+            if (delayvalue.asInt() > 0) {
+                device.sendMessage(topic.getEditor().getText(), format.parse(payload.getText()), delayvalue.asInt());
+            } else {
+                device.sendMessage(topic.getEditor().getText(), format.parse(payload.getText()));
+            }          
+        } catch (IllegalArgumentException ex) {
+            MessageUtils.showException(MessageUtils.getRoot(this), resources.getString("label.sendmessage"), resources.getString("message.messageerror"), ex);
+        }
+        
+        if (!topic.getItems().contains(topic.getEditor().getText())) {
+           topic.getItems().add(0, topic.getEditor().getText());
+           if (topic.getItems().size() > 20) {
+               topic.getItems().remove(topic.getItems().size() - 1);
+           }
+        }  
     }
 }
