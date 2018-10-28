@@ -21,6 +21,7 @@ package com.adr.helloiot;
 import com.adr.fonticon.FontAwesome;
 import com.adr.fonticon.IconBuilder;
 import com.adr.helloiot.device.MessageStatus;
+import com.adr.helloiot.mqtt.MQTTProperty;
 import com.adr.helloiot.unit.MessagesPage;
 import com.adr.helloiot.unit.UnitPage;
 import com.adr.helloiotlib.device.Device;
@@ -91,6 +92,7 @@ public class TopicInfoMessagesSubscribe implements TopicInfo {
         
         MessageStatus messagestatus = new MessageStatus();
         messagestatus.setTopic(getTopic());
+        MQTTProperty.setQos(messagestatus, 2);
         devices.add(messagestatus);
         
         MessagesPage messagespage = new MessagesPage();
