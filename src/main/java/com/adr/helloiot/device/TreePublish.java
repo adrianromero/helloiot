@@ -23,8 +23,6 @@ import com.adr.helloiotlib.format.MiniVar;
 import com.adr.helloiotlib.format.MiniVarString;
 import com.adr.helloiot.util.CompletableAsync;
 import com.adr.helloiotlib.app.EventMessage;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.ScheduledFuture;
 import com.adr.helloiotlib.app.TopicManager;
 
@@ -59,8 +57,10 @@ public class TreePublish extends Device {
     public final void sendMessage(String branch, MiniVar value) {
         cancelTimer();
         
-        Map<String, MiniVar> props = new HashMap<>();
-        EventMessage message = new EventMessage(getTopicPublish() + "/" + branch, getFormat().devalue(value), getMessageProperties());
+        String topicpublish = getTopicPublish() == null || getTopicPublish().isEmpty() 
+                ? branch
+                : getTopicPublish() + "/" + branch;
+        EventMessage message = new EventMessage(topicpublish, getFormat().devalue(value), getMessageProperties());
         manager.publish(message);    
     }
 
