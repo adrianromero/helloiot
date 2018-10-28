@@ -104,6 +104,7 @@ public class TopicInfoCode implements TopicInfo {
                 + "<?import com.adr.helloiot.device.*?>\n"
                 + "<?import com.adr.helloiot.device.format.*?>\n"
                 + "<?import com.adr.helloiot.graphic.*?>\n"
+                + "<?import com.adr.helloiot.mqtt.MQTTProperty?>\n"
                 + "<ArrayList xmlns=\"http://javafx.com/javafx/8.0.40\" xmlns:fx=\"http://javafx.com/fxml/1\">\n"
                 + code
                 + "</ArrayList>";
