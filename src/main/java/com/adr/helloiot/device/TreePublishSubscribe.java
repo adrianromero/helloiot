@@ -52,7 +52,11 @@ public class TreePublishSubscribe extends TreePublish {
     @Override
     public void construct(TopicManager manager) {
         super.construct(manager);
-        status = manager.subscribe(getTopic() + "/#", getMessageProperties());
+        
+        String topic = getTopic() == null || getTopic().isEmpty() 
+                ? "#"
+                : getTopic() + "/#";        
+        status = manager.subscribe(topic, getMessageProperties());
         status.setConsumer(this::consumeMessage);
     }
 
