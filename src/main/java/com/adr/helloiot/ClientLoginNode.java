@@ -541,7 +541,7 @@ public class ClientLoginNode {
         
         menubutton.setGraphic(IconBuilder.create(FontAwesome.FA_MAGIC, 18.0).styleClass("icon-fill").build());
 
-        edittype.setItems(FXCollections.observableArrayList("PublicationSubscription", "Subscription", "Publication", "Switch", "Code", "MessagesSubscribe"));
+        edittype.setItems(FXCollections.observableArrayList("PublicationSubscription", "Subscription", "Publication", "Switch", "Code", "MessagesPublish", "MessagesSubscribe"));
         edittype.setConverter(new StringConverter<String>() {
             @Override public String toString(String object) {
                 return resources.getString("label.topicinfo." + object);

@@ -27,6 +27,7 @@ public class TopicInfoBuilder {
     private TopicInfoEditNode editnode = null;
     private TopicInfoCodeNode codenode = null;
     private TopicInfoSwitchNode switchnode = null;
+    private TopicInfoMessagesPublishNode messagespublishnode = null;
     private TopicInfoMessagesSubscribeNode messagessubscribenode = null;
     
     public TopicInfo fromProperties(SubProperties subproperties) {
@@ -48,6 +49,8 @@ public class TopicInfoBuilder {
             topicinfo = new TopicInfoCode(codenode == null ? (codenode = new TopicInfoCodeNode()) : codenode);
         } else if ("Switch".equals(type)) {
             topicinfo = new TopicInfoSwitch(switchnode == null ? (switchnode = new TopicInfoSwitchNode()) : switchnode);
+        } else if ("MessagesPublish".equals(type)) {
+            topicinfo = new TopicInfoMessagesPublish(messagespublishnode == null ? (messagespublishnode = new TopicInfoMessagesPublishNode()) : messagespublishnode);
         } else if ("MessagesSubscribe".equals(type)) {
             topicinfo = new TopicInfoMessagesSubscribe(messagessubscribenode == null ? (messagessubscribenode = new TopicInfoMessagesSubscribeNode()) : messagessubscribenode);
         } else {
