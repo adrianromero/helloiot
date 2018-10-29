@@ -73,7 +73,7 @@ public class PublicationsPage extends VBox implements Unit {
     private Label title;
     private String label = null;
     private Separator titlesep;    
-    private ComboBox topic;
+    private ComboBox<String> topic;
     private TextField delay;
     private Button sendmessage;
     private TextArea payload;
@@ -108,7 +108,7 @@ public class PublicationsPage extends VBox implements Unit {
         titlesep.setOrientation(Orientation.VERTICAL);
         titlesep.setFocusTraversable(false);        
         
-        topic = new ComboBox();
+        topic = new ComboBox<String>();
         topic.setPromptText(resources.getString("input.topic"));
         topic.setEditable(true);
         topic.setPrefWidth(300.0);
