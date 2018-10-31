@@ -91,7 +91,12 @@ public abstract class MainApp extends Application {
         manager = createManager();
         manager.construct(root, getParameters());
 
-        stage.setTitle(getAppTitle());
+        String title = getAppTitle();
+        String home = HelloPlatform.getInstance().getHome();
+        if (home != null && !home.isEmpty()) {
+            title += " - " + home;
+        }
+        stage.setTitle(title);
         stage.show();
     }
 

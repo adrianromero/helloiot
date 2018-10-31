@@ -52,7 +52,7 @@ public abstract class HelloPlatform {
         if ("android".equals(System.getProperty("javafx.platform"))) {
             name = "com.adr.helloiot.HelloPlatformAndroid";
         } else {
-            name = "com.adr.helloiot.HelloPlatformDefault";
+            name = "com.adr.helloiot.HelloPlatformDesktop";
         }
 
         try {
@@ -118,6 +118,8 @@ public abstract class HelloPlatform {
         appproperties.setProperty(key, value);
     }
 
+    public abstract String getHome();
+    
     public abstract File getFile(String file);
 
     public abstract boolean isFullScreen();
