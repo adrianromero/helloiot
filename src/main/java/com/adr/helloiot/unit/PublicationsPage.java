@@ -78,7 +78,7 @@ public class PublicationsPage extends VBox implements Unit {
     private Button sendmessage;
     private TextArea payload;
     
-    private ToggleButton persistent;
+    private ToggleButton retained;
 
     private ToggleGroup qosgroup;
     private RadioButton qos0;
@@ -133,10 +133,10 @@ public class PublicationsPage extends VBox implements Unit {
         topiccontainer.setSpacing(5.0);
         topiccontainer.setAlignment(Pos.TOP_LEFT);
 
-        persistent = new ToggleButton(resources.getString("label.persistent"));
-        persistent.setMnemonicParsing(false);
-        persistent.setFocusTraversable(false);
-        persistent.getStyleClass().add("unittogglebutton");  
+        retained = new ToggleButton(resources.getString("label.retained"));
+        retained.setMnemonicParsing(false);
+        retained.setFocusTraversable(false);
+        retained.getStyleClass().add("unittogglebutton");  
 
         qosgroup = new ToggleGroup();
         
@@ -211,7 +211,7 @@ public class PublicationsPage extends VBox implements Unit {
         toolbar = new ToolBar();
         BorderPane.setAlignment(toolbar, Pos.CENTER);
         toolbar.getStyleClass().add("messagestoolbar");
-        toolbar.getItems().addAll(persistent, qos0, qos1, qos2, formatsep, formatplain, formatjson, formathex, formatbase64);
+        toolbar.getItems().addAll(retained, qos0, qos1, qos2, formatsep, formatplain, formatjson, formathex, formatbase64);
         
         payload = new TextArea();
         payload.setPromptText(resources.getString("input.message"));
@@ -283,7 +283,7 @@ public class PublicationsPage extends VBox implements Unit {
         
         try {
             MQTTProperty.setQos(device, (int) qosgroup.getSelectedToggle().getUserData());
-            MQTTProperty.setRetained(device, persistent.isSelected());
+            MQTTProperty.setRetained(device, retained.isSelected());
 
             StringFormat format = (StringFormat) formatsgroup.getSelectedToggle().getUserData();
             device.setFormat(format);
