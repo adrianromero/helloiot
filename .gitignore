@@ -5,6 +5,7 @@
 /target/
 /nbproject/
 /.gradle/
-/.nb-gradle/
+/.nb-gradle/private
+/.nb-gradle/profiles/private
 /build/
 /private/
