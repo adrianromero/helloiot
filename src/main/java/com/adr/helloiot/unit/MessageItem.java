@@ -74,8 +74,8 @@ public class MessageItem extends BorderPane {
         footer.getChildren().add(datetext);
         
         MiniVar v2 = message.getProperty("mqtt.retained");
-        if (v2 != null) {
-            Label retainedtext = new Label(resources.getString(v2.asBoolean() ? "badge.retained.true" : "badge.retained.false"));
+        if (v2 != null && v2.asBoolean()) {
+            Label retainedtext = new Label(resources.getString("badge.retained"));
             retainedtext.getStyleClass().addAll("badge", "badgeretained");
             footer.getChildren().add(retainedtext);            
         }    
