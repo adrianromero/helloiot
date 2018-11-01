@@ -18,10 +18,12 @@
 //
 package com.adr.helloiot.device;
 
+import com.adr.helloiot.util.CompletableAsync;
 import com.adr.helloiotlib.app.EventMessage;
 import com.adr.helloiotlib.device.Device;
 import com.adr.helloiotlib.format.MiniVar;
 import com.adr.helloiotlib.app.TopicManager;
+import java.util.concurrent.ScheduledFuture;
 
 /**
  *
@@ -30,6 +32,8 @@ import com.adr.helloiotlib.app.TopicManager;
 public class TransmitterSimple extends Device implements DeviceSend {
     
     protected TopicManager manager;
+    private ScheduledFuture<?> sf = null;
+    private final Object sflock = new Object();  
     
     @Override
     public final void construct(TopicManager manager) {
@@ -47,6 +51,7 @@ public class TransmitterSimple extends Device implements DeviceSend {
 
     @Override
     public void sendStatus(MiniVar event) {
+        cancelTimer();
         EventMessage message = new EventMessage(getTopicPublish(), getFormat().devalue(event), getMessageProperties());
         manager.publish(message);
     }
@@ -55,4 +60,36 @@ public class TransmitterSimple extends Device implements DeviceSend {
     public void sendStatus(String event) {
         sendStatus(getFormat().parse(event));
     }
+    
+    @Override
+    public void sendStatus(MiniVar status, long delay) {
+        synchronized (sflock) {
+            cancelTimer();
+            sf = CompletableAsync.scheduleTask(delay, () -> {
+                TransmitterSimple.this.sendStatus(status);
+            });
+        }
+    }
+
+    @Override
+    public void sendStatus(String status, long delay) {
+        sendStatus(getFormat().parse(status), delay);
+    }
+
+    @Override
+    public boolean hasTimer() {
+        synchronized (sflock) {
+            return sf != null;
+        }
+    }
+
+    @Override
+    public void cancelTimer() {
+        synchronized (sflock) {
+            if (sf != null) {
+                sf.cancel(false);
+                sf = null;
+            }
+        }
+    }    
 }

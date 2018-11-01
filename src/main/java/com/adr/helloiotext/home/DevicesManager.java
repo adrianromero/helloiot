@@ -18,6 +18,7 @@
 //
 package com.adr.helloiotext.home;
 
+import com.adr.helloiot.device.DeviceSend;
 import com.adr.helloiot.unit.ReceiverBase;
 import com.adr.helloiot.device.DeviceSimple;
 import com.adr.helloiotlib.app.EventMessage;
@@ -35,10 +36,10 @@ import com.google.common.eventbus.Subscribe;
  */
 public class DevicesManager extends ReceiverBase {
     
-    private DeviceSimple secactions;
+    private DeviceSend secactions;
     private DeviceSimple secstatus;
     
-    public DevicesManager(DeviceSimple secactions, DeviceSimple secstatus) {
+    public DevicesManager(DeviceSend secactions, DeviceSimple secstatus) {
         this.secactions = secactions;
         this.secstatus = secstatus;
     }

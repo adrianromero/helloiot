@@ -19,9 +19,9 @@
 package com.adr.helloiotext.home;
 
 import com.adr.helloiot.HelloIoTApp;
+import com.adr.helloiot.device.DeviceSend;
 import com.adr.helloiot.device.DeviceSimple;
 import com.adr.helloiot.device.DeviceSwitch;
-import com.adr.helloiot.device.TransmitterSimple;
 import com.adr.helloiotlib.app.EventMessage;
 import com.adr.helloiot.unit.ReceiverBase;
 import com.google.common.eventbus.Subscribe;
@@ -35,11 +35,11 @@ public class SecurityManager extends ReceiverBase {
     
     private final static Logger logger = Logger.getLogger(SecurityManager.class.getName());
     
-    private final DeviceSimple secactions;
+    private final DeviceSend secactions;
     private final DeviceSimple secstatus;
-    private final TransmitterSimple secalarm;
+    private final DeviceSend secalarm;
     
-    public SecurityManager(DeviceSimple secactions, DeviceSimple secstatus, TransmitterSimple secalarm) {
+    public SecurityManager(DeviceSend secactions, DeviceSimple secstatus, DeviceSend secalarm) {
         this.secactions = secactions;
         this.secstatus = secstatus;
         this.secalarm = secalarm;

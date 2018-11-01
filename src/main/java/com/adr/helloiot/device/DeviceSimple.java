@@ -76,7 +76,6 @@ public class DeviceSimple extends DeviceStatus implements DeviceSend {
     @Override
     public void sendStatus(MiniVar status) {
         cancelTimer();
-        
         EventMessage message = new EventMessage(getTopicPublish(), getFormat().devalue(status), getMessageProperties());
         manager.publish(message);
     }
@@ -86,6 +85,7 @@ public class DeviceSimple extends DeviceStatus implements DeviceSend {
         sendStatus(getFormat().parse(status));
     }
 
+    @Override
     public void sendStatus(MiniVar status, long delay) {
 
         synchronized (sflock) {
@@ -96,16 +96,19 @@ public class DeviceSimple extends DeviceStatus implements DeviceSend {
         }
     }
 
+    @Override
     public void sendStatus(String status, long delay) {
         sendStatus(getFormat().parse(status), delay);
     }
 
+    @Override
     public boolean hasTimer() {
         synchronized (sflock) {
             return sf != null;
         }
     }
 
+    @Override
     public void cancelTimer() {
         synchronized (sflock) {
             if (sf != null) {

@@ -27,4 +27,8 @@ import com.adr.helloiotlib.format.MiniVar;
 public interface DeviceSend {
     public void sendStatus(MiniVar status);
     public void sendStatus(String event);
+    public void sendStatus(MiniVar status, long delay);
+    public void sendStatus(String event, long delay);
+    public boolean hasTimer();
+    public void cancelTimer();
 }
