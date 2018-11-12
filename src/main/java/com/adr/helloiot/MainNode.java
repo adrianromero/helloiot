@@ -21,6 +21,7 @@ package com.adr.helloiot;
 import com.adr.helloiotlib.app.IoTApp;
 import com.adr.helloiot.unit.UnitPage;
 import com.adr.fonticon.FontAwesome;
+import com.adr.fonticon.Icon;
 import com.adr.fonticon.IconBuilder;
 import com.adr.hellocommon.dialog.DialogView;
 import com.adr.hellocommon.dialog.MessageUtils;
@@ -38,9 +39,11 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
+import javafx.animation.Animation;
 import javafx.animation.FadeTransition;
 import javafx.animation.Interpolator;
 import javafx.animation.ParallelTransition;
+import javafx.animation.ScaleTransition;
 import javafx.animation.Transition;
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
@@ -81,7 +84,8 @@ public final class MainNode {
     private Button exitbutton;
     private Label headertitle;
     private Label currenttime;
-    private Label alert;
+    private VBox alert;
+    private Animation alertanimation;
     
     private DialogView connectingdialog = null;
     
@@ -99,9 +103,9 @@ public final class MainNode {
     private final boolean appexitbutton;
     private Button backbutton;
 
-    private DeviceSimple appunitpage;
-    private DeviceSwitch appbeeper;
-    private DeviceSimple appbuzzer;    
+    private final DeviceSimple appunitpage;
+    private final DeviceSwitch appbeeper;
+    private final DeviceSimple appbuzzer;    
     
     private String currentpage = null;
     
@@ -123,7 +127,7 @@ public final class MainNode {
         load();
         initialize();
         
-        beeper = new Beeper(factory, alert);
+        beeper = new Beeper(factory, alert, alertanimation);
         buzzer = new Buzzer(factory);
         backbutton = null;
     }
@@ -197,13 +201,44 @@ public final class MainNode {
         
         anchormain.getChildren().addAll(appcontainer, listpagesgray, scrollpages);
                 
-        alert = new Label();
-        AnchorPane.setTopAnchor(alert, 10.0);
+        Icon icon1 = IconBuilder.create(FontAwesome.FA_VOLUME_UP, 72.0).apply(s -> {
+            s.setFill(Color.WHITE);
+            s.setStroke(Color.GRAY);
+            s.setStrokeWidth(1.0);
+        }).build();
+        icon1.setScaleX(-1.0);
+        Icon icon2 = IconBuilder.create(FontAwesome.FA_VOLUME_UP, 72.0).apply(s -> {
+            s.setFill(Color.WHITE);
+            s.setStroke(Color.GRAY);
+            s.setStrokeWidth(1.0);
+        }).build();
+        HBox icons = new HBox(icon1, icon2);
+        icons.setAlignment(Pos.CENTER);
+        icons.setSpacing(10.0);
+       
+        alert = new VBox(icons);
+        alert.getStyleClass().add("alert");
+        alert.setPadding(new Insets(50.0));
+        AnchorPane.setTopAnchor(alert, 0.0);
+        AnchorPane.setBottomAnchor(alert, 0.0);
         AnchorPane.setLeftAnchor(alert, 0.0);
-        AnchorPane.setRightAnchor(alert, 0.0);           
-        alert.setAlignment(Pos.CENTER);
+        AnchorPane.setRightAnchor(alert, 0.0);         
+
         alert.setMouseTransparent(true);
         alert.setVisible(false);
+               
+        ScaleTransition sizetransition = new ScaleTransition(Duration.millis(2000), icons);
+        sizetransition.setCycleCount(Animation.INDEFINITE);
+        sizetransition.setToX(2.0);
+        sizetransition.setToY(2.0);
+        
+        FadeTransition fadetransition = new FadeTransition(Duration.millis(1000), icons);
+        fadetransition.setCycleCount(Animation.INDEFINITE);
+        fadetransition.setAutoReverse(true);
+        fadetransition.setFromValue(0.0);
+        fadetransition.setToValue(1.0);
+        
+        alertanimation = new ParallelTransition(sizetransition, fadetransition);
         
         rootpane.getChildren().addAll(anchormain, alert);
     }
@@ -316,9 +351,7 @@ public final class MainNode {
     }
     
     public void initialize() {
-        
-        alert.setGraphic(IconBuilder.create(FontAwesome.FA_VOLUME_UP, 72.0).fill(Color.WHITE).shine(Color.RED).build());
-        
+
         if (appexitbutton) {
             exitbutton.setVisible(true);
             exitbutton.setGraphic(IconBuilder.create(FontAwesome.FA_POWER_OFF, 18.0).styleClass("icon-fill").build());

@@ -1,5 +1,5 @@
 //    HelloIoT is a dashboard creator for MQTT
-//    Copyright (C) 2017 Adrián Romero Corchado.
+//    Copyright (C) 2017-2018 Adrián Romero Corchado.
 //
 //    This file is part of HelloIot.
 //
@@ -23,7 +23,8 @@ import com.adr.helloiotlib.format.StringFormatSwitch;
 import com.adr.helloiot.media.Clip;
 import com.adr.helloiot.media.ClipFactory;
 import com.adr.helloiotlib.unit.Units;
-import javafx.scene.control.Label;
+import javafx.animation.Animation;
+import javafx.scene.Node;
 import javafx.scene.media.AudioClip;
 
 /**
@@ -33,15 +34,17 @@ import javafx.scene.media.AudioClip;
 public class Beeper {
 
     private final Clip beep;
-    private final Label alert;
+    private final Node alert;
+    private final Animation alertanimation;
     
     private final StringFormat format = new StringFormatSwitch();
     
     private final Object messageHandler = Units.messageHandler(this::updateStatus);  
 
-    public Beeper(ClipFactory factory, Label alert) {
+    public Beeper(ClipFactory factory, Node alert, Animation alertanimation) {
 
         this.alert = alert;
+        this.alertanimation = alertanimation;
         // http://www.soundjay.com/tos.html
         beep = factory.createClip(getClass().getResource("/com/adr/helloiot/sounds/beep-01a.wav").toExternalForm(), AudioClip.INDEFINITE);
     }
@@ -51,12 +54,16 @@ public class Beeper {
     }
 
     private void updateStatus(byte[] status) {
-        alert.setVisible(false);
-        beep.stop();
-
-        if (format.value(status).asBoolean()) {
-            alert.setVisible(true);
-            beep.play();
+        boolean isVisible = format.value(status).asBoolean();
+        
+        if (isVisible && !alert.isVisible()) {
+            alertanimation.playFromStart();
+            alert.setVisible(true);            
+            beep.play();            
+        } else if (!isVisible && alert.isVisible()) {
+            alert.setVisible(false);
+            alertanimation.stop();
+            beep.stop();            
         }
     }
 }

@@ -319,4 +319,7 @@
     -fx-background-color: transparent, #b4b4b4;    
 }
 
+.alert {
+    -fx-background-color: rgba(255, 0, 0, 0.16);
+}
 
