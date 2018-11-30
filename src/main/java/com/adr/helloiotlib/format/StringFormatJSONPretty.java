@@ -49,8 +49,8 @@ public class StringFormatJSONPretty extends StringFormat {
         } else {
             try {
                 return gson.toJson(parser.parse(value.asString()));
-            } catch (JsonSyntaxException |JsonIOException ex) {
-                return "<Not a JSON value>";
+            } catch (JsonSyntaxException | JsonIOException ex) {
+                return "Not a valid JSON value.";
             }
         }
     }
@@ -66,7 +66,11 @@ public class StringFormatJSONPretty extends StringFormat {
     
     @Override
     public MiniVar parse(String formattedvalue) {
-        return new MiniVarString(formattedvalue);
+        try {
+            return new MiniVarString(gson.toJson(parser.parse(formattedvalue)));
+        } catch (JsonSyntaxException | JsonIOException ex) {
+            throw new IllegalArgumentException("Not a valid JSON value.");
+        }
     }
     
     @Override
