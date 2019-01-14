@@ -18,6 +18,8 @@
 //
 package com.adr.helloiot.device;
 
+import com.adr.helloiot.graphic.IconStatus;
+import com.adr.helloiot.graphic.IconText;
 import com.adr.helloiotlib.app.EventMessage;
 import com.adr.helloiotlib.app.TopicSubscription;
 import com.adr.helloiotlib.device.Device;
@@ -61,4 +63,8 @@ public abstract class DeviceSubscribe extends Device {
     public void unsubscribeStatus(Object observer) {
         bus.unregister(observer);
     }
+    
+    public IconStatus getIconStatus() {
+        return new IconText();
+    }     
 }

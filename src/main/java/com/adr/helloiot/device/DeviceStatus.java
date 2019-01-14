@@ -1,5 +1,5 @@
 //    HelloIoT is a dashboard creator for MQTT
-//    Copyright (C) 2017-2018 Adrián Romero Corchado.
+//    Copyright (C) 2017-2019 Adrián Romero Corchado.
 //
 //    This file is part of HelloIot.
 //
@@ -18,8 +18,6 @@
 //
 package com.adr.helloiot.device;
 
-import com.adr.helloiot.graphic.IconStatus;
-import com.adr.helloiot.graphic.IconText;
 import com.adr.helloiot.mqtt.MQTTProperty;
 import com.adr.helloiotlib.app.EventMessage;
 import com.adr.helloiotlib.format.MiniVar;
@@ -70,9 +68,5 @@ public class DeviceStatus extends DeviceSubscribe {
 
     public String formatStatus() {
         return getFormat().format(status.get());
-    }
-    
-    public IconStatus getIconStatus() {
-        return new IconText();
-    }    
+    }   
 }
