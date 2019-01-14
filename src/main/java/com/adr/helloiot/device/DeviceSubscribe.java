@@ -1,5 +1,5 @@
 //    HelloIoT is a dashboard creator for MQTT
-//    Copyright (C) 2017-2018 Adrián Romero Corchado.
+//    Copyright (C) 2017-2019 Adrián Romero Corchado.
 //
 //    This file is part of HelloIot.
 //
@@ -31,9 +31,9 @@ import com.adr.helloiotlib.app.TopicManager;
 public abstract class DeviceSubscribe extends Device {
 
     protected TopicManager manager;
-    private TopicSubscription status = null;
+    private TopicSubscription subscription = null;
 
-    private final EventBus statusbus = new EventBus();
+    private final EventBus bus = new EventBus();
 
     protected void consumeMessage(EventMessage message) {
     }
@@ -41,24 +41,24 @@ public abstract class DeviceSubscribe extends Device {
     @Override
     public void construct(TopicManager manager) {
         this.manager = manager;
-        status = manager.subscribe(getTopic(), getMessageProperties());
-        status.setConsumer((message) -> {
+        subscription = manager.subscribe(getTopic(), getMessageProperties());
+        subscription.setConsumer((message) -> {
             consumeMessage(message);
-            statusbus.post(message);
+            bus.post(message);
         });
     }
 
     @Override
     public void destroy() {
-        manager.unsubscribe(status);
-        status = null;
+        manager.unsubscribe(subscription);
+        subscription = null;
     }
 
     public void subscribeStatus(Object observer) {
-        statusbus.register(observer);
+        bus.register(observer);
     }
 
     public void unsubscribeStatus(Object observer) {
-        statusbus.unregister(observer);
+        bus.unregister(observer);
     }
 }
