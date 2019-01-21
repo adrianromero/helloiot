@@ -226,7 +226,7 @@
     -fx-fill: -fx-buttoncontent-fill;
 }
 .keypadbutton:armed {
-    -fx-background-insets: -1, 3;
+    -fx-background-insets: -2, 3;
     -fx-background-color: -fx-buttonarmed-fill,  -fx-buttonaction-fill;             
 }
 .keypadbuttonnumber {
@@ -257,7 +257,7 @@
     -fx-fill: -fx-buttoncontent-fill;
 }
 .unitbutton:armed {
-    -fx-background-insets: -1, 1;
+    -fx-background-insets: -2, 1;
     -fx-background-color: -fx-buttonarmed-fill,  -fx-buttonaction-fill;             
 }
 
@@ -275,7 +275,7 @@
     -fx-fill: #999eaa;
 }
 .unittogglebutton:armed {
-    -fx-background-insets: -1, 1;
+    -fx-background-insets: -2, 1;
     -fx-background-color: -fx-buttonarmed-fill,  #ffffff;             
 }
 .unittogglebutton:selected {   
@@ -307,7 +307,7 @@
     -fx-fill: -fx-buttoncontent-fill;
 }
 .buttonbase:armed {
-   -fx-background-insets: -1, 3;
+   -fx-background-insets: -2, 3;
    -fx-background-color:  -fx-buttonarmed-fill,  -fx-buttonaction-fill;                        
 }
 .buttonup {
@@ -352,8 +352,13 @@
 .dialog-button-icon {
     -fx-fill: -fx-buttoncontent-fill;  
 }
+.dialog-buttonlist .button:focused {
+    -fx-background-insets: -2, 1;
+    -fx-background-color: -fx-buttonarmed-fill, -fx-button-fill;          
+}
+
 .dialog-buttonlist .button:armed {
-    -fx-background-insets: -1, 1;
+    -fx-background-insets: -2, 1;
     -fx-background-color: -fx-buttonarmed-fill, -fx-buttonaction-fill;            
 }
 .dialog-buttonlist .button:default {
@@ -374,7 +379,7 @@
     -fx-padding: 1.2em /*1.583333em*/;    
 }
 .slider .thumb:pressed {
-    -fx-background-insets: -1, 3;
+    -fx-background-insets: -2, 3;
     -fx-background-color: -fx-buttonarmed-fill, -fx-buttonaction-fill;
 }
 .slider .track {
