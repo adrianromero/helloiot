@@ -1,5 +1,5 @@
 //    HelloIoT is a dashboard creator for MQTT
-//    Copyright (C) 2017-2018 Adrián Romero Corchado.
+//    Copyright (C) 2017-2019 Adrián Romero Corchado.
 //
 //    This file is part of HelloIot.
 //
@@ -32,23 +32,31 @@ import com.adr.helloiot.util.CompletableAsync;
 import com.adr.helloiot.util.CryptUtils;
 import com.adr.helloiot.util.Dialogs;
 import com.adr.helloiot.util.HTTPUtils;
-import com.google.common.base.Strings;
+import com.google.common.io.Resources;
+import com.google.common.util.concurrent.ListenableFuture;
+import com.google.gson.Gson;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Application.Parameters;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.scene.control.MenuItem;
+import javafx.scene.control.Button;
+import javafx.scene.control.ListCell;
+import javafx.scene.control.ListView;
 import javafx.scene.layout.StackPane;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 
@@ -61,6 +69,7 @@ public class MainManagerClient implements MainManager {
     private static final Logger LOGGER = Logger.getLogger(MainManagerClient.class.getName());
     private static final String CONFIG_PROPERTIES = ".helloiot-config.properties";
     
+    private final ResourceBundle resources;
     private HelloIoTApp helloiotapp = null;
     
     private ClientLoginNode clientlogin = null;
@@ -69,6 +78,10 @@ public class MainManagerClient implements MainManager {
 
     private File configfile;
     private StackPane root = null;
+    
+    public MainManagerClient() {
+        resources = ResourceBundle.getBundle("com/adr/helloiot/fxml/main");
+    }
 
     private void showLogin() {
 
@@ -77,9 +90,11 @@ public class MainManagerClient implements MainManager {
         clientmqtt = new ConnectMQTT();
         clientlogin.appendConnectNode(clientmqtt.getNode());
         clienttradfri = new ConnectTradfri();
-        clientlogin.appendConnectNode(clienttradfri.getNode());     
+        clientlogin.appendConnectNode(clienttradfri.getNode());   
+        
+        clientlogin.addToolbarButton(createTemplatesButton());
         clientlogin.addToolbarButton(createTradfriButton());
-
+        
         ConfigProperties configprops = new ConfigProperties();            
         try {
             configprops.load(() -> new FileInputStream(configfile));
@@ -114,7 +129,6 @@ public class MainManagerClient implements MainManager {
             try {                
                 showApplication();      
             } catch (HelloIoTException ex) {
-                ResourceBundle resources = ResourceBundle.getBundle("com/adr/helloiot/fxml/main");
                 MessageUtils.showException(MessageUtils.getRoot(root), resources.getString("exception.topicinfotitle"), ex, ev -> {
                     showLogin();
                 });
@@ -209,7 +223,6 @@ public class MainManagerClient implements MainManager {
         Style.changeStyle(root, Style.valueOf(configprops.getProperty("app.style", Style.PRETTY.name())));  
 
         helloiotapp = new HelloIoTApp(config);
-        ResourceBundle resources = ResourceBundle.getBundle("com/adr/helloiot/fxml/main");
         try {         
 
             TopicInfoBuilder topicinfobuilder = new TopicInfoBuilder();
@@ -266,7 +279,7 @@ public class MainManagerClient implements MainManager {
             configfile = HelloPlatform.getInstance().getFile(CONFIG_PROPERTIES);
         } else {
             String param = unnamed.get(0);
-            if (Strings.isNullOrEmpty(param)) {
+            if (param == null || param.isEmpty()) {
                 configfile = HelloPlatform.getInstance().getFile(CONFIG_PROPERTIES);
             } else {
                 configfile = new File(param);
@@ -278,7 +291,6 @@ public class MainManagerClient implements MainManager {
             try {                
                 showApplication();      
             } catch (HelloIoTException ex) {
-                ResourceBundle resources = ResourceBundle.getBundle("com/adr/helloiot/fxml/main");
                 MessageUtils.showException(MessageUtils.getRoot(root), resources.getString("exception.topicinfotitle"), ex, ev -> {
                     showLogin();
                 });
@@ -293,12 +305,95 @@ public class MainManagerClient implements MainManager {
         hideLogin();
         hideApplication();
     }  
-    
-    
-    private MenuItem createTradfriButton() {
-        ResourceBundle resources = ResourceBundle.getBundle("com/adr/helloiot/fxml/main");
+        
+    private Button createTemplatesButton() {
+        Button b = new Button(resources.getString("title.templates"), IconBuilder.create(FontAwesome.FA_FOLDER_OPEN, 18.0).styleClass("icon-fill").build());
+        b.setFocusTraversable(false);
+        b.setOnAction(evAction -> {
+            
+            DialogView dialog = new DialogView();
+            ListView<TemplateInfo>list = new ListView<>();
+            
+            list.setCellFactory(l -> new TemplatesListCell());
+            list.setOnMouseClicked(e -> {
+                if (e.getClickCount() == 2) {
+                    addTemplateToUnits(list.getSelectionModel().getSelectedItem());
+                    dialog.dispose();
+                }
+            });
 
-        MenuItem b = new MenuItem(resources.getString("button.tradfri"), IconBuilder.create(FontAwesome.FA_SEARCH, 18.0).styleClass("icon-fill").build());       
+            dialog.setTitle(resources.getString("title.templates"));
+            dialog.setContent(list);
+            dialog.addButtons(dialog.createCancelButton(), dialog.createOKButton());
+            dialog.show(MessageUtils.getRoot(root));              
+            dialog.setActionOK(evOK -> {
+                addTemplateToUnits(list.getSelectionModel().getSelectedItem());        
+            });
+                 
+            // Load list of templates
+            DialogView loading2 = Dialogs.createLoading();
+            loading2.show(MessageUtils.getRoot(root));             
+            CompletableAsync.handle(
+                loadTemplatesList(),
+                templateslist -> {
+                    loading2.dispose();
+                    list.setItems(FXCollections.observableList(Arrays.asList(templateslist)));
+                    list.getSelectionModel().selectFirst();
+                },
+                ex -> {
+                    loading2.dispose();
+                    MessageUtils.showException(MessageUtils.getRoot(root), resources.getString("title.templates"),  resources.getString("exception.cannotloadtemplateslist"), ex);             
+                });
+        });
+        return b;
+    }
+    
+    private void addTemplateToUnits(TemplateInfo template) {
+        String fxml = "https://raw.githubusercontent.com/adrianromero/helloiot-units/master/" +
+                template.file +
+                (HelloPlatform.getInstance().isPhone() ? "_mobile.fxml" : ".fxml");
+
+        // Load template code
+        DialogView loading3 = Dialogs.createLoading();
+        loading3.show(MessageUtils.getRoot(root));             
+        CompletableAsync.handle(
+                loadTemplate(fxml),
+                result -> {
+                    loading3.dispose();
+                    clientlogin.addCodeUnit(template.name, result);
+                }, 
+                ex -> {
+                    loading3.dispose();
+                    MessageUtils.showException(MessageUtils.getRoot(root), resources.getString("title.templates"),  resources.getString("exception.cannotloadtemplatecode"), ex);
+                });         
+    }
+    
+    private ListenableFuture<String> loadTemplate(String url) {
+         return CompletableAsync.supplyAsync(() -> {
+            try {
+                return Resources.toString(new URL(url), StandardCharsets.UTF_8);
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        });       
+    }
+    
+    private ListenableFuture<TemplateInfo[]> loadTemplatesList() {   
+        return CompletableAsync.supplyAsync(() -> {
+            try {
+                String out = new Scanner(new URL("https://raw.githubusercontent.com/adrianromero/helloiot-units/master/units.json").openStream(), "UTF-8").useDelimiter("\\A").next();
+                Gson gson = new Gson();
+                return gson.fromJson(out, TemplateInfo[].class);
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
+    }
+    
+    private Button createTradfriButton() {
+
+        Button b = new Button(resources.getString("button.tradfri"), IconBuilder.create(FontAwesome.FA_SEARCH, 18.0).styleClass("icon-fill").build());       
+        b.setFocusTraversable(false);
         b.setOnAction(e -> {
             ConfigProperties tempconfig = new ConfigProperties();
             clienttradfri.saveConfig(tempconfig);      
@@ -327,5 +422,30 @@ public class MainManagerClient implements MainManager {
                 });  
         });
         return b;
-    }      
+    }  
+
+    private class TemplatesListCell extends ListCell<TemplateInfo> {
+        @Override
+        public void updateItem(TemplateInfo item, boolean empty) {
+            super.updateItem(item, empty);
+            if (item == null) {
+                setGraphic(null);
+                setText(null);
+            } else {
+                setGraphic(IconBuilder.create(FontAwesome.valueOf(item.icon), 18.0).styleClass("icon-fill").build());
+                setText(item.name);
+            }
+        }        
+    }   
+    
+    private static class TemplateInfo {
+        public final String name;
+        public final String icon;
+        public final String file;
+        public TemplateInfo(String name, String icon, String file) {
+            this.name = name;
+            this.icon = icon;
+            this.file = file;
+        }
+    }
 }

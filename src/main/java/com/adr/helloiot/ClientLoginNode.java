@@ -1,5 +1,5 @@
 //    HelloIoT is a dashboard creator for MQTT
-//    Copyright (C) 2017-2018 Adrián Romero Corchado.
+//    Copyright (C) 2017-2019 Adrián Romero Corchado.
 //
 //    This file is part of HelloIot.
 //
@@ -78,7 +78,6 @@ public class ClientLoginNode {
     private Button removedeviceunit;
     private Button updeviceunit;
     private Button downdeviceunit;
-    private MenuButton menubutton;
     
     private ListView<TopicInfo> devicesunitslist;
     private ComboBox<TopicInfo> devicesunitslist_mobile;
@@ -182,11 +181,8 @@ public class ClientLoginNode {
         downdeviceunit.setOnAction(this::onDownDeviceUnit);
         
         Separator sep = new Separator(Orientation.VERTICAL);
-        
-        menubutton = new MenuButton(resources.getString("label.samplestitle"));
-        menubutton.setFocusTraversable(false);
-        
-        unitstoolbar.getItems().addAll(adddeviceunit, removedeviceunit, updeviceunit, downdeviceunit, sep, menubutton);
+               
+        unitstoolbar.getItems().addAll(adddeviceunit, removedeviceunit, updeviceunit, downdeviceunit, sep);
         
         borderpanetab1.setTop(unitstoolbar);
         
@@ -197,7 +193,7 @@ public class ClientLoginNode {
         devicesunitslist.setPrefWidth(280.0);
         HBox.setMargin(devicesunitslist, new Insets(5.0));
         HBox.setHgrow(devicesunitslist, Priority.NEVER);    
-        devicesunitslist.setCellFactory((ListView<TopicInfo> list) -> new DevicesUnitsListCell());
+        devicesunitslist.setCellFactory(l -> new DevicesUnitsListCell());
         devicesunitsselection = devicesunitslist.getSelectionModel();
         devicesunitsitems = FXCollections.observableArrayList(t -> new Observable[]{
             t.getLabel()
@@ -373,10 +369,7 @@ public class ClientLoginNode {
         
         Separator sep = new Separator(Orientation.VERTICAL);
         
-        menubutton = new MenuButton(resources.getString("label.samplestitle"));
-        menubutton.setFocusTraversable(false);
-        
-        unitstoolbar.getItems().addAll(adddeviceunit, removedeviceunit, updeviceunit, downdeviceunit, sep, menubutton);
+        unitstoolbar.getItems().addAll(adddeviceunit, removedeviceunit, updeviceunit, downdeviceunit, sep);
         
         borderpanetab1.setTop(unitstoolbar); 
                 
@@ -538,8 +531,6 @@ public class ClientLoginNode {
         removedeviceunit.setGraphic(IconBuilder.create(FontAwesome.FA_MINUS, 18.0).styleClass("icon-fill").build());
         updeviceunit.setGraphic(IconBuilder.create(FontAwesome.FA_CHEVRON_UP, 18.0).styleClass("icon-fill").build());
         downdeviceunit.setGraphic(IconBuilder.create(FontAwesome.FA_CHEVRON_DOWN, 18.0).styleClass("icon-fill").build());
-        
-        menubutton.setGraphic(IconBuilder.create(FontAwesome.FA_MAGIC, 18.0).styleClass("icon-fill").build());
 
         edittype.setItems(FXCollections.observableArrayList("PublicationSubscription", "Subscription", "Publication", "Switch", "Code", "MessagesPublish", "MessagesSubscribe"));
         edittype.setConverter(new StringConverter<String>() {
@@ -555,8 +546,6 @@ public class ClientLoginNode {
             updateCurrentTopic();
         });
 
-        constructSampleButtons();
-
         devicesunitsselection.selectedItemProperty().addListener((ObservableValue<? extends TopicInfo> ov, TopicInfo old_val, TopicInfo new_val) -> {
             updateDevicesUnitsList();
         });
@@ -570,14 +559,6 @@ public class ClientLoginNode {
         });
 
 //      (host::requestFocus);
-    }
-
-    private void constructSampleButtons() {      
-        menubutton.getItems().addAll(
-                createSamplesButton("samples.lights", IconBuilder.create(FontAwesome.FA_LIGHTBULB_O, 18.0).styleClass("icon-fill").build(), "com/adr/helloiot/samples/lights"),
-                createSamplesButton("samples.chart", IconBuilder.create(FontAwesome.FA_BAR_CHART, 18.0).styleClass("icon-fill").build(), "com/adr/helloiot/samples/chart"),
-                createSamplesButton("samples.numbers", IconBuilder.create(FontAwesome.FA_DASHBOARD, 18.0).styleClass("icon-fill").build(), "com/adr/helloiot/samples/numbers"),
-                createSamplesButton("samples.scenes", IconBuilder.create(FontAwesome.FA_PICTURE_O, 18.0).styleClass("icon-fill").build(), "com/adr/helloiot/samples/scenes"));
     }
 
     public Node getNode() {
@@ -768,8 +749,8 @@ public class ClientLoginNode {
         return b;
     }
     
-    public void addToolbarButton(MenuItem b) {
-        menubutton.getItems().add(b);
+    public void addToolbarButton(Button b) {
+        unitstoolbar.getItems().add(b);
     }
     
     public void addCodeUnit(String name, String code) {
