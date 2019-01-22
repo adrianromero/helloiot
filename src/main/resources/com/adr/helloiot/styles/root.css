@@ -112,6 +112,18 @@
     -fx-background-color: transparent, -fx-border-unit, -fx-background-unit;        
     -fx-padding: 12px 14px 12px 14px;
 }
+
+.listviewbase {
+    -fx-background-radius: 2, 1;
+    -fx-background-color:  -fx-inputborder-fill, -fx-inputback-fill;  
+    -fx-background-insets: 0, 1;       
+}
+.listviewbase:focused {
+    -fx-background-radius: 4, 2, 1;
+    -fx-background-color:  -fx-inputfocusext-fill, -fx-inputfocus-fill, -fx-inputback-fill;  
+    -fx-background-insets: -2, 0, 1;    
+}
+
 .unitinputview {
     -fx-focus-color: transparent;
     -fx-background-color: transparent;
@@ -170,7 +182,7 @@
 }
 
 
-.dialog-button-icon {
+.dialog-buttonlist .button > .icon-fill {
     -fx-fill: -fx-text-base-color;  
 }
 

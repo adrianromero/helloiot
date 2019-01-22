@@ -124,6 +124,11 @@
     -fx-font-size: 16px;
 }
 
+.list-cell {
+    -fx-font-family: 'Source Sans Pro Regular';
+    -fx-font-size: 16px;       
+}
+
 .unitinput {
     -fx-font-family: 'Source Sans Pro Black';
     -fx-font-size: 16px;
@@ -349,7 +354,7 @@
     -fx-background-insets: 0, 2;
     -fx-alignment: center;        
 }
-.dialog-button-icon {
+.dialog-buttonlist .button > .icon-fill {
     -fx-fill: -fx-buttoncontent-fill;  
 }
 .dialog-buttonlist .button:focused {
