@@ -1,5 +1,5 @@
 //    HelloIoT is a dashboard creator for MQTT
-//    Copyright (C) 2017-2018 Adrián Romero Corchado.
+//    Copyright (C) 2017-2019 Adrián Romero Corchado.
 //
 //    This file is part of HelloIot.
 //
@@ -95,19 +95,19 @@ public class TopicInfoEdit implements TopicInfo {
         Text t;
         String s;
         if ("Subscription".equals(getType())) {
-            t = IconBuilder.create(FontAwesome.FA_COMMENT, 12.0).build();
+            t = IconBuilder.create(FontAwesome.FA_COMMENT, 18.0).build();
             s = "-fx-background-color: #d44548; -fx-background-radius: 5px;";
         } else if ("Publication".equals(getType())) {
-            t = IconBuilder.create(FontAwesome.FA_SEND, 12.0).build();
+            t = IconBuilder.create(FontAwesome.FA_SEND, 18.0).build();
             s = "-fx-background-color: #d445d2; -fx-background-radius: 5px;";
         } else { // "PublicationSubscription"
-            t = IconBuilder.create(FontAwesome.FA_PENCIL, 12.0).build();
+            t = IconBuilder.create(FontAwesome.FA_PENCIL, 18.0).build();
             s = "-fx-background-color: #9245d4; -fx-background-radius: 5px;";
         }        
         t.setFill(Color.WHITE);
         TextFlow tf = new TextFlow(t);
         tf.setTextAlignment(TextAlignment.CENTER);
-        tf.setPadding(new Insets(5, 8, 5, 8));
+        tf.setPadding(new Insets(5, 5, 5, 5));
         tf.setStyle(s);
         tf.setPrefWidth(30.0);
         return tf;         

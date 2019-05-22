@@ -18,10 +18,10 @@
     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
-      <Label text="%label.psk" GridPane.rowIndex="2" />
-      <TextField fx:id="psk" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-      <Label text="%message.putpsk" wrapText="true" GridPane.columnSpan="2147483647" />
-      <Label fx:id="host" wrapText="true" GridPane.columnSpan="2147483647" GridPane.rowIndex="1" />
+      <Label text="%label.psk" styleClass="unitlabel" GridPane.rowIndex="2" />
+      <TextField fx:id="psk" styleClass="unitinput" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+      <Label text="%message.putpsk" styleClass="unitlabel" wrapText="true" GridPane.columnSpan="2147483647" />
+      <Label fx:id="host" styleClass="unitlabel" wrapText="true" GridPane.columnSpan="2147483647" GridPane.rowIndex="1" />
    </children>
    <padding>
       <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />

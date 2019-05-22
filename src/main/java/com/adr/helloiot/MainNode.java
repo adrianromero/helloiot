@@ -148,7 +148,6 @@ public final class MainNode {
         AnchorPane.setRightAnchor(appcontainer, 0.0); 
         
         headerbox = new HBox();
-        headerbox.setSpacing(5.0);
         headerbox.getStyleClass().add("header");
         BorderPane.setAlignment(headerbox, Pos.CENTER);
         

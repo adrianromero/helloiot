@@ -42,7 +42,6 @@ import com.adr.helloiot.tradfri.ManagerTradfri;
 import com.adr.helloiot.unit.UnitPage;
 import com.adr.helloiot.util.CompletableAsync;
 import com.adr.helloiot.util.HTTPUtils;
-import com.adr.helloiotlib.format.MiniVarBoolean;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;

@@ -18,6 +18,10 @@
     along with HelloIot.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+.headerbutton:hover {
+    -fx-text-fill: -fx-buttonaction-fill;    
+}
+
 .headerbutton:hover .icon-fill {
     -fx-fill: -fx-buttonaction-fill         
 }
@@ -35,8 +39,21 @@
     -fx-background-color: -fx-buttonaction-fill, -fx-buttonaction-fill;
 }
 
-.unitbutton:hover {
+.unittabpane > .tab-header-area > .headers-region > .tab:hover > .tab-container > .tab-label {
+}
+.unittabpane > .tab-header-area > .headers-region > .tab:hover {   
+    -fx-background-color: -fx-level-fill, -fx-background-unit;
+}
+
+.unitbutton:hover,
+.unitcombobox:editable > .arrow-button:hover{
     -fx-background-color: -fx-buttonaction-fill, -fx-buttonaction-fill;
+}
+
+.unitbutton:hover:focused,
+.unitcombobox:focused:editable > .arrow-button:hover {
+    -fx-background-insets: -2, 1;
+    -fx-background-color: -fx-buttonarmed-fill,  -fx-buttonaction-fill;             
 }
 
 .buttonbase:hover {
@@ -47,10 +64,60 @@
     -fx-fill: -fx-buttonaction-fill;
 }
 
+.nextbutton:hover, 
 .dialog-buttonlist .button:hover {
     -fx-background-color: -fx-buttonaction-fill, -fx-buttonaction-fill;        
 }
 
+.nextbutton:hover:focused, 
+.dialog-buttonlist .button:hover:focused {
+    -fx-background-insets: -2, 1;
+    -fx-background-color: -fx-buttonarmed-fill, -fx-buttonaction-fill;            
+}
+
 .slider .thumb:hover {
     -fx-background-color: -fx-buttonaction-fill, -fx-buttonaction-fill;
+}
+
+.unitcheckbox:hover > .box {
+    -fx-background-color:  -fx-buttonaction-fill, -fx-inputback-fill;  
+}
+
+.unitcheckbox:hover:selected > .box {
+    -fx-background-color:  -fx-buttonaction-fill, -fx-buttonaction-fill;    
+}
+
+.unitcheckbox:hover:focused:selected > .box {
+    -fx-background-color: -fx-buttonarmed-fill, -fx-buttonaction-fill, -fx-buttonaction-fill;          
+}
+
+.unitradiobutton:hover > .radio {
+    -fx-background-color: -fx-buttonaction-fill, -fx-inputback-fill;
+}
+
+.unitradiobutton:hover:selected > .radio {
+    -fx-background-color:  -fx-buttonaction-fill, -fx-inputback-fill;    
+}
+
+.unitradiobutton:hover:selected > .radio > .dot {
+    -fx-background-color: -fx-buttonaction-fill;
+}
+
+.unitradiobutton:hover:focused:selected > .radio {
+    -fx-background-color: -fx-buttonarmed-fill, -fx-buttonaction-fill, -fx-inputback-fill;          
+}
+
+.unitradiobutton:hover:focused:selected > .radio > .dot {
+    -fx-background-color: -fx-buttonaction-fill;
+}
+
+.scroll-bar > .thumb:hover {
+    -fx-background-color: #a8a8a8;
+}
+
+.scroll-bar > .increment-button:hover,
+.scroll-bar > .decrement-button:hover {
+    -fx-background-color: #d1d1d1;
+    -fx-color: transparent;
+    -fx-padding: 2;  
 }

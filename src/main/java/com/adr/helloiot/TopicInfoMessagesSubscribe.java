@@ -64,11 +64,11 @@ public class TopicInfoMessagesSubscribe implements TopicInfo {
     @Override
     public Node getGraphic() {
 
-        Text t = IconBuilder.create(FontAwesome.FA_ENVELOPE_O, 12.0).build();
+        Text t = IconBuilder.create(FontAwesome.FA_ENVELOPE_O, 18.0).build();
         t.setFill(Color.WHITE);
         TextFlow tf = new TextFlow(t);
         tf.setTextAlignment(TextAlignment.CENTER);
-        tf.setPadding(new Insets(5, 8, 5, 8));
+        tf.setPadding(new Insets(5, 5, 5, 5));
         tf.setStyle("-fx-background-color: #505050; -fx-background-radius: 5px;");
         tf.setPrefWidth(30.0);        
         return tf; 

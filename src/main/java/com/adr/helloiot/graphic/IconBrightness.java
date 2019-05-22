@@ -50,7 +50,6 @@ public class IconBrightness extends IconStatus {
         img.setBarFill(Color.BLUE);
         img.setWidth(format.value(value).asDouble());
         
-        return img;
-        
+        return img;     
     }
 }

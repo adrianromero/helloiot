@@ -32,6 +32,7 @@ import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
@@ -43,7 +44,6 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
-import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.SelectionModel;
@@ -119,24 +119,25 @@ public class ClientLoginNode {
         
         HBox hbox = new HBox();
         hbox.setSpacing(6.0);
-        hbox.getStyleClass().add("headerclient");
+        hbox.getStyleClass().add("header");
         BorderPane.setAlignment(hbox, Pos.CENTER);
         
         Label label = new Label(resources.getString("label.clientlogin"));
         label.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-        label.getStyleClass().add("headerclienttitle");
+        label.getStyleClass().add("headertitle");
         HBox.setHgrow(label, Priority.SOMETIMES);
         
         nextbutton = new Button(resources.getString("button.connect"));
         nextbutton.setFocusTraversable(false);
         nextbutton.setMnemonicParsing(false);
-        nextbutton.getStyleClass().add("nextbutton");
+        nextbutton.getStyleClass().addAll("nextbutton", "nextbutton-default");
         
         hbox.getChildren().addAll(label, nextbutton);
         
         rootpane.setTop(hbox);
         
         TabPane tabpane = new TabPane();
+        tabpane.getStyleClass().add("unittabpane");
         tabpane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
         BorderPane.setAlignment(tabpane, Pos.CENTER);
         
@@ -145,6 +146,7 @@ public class ClientLoginNode {
         
         ScrollPane scroll = new ScrollPane();
         scroll.setFitToWidth(true);
+        scroll.getStyleClass().add("unitform");
         
         connections = new VBox();
         
@@ -158,26 +160,31 @@ public class ClientLoginNode {
         BorderPane borderpanetab1 = new BorderPane();
         
         unitstoolbar = new ToolBar();
+        unitstoolbar.getStyleClass().add("unittoolbar");
         BorderPane.setAlignment(unitstoolbar, Pos.CENTER);
         
         adddeviceunit = new Button();
         adddeviceunit.setFocusTraversable(false);
         adddeviceunit.setMnemonicParsing(false);
+        adddeviceunit.getStyleClass().add("unitbutton");
         adddeviceunit.setOnAction(this::onAddDeviceUnit);
         
         removedeviceunit = new Button();
         removedeviceunit.setFocusTraversable(false);
         removedeviceunit.setMnemonicParsing(false);
+        removedeviceunit.getStyleClass().add("unitbutton");
         removedeviceunit.setOnAction(this::onRemoveDeviceUnit);
         
         updeviceunit = new Button();
         updeviceunit.setFocusTraversable(false);
         updeviceunit.setMnemonicParsing(false);
+        updeviceunit.getStyleClass().add("unitbutton");
         updeviceunit.setOnAction(this::onUpDeviceUnit);
         
         downdeviceunit = new Button();
         downdeviceunit.setFocusTraversable(false);
         downdeviceunit.setMnemonicParsing(false);
+        downdeviceunit.getStyleClass().add("unitbutton");
         downdeviceunit.setOnAction(this::onDownDeviceUnit);
         
         Separator sep = new Separator(Orientation.VERTICAL);
@@ -191,6 +198,7 @@ public class ClientLoginNode {
         ////
         devicesunitslist = new ListView<>();
         devicesunitslist.setPrefWidth(280.0);
+        devicesunitslist.getStyleClass().add("unitlistview");
         HBox.setMargin(devicesunitslist, new Insets(5.0));
         HBox.setHgrow(devicesunitslist, Priority.NEVER);    
         devicesunitslist.setCellFactory(l -> new DevicesUnitsListCell());
@@ -203,10 +211,12 @@ public class ClientLoginNode {
 
         deviceunitform = new ScrollPane();
         deviceunitform.setFitToWidth(true);
+        deviceunitform.getStyleClass().add("unitscroll");
         HBox.setMargin(deviceunitform, new Insets(5.0));
         HBox.setHgrow(deviceunitform, Priority.ALWAYS);
 
         GridPane griddeviceunit = new GridPane();
+        griddeviceunit.getStyleClass().add("unitform");
         griddeviceunit.setHgap(10.0);
         griddeviceunit.setVgap(10.0);       
         ColumnConstraints constr = new ColumnConstraints();
@@ -217,27 +227,29 @@ public class ClientLoginNode {
                new ColumnConstraints(150.0, 150.0, Region.USE_COMPUTED_SIZE),
                constr);
         griddeviceunit.getRowConstraints().addAll(
+                new RowConstraints(),
                 new RowConstraints(10.0, 30.0, Region.USE_COMPUTED_SIZE),
-                new RowConstraints(10.0, 30.0, Region.USE_COMPUTED_SIZE),
-                new RowConstraints(10.0, 30.0, Region.USE_COMPUTED_SIZE));
+                new RowConstraints());
         griddeviceunit.setPadding(new Insets(10.0, 10.0, 0.0, 10.0));
         
         Label section = new Label(resources.getString("label.unit"));
-        section.getStyleClass().add("formsection");
+        section.getStyleClass().add("unitsection");
         section.setMaxWidth(Double.MAX_VALUE);
         GridPane.setColumnSpan(section, Integer.MAX_VALUE);
         
         Label ltype = new Label(resources.getString("label.type"));
+        ltype.getStyleClass().add("unitlabel");
         GridPane.setRowIndex(ltype, 1);
         
         edittype = new ChoiceBox<>();
         edittype.setPrefWidth(280.0);
         edittype.setMaxWidth(Double.MAX_VALUE);
+        edittype.getStyleClass().add("unitinput");
         GridPane.setRowIndex(edittype, 1);
         GridPane.setColumnIndex(edittype, 1);
         
         Label lprops = new Label(resources.getString("label.properties"));
-        lprops.getStyleClass().add("formsection");
+        lprops.getStyleClass().add("unitsection");
         lprops.setMaxWidth(Double.MAX_VALUE);
         GridPane.setColumnSpan(lprops, Integer.MAX_VALUE);
         GridPane.setRowIndex(lprops, 2);
@@ -251,6 +263,7 @@ public class ClientLoginNode {
         deviceunitform.setContent(vbox2);
 
         HBox hboxunits = new HBox();
+        hboxunits.getStyleClass().add("unitwindow");
         hboxunits.getChildren().addAll(devicesunitslist, deviceunitform);
         
         borderpanetab1.setCenter(hboxunits);
@@ -262,6 +275,7 @@ public class ClientLoginNode {
         
         ScrollPane scrolltab2 = new ScrollPane();
         scrolltab2.setFitToWidth(true);
+        scrolltab2.getStyleClass().add("unitform");
         
         GridPane grid2 = new GridPane();
         grid2.setHgap(10.0);
@@ -278,13 +292,16 @@ public class ClientLoginNode {
         grid2.setPadding(new Insets(10.0, 10.0, 0.0, 10.0));
         
         Label labelstyle = new Label(resources.getString("label.style"));
+        labelstyle.getStyleClass().add("unitlabel");
         
         skins = new ChoiceBox<>();
         skins.setPrefWidth(280.0);
         skins.setMaxWidth(Double.MAX_VALUE);
+        skins.getStyleClass().add("unitinput");
         GridPane.setColumnIndex(skins, 1);
         
         clock = new CheckBox(resources.getString("label.clock"));
+        clock.getStyleClass().add("unitcheckbox");
         clock.setMnemonicParsing(false);
         GridPane.setColumnIndex(clock, 1);
         GridPane.setRowIndex(clock, 1);
@@ -306,24 +323,25 @@ public class ClientLoginNode {
         
         HBox hbox = new HBox();
         hbox.setSpacing(6.0);
-        hbox.getStyleClass().add("headerclient");
+        hbox.getStyleClass().add("header");
         BorderPane.setAlignment(hbox, Pos.CENTER);
         
         Label label = new Label(resources.getString("label.clientlogin"));
         label.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-        label.getStyleClass().add("headerclienttitle");
+        label.getStyleClass().add("headertitle");
         HBox.setHgrow(label, Priority.SOMETIMES);
         
         nextbutton = new Button(resources.getString("button.connect"));
         nextbutton.setFocusTraversable(false);
         nextbutton.setMnemonicParsing(false);
-        nextbutton.getStyleClass().add("nextbutton");
+        nextbutton.getStyleClass().addAll("nextbutton", "nextbutton-default");
         
         hbox.getChildren().addAll(label, nextbutton);
         
         rootpane.setTop(hbox);
         
         TabPane tabpane = new TabPane();
+        tabpane.getStyleClass().add("unittabpane");
         tabpane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
         BorderPane.setAlignment(tabpane, Pos.CENTER);
         
@@ -332,6 +350,7 @@ public class ClientLoginNode {
         
         ScrollPane scroll = new ScrollPane();
         scroll.setFitToWidth(true);
+        scroll.getStyleClass().add("unitform");
         
         connections = new VBox();
         
@@ -345,26 +364,31 @@ public class ClientLoginNode {
         BorderPane borderpanetab1 = new BorderPane();
                
         unitstoolbar = new ToolBar();
+        unitstoolbar.getStyleClass().add("unittoolbar");
         BorderPane.setAlignment(unitstoolbar, Pos.CENTER);
         
         adddeviceunit = new Button();
         adddeviceunit.setFocusTraversable(false);
         adddeviceunit.setMnemonicParsing(false);
+        adddeviceunit.getStyleClass().add("unitbutton");
         adddeviceunit.setOnAction(this::onAddDeviceUnit);
         
         removedeviceunit = new Button();
         removedeviceunit.setFocusTraversable(false);
         removedeviceunit.setMnemonicParsing(false);
+        removedeviceunit.getStyleClass().add("unitbutton");
         removedeviceunit.setOnAction(this::onRemoveDeviceUnit);
         
         updeviceunit = new Button();
         updeviceunit.setFocusTraversable(false);
         updeviceunit.setMnemonicParsing(false);
+        updeviceunit.getStyleClass().add("unitbutton");
         updeviceunit.setOnAction(this::onUpDeviceUnit);
         
         downdeviceunit = new Button();
         downdeviceunit.setFocusTraversable(false);
         downdeviceunit.setMnemonicParsing(false);
+        downdeviceunit.getStyleClass().add("unitbutton");
         downdeviceunit.setOnAction(this::onDownDeviceUnit);
         
         Separator sep = new Separator(Orientation.VERTICAL);
@@ -383,8 +407,9 @@ public class ClientLoginNode {
         hboxdeviceunitscontainer.setAlignment(Pos.CENTER_LEFT);
         
         devicesunitslist_mobile = new ComboBox<>();
-        devicesunitslist_mobile.setMinSize(280.0, 30.0);
-        devicesunitslist_mobile.setPrefSize(280.0, 30.0);
+        devicesunitslist_mobile.setMinSize(280.0, 40.0);
+        devicesunitslist_mobile.setPrefSize(280.0, 40.0);
+        devicesunitslist_mobile.getStyleClass().add("unitinput");
         devicesunitslist_mobile.setButtonCell(new DevicesUnitsListCell()); 
         devicesunitslist_mobile.setCellFactory((ListView<TopicInfo> list) -> new DevicesUnitsListCell());           
         devicesunitsselection = devicesunitslist_mobile.getSelectionModel();
@@ -400,15 +425,18 @@ public class ClientLoginNode {
         });
         
         devicesunitscounter_mobile = new Label();
+        devicesunitscounter_mobile.getStyleClass().add("unitlabel");
         
         hboxdeviceunitscontainer.getChildren().addAll(devicesunitslist_mobile, devicesunitscounter_mobile);
         ////
         
         deviceunitform = new ScrollPane();
         deviceunitform.setFitToWidth(true);
+        deviceunitform.getStyleClass().add("unitscroll");
         VBox.setVgrow(deviceunitform, Priority.ALWAYS);
         
         GridPane griddeviceunit = new GridPane();
+        griddeviceunit.getStyleClass().add("unitform");
         griddeviceunit.setHgap(10.0);
         griddeviceunit.setVgap(10.0);       
         ColumnConstraints constr = new ColumnConstraints();
@@ -416,27 +444,29 @@ public class ClientLoginNode {
         griddeviceunit.getColumnConstraints().add(
                constr);
         griddeviceunit.getRowConstraints().addAll(
-                new RowConstraints(10.0, 30.0, Region.USE_COMPUTED_SIZE),
+                new RowConstraints(),
                 new RowConstraints(),
                 new RowConstraints(10.0, 30.0, Region.USE_COMPUTED_SIZE),
-                new RowConstraints(10.0, 30.0, Region.USE_COMPUTED_SIZE));
+                new RowConstraints());
         griddeviceunit.setPadding(new Insets(10.0, 10.0, 0.0, 10.0));
         
         Label section = new Label(resources.getString("label.unit"));
-        section.getStyleClass().add("formsection");
+        section.getStyleClass().add("unitsection");
         section.setMaxWidth(Double.MAX_VALUE);
         GridPane.setColumnSpan(section, Integer.MAX_VALUE);
         
         Label ltype = new Label(resources.getString("label.type"));
+        ltype.getStyleClass().add("unitlabel");
         GridPane.setRowIndex(ltype, 1);
         
         edittype = new ChoiceBox<>();
         edittype.setPrefWidth(280.0);
         edittype.setMaxWidth(Double.MAX_VALUE);
+        edittype.getStyleClass().add("unitinput");
         GridPane.setRowIndex(edittype, 2);
         
         Label lprops = new Label(resources.getString("label.properties"));
-        lprops.getStyleClass().add("formsection");
+        lprops.getStyleClass().add("unitsection");
         lprops.setMaxWidth(Double.MAX_VALUE);
         GridPane.setColumnSpan(lprops, Integer.MAX_VALUE);
         GridPane.setRowIndex(lprops, 3);
@@ -450,6 +480,7 @@ public class ClientLoginNode {
         deviceunitform.setContent(vbox2);
         
         VBox vboxunits = new VBox();
+        vboxunits.getStyleClass().add("unitwindow");
         vboxunits.getChildren().addAll(hboxdeviceunitscontainer, deviceunitform);
 
         borderpanetab1.setCenter(vboxunits);
@@ -461,6 +492,7 @@ public class ClientLoginNode {
         
         ScrollPane scrolltab2 = new ScrollPane();
         scrolltab2.setFitToWidth(true);
+        scrolltab2.getStyleClass().add("unitform");
         
         GridPane grid2 = new GridPane();
         grid2.setHgap(10.0);
@@ -477,13 +509,16 @@ public class ClientLoginNode {
         grid2.setPadding(new Insets(10.0, 10.0, 10.0, 10.0));
         
         Label labelstyle = new Label(resources.getString("label.style"));
+        labelstyle.getStyleClass().add("unitlabel");
         
         skins = new ChoiceBox<>();
         skins.setPrefWidth(280.0);
         skins.setMaxWidth(Double.MAX_VALUE);
+        skins.getStyleClass().add("unitinput");
         GridPane.setRowIndex(skins, 1);
         
         clock = new CheckBox(resources.getString("label.clock"));
+        clock.getStyleClass().add("unitcheckbox");
         clock.setMnemonicParsing(false);
         GridPane.setRowIndex(clock, 2);
         

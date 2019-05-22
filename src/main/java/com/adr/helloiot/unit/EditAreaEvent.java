@@ -36,7 +36,7 @@ public class EditAreaEvent extends EditEvent {
         hboxroot.setSpacing(6.0);
         
         payload = new TextArea();
-        payload.getStyleClass().add("unitinput");
+        payload.getStyleClass().add("unitinputarea");
         payload.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
         payload.setPrefHeight(100.0);
         HBox.setHgrow(payload, Priority.SOMETIMES);

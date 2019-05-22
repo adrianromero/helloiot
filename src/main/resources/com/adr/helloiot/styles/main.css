@@ -1,6 +1,6 @@
 /*
     HelloIoT is a dashboard creator for MQTT
-    Copyright (C) 2017-2018 Adrián Romero Corchado.
+    Copyright (C) 2017-2019 Adrián Romero Corchado.
 
     This file is part of HelloIot.
 
@@ -29,8 +29,7 @@
     -fx-buttonarmed-fill: derive(-fx-button-fill, 60%);    
     -fx-buttoncontent-fill: ladder(-fx-button-fill, white 69%, black 70%);
     -fx-buttonaction-fill: derive(-fx-button-fill, -20%);
-
-    
+    -fx-arrow-fill: #989898;
     
     -fx-background-title: #FFFFFF;    
     -fx-title-fill: #4B4B4B;
@@ -53,16 +52,21 @@
 
 /* Header button flat */
 .headerbutton {
+    -fx-font-family: 'Source Sans Pro Regular';
+    -fx-font-size: 16px;      
+    -fx-text-fill: -fx-button-fill;
+    
     -fx-background-color: transparent, transparent;
     -fx-background-insets: 0, 2;
     -fx-background-radius: 0, 0;    
     -fx-alignment: center;
-    -fx-padding: 8px 12px 8px 12px;     
+    -fx-padding: 8px 12px 8px 12px; 
 }
 .headerbutton .icon-fill {
     -fx-fill: -fx-button-fill;
 }
 .headerbutton:armed {
+    -fx-text-fill: -fx-buttonaction-fill;
     -fx-background-color: -fx-buttonarmed-fill, -fx-background-title;
 }
 .headerbutton:armed .icon-fill {
@@ -70,19 +74,22 @@
 }
 
 /* Menu button */
+.headerbuttonmenu,
 #menubutton {
     -fx-button-fill: -fx-secondary-fill;
 }
 
 /* ExitButton */
+.headerbuttonexit,
 #exitbutton {
     -fx-button-fill: -fx-color2-fill;
 }
 
 /* Header */
 .header {
-    -fx-background-insets: 0, 1 0 1 0;
-    -fx-background-color: -fx-separator-fill, -fx-background-title;
+    -fx-background-insets: 0;
+    -fx-background-color: -fx-background-title;
+    -fx-spacing: 5px;
 }
 .headertitle {
     -fx-font-family: 'Source Sans Pro Bold';
@@ -94,6 +101,353 @@
     -fx-font-size: 16px;
     -fx-text-fill: -fx-info-fill;   
 }
+
+/* Unit components */
+
+.unitsection {
+    -fx-font-family: 'Source Sans Pro Regular';
+    -fx-font-size: 18px;  
+    -fx-text-fill: -fx-level-fill;
+    -fx-padding: 10px 0px 15px 0px;
+    -fx-background-insets: 0, 0 0 1 0, 0 0 2 0;
+    -fx-background-color:  -fx-background-unit, -fx-separator-fill, -fx-background-unit;      
+}
+
+.unitsubsection {
+    -fx-font-family: 'Source Sans Pro Regular';
+    -fx-text-fill: -fx-level-fill;
+    -fx-font-size: 16px;  
+    -fx-background-color: -fx-background-unit;   
+}
+.unitwindow {
+   -fx-background-color: -fx-background-container;   
+}
+
+.unitform {
+    -fx-background-color: -fx-background-unit;   
+}
+
+.unitform > .viewport {
+    -fx-background-color: -fx-background-unit;     
+}
+
+.unitscroll {
+    -fx-background-radius: 2, 1;
+    -fx-background-color:  -fx-inputborder-fill, -fx-background-unit;  
+    -fx-background-insets: 0, 1;    
+}
+.unitscroll > .viewport {
+    -fx-background-color: -fx-background-unit;     
+}
+
+.unittoolbar {
+    -fx-background-color: -fx-background-container;   
+}
+
+/* fondo ffffff
+texto 999eaa
+seleccion 497ccb
+foco 508cfb */
+.unittabpane > .tab-header-area  {
+    -fx-padding: 10 10 0 20;
+}
+
+.unittabpane > .tab-header-area > .headers-region > .tab > .tab-container > .tab-label {
+    -fx-font-family: 'Source Sans Pro Regular';
+    -fx-font-size: 16px;      
+    -fx-alignment: CENTER;
+    -fx-text-fill: -fx-level-fill;
+}
+.unittabpane > .tab-header-area > .headers-region > .tab:selected > .tab-container > .tab-label {
+    -fx-text-fill: #497ccb;
+}
+
+.unittabpane > .tab-header-area > .tab-header-background {
+    -fx-background-color: -fx-separator-fill, -fx-background-unit;
+    -fx-background-insets: 0 0 0 0, 0 0 1 0;
+}
+
+.unittabpane > .tab-header-area > .headers-region {
+    -fx-padding: 0 10 0 10;
+}
+
+.unittabpane > .tab-header-area > .headers-region > .tab {
+ 
+    -fx-background-insets: 0 0 0 0, 0 0 1 0;
+    -fx-border-radius: 0 0 0 0;
+    -fx-padding: 0 10 10 10; /* 1 6 0.99 6 */
+    -fx-background-color: -fx-separator-fill, -fx-background-unit;
+}
+
+.unittabpane > .tab-header-area > .headers-region > .tab:selected {
+    -fx-background-insets: 0 0 0 0, 0 0 1 0;
+    -fx-border-radius: 0 0 0 0;
+    -fx-padding: 0 10 10 10; /* 1 6 0.99 6 */    
+    -fx-background-color: #497ccb, -fx-background-unit;
+}
+
+
+.unittabpane > .tab-header-area > .headers-region > .tab  > focus-indicator {
+    -fx-border-width: 0;
+}
+
+.unittabpane:focused > .tab-header-area > .headers-region > .tab:selected .focus-indicator {
+    -fx-border-width: 0;
+}
+
+.unitlabel {
+    -fx-font-family: 'Source Sans Pro SemiBold';
+    -fx-font-size: 14px;  
+    -fx-text-fill: -fx-level-fill;
+}
+
+.unitlistview {
+    -fx-background-radius: 2, 1;
+    -fx-background-color:  -fx-inputborder-fill, -fx-background-unit;  
+    -fx-background-insets: 0, 1;       
+}
+
+.unitlistview:focused {
+    -fx-background-radius: 4, 2, 1;
+    -fx-background-color:  -fx-inputfocusext-fill, -fx-inputfocus-fill, -fx-inputback-fill;  
+    -fx-background-insets: -2, 0, 1;    
+}
+
+.unitlistview > .virtual-flow > .clipped-container > .sheet > .list-cell {
+    -fx-font-family: 'Source Sans Pro Regular';
+    -fx-font-size: 16px;       
+}
+
+.unitlistview:focused > .virtual-flow > .clipped-container > .sheet > .list-cell:filled:selected {
+    -fx-background: -fx-button-fill;
+    -fx-table-cell-border-color: -fx-buttonarmed-fill;
+    -fx-text-fill: -fx-buttoncontent-fill;
+}
+.unitlistview:focused > .virtual-flow > .clipped-container > .sheet > .list-cell:filled:selected .icon-fill {
+    -fx-fill: -fx-buttoncontent-fill;   
+}
+
+.unitinput,
+.unitinputarea,
+.unitcombobox:editable {
+    -fx-font-family: 'Source Sans Pro Regular';
+    -fx-font-size: 16px;    
+    -fx-text-fill: -fx-level-fill;
+    -fx-accent: -fx-primary-fill ;
+    -fx-background-radius: 2, 1;
+    -fx-background-color:  -fx-inputborder-fill, -fx-inputback-fill;  
+    -fx-background-insets: 0, 1;    
+}
+
+.unitinput:focused,
+.unitinputarea:focused,
+.unitcombobox:editable:focused {
+    -fx-background-radius: 4, 2, 1;
+    -fx-background-color:  -fx-inputfocusext-fill, -fx-inputfocus-fill, -fx-inputback-fill;  
+    -fx-background-insets: -2, 0, 1;    
+}
+
+.unitinput > .label,
+.unitinput > .list-cell,
+.unitcombobox:editable > .text-input {
+    -fx-text-fill: -fx-level-fill;
+}
+
+.unitinput > .open-button > .arrow,
+.unitinput > .arrow-button > .arrow {
+    -fx-background-color: -fx-arrow-fill;
+    -fx-padding: 0.166667em 0.333333em 0.166667em 0.333333em; /* 2 4 2 4 */
+    -fx-shape: "M 0 0 h 7 l -3.5 4 z";
+}
+
+.unitinputview {
+    -fx-font-family: 'Source Sans Pro Black';
+    -fx-font-size: 16px;   
+    -fx-text-fill: -fx-level-fill;     
+    -fx-accent: -fx-primary-fill ;
+}
+
+.unitinputcode {
+    -fx-font-family: 'Source Code Pro';
+    -fx-font-size: 14px;
+}
+
+.unitcheckbox {
+    -fx-font-family: 'Source Sans Pro SemiBold';
+    -fx-font-size: 14px;  
+    -fx-text-fill: -fx-level-fill;    
+}
+
+.unitcheckbox > .box {
+    -fx-padding: 2 2 3 3;
+    -fx-background-radius: 2, 0, 0;
+    -fx-background-insets: 0, 1;
+    -fx-background-color:  -fx-inputborder-fill, -fx-inputback-fill;
+    -fx-alignment: center;    
+}
+
+.unitcheckbox > .box > .mark {
+    -fx-background-color: null;
+    -fx-background-insets: 2;
+    -fx-shape: "M173.898 439.404l-166.4-166.4c-9.997-9.997-9.997-26.206 0-36.204l36.203-36.204c9.997-9.998 26.207-9.998 36.204 0L192 312.69 432.095 72.596c9.997-9.997 26.207-9.997 36.204 0l36.203 36.204c9.997 9.997 9.997 26.206 0 36.204l-294.4 294.401c-9.998 9.997-26.207 9.997-36.204-.001z";
+}
+
+.unitcheckbox:selected > .box {
+    -fx-background-color:  -fx-button-fill, -fx-button-fill;    
+}
+
+.unitcheckbox:selected > .box > .mark {
+    -fx-background-color: -fx-inputback-fill;
+}
+
+.unitcheckbox:focused > .box {
+    -fx-background-insets: -2, 0, 1;
+    -fx-background-color: -fx-buttonarmed-fill, -fx-button-fill, -fx-inputback-fill;          
+}
+
+.unitcheckbox:focused:selected > .box {
+    -fx-background-insets: -2, 0, 1;
+    -fx-background-color: -fx-buttonarmed-fill, -fx-button-fill, -fx-button-fill;          
+}
+
+.unitcheckbox:armed > .box {
+    -fx-background-insets: -2, 0, 1;
+    -fx-background-color:  -fx-buttonarmed-fill, -fx-button-fill, -fx-buttonaction-fill;   
+}
+
+.unitcheckbox:selected:armed > .box {
+    -fx-background-insets: -2, 0, 1;
+    -fx-background-color:  -fx-buttonarmed-fill, -fx-button-fill, -fx-buttonaction-fill;         
+}
+
+.unitradiobutton {
+    -fx-font-family: 'Source Sans Pro SemiBold';
+    -fx-font-size: 14px;  
+    -fx-text-fill: -fx-level-fill;    
+}
+
+.unitradiobutton > .radio {
+    -fx-padding: 4;
+    -fx-background-radius: 10, 9, 8;
+    -fx-background-insets: 0, 1;
+    -fx-background-color: -fx-inputborder-fill, -fx-inputback-fill;
+    -fx-alignment: center;    
+}
+.unitradiobutton > .radio > .dot {
+    -fx-background-color: null;
+    -fx-background-insets: 1;
+}
+
+.unitradiobutton:selected > .radio {
+    -fx-background-color:  -fx-button-fill, -fx-inputback-fill;    
+}
+
+.unitradiobutton:selected > .radio > .dot {
+    -fx-background-color: -fx-button-fill;
+}
+
+.unitradiobutton:focused > .radio {
+    -fx-background-insets: -2, 0, 1;
+    -fx-background-color: -fx-buttonarmed-fill, -fx-button-fill, -fx-inputback-fill;          
+}
+
+.unitradiobutton:focused:selected > .radio {
+    -fx-background-insets: -2, 0, 1;
+    -fx-background-color: -fx-buttonarmed-fill, -fx-button-fill, -fx-inputback-fill;          
+}
+
+.unitradiobutton:armed > .radio {
+    -fx-background-insets: -2, 0, 1;
+    -fx-background-color:  -fx-buttonarmed-fill, -fx-button-fill, -fx-buttonaction-fill;   
+}
+
+.unitradiobutton:selected:armed > .radio {
+    -fx-background-insets: -2, 0, 1;
+    -fx-background-color:  -fx-buttonarmed-fill, -fx-button-fill, -fx-buttonaction-fill;         
+}
+
+.scroll-bar {
+    -fx-background-color: #f1f1f1;
+    -fx-background-insets: 1;
+    -fx-background-radius: 1;
+}
+
+.scroll-bar > .thumb {
+    -fx-background-color: #c1c1c1;
+    -fx-background-insets: 2;
+    -fx-background-radius: 1;
+}
+
+.scroll-bar > .thumb:pressed {
+    -fx-background-color: #777777;
+}
+
+.scroll-bar > .increment-button,
+.scroll-bar > .decrement-button {
+    -fx-background-color: #f1f1f1;
+    -fx-color: transparent;
+    -fx-padding: 2;  
+}
+
+.scroll-bar > .increment-button:pressed,
+.scroll-bar > .decrement-button:pressed {
+    -fx-background-color: #777777;
+}
+
+.scroll-bar > .increment-button:pressed > .increment-arrow,
+.scroll-bar > .decrement-button:pressed > .decrement-arrow {
+    -fx-background-color: white;
+}
+
+.scroll-bar:vertical > .increment-button > .increment-arrow,
+.scroll-bar:vertical > .decrement-button > .decrement-arrow {
+
+    -fx-padding: 4 6 4 6;
+    -fx-background-insets: 2;
+    -fx-effect: null;
+}
+.scroll-bar:horizontal > .increment-button > .increment-arrow,
+.scroll-bar:horizontal > .decrement-button > .decrement-arrow {
+    -fx-padding: 6 4 6 4;
+    -fx-background-insets: 2;
+    -fx-effect: null;
+}
+
+/* Unit buttons */
+.unitbutton,
+.unitcombobox:editable > .arrow-button {   
+    -fx-font-family: 'Source Sans Pro Regular';
+    -fx-font-size: 16px;   
+    -fx-text-fill: -fx-buttoncontent-fill;    
+    -fx-background-color:  -fx-button-fill, -fx-button-fill;  
+    -fx-background-radius: 2, 0;
+    -fx-background-insets: 0, 2;
+    -fx-alignment: center;
+}
+.unitbutton > .icon-fill {
+    -fx-fill: -fx-buttoncontent-fill;
+}
+.unitbutton:focused {
+    -fx-background-insets: -2, 1;
+    -fx-background-color: -fx-buttonarmed-fill, -fx-button-fill;          
+}
+.unitbutton:armed,
+.unitcombobox:editable:showing > .arrow-button {
+    -fx-background-insets: -2, 1;
+    -fx-background-color: -fx-buttonarmed-fill,  -fx-buttonaction-fill;             
+}
+
+.unitcombobox:editable > .arrow-button > .arrow {
+    -fx-background-color: -fx-buttoncontent-fill;
+    -fx-padding: 0.166667em 0.333333em 0.166667em 0.333333em; /* 2 4 2 4 */
+    -fx-shape: "M 0 0 h 7 l -3.5 4 z";
+}
+
+.unitcombobox:editable > .text-field {
+    -fx-background-color: -fx-inputback-fill;  
+}
+
+
 
 /* Menu button */
 .menubutton {
@@ -120,68 +474,9 @@
 /* Unit component */
 
 .labelsection {
-    -fx-font-family: 'Source Sans Pro Bold';
-    -fx-font-size: 16px;
-}
-
-.list-cell {
     -fx-font-family: 'Source Sans Pro Regular';
-    -fx-font-size: 16px;       
-}
-
-.unitinput {
-    -fx-font-family: 'Source Sans Pro Black';
-    -fx-font-size: 16px;
+    -fx-font-size: 18px;
     -fx-text-fill: -fx-level-fill;
-    
-    -fx-background-radius: 2, 1;
-    -fx-background-color:  -fx-inputborder-fill, -fx-inputback-fill;  
-    -fx-background-insets: 0, 1;    
-}
-
-.unitinput:focused {
-    -fx-background-radius: 4, 2, 1;
-    -fx-background-color:  -fx-inputfocusext-fill, -fx-inputfocus-fill, -fx-inputback-fill;  
-    -fx-background-insets: -2, 0, 1;    
-}
-
-.unitinputview {
-    -fx-font-family: 'Source Sans Pro Black';
-    -fx-font-size: 16px;   
-    -fx-text-fill: -fx-level-fill;    
-}
-
-.comboinput {
-    -fx-font-family: 'Source Sans Pro Black';
-    -fx-font-size: 16px;
-    -fx-text-fill: -fx-level-fill;
-    
-    -fx-background-radius: 2, 1;
-    -fx-background-color:  -fx-inputborder-fill, -fx-inputback-fill;  
-    -fx-background-insets: 0, 1;       
-}
-
-.comboinput:focused {
-    -fx-background-radius: 4, 2, 1;
-    -fx-background-color:  -fx-inputfocusext-fill, -fx-inputfocus-fill, -fx-inputback-fill;  
-    -fx-background-insets: -2, 0, 1;    
-}
-
-.comboinput > .text-field {
-    -fx-background-color: -fx-inputback-fill;  
-}
-
-.comboinput > .arrow-button {
-    -fx-text-fill: -fx-buttoncontent-fill;    
-    -fx-background-color:  -fx-button-fill, -fx-button-fill;  
-    -fx-background-radius: 2, 0;
-    -fx-background-insets: 2, 4;
-    -fx-alignment: center;
-}
-
-.comboinput > .arrow-button > .arrow {
-    -fx-background-color: white;
-    -fx-fill: -fx-buttoncontent-fill;
 }
 
 .unittitle {
@@ -250,21 +545,7 @@
     -fx-alignment: center; 
 }
 
-/* Unit buttons */
-.unitbutton {   
-    -fx-text-fill: -fx-buttoncontent-fill;    
-    -fx-background-color:  -fx-button-fill, -fx-button-fill;  
-    -fx-background-radius: 2, 0;
-    -fx-background-insets: 0, 2;
-    -fx-alignment: center;
-}
-.unitbutton .icon-fill {
-    -fx-fill: -fx-buttoncontent-fill;
-}
-.unitbutton:armed {
-    -fx-background-insets: -2, 1;
-    -fx-background-color: -fx-buttonarmed-fill,  -fx-buttonaction-fill;             
-}
+
 
 /* Unit toggle buttons */
 .unittogglebutton { 
@@ -296,6 +577,20 @@
 .unittogglebutton:selected:armed {
     -fx-background-insets: -1, 1;
     -fx-background-color: -fx-buttonarmed-fill, #edf1fa;             
+}
+
+
+.menu-item >.label {
+    -fx-font-size: 16px;
+    -fx-font-family: 'Source Sans Pro Regular';      
+}
+.menu-item:focused {
+    -fx-background: -fx-button-fill;
+    -fx-table-cell-border-color: -fx-buttonarmed-fill;
+    -fx-text-fill: -fx-buttoncontent-fill;
+}
+.menu-item:focused > .label {
+    -fx-fill: -fx-buttoncontent-fill;
 }
 
 /* Button base */
@@ -343,30 +638,31 @@
     -fx-background-insets: 0, 0 0 1 0;
     -fx-padding: 5 10 5 10;
 }
-.dialog-buttonlist .button {
+.nextbutton, .dialog-buttonlist .button {
     -fx-button-fill: -fx-secondary-fill;
     
     -fx-font-family: 'Source Sans Pro Regular';
-    -fx-font-size: 18px;
+    -fx-font-size: 16px;
     -fx-text-fill: -fx-buttoncontent-fill;
     -fx-background-radius: 20,18;
     -fx-background-color: -fx-button-fill, -fx-button-fill;  
     -fx-background-insets: 0, 2;
     -fx-alignment: center;        
 }
-.dialog-buttonlist .button > .icon-fill {
+.nextbutton > .icon-fill, .dialog-buttonlist .button > .icon-fill {
     -fx-fill: -fx-buttoncontent-fill;  
 }
-.dialog-buttonlist .button:focused {
+.nextbutton:focused, .dialog-buttonlist .button:focused {
     -fx-background-insets: -2, 1;
     -fx-background-color: -fx-buttonarmed-fill, -fx-button-fill;          
 }
 
+.nextbutton:armed, 
 .dialog-buttonlist .button:armed {
     -fx-background-insets: -2, 1;
     -fx-background-color: -fx-buttonarmed-fill, -fx-buttonaction-fill;            
 }
-.dialog-buttonlist .button:default {
+.nextbutton-default, .dialog-buttonlist .button:default {
     -fx-button-fill: -fx-primary-fill;
 }
 
@@ -419,7 +715,7 @@
 }
 
 .messageview {
-    -fx-font-family: 'Source Code Pro Bold';
+    -fx-font-family: 'Source Code Pro Regular';
     -fx-font-size: 14px;   
     -fx-text-fill: -fx-level-fill;  
 }

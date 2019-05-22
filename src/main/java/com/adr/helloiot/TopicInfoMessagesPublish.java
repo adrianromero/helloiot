@@ -1,5 +1,5 @@
 //    HelloIoT is a dashboard creator for MQTT
-//    Copyright (C) 2018 Adrián Romero Corchado.
+//    Copyright (C) 2019 Adrián Romero Corchado.
 //
 //    This file is part of HelloIot.
 //
@@ -68,11 +68,11 @@ public class TopicInfoMessagesPublish implements TopicInfo {
     @Override
     public Node getGraphic() {
 
-        Text t = IconBuilder.create(FontAwesome.FA_SEND, 12.0).build();
+        Text t = IconBuilder.create(FontAwesome.FA_SEND, 18.0).build();
         t.setFill(Color.WHITE);
         TextFlow tf = new TextFlow(t);
         tf.setTextAlignment(TextAlignment.CENTER);
-        tf.setPadding(new Insets(5, 8, 5, 8));
+        tf.setPadding(new Insets(5, 5, 5, 5));
         tf.setStyle("-fx-background-color: #505050; -fx-background-radius: 5px;");
         tf.setPrefWidth(30.0);        
         return tf; 

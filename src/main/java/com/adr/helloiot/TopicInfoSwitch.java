@@ -67,11 +67,11 @@ public class TopicInfoSwitch implements TopicInfo {
     @Override
     public Node getGraphic() {
 
-        Text t = IconBuilder.create(FontAwesome.FA_TOGGLE_ON, 12.0).build();
+        Text t = IconBuilder.create(FontAwesome.FA_TOGGLE_ON, 18.0).build();
         t.setFill(Color.WHITE);
         TextFlow tf = new TextFlow(t);
         tf.setTextAlignment(TextAlignment.CENTER);
-        tf.setPadding(new Insets(5, 8, 5, 8));
+        tf.setPadding(new Insets(5, 5, 5, 5));
         tf.setStyle("-fx-background-color: #4559d4; -fx-background-radius: 5px;");
         tf.setPrefWidth(30.0);
         return tf;   

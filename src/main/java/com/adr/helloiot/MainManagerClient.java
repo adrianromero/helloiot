@@ -54,10 +54,14 @@ import javafx.application.Application.Parameters;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.StackPane;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
+import javafx.scene.text.TextFlow;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 
 /**
@@ -309,11 +313,14 @@ public class MainManagerClient implements MainManager {
     private Button createTemplatesButton() {
         Button b = new Button(resources.getString("title.templates"), IconBuilder.create(FontAwesome.FA_FOLDER_OPEN, 18.0).styleClass("icon-fill").build());
         b.setFocusTraversable(false);
+        b.setMnemonicParsing(false);
+        b.getStyleClass().add("unitbutton");
         b.setOnAction(evAction -> {
             
             DialogView dialog = new DialogView();
             ListView<TemplateInfo>list = new ListView<>();
             
+            list.getStyleClass().add("unitlistview");
             list.setCellFactory(l -> new TemplatesListCell());
             list.setOnMouseClicked(e -> {
                 if (e.getClickCount() == 2) {
@@ -394,6 +401,8 @@ public class MainManagerClient implements MainManager {
 
         Button b = new Button(resources.getString("button.tradfri"), IconBuilder.create(FontAwesome.FA_SEARCH, 18.0).styleClass("icon-fill").build());       
         b.setFocusTraversable(false);
+        b.setMnemonicParsing(false);
+        b.getStyleClass().add("unitbutton");       
         b.setOnAction(e -> {
             ConfigProperties tempconfig = new ConfigProperties();
             clienttradfri.saveConfig(tempconfig);      
@@ -431,8 +440,13 @@ public class MainManagerClient implements MainManager {
             if (item == null) {
                 setGraphic(null);
                 setText(null);
-            } else {
-                setGraphic(IconBuilder.create(FontAwesome.valueOf(item.icon), 18.0).styleClass("icon-fill").build());
+            } else {               
+                Text t = IconBuilder.create(FontAwesome.valueOf(item.icon), 18.0).styleClass("icon-fill").build();
+                TextFlow tf = new TextFlow(t);
+                tf.setTextAlignment(TextAlignment.CENTER);
+                tf.setPadding(new Insets(2, 5, 2, 5));
+                tf.setPrefWidth(36.0);           
+                setGraphic(tf);
                 setText(item.name);
             }
         }        

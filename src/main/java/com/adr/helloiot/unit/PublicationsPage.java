@@ -112,7 +112,7 @@ public class PublicationsPage extends VBox implements Unit {
         topic.setPromptText(resources.getString("input.topic"));
         topic.setEditable(true);
         topic.setPrefWidth(300.0);
-        topic.getStyleClass().add("comboinput");
+        topic.getStyleClass().add("unitcombobox");
         
         delay = new TextField();
         delay.setPromptText(resources.getString("input.delay"));
@@ -217,7 +217,7 @@ public class PublicationsPage extends VBox implements Unit {
         payload.setPromptText(resources.getString("input.message"));
         payload.setEditable(true);
         payload.setFocusTraversable(false);
-        payload.getStyleClass().add("unitinput");
+        payload.getStyleClass().addAll("unitinputarea", "unitinputcode");
         VBox.setVgrow(payload, Priority.ALWAYS);
         BorderPane.setAlignment(payload, Pos.CENTER);   
         

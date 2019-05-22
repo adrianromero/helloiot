@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<GridPane fx:id="root" hgap="10.0" vgap="10.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<GridPane fx:id="root" styleClass="unitform" hgap="10.0" vgap="10.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
    <columnConstraints>
       <ColumnConstraints minWidth="150.0" prefWidth="150.0" />
       <ColumnConstraints minWidth="200.0" prefWidth="200.0" />
@@ -22,7 +22,7 @@
       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="10.0" />
    </columnConstraints>
    <rowConstraints>
-      <RowConstraints minHeight="10.0" prefHeight="30.0" />
+      <RowConstraints />
       <RowConstraints minHeight="10.0" prefHeight="30.0" />
       <RowConstraints minHeight="10.0" prefHeight="30.0" />
       <RowConstraints minHeight="10.0" prefHeight="30.0" />
@@ -36,62 +36,62 @@
       <RowConstraints minHeight="10.0" prefHeight="30.0" />
    </rowConstraints>
    <children>
-      <Label maxWidth="1.7976931348623157E308" styleClass="formsection" text="%label.mqttbroker" GridPane.columnSpan="2147483647" />
-      <Label fx:id="labelhost" text="%label.host" GridPane.rowIndex="1" />
-      <TextField fx:id="host" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+      <Label maxWidth="1.7976931348623157E308" styleClass="unitsection" text="%label.mqttbroker" GridPane.columnSpan="2147483647" />
+      <Label fx:id="labelhost" styleClass="unitlabel" text="%label.host" GridPane.rowIndex="1" />
+      <TextField fx:id="host" styleClass="unitinput" GridPane.columnIndex="1" GridPane.rowIndex="1" />
       <HBox alignment="CENTER_LEFT" spacing="10.0" GridPane.columnIndex="2" GridPane.columnSpan="3" GridPane.rowIndex="1">
          <children>
-            <Label fx:id="labelport" text="%label.port" />
-            <TextField fx:id="port" prefWidth="60.0" />
-            <CheckBox fx:id="ssl" mnemonicParsing="false" text="%label.ssl" />
-            <CheckBox fx:id="websockets" mnemonicParsing="false" text="%label.websockets" />
+            <Label fx:id="labelport" styleClass="unitlabel" text="%label.port" />
+            <TextField fx:id="port" styleClass="unitinput" prefWidth="60.0" />
+            <CheckBox fx:id="ssl" styleClass="unitcheckbox" mnemonicParsing="false" text="%label.ssl" />
+            <CheckBox fx:id="websockets" styleClass="unitcheckbox" mnemonicParsing="false" text="%label.websockets" />
          </children>
       </HBox>
-      <Label fx:id="labelprotocol" text="%label.protocol" GridPane.rowIndex="2" />
-      <ChoiceBox fx:id="protocol" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-      <Label fx:id="labelkeystore" text="%label.keystore" GridPane.rowIndex="3" />
-      <TextField fx:id="keystore" prefWidth="171.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-      <Label fx:id="labelkeystorepassword" text="%label.keystorepassword" GridPane.columnIndex="2" GridPane.rowIndex="3" />
-      <PasswordField fx:id="keystorepassword" prefWidth="171.0" GridPane.columnIndex="3" GridPane.rowIndex="3" />
-      <Label fx:id="labeltruststore" text="%label.truststore" GridPane.rowIndex="4" />
-      <TextField fx:id="truststore" prefWidth="171.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-      <Label fx:id="labeltruststorepassword" text="%label.truststorepassword" GridPane.columnIndex="2" GridPane.rowIndex="4" />
-      <PasswordField fx:id="truststorepassword" prefWidth="171.0" GridPane.columnIndex="3" GridPane.rowIndex="4" />
-      <Label fx:id="labelcredentials" maxWidth="1.7976931348623157E308" styleClass="formsubsection" text="%label.credentials" GridPane.columnSpan="2147483647" GridPane.rowIndex="5" />
-      <Label fx:id="labelusername" text="%label.username" GridPane.rowIndex="6" />
-      <TextField fx:id="username" prefWidth="171.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-      <Label fx:id="labelpassword" text="%label.password" GridPane.columnIndex="2" GridPane.rowIndex="6" />
-      <PasswordField fx:id="password" prefWidth="171.0" GridPane.columnIndex="3" GridPane.rowIndex="6" />
-      <Label fx:id="labelextendedproperties" maxWidth="1.7976931348623157E308" styleClass="formsubsection" text="%label.extendedproperties" GridPane.columnSpan="2147483647" GridPane.rowIndex="7" />
-      <Label fx:id="labelclientid" text="%label.clientid" GridPane.rowIndex="8" />
-      <TextField fx:id="clientid" GridPane.columnIndex="1" GridPane.rowIndex="8" />
-      <Label fx:id="labeltimeout" text="%label.timeout" GridPane.columnIndex="2" GridPane.rowIndex="8" />
-      <TextField fx:id="timeout" GridPane.columnIndex="3" GridPane.rowIndex="8" />
-      <Label fx:id="labelkeepalive" text="%label.keepalive" GridPane.rowIndex="9" />
-      <TextField fx:id="keepalive" GridPane.columnIndex="1" GridPane.rowIndex="9" />
-      <Label fx:id="labelmaxinflight" text="%label.maxinflight" GridPane.columnIndex="2" GridPane.rowIndex="9" />
-      <TextField fx:id="maxinflight" GridPane.columnIndex="3" GridPane.rowIndex="9" />
-      <Label fx:id="labelversion" text="%label.version" GridPane.rowIndex="10" />
+      <Label fx:id="labelprotocol" styleClass="unitlabel" text="%label.protocol" GridPane.rowIndex="2" />
+      <ChoiceBox fx:id="protocol" styleClass="unitinput" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+      <Label fx:id="labelkeystore" styleClass="unitlabel" text="%label.keystore" GridPane.rowIndex="3" />
+      <TextField fx:id="keystore" styleClass="unitinput" prefWidth="171.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+      <Label fx:id="labelkeystorepassword" styleClass="unitlabel" text="%label.keystorepassword" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+      <PasswordField fx:id="keystorepassword" styleClass="unitinput" prefWidth="171.0" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+      <Label fx:id="labeltruststore" styleClass="unitlabel" text="%label.truststore" GridPane.rowIndex="4" />
+      <TextField fx:id="truststore" styleClass="unitinput" prefWidth="171.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+      <Label fx:id="labeltruststorepassword" styleClass="unitlabel" text="%label.truststorepassword" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+      <PasswordField fx:id="truststorepassword" styleClass="unitinput" prefWidth="171.0" GridPane.columnIndex="3" GridPane.rowIndex="4" />
+      <Label fx:id="labelcredentials" maxWidth="1.7976931348623157E308" styleClass="unitsubsection" text="%label.credentials" GridPane.columnSpan="2147483647" GridPane.rowIndex="5" />
+      <Label fx:id="labelusername" styleClass="unitlabel" text="%label.username" GridPane.rowIndex="6" />
+      <TextField fx:id="username" styleClass="unitinput" prefWidth="171.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+      <Label fx:id="labelpassword" styleClass="unitlabel" text="%label.password" GridPane.columnIndex="2" GridPane.rowIndex="6" />
+      <PasswordField fx:id="password" styleClass="unitinput" prefWidth="171.0" GridPane.columnIndex="3" GridPane.rowIndex="6" />
+      <Label fx:id="labelextendedproperties" maxWidth="1.7976931348623157E308" styleClass="unitsubsection" text="%label.extendedproperties" GridPane.columnSpan="2147483647" GridPane.rowIndex="7" />
+      <Label fx:id="labelclientid" styleClass="unitlabel" text="%label.clientid" GridPane.rowIndex="8" />
+      <TextField fx:id="clientid" styleClass="unitinput" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+      <Label fx:id="labeltimeout" styleClass="unitlabel" text="%label.timeout" GridPane.columnIndex="2" GridPane.rowIndex="8" />
+      <TextField fx:id="timeout" styleClass="unitinput" GridPane.columnIndex="3" GridPane.rowIndex="8" />
+      <Label fx:id="labelkeepalive" styleClass="unitlabel" text="%label.keepalive" GridPane.rowIndex="9" />
+      <TextField fx:id="keepalive" styleClass="unitinput" GridPane.columnIndex="1" GridPane.rowIndex="9" />
+      <Label fx:id="labelmaxinflight" styleClass="unitlabel" text="%label.maxinflight" GridPane.columnIndex="2" GridPane.rowIndex="9" />
+      <TextField fx:id="maxinflight" styleClass="unitinput" GridPane.columnIndex="3" GridPane.rowIndex="9" />
+      <Label fx:id="labelversion" styleClass="unitlabel" text="%label.version" GridPane.rowIndex="10" />
       <HBox alignment="CENTER_LEFT" spacing="10.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="10">
          <children>
-            <RadioButton fx:id="versiondefault" mnemonicParsing="false" selected="true" text="%label.default">
+            <RadioButton fx:id="versiondefault" styleClass="unitradiobutton" mnemonicParsing="false" selected="true" text="%label.default">
                <toggleGroup>
                   <ToggleGroup fx:id="version" />
                </toggleGroup>
             </RadioButton>
-            <RadioButton fx:id="version31" mnemonicParsing="false" text="3.1" toggleGroup="$version" />
-            <RadioButton fx:id="version311" mnemonicParsing="false" text="3.1.1" toggleGroup="$version" />
+            <RadioButton fx:id="version31" styleClass="unitradiobutton" mnemonicParsing="false" text="3.1" toggleGroup="$version" />
+            <RadioButton fx:id="version311" styleClass="unitradiobutton" mnemonicParsing="false" text="3.1.1" toggleGroup="$version" />
          </children>
       </HBox>
-      <Label fx:id="labelbrokerpane" text="%label.brokerpane" GridPane.rowIndex="11" />
+      <Label fx:id="labelbrokerpane" styleClass="unitlabel" text="%label.brokerpane" GridPane.rowIndex="11" />
       <HBox alignment="CENTER_LEFT" spacing="10.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="11" GridPane.valignment="BASELINE">
          <children>
-            <RadioButton fx:id="brokernone" mnemonicParsing="false" selected="true" text="%label.brokernone">
+            <RadioButton fx:id="brokernone" styleClass="unitradiobutton" mnemonicParsing="false" selected="true" text="%label.brokernone">
                <toggleGroup>
                   <ToggleGroup fx:id="broker" />
                </toggleGroup>
             </RadioButton>
-            <RadioButton fx:id="brokermosquitto" mnemonicParsing="false" text="%label.brokermosquitto" toggleGroup="$broker" />
+            <RadioButton fx:id="brokermosquitto" styleClass="unitradiobutton" mnemonicParsing="false" text="%label.brokermosquitto" toggleGroup="$broker" />
          </children>
       </HBox>
    </children>

@@ -45,16 +45,6 @@
     -fx-color4-fill: #17A2B8;    
 }
 
-.headerclient {
-    -fx-spacing: 10px;
-    -fx-padding: 10px;
-}
-
-.headerclienttitle {
-    -fx-font-weight: bold;
-    -fx-font-size: 18px;
-}
-
 /* Next button */
 
 .nextbutton {
@@ -81,21 +71,18 @@
 }
 
 .labelsection {
-    -fx-text-fill: -fx-info-fill;
-    -fx-font-weight: bold;
+    -fx-text-fill: -fx-level-fill;
     -fx-background-insets: 0, 0 5 4 0, 0 5 5 0;
-    -fx-background-color:  -fx-background-container, -fx-info-fill, -fx-background-container;      
-    -fx-padding: 10px 10px 5px 10px;    
+    -fx-background-color:  -fx-background-container, -fx-separator-fill, -fx-background-container;      
+    -fx-padding: 10px 10px 15px 10px;    
 }
 
-.formsection {
-    -fx-font-weight: bold;
+.unitsection {
     -fx-background-insets: 0, 0 5 1 0, 0 5 2 0;
     -fx-background-color:  -fx-background, -fx-separator-fill, -fx-background;      
 }
 
-.formsubsection {
-    -fx-font-weight: bold;
+.unitsubsection {
 }
 
 .icon-fill {
@@ -111,17 +98,6 @@
     -fx-background-insets: 0, 6, 7;
     -fx-background-color: transparent, -fx-border-unit, -fx-background-unit;        
     -fx-padding: 12px 14px 12px 14px;
-}
-
-.listviewbase {
-    -fx-background-radius: 2, 1;
-    -fx-background-color:  -fx-inputborder-fill, -fx-inputback-fill;  
-    -fx-background-insets: 0, 1;       
-}
-.listviewbase:focused {
-    -fx-background-radius: 4, 2, 1;
-    -fx-background-color:  -fx-inputfocusext-fill, -fx-inputfocus-fill, -fx-inputback-fill;  
-    -fx-background-insets: -2, 0, 1;    
 }
 
 .unitinputview {

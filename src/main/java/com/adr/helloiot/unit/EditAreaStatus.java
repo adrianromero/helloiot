@@ -61,7 +61,7 @@ public class EditAreaStatus extends EditStatus {
         statusedit = new TextArea();
         statusedit.setMaxSize(Double.MAX_VALUE,Double.MAX_VALUE);
         statusedit.setPrefHeight(100.0);        
-        statusedit.getStyleClass().add("unitinput");
+        statusedit.getStyleClass().add("unitinputarea");
         HBox.setHgrow(statusedit, Priority.SOMETIMES);
         
         okaction = new Button();
