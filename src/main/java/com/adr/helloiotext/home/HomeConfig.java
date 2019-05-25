@@ -1,5 +1,5 @@
 //    HelloIoT is a dashboard creator for MQTT
-//    Copyright (C) 2018 Adrián Romero Corchado.
+//    Copyright (C) 2018-2019 Adrián Romero Corchado.
 //
 //    This file is part of HelloIot.
 //
@@ -18,7 +18,7 @@
 //
 package com.adr.helloiotext.home;
 
-import com.adr.fonticon.FontAwesome;
+import com.adr.fonticon.IconFontGlyph;
 import com.adr.fonticon.IconBuilder;
 import com.adr.helloiot.ApplicationDevicesUnits;
 import com.adr.helloiot.device.DeviceSimple;
@@ -96,7 +96,7 @@ public class HomeConfig implements ApplicationDevicesUnits {
         cancelbutton.setLabel("");
         cancelbutton.setText(resources.getString("button.cancelarming"));
         cancelbutton.setStyle("-fx-background-color: transparent;");        
-        cancelbutton.setGraphic(IconBuilder.create(FontAwesome.FA_TIMES, 48.0).color(Color.RED).shine(Color.WHITE).build());
+        cancelbutton.setGraphic(IconBuilder.create(IconFontGlyph.FA_SOLID_TIMES, 48.0).color(Color.RED).shine(Color.WHITE).build());
         
         // Armed security
         LabelSection armedlabel = new LabelSection();
@@ -115,7 +115,7 @@ public class HomeConfig implements ApplicationDevicesUnits {
         disarmbutton.setText(resources.getString("button.disarm"));
         disarmbutton.setStyle("-fx-background-color: transparent;");
         disarmbutton.setSecurityKey("mainsecuritykey");
-        disarmbutton.setGraphic(IconBuilder.create(FontAwesome.FA_KEY, 48.0).color(Color.GREEN).shine(Color.WHITE).build());
+        disarmbutton.setGraphic(IconBuilder.create(IconFontGlyph.FA_SOLID_KEY, 48.0).color(Color.GREEN).shine(Color.WHITE).build());
         
         devices = Arrays.asList(lightactions, lightevents, secactions, secstatus, secalarm);
         units = Arrays.asList(devsmng, secmng,

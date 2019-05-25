@@ -1,5 +1,5 @@
 //    HelloIoT is a dashboard creator for MQTT
-//    Copyright (C) 2017-2018 Adrián Romero Corchado.
+//    Copyright (C) 2017-2019 Adrián Romero Corchado.
 //
 //    This file is part of HelloIot.
 //
@@ -19,7 +19,7 @@
 package com.adr.helloiot.unit;
 
 import com.adr.helloiotlib.unit.Units;
-import com.adr.fonticon.FontAwesome;
+import com.adr.fonticon.IconFontGlyph;
 import com.adr.fonticon.IconBuilder;
 import com.adr.helloiotlib.app.IoTApp;
 import com.adr.helloiot.device.DeviceSimple;
@@ -49,7 +49,7 @@ public class ButtonPair extends Tile {
     public Node constructContent() {
 
         goup = new Button();
-        goup.setGraphic(IconBuilder.create(FontAwesome.FA_CHEVRON_UP, 22.0).styleClass("icon-fill").build());
+        goup.setGraphic(IconBuilder.create(IconFontGlyph.FA_SOLID_CHEVRON_UP, 22.0).styleClass("icon-fill").build());
         goup.setContentDisplay(ContentDisplay.TOP);
         goup.getStyleClass().add("buttonbase");
         goup.getStyleClass().add("buttonup");
@@ -61,7 +61,7 @@ public class ButtonPair extends Tile {
         });
 
         godown = new Button();
-        godown.setGraphic(IconBuilder.create(FontAwesome.FA_CHEVRON_DOWN, 22.0).styleClass("icon-fill").build());
+        godown.setGraphic(IconBuilder.create(IconFontGlyph.FA_SOLID_CHEVRON_DOWN, 22.0).styleClass("icon-fill").build());
         godown.setContentDisplay(ContentDisplay.TOP);
         godown.getStyleClass().add("buttonbase");
         godown.getStyleClass().add("buttondown");

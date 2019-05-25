@@ -1,5 +1,5 @@
 //    HelloIoT is a dashboard creator for MQTT
-//    Copyright (C) 2017 Adrián Romero Corchado.
+//    Copyright (C) 2017-2019 Adrián Romero Corchado.
 //
 //    This file is part of HelloIot.
 //
@@ -18,7 +18,7 @@
 //
 package com.adr.helloiot.unit;
 
-import com.adr.fonticon.FontAwesome;
+import com.adr.fonticon.IconFontGlyph;
 import com.adr.fonticon.IconBuilder;
 import java.io.IOException;
 import javafx.event.ActionEvent;
@@ -67,7 +67,7 @@ public class SecurityKeyboard {
 
     @FXML
     public void initialize() {
-        btndelete.setGraphic(IconBuilder.create(FontAwesome.FA_TIMES_CIRCLE_O, 22.0).styleClass("icon-fill").build());
+        btndelete.setGraphic(IconBuilder.create(IconFontGlyph.FA_SOLID_TIMES_CIRCLE, 22.0).styleClass("icon-fill").build());
         password.setText("");
     }
 

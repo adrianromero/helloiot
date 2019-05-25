@@ -18,8 +18,8 @@
 //
 package com.adr.helloiot;
 
-import com.adr.fonticon.FontAwesome;
 import com.adr.fonticon.IconBuilder;
+import com.adr.fonticon.IconFontGlyph;
 import com.adr.helloiot.device.TreePublish;
 import com.adr.helloiot.unit.PublicationsPage;
 import com.adr.helloiot.unit.UnitPage;
@@ -68,7 +68,7 @@ public class TopicInfoMessagesPublish implements TopicInfo {
     @Override
     public Node getGraphic() {
 
-        Text t = IconBuilder.create(FontAwesome.FA_SEND, 18.0).build();
+        Text t = IconBuilder.create(IconFontGlyph.FA_SOLID_PAPER_PLANE, 18.0).build();
         t.setFill(Color.WHITE);
         TextFlow tf = new TextFlow(t);
         tf.setTextAlignment(TextAlignment.CENTER);
@@ -103,7 +103,7 @@ public class TopicInfoMessagesPublish implements TopicInfo {
         PublicationsPage publicationspage = new PublicationsPage();
         publicationspage.setDevice(messagespublish);
         publicationspage.setLabel(null);
-        UnitPage.setPage(publicationspage, "FA_SEND//" + label.getValue());
+        UnitPage.setPage(publicationspage, "FA_SOLID_PAPER_PLANE//" + label.getValue());
         UnitPage.setLayout(publicationspage, "StartFull");
         units.add(publicationspage);
         

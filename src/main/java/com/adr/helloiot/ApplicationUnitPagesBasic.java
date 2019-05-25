@@ -1,5 +1,5 @@
 //    HelloIoT is a dashboard creator for MQTT
-//    Copyright (C) 2017-2018 Adrián Romero Corchado.
+//    Copyright (C) 2017-2019 Adrián Romero Corchado.
 //
 //    This file is part of HelloIot.
 //
@@ -18,7 +18,7 @@
 //
 package com.adr.helloiot;
 
-import com.adr.fonticon.FontAwesome;
+import com.adr.fonticon.IconFontGlyph;
 import com.adr.fonticon.IconBuilder;
 import com.adr.helloiot.unit.UnitPage;
 import java.util.Arrays;
@@ -37,29 +37,29 @@ public class ApplicationUnitPagesBasic implements ApplicationUnitPages {
         ResourceBundle resources = ResourceBundle.getBundle("com/adr/helloiot/fxml/main");
 
         // Application pages
-        UnitPage notfound = new UnitPage("notfound", IconBuilder.create(FontAwesome.FA_BAN, 24.0).styleClass("icon-fill").build(), resources.getString("page.notfound"));
+        UnitPage notfound = new UnitPage("notfound", IconBuilder.create(IconFontGlyph.FA_SOLID_BAN, 24.0).styleClass("icon-fill").build(), resources.getString("page.notfound"));
         notfound.setEmptyLabel(resources.getString("label.notfound"));
 
-        UnitPage start = new UnitPage("start", IconBuilder.create(FontAwesome.FA_STAR_O, 24.0).styleClass("icon-fill").build(), resources.getString("page.start"));
+        UnitPage start = new UnitPage("start", IconBuilder.create(IconFontGlyph.FA_SOLID_STAR, 24.0).styleClass("icon-fill").build(), resources.getString("page.start"));
         start.setEmptyLabel(resources.getString("label.start"));
         start.setSystem(true);
         
         // Security pages       
-        UnitPage security = new UnitPage("security", IconBuilder.create(FontAwesome.FA_KEY, 24.0).build(), resources.getString("page.security"));
+        UnitPage security = new UnitPage("security", IconBuilder.create(IconFontGlyph.FA_SOLID_KEY, 24.0).build(), resources.getString("page.security"));
         security.setEmptyLabel(resources.getString("label.locked"));
         security.setMaxSize(400.0, 150.0);        
         security.setSystem(true);
 
-        UnitPage securityarming = new UnitPage("security_arming", IconBuilder.create(FontAwesome.FA_KEY, 24.0).build(), resources.getString("page.securityarming"));
+        UnitPage securityarming = new UnitPage("security_arming", IconBuilder.create(IconFontGlyph.FA_SOLID_KEY, 24.0).build(), resources.getString("page.securityarming"));
         securityarming.setEmptyLabel(resources.getString("label.locked"));
         securityarming.setMaxSize(400.0, 150.0);
         securityarming.setSystem(true);
 
-        UnitPage securitylocked = new UnitPage("security_locked", IconBuilder.create(FontAwesome.FA_LOCK, 24.0).build(), resources.getString("page.securitylocked"));
+        UnitPage securitylocked = new UnitPage("security_locked", IconBuilder.create(IconFontGlyph.FA_SOLID_LOCK, 24.0).build(), resources.getString("page.securitylocked"));
         securitylocked.setEmptyLabel(resources.getString("label.locked"));
         securitylocked.setSystem(true);
 
-        UnitPage emergency = new UnitPage("emergency", IconBuilder.create(FontAwesome.FA_HEARTBEAT, 24.0).build(), resources.getString("page.emergency"));
+        UnitPage emergency = new UnitPage("emergency", IconBuilder.create(IconFontGlyph.FA_SOLID_HEARTBEAT, 24.0).build(), resources.getString("page.emergency"));
         emergency.setEmptyLabel(resources.getString("label.locked"));
         emergency.setMaxSize(400.0, 150.0);        
         emergency.setSystem(true);        
@@ -67,7 +67,7 @@ public class ApplicationUnitPagesBasic implements ApplicationUnitPages {
         return Arrays.asList(
                 notfound, start,
                 security, securityarming, securitylocked, emergency,
-                new UnitPage("config", IconBuilder.create(FontAwesome.FA_SLIDERS, 24.0).styleClass("icon-fill").build(), resources.getString("page.config")),
-                new UnitPage("Lights", IconBuilder.create(FontAwesome.FA_LIGHTBULB_O, 24.0).styleClass("icon-fill").build(), resources.getString("page.lights")));
+                new UnitPage("config", IconBuilder.create(IconFontGlyph.FA_SOLID_SLIDERS_H, 24.0).styleClass("icon-fill").build(), resources.getString("page.config")),
+                new UnitPage("Lights", IconBuilder.create(IconFontGlyph.FA_SOLID_LIGHTBULB, 24.0).styleClass("icon-fill").build(), resources.getString("page.lights")));
     }
 }

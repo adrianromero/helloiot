@@ -18,8 +18,8 @@
 //
 package com.adr.helloiot;
 
-import com.adr.fonticon.FontAwesome;
 import com.adr.fonticon.IconBuilder;
+import com.adr.fonticon.IconFontGlyph;
 import com.adr.hellocommon.dialog.MessageUtils;
 import com.google.common.io.Resources;
 import java.io.IOException;
@@ -32,7 +32,6 @@ import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
@@ -560,12 +559,12 @@ public class ClientLoginNode {
 
     public void initialize() {
 
-        nextbutton.setGraphic(IconBuilder.create(FontAwesome.FA_PLAY, 18.0).styleClass("icon-fill").build());
+        nextbutton.setGraphic(IconBuilder.create(IconFontGlyph.FA_SOLID_PLAY, 18.0).styleClass("icon-fill").build());
 
-        adddeviceunit.setGraphic(IconBuilder.create(FontAwesome.FA_PLUS, 18.0).styleClass("icon-fill").build());
-        removedeviceunit.setGraphic(IconBuilder.create(FontAwesome.FA_MINUS, 18.0).styleClass("icon-fill").build());
-        updeviceunit.setGraphic(IconBuilder.create(FontAwesome.FA_CHEVRON_UP, 18.0).styleClass("icon-fill").build());
-        downdeviceunit.setGraphic(IconBuilder.create(FontAwesome.FA_CHEVRON_DOWN, 18.0).styleClass("icon-fill").build());
+        adddeviceunit.setGraphic(IconBuilder.create(IconFontGlyph.FA_SOLID_PLUS, 18.0).styleClass("icon-fill").build());
+        removedeviceunit.setGraphic(IconBuilder.create(IconFontGlyph.FA_SOLID_MINUS, 18.0).styleClass("icon-fill").build());
+        updeviceunit.setGraphic(IconBuilder.create(IconFontGlyph.FA_SOLID_CHEVRON_UP, 18.0).styleClass("icon-fill").build());
+        downdeviceunit.setGraphic(IconBuilder.create(IconFontGlyph.FA_SOLID_CHEVRON_DOWN, 18.0).styleClass("icon-fill").build());
 
         edittype.setItems(FXCollections.observableArrayList("PublicationSubscription", "Subscription", "Publication", "Switch", "Code", "MessagesPublish", "MessagesSubscribe"));
         edittype.setConverter(new StringConverter<String>() {

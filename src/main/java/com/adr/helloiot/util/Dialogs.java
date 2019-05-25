@@ -1,5 +1,5 @@
 //    HelloIoT is a dashboard creator for MQTT
-//    Copyright (C) 2018 Adrián Romero Corchado.
+//    Copyright (C) 2018-2019 Adrián Romero Corchado.
 //
 //    This file is part of HelloIot.
 //
@@ -34,10 +34,10 @@ public class Dialogs {
         p.getStyleClass().add("loading-bar");
 
         DialogView dialog = new DialogView();
+        dialog.setCSS("/com/adr/helloiot/styles/loading.css");
         dialog.setMaster(true);
         dialog.setAnimate(false);
         dialog.setContent(p);
-        dialog.addStyleClass("loading-dialog");
-        return dialog;
+        return dialog;      
     }
 }

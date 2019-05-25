@@ -1,5 +1,5 @@
 //    HelloIoT is a dashboard creator for MQTT
-//    Copyright (C) 2017 Adrián Romero Corchado.
+//    Copyright (C) 2017-2019 Adrián Romero Corchado.
 //
 //    This file is part of HelloIot.
 //
@@ -18,7 +18,7 @@
 //
 package com.adr.helloiot.device;
 
-import com.adr.fonticon.FontAwesome;
+import com.adr.fonticon.IconFontGlyph;
 import com.adr.helloiot.graphic.IconStatus;
 import com.adr.helloiot.graphic.Power;
 
@@ -28,7 +28,7 @@ import com.adr.helloiot.graphic.Power;
  */
 public class Engine extends DeviceSwitch {
 
-    public static final IconStatus ICONENGINE = new Power(FontAwesome.FA_COG);
+    public static final IconStatus ICONENGINE = new Power(IconFontGlyph.FA_SOLID_COG);
 
     @Override
     public String getDeviceName() {

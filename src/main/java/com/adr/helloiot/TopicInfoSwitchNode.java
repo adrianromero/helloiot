@@ -1,5 +1,5 @@
 //    HelloIoT is a dashboard creator for MQTT
-//    Copyright (C) 2018 Adrián Romero Corchado.
+//    Copyright (C) 2018-2019 Adrián Romero Corchado.
 //
 //    This file is part of HelloIot.
 //
@@ -18,8 +18,8 @@
 //
 package com.adr.helloiot;
 
-import com.adr.fonticon.FontAwesome;
 import com.adr.fonticon.IconBuilder;
+import com.adr.fonticon.IconFontGlyph;
 import com.adr.helloiot.util.FXMLNames;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -93,7 +93,7 @@ public class TopicInfoSwitchNode implements TopicInfoNode {
             updateCurrent();
         });        
 
-        clearcolor.setGraphic(IconBuilder.create(FontAwesome.FA_TRASH, 14.0).styleClass("icon-fill").build());
+        clearcolor.setGraphic(IconBuilder.create(IconFontGlyph.FA_SOLID_TRASH_ALT, 14.0).styleClass("icon-fill").build());
         editcolor.setValue(null);
         editcolor.valueProperty().addListener((ObservableValue<? extends Color> observable, Color oldValue, Color newValue) -> {
             updateCurrent();

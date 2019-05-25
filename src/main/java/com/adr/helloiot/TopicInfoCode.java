@@ -18,8 +18,8 @@
 //
 package com.adr.helloiot;
 
-import com.adr.fonticon.FontAwesome;
 import com.adr.fonticon.IconBuilder;
+import com.adr.fonticon.IconFontGlyph;
 import com.adr.helloiotlib.device.Device;
 import com.adr.helloiotlib.unit.Unit;
 import java.io.ByteArrayInputStream;
@@ -67,7 +67,7 @@ public class TopicInfoCode implements TopicInfo {
     @Override
     public Node getGraphic() {
 
-        Text t = IconBuilder.create(FontAwesome.FA_FILE_CODE_O, 18.0).build();
+        Text t = IconBuilder.create(IconFontGlyph.FA_SOLID_FILE_CODE, 18.0).build();
         t.setFill(Color.WHITE);
         TextFlow tf = new TextFlow(t);
         tf.setTextAlignment(TextAlignment.CENTER);

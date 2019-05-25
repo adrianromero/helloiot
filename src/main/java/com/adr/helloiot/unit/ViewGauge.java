@@ -1,5 +1,5 @@
 //    HelloIoT is a dashboard creator for MQTT
-//    Copyright (C) 2017-2018 Adrián Romero Corchado.
+//    Copyright (C) 2017-2019 Adrián Romero Corchado.
 //
 //    This file is part of HelloIot.
 //
@@ -151,6 +151,10 @@ public class ViewGauge extends Tile {
         gauge.setUnit(device.getUnit());
         gauge.setFocusTraversable(false);
         gaugecontainer.getChildren().add(gauge);
+        
+//        gauge.setTitle("TITLE");
+//        gauge.setSubTitle("SUBTITLE");
+//        gauge.setUnit("UNIT");
 
         if (getLabel() == null) {
             setLabel(device.getProperties().getProperty("label"));

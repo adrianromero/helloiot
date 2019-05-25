@@ -1,5 +1,5 @@
 //    HelloIoT is a dashboard creator for MQTT
-//    Copyright (C) 2017-2018 Adrián Romero Corchado.
+//    Copyright (C) 2017-2019 Adrián Romero Corchado.
 //
 //    This file is part of HelloIot.
 //
@@ -19,7 +19,7 @@
 package com.adr.helloiot.unit;
 
 import com.adr.helloiotlib.unit.Units;
-import com.adr.fonticon.FontAwesome;
+import com.adr.fonticon.IconFontGlyph;
 import com.adr.fonticon.IconBuilder;
 import com.adr.hellocommon.dialog.MessageUtils;
 import com.adr.helloiotlib.app.IoTApp;
@@ -107,9 +107,9 @@ public class EditStatus extends Tile {
     }
 
     public void initialize() {
-        editaction.setGraphic(IconBuilder.create(FontAwesome.FA_EDIT, 16).styleClass("icon-fill").build());
-        okaction.setGraphic(IconBuilder.create(FontAwesome.FA_CHECK, 16).styleClass("icon-fill").build());
-        cancelaction.setGraphic(IconBuilder.create(FontAwesome.FA_REMOVE, 16).styleClass("icon-fill").build());
+        editaction.setGraphic(IconBuilder.create(IconFontGlyph.FA_SOLID_EDIT, 16).styleClass("icon-fill").build());
+        okaction.setGraphic(IconBuilder.create(IconFontGlyph.FA_SOLID_CHECK, 16).styleClass("icon-fill").build());
+        cancelaction.setGraphic(IconBuilder.create(IconFontGlyph.FA_SOLID_TIMES, 16).styleClass("icon-fill").build());
     }
 
     private void updateStatus(byte[] status) {

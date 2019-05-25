@@ -1,5 +1,5 @@
 //    HelloIoT is a dashboard creator for MQTT
-//    Copyright (C) 2017 Adrián Romero Corchado.
+//    Copyright (C) 2017-2019 Adrián Romero Corchado.
 //
 //    This file is part of HelloIot.
 //
@@ -18,7 +18,7 @@
 //
 package com.adr.helloiot.graphic;
 
-import com.adr.fonticon.FontAwesome;
+import com.adr.fonticon.IconFontGlyph;
 import com.adr.fonticon.IconBuilder;
 import com.adr.fonticon.IconFont;
 import com.adr.helloiotlib.format.StringFormat;
@@ -38,7 +38,7 @@ public class IconColor extends IconStatus {
     }
 
     public IconColor() {
-        this(FontAwesome.FA_LIGHTBULB_O);
+        this(IconFontGlyph.FA_SOLID_LIGHTBULB);
     }
 
     @Override

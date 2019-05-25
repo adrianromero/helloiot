@@ -26,6 +26,7 @@
     -fx-background-unit: #FFFFFF;     
     
     -fx-button-fill: -fx-primary-fill;
+    -fx-buttonhover-fill: derive(-fx-button-fill, 20%);        
     -fx-buttonarmed-fill: derive(-fx-button-fill, 60%);    
     -fx-buttoncontent-fill: ladder(-fx-button-fill, white 69%, black 70%);
     -fx-buttonaction-fill: derive(-fx-button-fill, -20%);

@@ -1,5 +1,5 @@
 //    HelloIoT is a dashboard creator for MQTT
-//    Copyright (C) 2018 Adrián Romero Corchado.
+//    Copyright (C) 2018-2019 Adrián Romero Corchado.
 //
 //    This file is part of HelloIot.
 //
@@ -18,7 +18,7 @@
 //
 package com.adr.helloiot.unit;
 
-import com.adr.fonticon.FontAwesome;
+import com.adr.fonticon.IconFontGlyph;
 import com.adr.fonticon.IconBuilder;
 import com.adr.hellocommon.dialog.MessageUtils;
 import com.adr.helloiot.device.TreePublish;
@@ -125,7 +125,7 @@ public class PublicationsPage extends VBox implements Unit {
         sendmessage.setMnemonicParsing(false);
         sendmessage.setFocusTraversable(false);
         sendmessage.getStyleClass().add("unitbutton");
-        sendmessage.setGraphic(IconBuilder.create(FontAwesome.FA_SEND, 18.0).styleClass("icon-fill").build());
+        sendmessage.setGraphic(IconBuilder.create(IconFontGlyph.FA_SOLID_PAPER_PLANE, 18.0).styleClass("icon-fill").build());
         sendmessage.setOnAction(this::actionSendMessage);
         
         topiccontainer = new HBox(topic, delay, sendmessage);    

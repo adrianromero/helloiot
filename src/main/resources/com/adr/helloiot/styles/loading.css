@@ -1,0 +1,41 @@
+/*
+    HelloIoT is a dashboard creator for MQTT
+    Copyright (C) 2017-2019 Adrián Romero Corchado.
+
+    This file is part of HelloIot.
+
+    HelloIot is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    HelloIot is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with HelloIot.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
+.dialog-body {
+    -fx-background-color: transparent;     
+}
+
+.loading-bar {
+    -fx-pref-width: 250;
+    -fx-pref-height: 20;
+    -fx-min-width: -1;
+    -fx-min-height: 5;
+}
+.loading-bar > .bar {   
+    -fx-background-insets: 1;    
+    -fx-background-radius: 2;  
+}
+.loading-bar:indeterminate > .bar {
+    -fx-background-color: linear-gradient(to left, transparent, blue);
+}
+.loading-bar > .track {   
+    -fx-background-radius: 3; 
+    -fx-background-color: #e0e0e0; 
+}

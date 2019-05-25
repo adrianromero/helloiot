@@ -1,5 +1,5 @@
 //    HelloIoT is a dashboard creator for MQTT
-//    Copyright (C) 2018 Adrián Romero Corchado.
+//    Copyright (C) 2018-2019 Adrián Romero Corchado.
 //
 //    This file is part of HelloIot.
 //
@@ -18,8 +18,8 @@
 //
 package com.adr.helloiot;
 
-import com.adr.fonticon.FontAwesome;
 import com.adr.fonticon.IconBuilder;
+import com.adr.fonticon.IconFontGlyph;
 import com.adr.helloiot.device.DeviceSwitch;
 import com.adr.helloiot.graphic.IconStatus;
 import com.adr.helloiot.mqtt.MQTTProperty;
@@ -67,7 +67,7 @@ public class TopicInfoSwitch implements TopicInfo {
     @Override
     public Node getGraphic() {
 
-        Text t = IconBuilder.create(FontAwesome.FA_TOGGLE_ON, 18.0).build();
+        Text t = IconBuilder.create(IconFontGlyph.FA_SOLID_TOGGLE_ON, 18.0).build();
         t.setFill(Color.WHITE);
         TextFlow tf = new TextFlow(t);
         tf.setTextAlignment(TextAlignment.CENTER);

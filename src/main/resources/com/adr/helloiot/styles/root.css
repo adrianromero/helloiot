@@ -233,24 +233,6 @@
     -fx-background-color: transparent;     
 }
 
-.loading-bar {
-    -fx-pref-width: 250;
-    -fx-pref-height: 20;
-    -fx-min-width: -1;
-    -fx-min-height: 5;
-}
-.loading-bar > .bar {   
-    -fx-background-insets: 1;    
-    -fx-background-radius: 2;  
-}
-.loading-bar:indeterminate > .bar {
-    -fx-background-color: linear-gradient(to left, transparent, blue);
-}
-.loading-bar > .track {   
-    -fx-background-radius: 3; 
-    -fx-background-color: #e0e0e0; 
-}
-
 .messagestitle {
     -fx-text-fill: -fx-info-fill;
     -fx-font-weight: bold;   

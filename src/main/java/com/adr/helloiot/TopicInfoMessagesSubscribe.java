@@ -1,5 +1,5 @@
 //    HelloIoT is a dashboard creator for MQTT
-//    Copyright (C) 2018 Adrián Romero Corchado.
+//    Copyright (C) 2018-2019 Adrián Romero Corchado.
 //
 //    This file is part of HelloIot.
 //
@@ -18,8 +18,8 @@
 //
 package com.adr.helloiot;
 
-import com.adr.fonticon.FontAwesome;
 import com.adr.fonticon.IconBuilder;
+import com.adr.fonticon.IconFontGlyph;
 import com.adr.helloiot.device.MessageStatus;
 import com.adr.helloiot.mqtt.MQTTProperty;
 import com.adr.helloiot.unit.MessagesPage;
@@ -64,7 +64,7 @@ public class TopicInfoMessagesSubscribe implements TopicInfo {
     @Override
     public Node getGraphic() {
 
-        Text t = IconBuilder.create(FontAwesome.FA_ENVELOPE_O, 18.0).build();
+        Text t = IconBuilder.create(IconFontGlyph.FA_SOLID_ENVELOPE_OPEN, 18.0).build();
         t.setFill(Color.WHITE);
         TextFlow tf = new TextFlow(t);
         tf.setTextAlignment(TextAlignment.CENTER);
@@ -98,7 +98,7 @@ public class TopicInfoMessagesSubscribe implements TopicInfo {
         MessagesPage messagespage = new MessagesPage();
         messagespage.setDevice(messagestatus);
         messagespage.setLabel(null);
-        UnitPage.setPage(messagespage, "FA_ENVELOPE_O//" + getTopic());
+        UnitPage.setPage(messagespage, "FA_SOLID_ENVELOPE_OPEN//" + getTopic());
         UnitPage.setLayout(messagespage, "StartFull");
         units.add(messagespage);
         

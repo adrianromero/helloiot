@@ -1,5 +1,5 @@
 //    HelloIoT is a dashboard creator for MQTT
-//    Copyright (C) 2018 Adrián Romero Corchado.
+//    Copyright (C) 2019 Adrián Romero Corchado.
 //
 //    This file is part of HelloIot.
 //
@@ -20,7 +20,7 @@ package com.adr.helloiot.unit;
 
 import com.adr.helloiotlib.unit.Units;
 import com.adr.helloiotlib.unit.Unit;
-import com.adr.fonticon.FontAwesome;
+import com.adr.fonticon.IconFontGlyph;
 import com.adr.fonticon.IconBuilder;
 import com.adr.hellocommon.dialog.MessageUtils;
 import com.adr.helloiotlib.app.EventMessage;
@@ -108,24 +108,28 @@ public class MessagesPage extends BorderPane implements Unit {
         deletemessages.setMnemonicParsing(false);
         deletemessages.setFocusTraversable(false);
         deletemessages.getStyleClass().add("unitbutton");
-        deletemessages.setGraphic(IconBuilder.create(FontAwesome.FA_TRASH, 18.0).styleClass("icon-fill").build());
+        deletemessages.setGraphic(IconBuilder.create(IconFontGlyph.FA_SOLID_TRASH_ALT, 18.0).styleClass("icon-fill").build());
         deletemessages.setOnAction(this::actionDelete);
+        
+        Separator trashsep = new Separator();
+        trashsep.setOrientation(Orientation.VERTICAL);
+        trashsep.setFocusTraversable(false);        
         
         playpause = new ToggleButton();
         playpause.setMnemonicParsing(false);
         playpause.setFocusTraversable(false);
         playpause.getStyleClass().add("unittogglebutton");
-        playpause.setGraphic(IconBuilder.create(FontAwesome.FA_PLAY_CIRCLE, 18.0).styleClass("icon-fill").build());
+        playpause.setGraphic(IconBuilder.create(IconFontGlyph.FA_SOLID_PLAY, 18.0).styleClass("icon-fill").build());
         playpause.setSelected(true);
         playpause.selectedProperty().addListener((ObservableValue<? extends Boolean> ov, Boolean old_val, Boolean new_val) -> {
-            playpause.setGraphic(IconBuilder.create(new_val ? FontAwesome.FA_PLAY_CIRCLE : FontAwesome.FA_PAUSE, 18.0).styleClass("icon-fill").build());
+            playpause.setGraphic(IconBuilder.create(new_val ? IconFontGlyph.FA_SOLID_PLAY : IconFontGlyph.FA_SOLID_PAUSE, 18.0).styleClass("icon-fill").build());
         });        
         
         showdetails = new ToggleButton(resources.getString("label.details"));
         showdetails.setMnemonicParsing(false);
         showdetails.setFocusTraversable(false);
         showdetails.getStyleClass().add("unittogglebutton");
-        showdetails.setGraphic(IconBuilder.create(FontAwesome.FA_PLUS, 18.0).styleClass("icon-fill").build());
+        showdetails.setGraphic(IconBuilder.create(IconFontGlyph.FA_SOLID_PLUS, 18.0).styleClass("icon-fill").build());
         showdetails.selectedProperty().addListener((ObservableValue<? extends Boolean> ov, Boolean old_val, Boolean new_val) -> {
             displayPayload(new_val);
         });
@@ -179,7 +183,7 @@ public class MessagesPage extends BorderPane implements Unit {
         toolbar = new ToolBar();
         BorderPane.setAlignment(toolbar, Pos.CENTER);
         toolbar.getStyleClass().add("messagestoolbar");
-        toolbar.getItems().addAll(deletemessages, playpause, showdetails, formatsep, formatplain, formatjson, formathex, formatbase64);
+        toolbar.getItems().addAll(deletemessages, trashsep, playpause, showdetails, formatsep, formatplain, formatjson, formathex, formatbase64);
         setTop(toolbar);
 
         eventmessageslist = new ListView<>();

@@ -18,8 +18,8 @@
 //
 package com.adr.helloiot;
 
-import com.adr.fonticon.FontAwesome;
 import com.adr.fonticon.IconBuilder;
+import com.adr.fonticon.IconFontGlyph;
 import com.adr.hellocommon.dialog.DialogView;
 import com.adr.hellocommon.dialog.MessageUtils;
 import com.adr.helloiotlib.format.MiniVar;
@@ -250,7 +250,7 @@ public class MainManagerClient implements MainManager {
                 showLogin();           
             });
             helloiotapp.setOnDisconnectAction(showloginevent);
-            helloiotapp.getMainNode().setToolbarButton(showloginevent, IconBuilder.create(FontAwesome.FA_SIGN_OUT, 24.0).styleClass("icon-fill").build(), resources.getString("label.disconnect"));
+            helloiotapp.getMainNode().setToolbarButton(showloginevent, IconBuilder.create(IconFontGlyph.FA_SOLID_SIGN_OUT_ALT, 24.0).styleClass("icon-fill").build(), resources.getString("label.disconnect"));
         } catch (HelloIoTException ex) {
             helloiotapp = null;
             throw ex;            
@@ -311,7 +311,7 @@ public class MainManagerClient implements MainManager {
     }  
         
     private Button createTemplatesButton() {
-        Button b = new Button(resources.getString("title.templates"), IconBuilder.create(FontAwesome.FA_FOLDER_OPEN, 18.0).styleClass("icon-fill").build());
+        Button b = new Button(resources.getString("title.templates"), IconBuilder.create(IconFontGlyph.FA_SOLID_FOLDER_OPEN, 18.0).styleClass("icon-fill").build());
         b.setFocusTraversable(false);
         b.setMnemonicParsing(false);
         b.getStyleClass().add("unitbutton");
@@ -399,7 +399,7 @@ public class MainManagerClient implements MainManager {
     
     private Button createTradfriButton() {
 
-        Button b = new Button(resources.getString("button.tradfri"), IconBuilder.create(FontAwesome.FA_SEARCH, 18.0).styleClass("icon-fill").build());       
+        Button b = new Button(resources.getString("button.tradfri"), IconBuilder.create(IconFontGlyph.FA_SOLID_SEARCH, 18.0).styleClass("icon-fill").build());       
         b.setFocusTraversable(false);
         b.setMnemonicParsing(false);
         b.getStyleClass().add("unitbutton");       
@@ -441,7 +441,7 @@ public class MainManagerClient implements MainManager {
                 setGraphic(null);
                 setText(null);
             } else {               
-                Text t = IconBuilder.create(FontAwesome.valueOf(item.icon), 18.0).styleClass("icon-fill").build();
+                Text t = IconBuilder.create(IconFontGlyph.valueOf(item.icon), 18.0).styleClass("icon-fill").build();
                 TextFlow tf = new TextFlow(t);
                 tf.setTextAlignment(TextAlignment.CENTER);
                 tf.setPadding(new Insets(2, 5, 2, 5));

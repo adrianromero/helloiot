@@ -1,5 +1,5 @@
 //    HelloIoT is a dashboard creator for MQTT
-//    Copyright (C) 2017 Adrián Romero Corchado.
+//    Copyright (C) 2017-2019 Adrián Romero Corchado.
 //
 //    This file is part of HelloIot.
 //
@@ -18,8 +18,8 @@
 //
 package com.adr.helloiot.graphic;
 
-import com.adr.fonticon.FontAwesome;
-import com.adr.fonticon.IconFontList;
+import com.adr.fonticon.IconFontGlyph;
+import com.adr.fonticon.IconFontText;
 import com.adr.helloiotlib.format.StringFormat;
 import java.util.ResourceBundle;
 import javafx.scene.Node;
@@ -42,9 +42,9 @@ public abstract class IconStatus {
         } else if ("BULB".equals(value)) {
             return new Bulb();
         } else if (value.startsWith("BULB/")) {
-            return new Bulb(FontAwesome.valueOf(value.substring(5)));
+            return new Bulb(IconFontGlyph.valueOf(value.substring(5)));
         } else if (value.startsWith("BULBTEXT/")) {
-            return new Bulb(new IconFontList(value.substring(9), "Source Sans Pro Black"));
+            return new Bulb(new IconFontText(value.substring(9), "Source Sans Pro Black"));
         } else if ("PADLOCK".equals(value)) {
             return new Padlock();
         } else if ("TOGGLE".equals(value)) {
@@ -52,17 +52,17 @@ public abstract class IconStatus {
         } else if ("POWER".equals(value)) {
             return new Power();
         } else if (value.startsWith("POWER/")) {
-            return new Power(FontAwesome.valueOf(value.substring(6)));
+            return new Power(IconFontGlyph.valueOf(value.substring(6)));
         } else if (value.startsWith("POWERTEXT/")) {
-            return new Power(new IconFontList(value.substring(10), "Source Sans Pro Black"));
+            return new Power(new IconFontText(value.substring(10), "Source Sans Pro Black"));
         } else if ("COLOR".equals(value)) {
             return new IconColor();
         } else if (value.startsWith("COLOR/")) {
-            return new IconColor(FontAwesome.valueOf(value.substring(6)));
+            return new IconColor(IconFontGlyph.valueOf(value.substring(6)));
         } else if ("BRIGHTNESS".equals(value)) {
             return new IconBrightness();
         } else if (value.startsWith("BRIGHTNESS/")) {
-            return new IconBrightness(FontAwesome.valueOf(value.substring(11)));      
+            return new IconBrightness(IconFontGlyph.valueOf(value.substring(11)));      
         } else {
             throw new IllegalArgumentException("Cannot create IconStatus: " + value);
         }

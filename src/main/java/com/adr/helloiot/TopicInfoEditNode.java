@@ -1,5 +1,5 @@
 //    HelloIoT is a dashboard creator for MQTT
-//    Copyright (C) 2017-2018 Adrián Romero Corchado.
+//    Copyright (C) 2017-2019 Adrián Romero Corchado.
 //
 //    This file is part of HelloIot.
 //
@@ -18,8 +18,8 @@
 //
 package com.adr.helloiot;
 
-import com.adr.fonticon.FontAwesome;
 import com.adr.fonticon.IconBuilder;
+import com.adr.fonticon.IconFontGlyph;
 import com.adr.helloiot.util.FXMLNames;
 import java.util.ResourceBundle;
 import javafx.beans.value.ObservableValue;
@@ -136,13 +136,13 @@ public class TopicInfoEditNode implements TopicInfoNode {
             updateCurrentTopic();
         });
 
-        clearcolor.setGraphic(IconBuilder.create(FontAwesome.FA_TRASH, 14.0).styleClass("icon-fill").build());
+        clearcolor.setGraphic(IconBuilder.create(IconFontGlyph.FA_SOLID_TRASH_ALT, 14.0).styleClass("icon-fill").build());
         editcolor.setValue(null);
         editcolor.valueProperty().addListener((ObservableValue<? extends Color> observable, Color oldValue, Color newValue) -> {
             updateCurrentTopic();
         });
 
-        clearbackground.setGraphic(IconBuilder.create(FontAwesome.FA_TRASH, 14.0).styleClass("icon-fill").build());
+        clearbackground.setGraphic(IconBuilder.create(IconFontGlyph.FA_SOLID_TRASH_ALT, 14.0).styleClass("icon-fill").build());
         editbackground.setValue(null);
         editbackground.valueProperty().addListener((ObservableValue<? extends Color> observable, Color oldValue, Color newValue) -> {
             updateCurrentTopic();

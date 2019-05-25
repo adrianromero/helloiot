@@ -18,8 +18,8 @@
 //
 package com.adr.helloiot;
 
-import com.adr.fonticon.FontAwesome;
 import com.adr.fonticon.IconBuilder;
+import com.adr.fonticon.IconFontGlyph;
 import com.adr.helloiot.device.DeviceStatus;
 import com.adr.helloiot.device.DeviceSimple;
 import com.adr.helloiot.device.TransmitterSimple;
@@ -95,13 +95,13 @@ public class TopicInfoEdit implements TopicInfo {
         Text t;
         String s;
         if ("Subscription".equals(getType())) {
-            t = IconBuilder.create(FontAwesome.FA_COMMENT, 18.0).build();
+            t = IconBuilder.create(IconFontGlyph.FA_SOLID_COMMENT, 18.0).build();
             s = "-fx-background-color: #d44548; -fx-background-radius: 5px;";
         } else if ("Publication".equals(getType())) {
-            t = IconBuilder.create(FontAwesome.FA_SEND, 18.0).build();
+            t = IconBuilder.create(IconFontGlyph.FA_SOLID_PAPER_PLANE, 18.0).build();
             s = "-fx-background-color: #d445d2; -fx-background-radius: 5px;";
         } else { // "PublicationSubscription"
-            t = IconBuilder.create(FontAwesome.FA_PENCIL, 18.0).build();
+            t = IconBuilder.create(IconFontGlyph.FA_SOLID_PENCIL_ALT, 18.0).build();
             s = "-fx-background-color: #9245d4; -fx-background-radius: 5px;";
         }        
         t.setFill(Color.WHITE);

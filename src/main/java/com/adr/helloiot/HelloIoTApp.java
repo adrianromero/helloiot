@@ -1,5 +1,5 @@
 //    HelloIoT is a dashboard creator for MQTT
-//    Copyright (C) 2017-2018 Adrián Romero Corchado.
+//    Copyright (C) 2017-2019 Adrián Romero Corchado.
 //
 //    This file is part of HelloIot.
 //
@@ -20,8 +20,8 @@ package com.adr.helloiot;
 
 import com.adr.helloiotlib.app.IoTApp;
 import com.adr.helloiot.mqtt.ManagerMQTT;
-import com.adr.fonticon.FontAwesome;
 import com.adr.fonticon.IconBuilder;
+import com.adr.fonticon.IconFontGlyph;
 import com.adr.fonticon.decorator.FillPaint;
 import com.adr.fonticon.decorator.Shine;
 import com.adr.hellocommon.dialog.DialogException;
@@ -154,7 +154,7 @@ public class HelloIoTApp implements IoTApp {
             
             // Broker panel
             if ("1".equals(config.get("client.broker").asString())) {
-                UnitPage info = new UnitPage("info", IconBuilder.create(FontAwesome.FA_INFO, 24.0).styleClass("icon-fill").build(), resources.getString("page.info"));
+                UnitPage info = new UnitPage("info", IconBuilder.create(IconFontGlyph.FA_SOLID_INFO, 24.0).styleClass("icon-fill").build(), resources.getString("page.info"));
                 addUnitPages(Arrays.asList(info));
                 addFXMLFileDevicesUnits("local:com/adr/helloiot/panes/mosquitto");
             }          
@@ -274,7 +274,7 @@ public class HelloIoTApp implements IoTApp {
         }
         // Add "main" unit page if needed
         if (!existsUnitPageMain()) {
-            UnitPage main = new UnitPage("main", IconBuilder.create(FontAwesome.FA_HOME, 24.0).styleClass("icon-fill").build(), resources.getString("page.main"));
+            UnitPage main = new UnitPage("main", IconBuilder.create(IconFontGlyph.FA_SOLID_HOME, 24.0).styleClass("icon-fill").build(), resources.getString("page.main"));
             main.setOrder(0);
             appunitpages.add(main);
         }
@@ -346,7 +346,7 @@ public class HelloIoTApp implements IoTApp {
         contentex.setMessage(t.getLocalizedMessage());
         contentex.setException(t);
         dialog.setContent(contentex.getNode());
-        dialog.setIndicator(IconBuilder.create(FontAwesome.FA_TIMES_CIRCLE, 48.0).apply(new FillPaint(Color.web("#FF9999"))).apply(new Shine(Color.RED)).build());
+        dialog.setIndicator(IconBuilder.create(IconFontGlyph.FA_SOLID_TIMES_CIRCLE, 48.0).apply(new FillPaint(Color.web("#FF9999"))).apply(new Shine(Color.RED)).build());
         dialog.setActionDispose((ActionEvent event) -> {
             if (isok.get()) {
                 connection();

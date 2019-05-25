@@ -1,5 +1,5 @@
 //    HelloIoT is a dashboard creator for MQTT
-//    Copyright (C) 2017-2018 Adrián Romero Corchado.
+//    Copyright (C) 2017-2019 Adrián Romero Corchado.
 //
 //    This file is part of HelloIot.
 //
@@ -19,7 +19,7 @@
 package com.adr.helloiot.unit;
 
 import com.adr.helloiotlib.unit.Units;
-import com.adr.fonticon.FontAwesome;
+import com.adr.fonticon.IconFontGlyph;
 import com.adr.fonticon.IconBuilder;
 import com.adr.helloiot.device.DeviceSimple;
 import com.adr.helloiotlib.app.IoTApp;
@@ -88,11 +88,11 @@ public class ButtonsSpinner extends Tile {
     }
 
     public void initialize() {
-        goup.setGraphic(IconBuilder.create(FontAwesome.FA_PLUS, 22.0).styleClass("icon-fill").build());
+        goup.setGraphic(IconBuilder.create(IconFontGlyph.FA_SOLID_PLUS, 22.0).styleClass("icon-fill").build());
         goup.getStyleClass().add("buttonbase");
         goup.getStyleClass().add("buttonup");
         AutoRepeatButtonUtils.install(goup);
-        godown.setGraphic(IconBuilder.create(FontAwesome.FA_MINUS, 22.0).styleClass("icon-fill").build());
+        godown.setGraphic(IconBuilder.create(IconFontGlyph.FA_SOLID_MINUS, 22.0).styleClass("icon-fill").build());
         godown.getStyleClass().add("buttonbase");
         godown.getStyleClass().add("buttondown");
         AutoRepeatButtonUtils.install(godown);

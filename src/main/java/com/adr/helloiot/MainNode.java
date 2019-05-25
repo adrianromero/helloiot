@@ -1,5 +1,5 @@
 //    HelloIoT is a dashboard creator for MQTT
-//    Copyright (C) 2017-2018 Adrián Romero Corchado.
+//    Copyright (C) 2017-2019 Adrián Romero Corchado.
 //
 //    This file is part of HelloIot.
 //
@@ -20,9 +20,8 @@ package com.adr.helloiot;
 
 import com.adr.helloiotlib.app.IoTApp;
 import com.adr.helloiot.unit.UnitPage;
-import com.adr.fonticon.FontAwesome;
-import com.adr.fonticon.Icon;
 import com.adr.fonticon.IconBuilder;
+import com.adr.fonticon.IconFontGlyph;
 import com.adr.hellocommon.dialog.DialogView;
 import com.adr.hellocommon.dialog.MessageUtils;
 import com.adr.helloiot.device.DeviceSimple;
@@ -69,6 +68,7 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 import javafx.util.Duration;
 
 public final class MainNode {
@@ -200,13 +200,13 @@ public final class MainNode {
         
         anchormain.getChildren().addAll(appcontainer, listpagesgray, scrollpages);
                 
-        Icon icon1 = IconBuilder.create(FontAwesome.FA_VOLUME_UP, 72.0).apply(s -> {
+        Text icon1 = IconBuilder.create(IconFontGlyph.FA_SOLID_VOLUME_UP, 72.0).apply(s -> {
             s.setFill(Color.WHITE);
             s.setStroke(Color.GRAY);
             s.setStrokeWidth(1.0);
         }).build();
         icon1.setScaleX(-1.0);
-        Icon icon2 = IconBuilder.create(FontAwesome.FA_VOLUME_UP, 72.0).apply(s -> {
+        Text icon2 = IconBuilder.create(IconFontGlyph.FA_SOLID_VOLUME_UP, 72.0).apply(s -> {
             s.setFill(Color.WHITE);
             s.setStroke(Color.GRAY);
             s.setStrokeWidth(1.0);
@@ -353,7 +353,7 @@ public final class MainNode {
 
         if (appexitbutton) {
             exitbutton.setVisible(true);
-            exitbutton.setGraphic(IconBuilder.create(FontAwesome.FA_POWER_OFF, 18.0).styleClass("icon-fill").build());
+            exitbutton.setGraphic(IconBuilder.create(IconFontGlyph.FA_SOLID_POWER_OFF, 18.0).styleClass("icon-fill").build());
             exitbutton.setOnAction(ev -> {
                 rootpane.getScene().getWindow().hide();
             });
@@ -362,7 +362,7 @@ public final class MainNode {
             headerbox.getChildren().remove(exitbutton);
             exitbutton = null;
         }
-        menubutton.setGraphic(IconBuilder.create(FontAwesome.FA_NAVICON, 18.0).styleClass("icon-fill").build());
+        menubutton.setGraphic(IconBuilder.create(IconFontGlyph.FA_SOLID_BARS, 18.0).styleClass("icon-fill").build());
         menubutton.setDisable(true);
         
         if (appclock) {
@@ -485,14 +485,14 @@ public final class MainNode {
     private UnitPage buildUnitPage(String name) {
         UnitPage unitpage = unitpages.get(Strings.isNullOrEmpty(name) ? "main" : name);
         if (unitpage == null) {
-            FontAwesome fa;
+            IconFontGlyph fa;
             String label;
             int i = name.indexOf("//");
             if (i > 0) {
-                fa = FontAwesome.valueOf(name.substring(0, i));
+                fa = IconFontGlyph.valueOf(name.substring(0, i));
                 label = name.substring(i + 2);
             } else {
-                fa = FontAwesome.FA_CUBES;
+                fa = IconFontGlyph.FA_SOLID_CUBES;
                 label = name;                
             }
 
