@@ -137,6 +137,10 @@ public class PublicationsPage extends VBox implements Unit {
         retained.setMnemonicParsing(false);
         retained.setFocusTraversable(false);
         retained.getStyleClass().add("unittogglebutton");  
+        
+        Separator formatsep0 = new Separator();
+        formatsep0.setOrientation(Orientation.VERTICAL);
+        formatsep0.setFocusTraversable(false);          
 
         qosgroup = new ToggleGroup();
         
@@ -211,7 +215,7 @@ public class PublicationsPage extends VBox implements Unit {
         toolbar = new ToolBar();
         BorderPane.setAlignment(toolbar, Pos.CENTER);
         toolbar.getStyleClass().add("messagestoolbar");
-        toolbar.getItems().addAll(retained, qos0, qos1, qos2, formatsep, formatplain, formatjson, formathex, formatbase64);
+        toolbar.getItems().addAll(retained, formatsep0, qos0, qos1, qos2, formatsep, formatplain, formatjson, formathex, formatbase64);
         
         payload = new TextArea();
         payload.setPromptText(resources.getString("input.message"));
