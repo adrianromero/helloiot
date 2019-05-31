@@ -246,6 +246,7 @@ public class ClientLoginNode {
         edittype.getStyleClass().add("unitinput");
         GridPane.setRowIndex(edittype, 1);
         GridPane.setColumnIndex(edittype, 1);
+        GridPane.setColumnSpan(edittype, 2);
         
         Label lprops = new Label(resources.getString("label.properties"));
         lprops.getStyleClass().add("unitsection");
@@ -408,9 +409,11 @@ public class ClientLoginNode {
         devicesunitslist_mobile = new ComboBox<>();
         devicesunitslist_mobile.setMinSize(280.0, 40.0);
         devicesunitslist_mobile.setPrefSize(280.0, 40.0);
+        devicesunitslist_mobile.setMaxSize(Double.MAX_VALUE, 40.0);
         devicesunitslist_mobile.getStyleClass().add("unitinput");
         devicesunitslist_mobile.setButtonCell(new DevicesUnitsListCell()); 
-        devicesunitslist_mobile.setCellFactory((ListView<TopicInfo> list) -> new DevicesUnitsListCell());           
+        devicesunitslist_mobile.setCellFactory((ListView<TopicInfo> list) -> new DevicesUnitsListCell());  
+        HBox.setHgrow(devicesunitslist_mobile, Priority.SOMETIMES);
         devicesunitsselection = devicesunitslist_mobile.getSelectionModel();
         devicesunitsitems = FXCollections.observableArrayList(t -> new Observable[]{
             t.getLabel()
@@ -424,6 +427,8 @@ public class ClientLoginNode {
         });
         
         devicesunitscounter_mobile = new Label();
+        devicesunitscounter_mobile.setMinWidth(80.0);
+        devicesunitscounter_mobile.setAlignment(Pos.CENTER);
         devicesunitscounter_mobile.getStyleClass().add("unitlabel");
         
         hboxdeviceunitscontainer.getChildren().addAll(devicesunitslist_mobile, devicesunitscounter_mobile);

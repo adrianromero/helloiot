@@ -15,7 +15,7 @@
       <ColumnConstraints minWidth="150.0" prefWidth="150.0" />
       <ColumnConstraints minWidth="10.0" prefWidth="200.0" />
       <ColumnConstraints minWidth="10.0" prefWidth="150.0" />
-      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+      <ColumnConstraints hgrow="SOMETIMES" />
    </columnConstraints>
    <rowConstraints>
       <RowConstraints minHeight="10.0" prefHeight="30.0" />
