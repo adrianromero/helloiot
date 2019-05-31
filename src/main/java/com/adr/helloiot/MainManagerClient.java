@@ -212,7 +212,8 @@ public class MainManagerClient implements MainManager {
         config.put("mqtt.keepaliveinterval", new MiniVarInt(Integer.parseInt(configprops.getProperty("mqtt.keepaliveinterval", Integer.toString(MqttConnectOptions.KEEP_ALIVE_INTERVAL_DEFAULT)))));
         config.put("mqtt.maxinflight", new MiniVarInt(Integer.parseInt(configprops.getProperty("mqtt.maxinflight", Integer.toString(MqttConnectOptions.MAX_INFLIGHT_DEFAULT)))));
         config.put("mqtt.version", new MiniVarInt(Integer.parseInt(configprops.getProperty("mqtt.version", Integer.toString(MqttConnectOptions.MQTT_VERSION_DEFAULT))))); // MQTT_VERSION_DEFAULT = 0; MQTT_VERSION_3_1 = 3; MQTT_VERSION_3_1_1 = 4;
-        config.put("client.broker", new MiniVarString(configprops.getProperty("client.broker", "0")));
+        config.put("mqtt.topicsys", new MiniVarString(configprops.getProperty("client.topicsys", "system")));
+        config.put("mqtt.broker", new MiniVarString(configprops.getProperty("mqtt.broker", "0")));
         
         config.put("tradfri.host", new MiniVarString(configprops.getProperty("tradfri.host", "")));
         config.put("tradfri.identity", new MiniVarString(configprops.getProperty("tradfri.identity", "")));

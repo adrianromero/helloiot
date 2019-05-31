@@ -21,6 +21,7 @@ package com.adr.helloiot.mqtt;
 import com.adr.helloiotlib.app.EventMessage;
 import com.adr.helloiot.GroupManagers;
 import com.adr.helloiot.ManagerProtocol;
+import com.adr.helloiot.properties.VarProperties;
 import com.adr.helloiotlib.format.MiniVar;
 import com.adr.helloiotlib.format.MiniVarBoolean;
 import com.adr.helloiotlib.format.MiniVarInt;
@@ -73,21 +74,42 @@ public class ManagerMQTT implements MqttCallback, ManagerProtocol {
     private final List<Integer> workqos = new ArrayList<>();
     private final ResourceBundle resources;
 
-    public ManagerMQTT(String url, String username, String password, String clientid, int timeout, int keepalive, int version, int maxinflight, String topicsys, Properties sslproperties) {
-
-        this.url = url;
-        this.username = username;
-        this.password = password;
-        this.clientid = clientid;
-        this.timeout = timeout;
-        this.keepalive = keepalive;
-        this.version = version;
-        this.maxinflight = maxinflight;
-        this.topicsys = topicsys;
-        this.sslproperties = sslproperties;
+    public ManagerMQTT(VarProperties props) {
+        boolean websockets = props.get("websockets").asBoolean();
+        boolean ssl = props.get("ssl").asBoolean();
+        String protocol = websockets
+                ? (ssl ? "wss" : "ws")
+                : (ssl ? "ssl" : "tcp");
+        
+        url = protocol + "://" + props.get("host").asString() + ":" + Integer.toString(props.get("port").asInt());
+        username = props.get("username").asString();
+        password = props.get("password").asString();
+        clientid = props.get("clientid").asString();
+        timeout = props.get("connectiontimeout").asInt();
+        keepalive = props.get("keepaliveinterval").asInt();
+        version = props.get("version").asInt();
+        maxinflight = props.get("maxinflight").asInt();
+        topicsys = props.get("topicsys").asString();  
+        
+        if (ssl) {
+            sslproperties = new Properties();
+            sslproperties.setProperty("com.ibm.ssl.protocol", props.get("protocol").asString());
+            if (!props.get("keystore").isEmpty()) {
+                sslproperties.setProperty("com.ibm.ssl.keyStore", props.get("keystore").asString());
+                sslproperties.setProperty("com.ibm.ssl.keyStorePassword", props.get("keystorepassword").asString());
+                sslproperties.setProperty("com.ibm.ssl.keyStoreType", "JKS");                    
+            }
+            if (!props.get("truststore").isEmpty()) {
+                sslproperties.setProperty("com.ibm.ssl.trustStore", props.get("truststore").asString());
+                sslproperties.setProperty("com.ibm.ssl.trustStorePassword", props.get("truststorepassword").asString());
+                sslproperties.setProperty("com.ibm.ssl.trustStoreType", "JKS");
+            }
+        } else {
+            sslproperties = null;
+        }        
 
         this.mqttClient = null;
-        this.resources = ResourceBundle.getBundle("com/adr/helloiot/resources/helloiot");
+        this.resources = ResourceBundle.getBundle("com/adr/helloiot/resources/helloiot");        
     }
 
     @Override

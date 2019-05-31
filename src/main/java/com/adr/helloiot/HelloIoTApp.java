@@ -38,6 +38,7 @@ import com.adr.helloiotlib.format.MiniVar;
 import com.adr.helloiot.media.SilentClipFactory;
 import com.adr.helloiot.media.StandardClipFactory;
 import com.adr.helloiot.mqtt.MQTTProperty;
+import com.adr.helloiot.properties.VarProperties;
 import com.adr.helloiot.tradfri.ManagerTradfri;
 import com.adr.helloiot.unit.UnitPage;
 import com.adr.helloiot.util.CompletableAsync;
@@ -100,60 +101,18 @@ public class HelloIoTApp implements IoTApp {
         addAppDevicesUnits(config.get("client.topicapp").asString());
 
         ManagerComposed manager = new ManagerComposed();
-        manager.addManagerProtocol(
-                "_LOCAL_/",
-                new ManagerLocal(
-                        config.get("client.topicapp").asString()));
+        
+        manager.addManagerProtocol("_LOCAL_/", new ManagerLocal(new VarProperties(config, "client.")));
 
         if (HTTPUtils.getAddress(config.get("tradfri.host").asString()) != null) {
-            manager.addManagerProtocol(
-                    "TRÅDFRI/",
-                    new ManagerTradfri(
-                            config.get("tradfri.host").asString(),
-                            config.get("tradfri.identity").asString(),
-                            config.get("tradfri.psk").asString()));
+            manager.addManagerProtocol("TRÅDFRI/", new ManagerTradfri(new VarProperties(config, "tradfri.")));
         }
 
         if (HTTPUtils.getAddress(config.get("mqtt.host").asString()) != null) {
-            boolean websockets = config.get("mqtt.websockets").asBoolean();
-            boolean ssl = config.get("mqtt.ssl").asBoolean();
-            String protocol = websockets
-                    ? (ssl ? "wss" : "ws")
-                    : (ssl ? "ssl" : "tcp");
-            Properties sslproperties;
-            if (ssl) {
-                sslproperties = new Properties();
-                sslproperties.setProperty("com.ibm.ssl.protocol", config.get("mqtt.protocol").asString());
-                if (!config.get("mqtt.keystore").isEmpty()) {
-                    sslproperties.setProperty("com.ibm.ssl.keyStore", config.get("mqtt.keystore").asString());
-                    sslproperties.setProperty("com.ibm.ssl.keyStorePassword", config.get("mqtt.keystorepassword").asString());
-                    sslproperties.setProperty("com.ibm.ssl.keyStoreType", "JKS");                    
-                }
-                if (!config.get("mqtt.truststore").isEmpty()) {
-                    sslproperties.setProperty("com.ibm.ssl.trustStore", config.get("mqtt.truststore").asString());
-                    sslproperties.setProperty("com.ibm.ssl.trustStorePassword", config.get("mqtt.truststorepassword").asString());
-                    sslproperties.setProperty("com.ibm.ssl.trustStoreType", "JKS");
-                }
-            } else {
-                sslproperties = null;
-            }
-            String mqtturl = protocol + "://" + config.get("mqtt.host").asString() + ":" + Integer.toString(config.get("mqtt.port").asInt());
-            manager.addManagerProtocol(
-                    "",
-                    new ManagerMQTT(
-                            mqtturl,
-                            config.get("mqtt.username").asString(),
-                            config.get("mqtt.password").asString(),
-                            config.get("mqtt.clientid").asString(),
-                            config.get("mqtt.connectiontimeout").asInt(),
-                            config.get("mqtt.keepaliveinterval").asInt(),
-                            config.get("mqtt.version").asInt(),
-                            config.get("mqtt.maxinflight").asInt(),
-                            config.get("client.topicsys").asString(),
-                            sslproperties));
+            manager.addManagerProtocol("", new ManagerMQTT(new VarProperties(config, "mqtt.")));
             
             // Broker panel
-            if ("1".equals(config.get("client.broker").asString())) {
+            if ("1".equals(config.get("mqtt.broker").asString())) {
                 UnitPage info = new UnitPage("info", IconBuilder.create(IconFontGlyph.FA_SOLID_INFO, 24.0).styleClass("icon-fill").build(), resources.getString("page.info"));
                 addUnitPages(Arrays.asList(info));
                 addFXMLFileDevicesUnits("local:com/adr/helloiot/panes/mosquitto");

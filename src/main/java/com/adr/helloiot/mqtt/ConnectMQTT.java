@@ -119,7 +119,7 @@ public class ConnectMQTT {
             versiondefault.setSelected(true);
         }
 
-        switch (configprops.getProperty("client.broker", "0")) {
+        switch (configprops.getProperty("mqtt.broker", "0")) {
         case "1":
             brokermosquitto.setSelected(true);
             break;
@@ -146,7 +146,7 @@ public class ConnectMQTT {
         configprops.setProperty("mqtt.maxinflight", maxinflight.getText());
         configprops.setProperty("mqtt.version", Integer.toString(getVersion()));
 
-        configprops.setProperty("client.broker", getBrokerPane());
+        configprops.setProperty("mqtt.broker", getBrokerPane());
     }
 
     public int getVersion() {

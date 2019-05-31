@@ -18,6 +18,7 @@
 //
 package com.adr.helloiot;
 
+import com.adr.helloiot.properties.VarProperties;
 import com.adr.helloiotlib.app.EventMessage;
 import com.adr.helloiotlib.format.StringFormatIdentity;
 import com.adr.helloiot.util.CompletableAsync;
@@ -51,8 +52,8 @@ public class ManagerLocal implements ManagerProtocol {
     
     private ConcurrentMap<String, byte[]> mapClient;
 
-    public ManagerLocal(String topicapp) {
-        this.topicapp = topicapp;       
+    public ManagerLocal(VarProperties props) {
+        topicapp = props.get("topicapp").asString();
         mapClient = null;
     }
 

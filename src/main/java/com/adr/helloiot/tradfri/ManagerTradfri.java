@@ -25,6 +25,7 @@ package com.adr.helloiot.tradfri;
 import com.adr.helloiotlib.app.EventMessage;
 import com.adr.helloiot.GroupManagers;
 import com.adr.helloiot.ManagerProtocol;
+import com.adr.helloiot.properties.VarProperties;
 import com.adr.helloiot.util.CompletableAsync;
 import com.adr.helloiot.util.HTTPUtils;
 import com.adr.helloiotlib.format.MiniVar;
@@ -86,14 +87,20 @@ public class ManagerTradfri implements ManagerProtocol {
     private final List<CoapObserveRelation> watching = new ArrayList<>();
     private ListenableScheduledFuture<?> registrations;
 
+    public ManagerTradfri(VarProperties props) {
+        host = props.get("host").asString();
+        coapIP = HTTPUtils.getAddress(host);
+        identity = props.get("identity").asString();
+        psk = props.get("psk").asString();     
+    }
+    
     public ManagerTradfri(String host, String identity, String psk) {
-        // Create COAP connection
         this.host = host;
         this.coapIP = HTTPUtils.getAddress(host);
         this.identity = identity;
         this.psk = psk;
     }
-
+    
     @Override
     public void registerTopicsManager(GroupManagers group, Consumer<Throwable> lost) {
         this.group = group;
