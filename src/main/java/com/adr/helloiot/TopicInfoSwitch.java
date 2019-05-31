@@ -112,10 +112,12 @@ public class TopicInfoSwitch implements TopicInfo {
         s.setText(getLabel().getValue());
         s.setDevice(l);
         s.setIconStatus(IconStatus.valueOf(icon));
+        String style = "-fx-background-color: transparent;";
         Color c = color;
         if (c != null) {
-            s.setStyle("-fx-base:" + webColor(c) + "; -fx-button-fill:" + webColor(c) + ";");
+            style += " -fx-base:" + webColor(c) + "; -fx-button-fill:" + webColor(c) + ";";
         }
+        s.setStyle(style);
         UnitPage.setPage(s, page);
         return new DevicesUnits(Arrays.asList(l), Arrays.asList(s));
     }
