@@ -1,5 +1,5 @@
 //    HelloIoT is a dashboard creator for MQTT
-//    Copyright (C) 2018 Adrián Romero Corchado.
+//    Copyright (C) 2018-2019 Adrián Romero Corchado.
 //
 //    This file is part of HelloIot.
 //
@@ -149,7 +149,7 @@ public class ManagerMQTT implements MqttCallback, ManagerProtocol {
             options.setAutomaticReconnect(false);
             options.setMaxInflight(maxinflight);
             options.setSSLProperties(sslproperties);
-            options.setWill(topicsys + "/app/" + clientid, new StringFormatSwitch().devalue(MiniVarBoolean.FALSE), 0, true);
+            options.setWill(topicsys + "app/" + clientid, new StringFormatSwitch().devalue(MiniVarBoolean.FALSE), 0, true);
             mqttClient.connect(options).waitForCompletion(1000);
             mqttClient.setCallback(this);
             if (listtopics.length > 0) {
@@ -166,7 +166,7 @@ public class ManagerMQTT implements MqttCallback, ManagerProtocol {
         MqttMessage mm = new MqttMessage(new StringFormatSwitch().devalue(value));
         mm.setQos(0);
         mm.setRetained(true);
-        mqttClient.publish(topicsys + "/app/" + clientid, mm).waitForCompletion();
+        mqttClient.publish(topicsys + "app/" + clientid, mm).waitForCompletion();
     }
 
     @Override

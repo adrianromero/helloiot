@@ -1,5 +1,5 @@
 //    HelloIoT is a dashboard creator for MQTT
-//    Copyright (C) 2018 Adrián Romero Corchado.
+//    Copyright (C) 2018-2019 Adrián Romero Corchado.
 //
 //    This file is part of HelloIot.
 //
@@ -18,8 +18,9 @@
 //
 package com.adr.helloiot.mqtt;
 
-import com.adr.helloiot.ConfigProperties;
+import com.adr.helloiot.ConnectUI;
 import com.adr.helloiot.SSLProtocol;
+import com.adr.helloiot.SubProperties;
 import com.adr.helloiot.util.CryptUtils;
 import com.adr.helloiot.util.FXMLNames;
 import com.adr.helloiot.util.HTTPUtils;
@@ -39,7 +40,7 @@ import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
  *
  * @author adrian
  */
-public class ConnectMQTT {
+public class ConnectMQTT implements ConnectUI {
 
     @FXML private GridPane root;
     @FXML private Label labelhost;
@@ -79,6 +80,8 @@ public class ConnectMQTT {
     @FXML private Label labelbrokerpane;
     @FXML private RadioButton brokernone;
     @FXML private RadioButton brokermosquitto;
+    
+    private String topicsys;
 
     public ConnectMQTT() {
         FXMLNames.load(this, "com/adr/helloiot/fxml/connectmqtt");            
@@ -91,24 +94,25 @@ public class ConnectMQTT {
         ssl.selectedProperty().addListener((ov, old_val, new_val) -> disableMQTT(HTTPUtils.getAddress(host.getText()) == null, new_val));
         disableMQTT(HTTPUtils.getAddress(host.getText()) == null, ssl.isSelected());
     }
-
-    public void loadConfig(ConfigProperties configprops) {
-        host.setText(configprops.getProperty("mqtt.host", "localhost"));
-        port.setText(configprops.getProperty("mqtt.port", "1883"));
-        ssl.setSelected(Boolean.parseBoolean(configprops.getProperty("mqtt.ssl", "false")));
-        websockets.setSelected(Boolean.parseBoolean(configprops.getProperty("mqtt.websockets", "false")));
-        protocol.getSelectionModel().select(SSLProtocol.valueOfDefault(configprops.getProperty("mqtt.protocol", "TLSv12")));
-        keystore.setText(configprops.getProperty("mqtt.keystore", ""));
-        keystorepassword.setText(configprops.getProperty("mqtt.keystorepassword", ""));
-        truststore.setText(configprops.getProperty("mqtt.truststore", ""));
-        truststorepassword.setText(configprops.getProperty("mqtt.truststorepassword", ""));
-        username.setText(configprops.getProperty("mqtt.username", ""));
-        password.setText(configprops.getProperty("mqtt.password", ""));
-        clientid.setText(configprops.getProperty("mqtt.clientid", CryptUtils.generateID()));
-        timeout.setText(configprops.getProperty("mqtt.connectiontimeout", Integer.toString(MqttConnectOptions.CONNECTION_TIMEOUT_DEFAULT)));
-        keepalive.setText(configprops.getProperty("mqtt.keepaliveinterval", Integer.toString(MqttConnectOptions.KEEP_ALIVE_INTERVAL_DEFAULT)));
-        maxinflight.setText(configprops.getProperty("mqtt.maxinflight", Integer.toString(MqttConnectOptions.MAX_INFLIGHT_DEFAULT)));
-        switch (Integer.parseInt(configprops.getProperty("mqtt.version", Integer.toString(MqttConnectOptions.MQTT_VERSION_DEFAULT)))) {
+    
+    @Override
+    public void loadConfig(SubProperties configprops) {
+        host.setText(configprops.getProperty("host", "localhost"));
+        port.setText(configprops.getProperty("port", "1883"));
+        ssl.setSelected(Boolean.parseBoolean(configprops.getProperty("ssl", "false")));
+        websockets.setSelected(Boolean.parseBoolean(configprops.getProperty("websockets", "false")));
+        protocol.getSelectionModel().select(SSLProtocol.valueOfDefault(configprops.getProperty("protocol", "TLSv12")));
+        keystore.setText(configprops.getProperty("keystore", ""));
+        keystorepassword.setText(configprops.getProperty("keystorepassword", ""));
+        truststore.setText(configprops.getProperty("truststore", ""));
+        truststorepassword.setText(configprops.getProperty("truststorepassword", ""));
+        username.setText(configprops.getProperty("username", ""));
+        password.setText(configprops.getProperty("password", ""));
+        clientid.setText(configprops.getProperty("clientid", CryptUtils.generateID()));
+        timeout.setText(configprops.getProperty("connectiontimeout", Integer.toString(MqttConnectOptions.CONNECTION_TIMEOUT_DEFAULT)));
+        keepalive.setText(configprops.getProperty("keepaliveinterval", Integer.toString(MqttConnectOptions.KEEP_ALIVE_INTERVAL_DEFAULT)));
+        maxinflight.setText(configprops.getProperty("maxinflight", Integer.toString(MqttConnectOptions.MAX_INFLIGHT_DEFAULT)));
+        switch (Integer.parseInt(configprops.getProperty("version", Integer.toString(MqttConnectOptions.MQTT_VERSION_DEFAULT)))) {
         case MqttConnectOptions.MQTT_VERSION_3_1_1:
             version311.setSelected(true);
             break;
@@ -119,34 +123,37 @@ public class ConnectMQTT {
             versiondefault.setSelected(true);
         }
 
-        switch (configprops.getProperty("mqtt.broker", "0")) {
+        switch (configprops.getProperty("broker", "0")) {
         case "1":
             brokermosquitto.setSelected(true);
             break;
         default:
             brokernone.setSelected(true);
         }
+        topicsys = configprops.getProperty("topicsys");
     }
 
-    public void saveConfig(ConfigProperties configprops) {
-        configprops.setProperty("mqtt.host", host.getText());
-        configprops.setProperty("mqtt.port", port.getText());
-        configprops.setProperty("mqtt.ssl", Boolean.toString(ssl.isSelected()));
-        configprops.setProperty("mqtt.websockets", Boolean.toString(websockets.isSelected()));
-        configprops.setProperty("mqtt.protocol", protocol.getSelectionModel().getSelectedItem().name());
-        configprops.setProperty("mqtt.keystore", keystore.getText());
-        configprops.setProperty("mqtt.keystorepassword", keystorepassword.getText());
-        configprops.setProperty("mqtt.truststore", truststore.getText());
-        configprops.setProperty("mqtt.truststorepassword", truststorepassword.getText());
-        configprops.setProperty("mqtt.username", username.getText());
-        configprops.setProperty("mqtt.password", password.getText());
-        configprops.setProperty("mqtt.clientid", clientid.getText());
-        configprops.setProperty("mqtt.connectiontimeout", timeout.getText());
-        configprops.setProperty("mqtt.keepaliveinterval", keepalive.getText());
-        configprops.setProperty("mqtt.maxinflight", maxinflight.getText());
-        configprops.setProperty("mqtt.version", Integer.toString(getVersion()));
+    @Override
+    public void saveConfig(SubProperties configprops) {
+        configprops.setProperty("host", host.getText());
+        configprops.setProperty("port", port.getText());
+        configprops.setProperty("ssl", Boolean.toString(ssl.isSelected()));
+        configprops.setProperty("websockets", Boolean.toString(websockets.isSelected()));
+        configprops.setProperty("protocol", protocol.getSelectionModel().getSelectedItem().name());
+        configprops.setProperty("keystore", keystore.getText());
+        configprops.setProperty("keystorepassword", keystorepassword.getText());
+        configprops.setProperty("truststore", truststore.getText());
+        configprops.setProperty("truststorepassword", truststorepassword.getText());
+        configprops.setProperty("username", username.getText());
+        configprops.setProperty("password", password.getText());
+        configprops.setProperty("clientid", clientid.getText());
+        configprops.setProperty("connectiontimeout", timeout.getText());
+        configprops.setProperty("keepaliveinterval", keepalive.getText());
+        configprops.setProperty("maxinflight", maxinflight.getText());
+        configprops.setProperty("version", Integer.toString(getVersion()));
 
-        configprops.setProperty("mqtt.broker", getBrokerPane());
+        configprops.setProperty("broker", getBrokerPane());
+        configprops.setProperty("topicsys", topicsys);
     }
 
     public int getVersion() {
@@ -202,7 +209,8 @@ public class ConnectMQTT {
         brokernone.setDisable(value);
         brokermosquitto.setDisable(value);
     }
-
+    
+    @Override
     public Node getNode() {
         return root;
     }

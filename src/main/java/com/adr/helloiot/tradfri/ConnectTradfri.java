@@ -1,5 +1,5 @@
 //    HelloIoT is a dashboard creator for MQTT
-//    Copyright (C) 2018 Adrián Romero Corchado.
+//    Copyright (C) 2018-2019 Adrián Romero Corchado.
 //
 //    This file is part of HelloIot.
 //
@@ -20,9 +20,10 @@ package com.adr.helloiot.tradfri;
 
 import com.adr.hellocommon.dialog.DialogView;
 import com.adr.hellocommon.dialog.MessageUtils;
-import com.adr.helloiot.ConfigProperties;
+import com.adr.helloiot.ConnectUI;
 import com.adr.helloiotlib.app.EventMessage;
 import com.adr.helloiot.GroupManagers;
+import com.adr.helloiot.SubProperties;
 import com.adr.helloiot.util.CompletableAsync;
 import com.adr.helloiot.util.Dialogs;
 import com.adr.helloiot.util.FXMLNames;
@@ -54,7 +55,7 @@ import javax.jmdns.ServiceInfo;
  *
  * @author adrian
  */
-public class ConnectTradfri {
+public class ConnectTradfri implements ConnectUI {
     
     @FXML private GridPane root;
     @FXML private Label labeltradfihost;
@@ -76,20 +77,23 @@ public class ConnectTradfri {
         disableTradfri(HTTPUtils.getAddress(tradfrihost.getText()) == null);        
     }  
     
+    @Override
     public Node getNode() {
         return root;
     }   
-    
-    public void loadConfig(ConfigProperties configprops) {
-        tradfrihost.setText(configprops.getProperty("tradfri.host", ""));
-        tradfriidentity.setText(configprops.getProperty("tradfri.identity", ""));
-        tradfripsk = configprops.getProperty("tradfri.psk", "");  
+
+    @Override
+    public void loadConfig(SubProperties configprops) {
+        tradfrihost.setText(configprops.getProperty("host", ""));
+        tradfriidentity.setText(configprops.getProperty("identity", ""));
+        tradfripsk = configprops.getProperty("psk", "");  
     }
     
-    public void saveConfig(ConfigProperties configprops) {
-        configprops.setProperty("tradfri.host", tradfrihost.getText());     
-        configprops.setProperty("tradfri.identity", tradfriidentity.getText());
-        configprops.setProperty("tradfri.psk", tradfripsk);        
+    @Override
+    public void saveConfig(SubProperties configprops) {
+        configprops.setProperty("host", tradfrihost.getText());     
+        configprops.setProperty("identity", tradfriidentity.getText());
+        configprops.setProperty("psk", tradfripsk);        
     }
         
     private void disableTradfri(boolean value) {

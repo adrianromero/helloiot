@@ -1,5 +1,5 @@
 //    HelloIoT is a dashboard creator for MQTT
-//    Copyright (C) 2017-2018 Adrián Romero Corchado.
+//    Copyright (C) 2017-2019 Adrián Romero Corchado.
 //
 //    This file is part of HelloIot.
 //
@@ -56,5 +56,9 @@ public class EventMessage {
     public MiniVar getProperty(String key) {
         MiniVar value;
         return ((value = properties.get(key)) != null) ? value : MiniVarInt.NULL;
+    }
+    
+    public EventMessage clone(String newtopic) {
+        return new EventMessage(newtopic, message, properties);
     }
 }

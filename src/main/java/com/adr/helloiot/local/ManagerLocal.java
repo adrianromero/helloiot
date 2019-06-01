@@ -1,5 +1,5 @@
 //    HelloIoT is a dashboard creator for MQTT
-//    Copyright (C) 2018 Adrián Romero Corchado.
+//    Copyright (C) 2018-2019 Adrián Romero Corchado.
 //
 //    This file is part of HelloIot.
 //
@@ -16,13 +16,14 @@
 //    You should have received a copy of the GNU General Public License
 //    along with HelloIot.  If not, see <http://www.gnu.org/licenses/>.
 //
-package com.adr.helloiot;
+package com.adr.helloiot.local;
 
-import com.adr.helloiot.properties.VarProperties;
+import com.adr.helloiot.GroupManagers;
+import com.adr.helloiot.HelloPlatform;
+import com.adr.helloiot.ManagerProtocol;
 import com.adr.helloiotlib.app.EventMessage;
 import com.adr.helloiotlib.format.StringFormatIdentity;
 import com.adr.helloiot.util.CompletableAsync;
-import com.adr.helloiot.util.CryptUtils;
 import com.adr.helloiotlib.format.MiniVar;
 import com.adr.helloiotlib.format.MiniVarBoolean;
 import java.io.File;
@@ -46,14 +47,14 @@ import java.util.logging.Logger;
 public class ManagerLocal implements ManagerProtocol {
 
     private final static Logger logger = Logger.getLogger(ManagerLocal.class.getName());
-       
-    private GroupManagers group;    
-    private final String topicapp;
     
+    private final String fileid;
+    
+    private GroupManagers group;    
     private ConcurrentMap<String, byte[]> mapClient;
 
-    public ManagerLocal(VarProperties props) {
-        topicapp = props.get("topicapp").asString();
+    public ManagerLocal(String fileid) {
+        this.fileid = fileid;
         mapClient = null;
     }
 
@@ -122,7 +123,7 @@ public class ManagerLocal implements ManagerProtocol {
     @SuppressWarnings("unchecked")
     private void readMapClient() {
         mapClient = null;
-        File dbfile = HelloPlatform.getInstance().getFile(".helloiot-localmsg-" + CryptUtils.hashSHA512(topicapp) + ".map"); 
+        File dbfile = HelloPlatform.getInstance().getFile(".helloiot-localmsg-" + fileid + ".map"); 
         try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(dbfile))) {  
             mapClient = (ConcurrentMap<String, byte[]>) in.readObject();
         } catch (IOException | ClassNotFoundException ex) {
@@ -135,7 +136,7 @@ public class ManagerLocal implements ManagerProtocol {
             byte[] payloadfirst = StringFormatIdentity.INSTANCE.devalue(StringFormatIdentity.INSTANCE.parse("_first"));
             Map<String, MiniVar> props = new HashMap<>();
             props.put("mqtt.retained", MiniVarBoolean.TRUE);
-            EventMessage messagefirst = new EventMessage(topicapp + "/unitpage", payloadfirst, props);
+            EventMessage messagefirst = new EventMessage("unitpage", payloadfirst, props);
             
             mapClient.put(messagefirst.getTopic(), messagefirst.getMessage());
             group.distributeMessage(messagefirst);
@@ -143,7 +144,7 @@ public class ManagerLocal implements ManagerProtocol {
     }
     
     private void writeMapClient() throws IOException {
-        File dbfile = HelloPlatform.getInstance().getFile(".helloiot-localmsg-" + CryptUtils.hashSHA512(topicapp) + ".map"); 
+        File dbfile = HelloPlatform.getInstance().getFile(".helloiot-localmsg-" + fileid + ".map"); 
         try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(dbfile))) {
             out.writeObject(mapClient); 
         }      

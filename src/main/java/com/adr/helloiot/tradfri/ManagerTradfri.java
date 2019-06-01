@@ -1,5 +1,5 @@
 //    HelloIoT is a dashboard creator for MQTT
-//    Copyright (C) 2018 Adrián Romero Corchado.
+//    Copyright (C) 2018-2019 Adrián Romero Corchado.
 //
 //    This file is part of HelloIot.
 //
@@ -155,14 +155,14 @@ public class ManagerTradfri implements ManagerProtocol {
         LOGGER.log(Level.FINE, "Publishing: {0}, {1}", new Object[]{message.getTopic(), message.getMessage()});
 
         String[] parts = message.getTopic().split("/");
-        if (parts.length < 4) {
+        if (parts.length < 3) {
             LOGGER.log(Level.WARNING, "Topic not valid for Tradfri: {0}", message.getTopic());
             return;
         }
 
-        String type = parts[1];
-        String device = parts[2];
-        String command = parts[3];
+        String type = parts[0];
+        String device = parts[1];
+        String command = parts[2];
 
         Integer id = name2id.get(device);
         if (id == null) {
@@ -334,21 +334,21 @@ public class ManagerTradfri implements ManagerProtocol {
                 return; // skip this lamp for now
             }
 
-            group.distributeMessage(new EventMessage("TRÅDFRI/bulb/" + name + "/on", Integer.toString(light.get(TradfriConstants.ONOFF).getAsInt()).getBytes(StandardCharsets.UTF_8)));
+            group.distributeMessage(new EventMessage("bulb/" + name + "/on", Integer.toString(light.get(TradfriConstants.ONOFF).getAsInt()).getBytes(StandardCharsets.UTF_8)));
             jsonregistry.addProperty("type", "bulb");
             if (light.has(TradfriConstants.DIMMER)) {
-                group.distributeMessage(new EventMessage("TRÅDFRI/bulb/" + name + "/dim", Integer.toString(light.get(TradfriConstants.DIMMER).getAsInt()).getBytes(StandardCharsets.UTF_8)));
+                group.distributeMessage(new EventMessage("bulb/" + name + "/dim", Integer.toString(light.get(TradfriConstants.DIMMER).getAsInt()).getBytes(StandardCharsets.UTF_8)));
             }
             jsonregistry.addProperty("dim", light.has(TradfriConstants.DIMMER));
             if (light.has(TradfriConstants.COLOR)) {
-                group.distributeMessage(new EventMessage("TRÅDFRI/bulb/" + name + "/temperature", valueOfTemperature(light.get(TradfriConstants.COLOR).getAsString()).getBytes(StandardCharsets.UTF_8)));
+                group.distributeMessage(new EventMessage("bulb/" + name + "/temperature", valueOfTemperature(light.get(TradfriConstants.COLOR).getAsString()).getBytes(StandardCharsets.UTF_8)));
             }
             jsonregistry.addProperty("temperature", light.has(TradfriConstants.COLOR));
         } else if (json.has(TradfriConstants.HS_ACCESSORY_LINK)) { // groups have this entry
-            group.distributeMessage(new EventMessage("TRÅDFRI/group/" + name + "/on", Integer.toString(json.get(TradfriConstants.ONOFF).getAsInt()).getBytes(StandardCharsets.UTF_8)));
+            group.distributeMessage(new EventMessage("group/" + name + "/on", Integer.toString(json.get(TradfriConstants.ONOFF).getAsInt()).getBytes(StandardCharsets.UTF_8)));
             jsonregistry.addProperty("type", "group");
             if (json.has(TradfriConstants.DIMMER)) {
-                group.distributeMessage(new EventMessage("TRÅDFRI/group/" + name + "/dim", Integer.toString(json.get(TradfriConstants.DIMMER).getAsInt()).getBytes(StandardCharsets.UTF_8)));
+                group.distributeMessage(new EventMessage("group/" + name + "/dim", Integer.toString(json.get(TradfriConstants.DIMMER).getAsInt()).getBytes(StandardCharsets.UTF_8)));
             }
             jsonregistry.addProperty("dim", json.has(TradfriConstants.DIMMER));
         } else {
@@ -357,7 +357,7 @@ public class ManagerTradfri implements ManagerProtocol {
         }
 
         if (register) {
-            group.distributeMessage(new EventMessage("TRÅDFRI/registry", jsonregistry.toString().getBytes(StandardCharsets.UTF_8)));
+            group.distributeMessage(new EventMessage("registry", jsonregistry.toString().getBytes(StandardCharsets.UTF_8)));
         }
     }
 

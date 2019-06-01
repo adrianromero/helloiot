@@ -18,7 +18,11 @@
 //
 package com.adr.helloiot.properties;
 
+import com.adr.helloiot.BridgeConfig;
+import com.adr.helloiot.ConfigProperties;
+import com.adr.helloiot.ConfigSubProperties;
 import com.adr.helloiotlib.format.MiniVar;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -27,15 +31,30 @@ import java.util.Map;
  */
 public class VarProperties {
     
-    private final Map<String, MiniVar> config;
+    private final Map<String, MiniVar> map;
     private final String prefix;
     
-    public VarProperties(Map<String, MiniVar> config, String prefix) {
-        this.config = config;
-        this.prefix = prefix;
+    public VarProperties() {
+        this.map = new HashMap<>();
+        this.prefix = "";
+    }
+    
+    public VarProperties(VarProperties config, String prefix) {
+        this.map = config.map;
+        this.prefix = config.prefix + prefix;
     }
     
     public MiniVar get(String name) {
-        return config.get(prefix + name);
+        return map.get(prefix + name);
     }  
+    
+    public void put(String name, MiniVar value) {
+        map.put(prefix + name, value);
+    }
+    
+    public final void readConfiguration(BridgeConfig bridgeconfig, ConfigProperties configprops) {
+        bridgeconfig.getBridge().readConfiguration(
+                new VarProperties(this, bridgeconfig.getPrefix()), 
+                new ConfigSubProperties(configprops, bridgeconfig.getPrefix()));
+    }
 }

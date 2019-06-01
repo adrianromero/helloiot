@@ -19,7 +19,6 @@
 package com.adr.helloiot;
 
 import com.adr.helloiotlib.app.IoTApp;
-import com.adr.helloiot.mqtt.ManagerMQTT;
 import com.adr.fonticon.IconBuilder;
 import com.adr.fonticon.IconFontGlyph;
 import com.adr.fonticon.decorator.FillPaint;
@@ -34,12 +33,10 @@ import com.adr.helloiot.device.DeviceSwitch;
 import com.adr.helloiotlib.device.ListDevice;
 import com.adr.helloiot.device.TreePublish;
 import com.adr.helloiot.device.TreePublishSubscribe;
-import com.adr.helloiotlib.format.MiniVar;
 import com.adr.helloiot.media.SilentClipFactory;
 import com.adr.helloiot.media.StandardClipFactory;
 import com.adr.helloiot.mqtt.MQTTProperty;
 import com.adr.helloiot.properties.VarProperties;
-import com.adr.helloiot.tradfri.ManagerTradfri;
 import com.adr.helloiot.unit.UnitPage;
 import com.adr.helloiot.util.CompletableAsync;
 import com.adr.helloiot.util.HTTPUtils;
@@ -52,9 +49,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.MissingResourceException;
-import java.util.Properties;
 import java.util.ResourceBundle;
 import java.util.ServiceLoader;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -91,26 +86,23 @@ public class HelloIoTApp implements IoTApp {
     private EventHandler<ActionEvent> exitevent = null;
     private final Runnable styleConnection;
 
-    public HelloIoTApp(Map<String, MiniVar> config) throws HelloIoTException {
+    public HelloIoTApp(BridgeConfig[] bridgeconfigs, VarProperties config) throws HelloIoTException {
 
         // Load resources
         resources = ResourceBundle.getBundle("com/adr/helloiot/fxml/main");
 
         // System and Application devices units
-        addSystemDevicesUnits(config.get("client.topicsys").asString());
-        addAppDevicesUnits(config.get("client.topicapp").asString());
+        addSystemDevicesUnits(config.get("app.topicsys").asString());
+        addAppDevicesUnits(config.get("app.topicapp").asString());
 
         ManagerComposed manager = new ManagerComposed();
         
-        manager.addManagerProtocol("_LOCAL_/", new ManagerLocal(new VarProperties(config, "client.")));
-
-        if (HTTPUtils.getAddress(config.get("tradfri.host").asString()) != null) {
-            manager.addManagerProtocol("TRÅDFRI/", new ManagerTradfri(new VarProperties(config, "tradfri.")));
+        for (BridgeConfig bc : bridgeconfigs) {
+            manager.addManagerProtocol(bc, config);
         }
-
-        if (HTTPUtils.getAddress(config.get("mqtt.host").asString()) != null) {
-            manager.addManagerProtocol("", new ManagerMQTT(new VarProperties(config, "mqtt.")));
-            
+        
+        // TODO: Modelize adding units by manager. Now hardcoded for MQTT
+        if (HTTPUtils.getAddress(config.get("mqtt.host").asString()) != null) {           
             // Broker panel
             if ("1".equals(config.get("mqtt.broker").asString())) {
                 UnitPage info = new UnitPage("info", IconBuilder.create(IconFontGlyph.FA_SOLID_INFO, 24.0).styleClass("icon-fill").build(), resources.getString("page.info"));
@@ -162,16 +154,16 @@ public class HelloIoTApp implements IoTApp {
     private void addAppDevicesUnits(String topicapp) {
 
         DeviceSimple unitpage = new DeviceSimple();
-        unitpage.setTopic(topicapp + "/unitpage");
+        unitpage.setTopic(topicapp + "unitpage");
         unitpage.setId(SYS_UNITPAGE_ID);
 
         DeviceSwitch beeper = new DeviceSwitch();
-        beeper.setTopic(topicapp + "/beeper");
+        beeper.setTopic(topicapp + "beeper");
         beeper.setId(SYS_BEEPER_ID);
 
         DeviceSimple buzzer = new DeviceSimple();
         MQTTProperty.setRetained(buzzer, false);
-        buzzer.setTopic(topicapp + "/buzzer");
+        buzzer.setTopic(topicapp + "buzzer");
         buzzer.setId(SYS_BUZZER_ID);
 
         addDevicesUnits(Arrays.asList(unitpage, beeper, buzzer), Collections.emptyList());
@@ -179,11 +171,11 @@ public class HelloIoTApp implements IoTApp {
 
     private void addSystemDevicesUnits(String topicsys) {
         TreePublish sysevents = new TreePublish();
-        sysevents.setTopic(topicsys + "/events");
+        sysevents.setTopic(topicsys + "events");
         sysevents.setId(SYS_EVENT_ID);
 
         TreePublishSubscribe sysstatus = new TreePublishSubscribe();
-        sysstatus.setTopic(topicsys + "/status");
+        sysstatus.setTopic(topicsys + "status");
         sysstatus.setId(SYS_VALUE_ID);
 
         addDevicesUnits(Arrays.asList(sysevents, sysstatus), Collections.emptyList());

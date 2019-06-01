@@ -1,5 +1,5 @@
 //    HelloIoT is a dashboard creator for MQTT
-//    Copyright (C) 2017-2018 Adrián Romero Corchado.
+//    Copyright (C) 2017-2019 Adrián Romero Corchado.
 //
 //    This file is part of HelloIot.
 //
@@ -18,6 +18,7 @@
 //
 package com.adr.helloiot;
 
+import com.adr.helloiot.properties.VarProperties;
 import com.adr.helloiotlib.app.EventMessage;
 import com.adr.helloiotlib.format.MiniVar;
 import java.util.LinkedList;
@@ -37,14 +38,19 @@ public class ManagerComposed implements ManagerProtocol {
     
     private final List<Pair<String, ManagerProtocol>> managers = new LinkedList<>();
 
-    public void addManagerProtocol(String prefix, ManagerProtocol manager) {
-        managers.add(new Pair<String, ManagerProtocol>(prefix, manager));
+    public void addManagerProtocol(BridgeConfig bridgeconfig, VarProperties config) {
+        VarProperties props = new VarProperties(config, bridgeconfig.getPrefix());
+        if (bridgeconfig.getBridge().hasManager(props)) {
+            managers.add(new Pair<String, ManagerProtocol>(
+                bridgeconfig.getRoot(), 
+                bridgeconfig.getBridge().createManager(props)));
+        }
     }
 
     @Override
     public void registerTopicsManager(GroupManagers group, Consumer<Throwable> lost) {
         for (Pair<String, ManagerProtocol> managerpair : managers) {
-            managerpair.getValue().registerTopicsManager(group, lost);
+            managerpair.getValue().registerTopicsManager(new SubGroupManagers(group, managerpair.getKey()), lost);
         }
     }
 
@@ -52,7 +58,7 @@ public class ManagerComposed implements ManagerProtocol {
     public void registerSubscription(String topic,  Map<String, MiniVar> messageProperties) {
         for (Pair<String, ManagerProtocol> managerpair : managers) {
             if (topic.startsWith(managerpair.getKey())) {
-                managerpair.getValue().registerSubscription(topic, messageProperties);
+                managerpair.getValue().registerSubscription(topic.substring(managerpair.getKey().length()), messageProperties);
                 return;
             }
         }        
@@ -77,10 +83,23 @@ public class ManagerComposed implements ManagerProtocol {
     public void publish(EventMessage message) {
         for (Pair<String, ManagerProtocol> managerpair : managers) {
             if (message.getTopic().startsWith(managerpair.getKey())) {
-                managerpair.getValue().publish(message);
+                managerpair.getValue().publish(message.clone(message.getTopic().substring(managerpair.getKey().length())));
                 return;
             }
         } 
         LOGGER.warning(String.format("Message not published. It does not exist any topic manager for topic \"%s\"", message.getTopic()));
+    }
+    
+    private static class SubGroupManagers implements GroupManagers {
+        private final GroupManagers group;
+        private final String key;
+        public SubGroupManagers(GroupManagers group, String key) {
+            this.group = group;
+            this.key = key;
+        }
+        @Override
+        public void distributeMessage(EventMessage message) {
+            group.distributeMessage(message.clone(key + message.getTopic()));
+        }
     }
 }

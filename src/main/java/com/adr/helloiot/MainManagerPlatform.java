@@ -1,5 +1,5 @@
 //    HelloIoT is a dashboard creator for MQTT
-//    Copyright (C) 2017-2018 Adrián Romero Corchado.
+//    Copyright (C) 2017-2019 Adrián Romero Corchado.
 //
 //    This file is part of HelloIot.
 //
@@ -18,19 +18,18 @@
 //
 package com.adr.helloiot;
 
-import com.adr.helloiotlib.format.MiniVar;
+import com.adr.helloiot.local.BridgeLocal;
+import com.adr.helloiot.mqtt.BridgeMQTT;
+import com.adr.helloiot.properties.VarProperties;
+import com.adr.helloiot.tradfri.BridgeTradfri;
 import com.adr.helloiotlib.format.MiniVarBoolean;
-import com.adr.helloiotlib.format.MiniVarInt;
 import com.adr.helloiotlib.format.MiniVarString;
-import com.adr.helloiot.util.CryptUtils;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Application.Parameters;
 import javafx.scene.layout.StackPane;
-import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 
 /**
  *
@@ -42,6 +41,12 @@ public class MainManagerPlatform implements MainManager {
 
     @Override
     public void construct(StackPane root, Parameters params) {
+        
+        BridgeConfig[] bridgeconfigs = new BridgeConfig[] {
+            new BridgeConfig(new BridgeMQTT(), "", "mqtt."),
+            new BridgeConfig(new BridgeTradfri(), "TRÅDFRI/", "tradfri."),
+            new BridgeConfig(new BridgeLocal(), "_LOCAL_/mainapp/", "local.")
+        };        
 
         ConfigProperties configprops = new ConfigProperties();
         try {
@@ -50,42 +55,27 @@ public class MainManagerPlatform implements MainManager {
             throw new RuntimeException("Configuration file cannot be loaded.", ex);
         }
 
-        Map<String, String> namedParams = params.getNamed();
+        // Mix named parameters into configprops
+        Map<String, String> named = params.getNamed();
+        named.forEach((String key, String value) -> {
+            configprops.setProperty(key, value);
+        });   
+        
+        VarProperties config = new VarProperties();
+        
+        for (BridgeConfig bc : bridgeconfigs) {
+            config.readConfiguration(bc, configprops);
+        }
 
-        Map<String, MiniVar> config = new HashMap<>();
-        config.put("mqtt.host", new MiniVarString(configprops.getProperty("mqtt.host", "localhost")));
-        config.put("mqtt.port", new MiniVarInt(Integer.parseInt(configprops.getProperty("mqtt.port", "1883"))));
-        config.put("mqtt.ssl", new MiniVarBoolean(Boolean.parseBoolean(configprops.getProperty("mqtt.ssl", "false"))));
-        config.put("mqtt.websockets", new MiniVarBoolean(Boolean.parseBoolean(configprops.getProperty("mqtt.websockets", "false"))));
-        config.put("mqtt.protocol", new MiniVarString(SSLProtocol.valueOfDefault(configprops.getProperty("mqtt.protocol", "TLSv12")).getDisplayName()));
-        config.put("mqtt.keystore", new MiniVarString(configprops.getProperty("mqtt.keystore", "")));
-        config.put("mqtt.keystorepassword", new MiniVarString(getNamedParam(namedParams, "mqtt.keystorepassword", "")));
-        config.put("mqtt.truststore", new MiniVarString(configprops.getProperty("mqtt.truststore", "")));
-        config.put("mqtt.truststorepassword", new MiniVarString(getNamedParam(namedParams, "mqtt.truststorepassword", "")));
-        config.put("mqtt.username", new MiniVarString(getNamedParam(namedParams, "mqtt.username", "")));
-        config.put("mqtt.password", new MiniVarString(getNamedParam(namedParams, "mqtt.password", "")));
-        config.put("mqtt.clientid", new MiniVarString(configprops.getProperty("mqtt.clientid", CryptUtils.generateID())));
-        config.put("mqtt.connectiontimeout", new MiniVarInt(Integer.parseInt(configprops.getProperty("mqtt.connectiontimeout", Integer.toString(MqttConnectOptions.CONNECTION_TIMEOUT_DEFAULT)))));
-        config.put("mqtt.keepaliveinterval", new MiniVarInt(Integer.parseInt(configprops.getProperty("mqtt.keepaliveinterval", Integer.toString(MqttConnectOptions.KEEP_ALIVE_INTERVAL_DEFAULT)))));
-        config.put("mqtt.maxinflight", new MiniVarInt(Integer.parseInt(configprops.getProperty("mqtt.maxinflight", Integer.toString(MqttConnectOptions.MAX_INFLIGHT_DEFAULT)))));
-        config.put("mqtt.version", new MiniVarInt(Integer.parseInt(configprops.getProperty("mqtt.version", Integer.toString(MqttConnectOptions.MQTT_VERSION_DEFAULT))))); // MQTT_VERSION_DEFAULT = 0; MQTT_VERSION_3_1 = 3; MQTT_VERSION_3_1_1 = 4;
-        config.put("mqtt.topicsys", new MiniVarString(configprops.getProperty("client.topicsys", "system")));
-        config.put("mqtt.broker", new MiniVarString(configprops.getProperty("mqtt.broker", "0")));
-
-        config.put("tradfri.host", new MiniVarString(configprops.getProperty("tradfri.host", "")));
-        config.put("tradfri.identity", new MiniVarString(getNamedParam(namedParams, "tradfri.identity", "")));
-        config.put("tradfri.psk", new MiniVarString(getNamedParam(namedParams, "tradfri.psk", "")));
-
-        config.put("client.topicapp", new MiniVarString(configprops.getProperty("client.topicapp", "_LOCAL_/mainapp")));
-        config.put("client.topicsys", new MiniVarString(configprops.getProperty("client.topicsys", "system")));
-
+        config.put("app.topicsys", new MiniVarString(configprops.getProperty("app.topicsys", "system/")));
+        config.put("app.topicapp", new MiniVarString(configprops.getProperty("app.topicapp", "_LOCAL_/mainapp/")));
         config.put("app.clock", new MiniVarBoolean(Boolean.parseBoolean(configprops.getProperty("app.clock", "false"))));
         config.put("app.exitbutton", new MiniVarBoolean(Boolean.parseBoolean(configprops.getProperty("app.exitbutton", "true"))));
         config.put("app.retryconnection", MiniVarBoolean.TRUE);
         Style.changeStyle(root, Style.valueOf(configprops.getProperty("app.style", Style.PRETTY.name())));
 
         try {
-            helloiotapp = new HelloIoTApp(config);
+            helloiotapp = new HelloIoTApp(bridgeconfigs, config);
         } catch (HelloIoTException ex) {
             throw new RuntimeException("HelloIoT application cannot be loaded.", ex);
         }
