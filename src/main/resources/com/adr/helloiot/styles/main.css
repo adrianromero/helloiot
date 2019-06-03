@@ -263,7 +263,7 @@ foco 508cfb */
 
 .unitinputview {
     -fx-font-family: 'Source Sans Pro Black';
-    -fx-font-size: 16px;   
+    -fx-font-size: 36px;   
     -fx-text-fill: -fx-level-fill;     
     -fx-accent: -fx-primary-fill ;
 }
