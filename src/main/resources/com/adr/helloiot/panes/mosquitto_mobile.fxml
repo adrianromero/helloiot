@@ -55,10 +55,10 @@
     
     <units> 
         <LabelSection UnitPage.page="info" UnitPage.layout="StartLine" text="%title.broker"/>              
-        <EditView UnitPage.page="info" UnitPage.layout="StartLine" label="%label.version" device="$version" />
-        <EditView UnitPage.page="info" label="%label.changeset" device="$changeset"/>      
-        <EditView UnitPage.page="info" UnitPage.layout="StartLine" label="%label.timestamp" device="$timestamp" />
-        <EditView UnitPage.page="info" label="%label.uptime" device="$uptime" />   
+        <EditView UnitPage.page="info" UnitPage.layout="StartLine" styleClass="editviewsmall" label="%label.version" device="$version" />
+        <EditView UnitPage.page="info" UnitPage.layout="StartLine" styleClass="editviewsmall" label="%label.changeset" device="$changeset"/>      
+        <EditView UnitPage.page="info" UnitPage.layout="StartLine" styleClass="editviewsmall" label="%label.timestamp" device="$timestamp" />
+        <EditView UnitPage.page="info" UnitPage.layout="StartLine" styleClass="editviewsmall" label="%label.uptime" device="$uptime" />   
         <EditView UnitPage.page="info" UnitPage.layout="StartLine" label="%label.clients" device="$clients" />
         <EditView UnitPage.page="info" label="%label.subscriptions" device="$subscriptions" />
            
