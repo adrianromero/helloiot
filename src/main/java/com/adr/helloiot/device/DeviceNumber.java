@@ -1,5 +1,5 @@
 //    HelloIoT is a dashboard creator for MQTT
-//    Copyright (C) 2017-2018 Adrián Romero Corchado.
+//    Copyright (C) 2017-2019 Adrián Romero Corchado.
 //
 //    This file is part of HelloIot.
 //
@@ -29,8 +29,8 @@ import com.adr.helloiotlib.format.StringFormatDecimal;
 public class DeviceNumber extends DeviceSimple {
 
     private double increment = 1.0;
-    private double levelmax = 100.0;
-    private double levelmin = 0.0;
+    private double levelmax = Double.MAX_VALUE;
+    private double levelmin = Double.MIN_VALUE;
 
     public DeviceNumber() {
         setFormat(StringFormatDecimal.DECIMAL);
