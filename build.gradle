@@ -24,7 +24,7 @@ plugins {
 }
 
 group = 'com.github.adrianromero'
-version = '1.0.400'
+version = '1.1.000'
 
 mainClassName = 'com.adr.helloiot.LauncherClient'
 ext.mainClass = 'com.adr.helloiot.LauncherClient'
