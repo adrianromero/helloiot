@@ -246,6 +246,7 @@ public class TopicInfoEdit implements TopicInfo {
         u.setPrefWidth(320.0);
         u.setLabel(getLabel().getValue());
         u.setFooter(topic + getQOSBadge(qos) + getFormatBadge(d.getFormat()));
+        u.setGlyph(createGlyph());
         setStyle(u);
         u.setDevice(d);
         UnitPage.setPage(u, page);
@@ -266,6 +267,7 @@ public class TopicInfoEdit implements TopicInfo {
         u.setPrefWidth(320.0);
         u.setLabel(getLabel().getValue());
         u.setFooter(topic + getQOSBadge(qos) + getFormatBadge(d.getFormat()));
+        u.setGlyph(createGlyph());
         setStyle(u);
         u.setDevice(d);
         UnitPage.setPage(u, page);
@@ -317,6 +319,26 @@ public class TopicInfoEdit implements TopicInfo {
             return new StringFormatDecimal(jsonpath == null || jsonpath.isEmpty() ? null : jsonpath, "0.0°");
         } else {
             return StringFormatIdentity.INSTANCE;
+        }
+    }    
+
+    private IconFontGlyph createGlyph() {
+        if ("STRING".equals(format)) {
+            return null;
+        } else if ("INT".equals(format)) {
+            return IconFontGlyph.FA_SOLID_HASHTAG;
+        } else if ("BASE64".equals(format)) {
+            return IconFontGlyph.FA_SOLID_CODE;
+        } else if ("HEX".equals(format)) {
+            return IconFontGlyph.FA_SOLID_MICROCHIP;
+        } else if ("DOUBLE".equals(format)) {
+            return IconFontGlyph.FA_SOLID_SLIDERS_H;
+        } else if ("DECIMAL".equals(format)) {
+            return IconFontGlyph.FA_SOLID_RULER;
+        } else if ("DEGREES".equals(format)) {
+            return IconFontGlyph.FA_SOLID_THERMOMETER_QUARTER;
+        } else {
+            return null;
         }
     }    
     
