@@ -21,7 +21,6 @@ package com.adr.helloiot;
 import com.adr.helloiot.local.BridgeLocal;
 import com.adr.helloiot.mqtt.BridgeMQTT;
 import com.adr.helloiot.properties.VarProperties;
-import com.adr.helloiot.tradfri.BridgeTradfri;
 import com.adr.helloiotlib.format.MiniVarBoolean;
 import com.adr.helloiotlib.format.MiniVarString;
 import java.io.IOException;
@@ -43,10 +42,9 @@ public class MainManagerPlatform implements MainManager {
     public void construct(StackPane root, Parameters params) {
         
         BridgeConfig[] bridgeconfigs = new BridgeConfig[] {
-            new BridgeConfig(new BridgeMQTT(), "", "mqtt."),
-            new BridgeConfig(new BridgeTradfri(), "TRÅDFRI/", "tradfri."),
-            new BridgeConfig(new BridgeLocal(), "_LOCAL_/mainapp/", "local.")
-        };        
+                // new BridgeConfig(new BridgeTradfri(), "TRÅDFRI/", "tradfri."),
+                new BridgeConfig(new BridgeLocal(), "_LOCAL_/mainapp/", "local."),
+                new BridgeConfig(new BridgeMQTT(), "", "mqtt.")};      
 
         ConfigProperties configprops = new ConfigProperties();
         try {

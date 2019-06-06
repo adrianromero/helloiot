@@ -27,7 +27,6 @@ import com.adr.helloiot.mqtt.BridgeMQTT;
 import com.adr.helloiot.properties.VarProperties;
 import com.adr.helloiotlib.format.MiniVarBoolean;
 import com.adr.helloiotlib.format.MiniVarString;
-import com.adr.helloiot.tradfri.BridgeTradfri;
 import com.adr.helloiot.util.CompletableAsync;
 import com.adr.helloiot.util.Dialogs;
 import com.google.common.io.Resources;
@@ -81,10 +80,9 @@ public class MainManagerClient implements MainManager {
     public MainManagerClient() {
         resources = ResourceBundle.getBundle("com/adr/helloiot/fxml/main");
         bridgeconfigs = new BridgeConfig[] {
-                new BridgeConfig(new BridgeMQTT(), "", "mqtt."),
-                new BridgeConfig(new BridgeTradfri(), "TRÅDFRI/", "tradfri."),
-                new BridgeConfig(new BridgeLocal(), "_LOCAL_/mainapp/", "local.")
-        }; 
+                // new BridgeConfig(new BridgeTradfri(), "TRÅDFRI/", "tradfri."),
+                new BridgeConfig(new BridgeLocal(), "_LOCAL_/mainapp/", "local."),
+                new BridgeConfig(new BridgeMQTT(), "", "mqtt.")}; 
     }
 
     private void showLogin() {
