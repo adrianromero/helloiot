@@ -24,6 +24,7 @@ import com.adr.fonticon.IconBuilder;
 import com.adr.helloiot.device.DeviceSimple;
 import com.adr.helloiotlib.app.IoTApp;
 import javafx.event.ActionEvent;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -32,6 +33,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import jidefx.utils.AutoRepeatButtonUtils;
 
 /**
@@ -42,7 +44,12 @@ public class ButtonsSpinner extends Tile {
 
     private Button goup;
     private Button godown;
+    
+    private HBox boxview;    
     private Label level;
+    
+    private IconFontGlyph glyph = null;
+    private StackPane glyphnode = null;    
 
     private DeviceSimple device = null;
     private final Object messageHandler = Units.messageHandler(this::updateStatus);
@@ -53,11 +60,16 @@ public class ButtonsSpinner extends Tile {
         VBox vboxroot = new VBox();
         vboxroot.setSpacing(10.0);        
         
+        boxview = new HBox();
+        boxview.setSpacing(6.0);
+        
         level = new Label();
         level.setAlignment(Pos.CENTER_RIGHT);
         level.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
         level.getStyleClass().add("unitmaintext");
-  
+        HBox.setHgrow(level, Priority.SOMETIMES);
+        
+        boxview.getChildren().add(level);
         
         HBox hbox = new HBox();
         hbox.setSpacing(6.0);
@@ -81,7 +93,7 @@ public class ButtonsSpinner extends Tile {
         StackPane stack = new StackPane(hbox);     
         VBox.setVgrow(stack, Priority.SOMETIMES);
         
-        vboxroot.getChildren().addAll(level, stack);
+        vboxroot.getChildren().addAll(boxview, new Label("pepeluiiiiis"), stack);
         
         initialize();
         return vboxroot;
@@ -108,6 +120,13 @@ public class ButtonsSpinner extends Tile {
     @Override
     public void construct(IoTApp app) {
         super.construct(app);
+        
+        if (glyph != null) {
+            glyphnode = new StackPane(IconBuilder.create(glyph, 36.0).color(Color.web("#565656")).build());
+            glyphnode.setPadding(new Insets(0, 0, 0, 6));
+            boxview.getChildren().add(0, glyphnode);
+        } 
+        
         device.subscribeStatus(messageHandler);
         updateStatus(null);
     }
@@ -115,6 +134,12 @@ public class ButtonsSpinner extends Tile {
     @Override
     public void destroy() {
         super.destroy();
+        
+        if (glyphnode != null) {
+            boxview.getChildren().remove(glyphnode);
+            glyphnode = null;
+        }  
+
         device.unsubscribeStatus(messageHandler);
     }
 
@@ -136,4 +161,12 @@ public class ButtonsSpinner extends Tile {
     private void onGoUp(ActionEvent event) {
         device.sendStatus(device.nextStatus());
     }
+    
+    public void setGlyph(IconFontGlyph glyph) {
+        this.glyph = glyph;
+    }
+    
+    public IconFontGlyph getGlyph() {
+        return glyph;
+    }      
 }

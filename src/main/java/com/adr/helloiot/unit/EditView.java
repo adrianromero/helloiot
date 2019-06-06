@@ -1,5 +1,5 @@
 //    HelloIoT is a dashboard creator for MQTT
-//    Copyright (C) 2017-2018 Adrián Romero Corchado.
+//    Copyright (C) 2017-2019 Adrián Romero Corchado.
 //
 //    This file is part of HelloIot.
 //
@@ -18,16 +18,21 @@
 //
 package com.adr.helloiot.unit;
 
+import com.adr.fonticon.IconBuilder;
+import com.adr.fonticon.IconFontGlyph;
 import com.adr.helloiotlib.unit.Units;
 import com.adr.helloiotlib.app.IoTApp;
 import com.adr.helloiot.device.DeviceSubscribe;
 import com.google.common.base.Strings;
 import javafx.geometry.HPos;
+import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputControl;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
+import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
 
 /**
  *
@@ -35,27 +40,31 @@ import javafx.scene.layout.Priority;
  */
 public class EditView extends Tile {
 
+    protected HBox boxview;
     protected TextInputControl statusview;
+    
+    private IconFontGlyph glyph = null;
+    private StackPane glyphnode = null;
 
     private DeviceSubscribe device = null;
-    private final Object messageHandler = Units.messageHandler(this::updateStatus);      
+    private final Object messageHandler = Units.messageHandler(this::updateStatus);    
 
     @Override
     public Node constructContent() {
         
-        HBox hboxroot = new HBox();
-        hboxroot.setSpacing(6.0);
-        
+        boxview = new HBox();
+        boxview.setSpacing(6.0);
+
         statusview = new TextField();
         statusview.setEditable(false);
         statusview.setFocusTraversable(false);
         statusview.getStyleClass().add("unitinputview");
         HBox.setHgrow(statusview, Priority.SOMETIMES);
         
-        hboxroot.getChildren().add(statusview);
-        
+        boxview.getChildren().add(statusview);
+
         initialize();
-        return hboxroot;
+        return boxview;
     }
 
 
@@ -69,13 +78,22 @@ public class EditView extends Tile {
     @Override
     public void construct(IoTApp app) {
         super.construct(app);
+        if (glyph != null) {
+            glyphnode = new StackPane(IconBuilder.create(glyph, 36.0).color(Color.web("#565656")).build());
+            glyphnode.setPadding(new Insets(0, 0, 0, 6));
+            boxview.getChildren().add(0, glyphnode);
+        }
         device.subscribeStatus(messageHandler);
         updateStatus(null);
     }
 
     @Override
     public void destroy() {
-        super.destroy();
+        super.destroy(); 
+        if (glyphnode != null) {
+            boxview.getChildren().remove(glyphnode);
+            glyphnode = null;
+        }
         device.unsubscribeStatus(messageHandler);
     }
 
@@ -93,5 +111,13 @@ public class EditView extends Tile {
 
     public DeviceSubscribe getDevice() {
         return device;
+    }
+    
+    public void setGlyph(IconFontGlyph glyph) {
+        this.glyph = glyph;
+    }
+    
+    public IconFontGlyph getGlyph() {
+        return glyph;
     }
 }

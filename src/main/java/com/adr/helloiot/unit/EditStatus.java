@@ -28,6 +28,7 @@ import com.google.common.base.Strings;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.geometry.HPos;
+import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
@@ -35,6 +36,7 @@ import javafx.scene.control.TextInputControl;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
 
 /**
  *
@@ -51,6 +53,9 @@ public class EditStatus extends Tile {
     protected Button cancelaction;
     protected HBox boxview;
     protected HBox boxedit;
+    
+    private IconFontGlyph glyph = null;
+    private StackPane glyphnode = null;
 
     private DeviceSimple device = null;
     private final Object messageHandler = Units.messageHandler(this::updateStatus);    
@@ -119,6 +124,11 @@ public class EditStatus extends Tile {
     @Override
     public void construct(IoTApp app) {
         super.construct(app);
+        if (glyph != null) {
+            glyphnode = new StackPane(IconBuilder.create(glyph, 36.0).color(Color.web("#565656")).build());
+            glyphnode.setPadding(new Insets(0, 0, 0, 6));
+            boxview.getChildren().add(0, glyphnode);
+        }
         device.subscribeStatus(messageHandler);
         updateStatus(null);
     }
@@ -126,6 +136,10 @@ public class EditStatus extends Tile {
     @Override
     public void destroy() {
         super.destroy();
+        if (glyphnode != null) {
+            boxview.getChildren().remove(glyphnode);
+            glyphnode = null;
+        }        
         device.unsubscribeStatus(messageHandler);
     }
 
@@ -149,6 +163,14 @@ public class EditStatus extends Tile {
 
     public void setReadOnly(boolean value) {
         editaction.setVisible(!value);
+    }
+    
+    public void setGlyph(IconFontGlyph glyph) {
+        this.glyph = glyph;
+    }
+    
+    public IconFontGlyph getGlyph() {
+        return glyph;
     }
 
     public boolean isReadOnly() {

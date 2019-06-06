@@ -1,5 +1,5 @@
 //    HelloIoT is a dashboard creator for MQTT
-//    Copyright (C) 2017-2018 Adrián Romero Corchado.
+//    Copyright (C) 2017-2019 Adrián Romero Corchado.
 //
 //    This file is part of HelloIot.
 //
@@ -18,17 +18,22 @@
 //
 package com.adr.helloiot.unit;
 
+import com.adr.fonticon.IconBuilder;
+import com.adr.fonticon.IconFontGlyph;
 import com.adr.helloiotlib.unit.Units;
 import com.adr.helloiotlib.app.IoTApp;
 import com.adr.helloiot.device.DeviceNumber;
 import com.adr.helloiotlib.format.MiniVar;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 
 /**
  *
@@ -36,8 +41,12 @@ import javafx.scene.layout.VBox;
  */
 public class ViewNumberProgress extends Tile {
 
+    private HBox boxview;
     private Label level;
     private ProgressBar progress;
+    
+    private IconFontGlyph glyph = null;
+    private StackPane glyphnode = null;    
 
     private DeviceNumber device = null;
     private final Object messageHandler = Units.messageHandler(this::updateStatus);    
@@ -46,11 +55,17 @@ public class ViewNumberProgress extends Tile {
     protected Node constructContent() {
         VBox vboxroot = new VBox();
         vboxroot.setSpacing(10.0);        
+                
+        boxview = new HBox();
+        boxview.setSpacing(6.0);
         
         level = new Label();
         level.setAlignment(Pos.CENTER_RIGHT);
         level.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
         level.getStyleClass().add("unitmaintext");
+        HBox.setHgrow(level, Priority.SOMETIMES);
+        
+        boxview.getChildren().add(level);
         
         // Get all data
 
@@ -62,7 +77,7 @@ public class ViewNumberProgress extends Tile {
 
         StackPane stack = new StackPane(progress);
         VBox.setVgrow(stack, Priority.SOMETIMES);   
-        vboxroot.getChildren().addAll(level, stack);
+        vboxroot.getChildren().addAll(boxview, new Label("joselillo"), stack);
         
         initialize();
         return vboxroot;
@@ -81,13 +96,26 @@ public class ViewNumberProgress extends Tile {
 
     @Override
     public void construct(IoTApp app) {
-        super.construct(app);       
+        super.construct(app);    
+        
+        if (glyph != null) {
+            glyphnode = new StackPane(IconBuilder.create(glyph, 36.0).color(Color.web("#565656")).build());
+            glyphnode.setPadding(new Insets(0, 0, 0, 6));
+            boxview.getChildren().add(0, glyphnode);
+        } 
+        
         device.subscribeStatus(messageHandler);
     }
 
     @Override
     public void destroy() {
         super.destroy();
+        
+        if (glyphnode != null) {
+            boxview.getChildren().remove(glyphnode);
+            glyphnode = null;
+        } 
+        
         device.unsubscribeStatus(messageHandler);
     }
 
@@ -101,4 +129,12 @@ public class ViewNumberProgress extends Tile {
     public DeviceNumber getDevice() {
         return device;
     }
+    
+    public void setGlyph(IconFontGlyph glyph) {
+        this.glyph = glyph;
+    }
+    
+    public IconFontGlyph getGlyph() {
+        return glyph;
+    }     
 }

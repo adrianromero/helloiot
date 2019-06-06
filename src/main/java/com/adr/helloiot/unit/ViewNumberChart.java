@@ -1,5 +1,5 @@
 //    HelloIoT is a dashboard creator for MQTT
-//    Copyright (C) 2017-2018 Adrián Romero Corchado.
+//    Copyright (C) 2017-2019 Adrián Romero Corchado.
 //
 //    This file is part of HelloIot.
 //
@@ -18,6 +18,8 @@
 //
 package com.adr.helloiot.unit;
 
+import com.adr.fonticon.IconBuilder;
+import com.adr.fonticon.IconFontGlyph;
 import com.adr.helloiotlib.unit.Units;
 import com.adr.helloiotlib.app.IoTApp;
 import com.adr.helloiot.device.DeviceNumber;
@@ -34,9 +36,11 @@ import javafx.scene.chart.AreaChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.util.Duration;
 
 /**
@@ -45,11 +49,15 @@ import javafx.util.Duration;
  */
 public class ViewNumberChart extends Tile {
 
+    private HBox boxview;
     private Label level;
     private Timeline timeline;
     private ViewChartSerie serie;
     private ObservableList<XYChart.Series<Number, Number>> areaChartData;
     private NumberAxis yAxis;
+    
+    private IconFontGlyph glyph = null;
+    private StackPane glyphnode = null;    
 
     private DeviceNumber device = null;
     private final Object messageHandler = Units.messageHandler(this::updateStatus);
@@ -58,13 +66,18 @@ public class ViewNumberChart extends Tile {
     @Override
     protected Node constructContent() {
         VBox vboxroot = new VBox();
-        vboxroot.setSpacing(10.0);        
+        vboxroot.setSpacing(10.0);   
+        
+        boxview = new HBox();
+        boxview.setSpacing(6.0);
         
         level = new Label();
         level.setAlignment(Pos.CENTER_RIGHT);
         level.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
         level.getStyleClass().add("unitmaintext");
+        HBox.setHgrow(level, Priority.SOMETIMES);
         
+        boxview.getChildren().add(level);
         
         // Get all data
 
@@ -96,7 +109,7 @@ public class ViewNumberChart extends Tile {
         StackPane stack = new StackPane(chart);
         VBox.setVgrow(stack, Priority.SOMETIMES);   
         stack.setPadding(new Insets(0.0, 0.0, 0.0, 3.0));
-        vboxroot.getChildren().addAll(level, stack);
+        vboxroot.getChildren().addAll(boxview, new Label("pepeluiiiiis"), stack);
         
         initialize();
         return vboxroot;
@@ -113,6 +126,12 @@ public class ViewNumberChart extends Tile {
     @Override
     public void construct(IoTApp app) {
         super.construct(app);
+        
+        if (glyph != null) {
+            glyphnode = new StackPane(IconBuilder.create(glyph, 36.0).color(Color.web("#565656")).build());
+            glyphnode.setPadding(new Insets(0, 0, 0, 6));
+            boxview.getChildren().add(0, glyphnode);
+        }        
         
         device.subscribeStatus(messageHandler);
         
@@ -135,6 +154,11 @@ public class ViewNumberChart extends Tile {
     @Override
     public void destroy() {
         super.destroy();
+        
+        if (glyphnode != null) {
+            boxview.getChildren().remove(glyphnode);
+            glyphnode = null;
+        }        
         
         timeline.stop();
         timeline = null;
@@ -163,4 +187,12 @@ public class ViewNumberChart extends Tile {
     public Duration getDuration() {
         return duration;
     }
+    
+    public void setGlyph(IconFontGlyph glyph) {
+        this.glyph = glyph;
+    }
+    
+    public IconFontGlyph getGlyph() {
+        return glyph;
+    }    
 }
