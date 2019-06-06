@@ -18,16 +18,16 @@
 //
 
 plugins {
-  id 'java'
   id 'application'
   id 'org.openjfx.javafxplugin' version '0.0.7'
+  id 'org.beryx.runtime' version '1.1.7'
 }
 
 group = 'com.github.adrianromero'
 version = '1.0.400'
 
-mainClassName = 'com.adr.helloiot.MainAppClient'
-ext.mainClass = 'com.adr.helloiot.MainAppClient'
+mainClassName = 'com.adr.helloiot.LauncherClient'
+ext.mainClass = 'com.adr.helloiot.LauncherClient'
 
 description = """"""
 
@@ -39,7 +39,6 @@ compileJava {
 }
 
 repositories {
-    mavenLocal()
     mavenCentral()
     jcenter()
     maven { url 'https://jitpack.io' }
@@ -67,21 +66,10 @@ dependencies {
     compile group: 'org.eclipse.californium', name: 'californium-core', version: '2.0.0-M8'
     compile group: 'org.eclipse.californium', name: 'scandium', version: '2.0.0-M8'
     compile group: 'org.eclipse.californium', name: 'element-connector', version: '2.0.0-M8'
-    compile group: 'com.google.code.gson', name: 'gson', version: '2.6.2'    
+    compile group: 'com.google.code.gson', name: 'gson', version: '2.6.2'      
 }
 
-applicationDistribution.from("${rootProject.projectDir}") {
-    include "LICENSE", \
-        "README.md",\
-        "helloiot_template.properties"
-    into ""
-}
-
-task sourcesJar(type: Jar, dependsOn: classes) {
-    classifier = 'sources'
-    from sourceSets.main.allSource
-}
-
-artifacts {
-    archives sourcesJar
+application {
+    mainClassName = mainClassName
+    applicationName = 'HelloIoT'
 }
