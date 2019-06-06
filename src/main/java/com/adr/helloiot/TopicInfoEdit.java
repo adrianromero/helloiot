@@ -54,8 +54,6 @@ import javafx.scene.text.TextFlow;
  */
 public class TopicInfoEdit implements TopicInfo {
 
-    private final static String STYLEFORMAT = "{} {-fx-background-color: gray; -fx-background-radius: 10px; -fx-fill:white; -fx-padding: 0 5 0 5; -fx-pref-width: 70px; -fx-text-alignment: center;}";
-    private final static String STYLEFORMATSPACE = "{} {-fx-padding: 0 5 0 5; -fx-pref-width: 70px;}";
     private final static String STYLEQOS = "{} {-fx-background-color: darkblue; -fx-background-radius: 10px; -fx-fill:white; -fx-padding: 0 5 0 5; -fx-pref-width: 30px; -fx-text-alignment: center;}";
     private final static String STYLEQOSSPACE = "{} {-fx-padding: 0 5 0 5; -fx-pref-width: 30px;}";
 
@@ -152,7 +150,6 @@ public class TopicInfoEdit implements TopicInfo {
         
         if (topic == null || topic.isEmpty()) {
             ResourceBundle resources = ResourceBundle.getBundle("com/adr/helloiot/fxml/main");
-            String label = getLabel().getValue();
             throw new HelloIoTException(resources.getString("exception.topicinfoedit"));
         }
         
@@ -225,7 +222,7 @@ public class TopicInfoEdit implements TopicInfo {
         EditEvent u = multiline ? new EditAreaEvent() : new EditEvent();
         u.setPrefWidth(320.0);
         u.setLabel(getLabel().getValue());
-        u.setFooter(topic + getQOSBadge(qos) + getFormatBadge(d.getFormat()));
+        u.setFooter(topic + getQOSBadge(qos));
         setStyle(u);
         u.setDevice(d);
         UnitPage.setPage(u, page);
@@ -245,7 +242,7 @@ public class TopicInfoEdit implements TopicInfo {
         EditStatus u = multiline ? new EditAreaStatus() : new EditStatus();
         u.setPrefWidth(320.0);
         u.setLabel(getLabel().getValue());
-        u.setFooter(topic + getQOSBadge(qos) + getFormatBadge(d.getFormat()));
+        u.setFooter(topic + getQOSBadge(qos));
         u.setGlyph(createGlyph());
         setStyle(u);
         u.setDevice(d);
@@ -266,7 +263,7 @@ public class TopicInfoEdit implements TopicInfo {
         EditView u = multiline ? new EditAreaView() : new EditView();
         u.setPrefWidth(320.0);
         u.setLabel(getLabel().getValue());
-        u.setFooter(topic + getQOSBadge(qos) + getFormatBadge(d.getFormat()));
+        u.setFooter(topic + getQOSBadge(qos));
         u.setGlyph(createGlyph());
         setStyle(u);
         u.setDevice(d);
@@ -284,14 +281,6 @@ public class TopicInfoEdit implements TopicInfo {
             style.append("-fx-background-unit: ").append(webColor(background)).append(";");
         }
         u.getNode().setStyle(style.toString());        
-    }
-
-    private String getFormatBadge(StringFormat f) {
-        if (f instanceof StringFormatIdentity) {
-            return STYLEFORMATSPACE;
-        } else {
-            return STYLEFORMAT + f.toString();
-        }
     }
 
     private String getQOSBadge(int i) {
