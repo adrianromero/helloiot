@@ -24,7 +24,6 @@
 <?import com.adr.fonticon.*?>
 <?import com.adr.helloiot.*?>
 <?import com.adr.helloiot.unit.*?>
-<?import com.adr.helloiot.unitsensor.*?>
 <?import com.adr.helloiot.device.*?>
 <?import com.adr.helloiot.graphic.*?>
 
