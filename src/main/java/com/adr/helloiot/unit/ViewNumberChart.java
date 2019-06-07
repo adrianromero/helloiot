@@ -109,7 +109,7 @@ public class ViewNumberChart extends Tile {
         StackPane stack = new StackPane(chart);
         VBox.setVgrow(stack, Priority.SOMETIMES);   
         stack.setPadding(new Insets(0.0, 0.0, 0.0, 3.0));
-        vboxroot.getChildren().addAll(boxview, new Label("pepeluiiiiis"), stack);
+        vboxroot.getChildren().addAll(boxview, stack);
         
         initialize();
         return vboxroot;

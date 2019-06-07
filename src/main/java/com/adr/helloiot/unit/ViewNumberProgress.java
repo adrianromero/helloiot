@@ -77,7 +77,7 @@ public class ViewNumberProgress extends Tile {
 
         StackPane stack = new StackPane(progress);
         VBox.setVgrow(stack, Priority.SOMETIMES);   
-        vboxroot.getChildren().addAll(boxview, new Label("joselillo"), stack);
+        vboxroot.getChildren().addAll(boxview, stack);
         
         initialize();
         return vboxroot;

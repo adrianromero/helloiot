@@ -93,7 +93,7 @@ public class ButtonsSpinner extends Tile {
         StackPane stack = new StackPane(hbox);     
         VBox.setVgrow(stack, Priority.SOMETIMES);
         
-        vboxroot.getChildren().addAll(boxview, new Label("pepeluiiiiis"), stack);
+        vboxroot.getChildren().addAll(boxview, stack);
         
         initialize();
         return vboxroot;

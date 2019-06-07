@@ -79,7 +79,7 @@ public class SliderSimple extends Tile {
         
         StackPane stack = new StackPane(slider);
         VBox.setVgrow(stack, Priority.SOMETIMES);
-        vboxroot.getChildren().addAll(boxview, new Label("pepeluiiiiis"), stack);
+        vboxroot.getChildren().addAll(boxview, stack);
         
         initialize();
         
