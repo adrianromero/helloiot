@@ -13,9 +13,14 @@ Getting started
 Install and execute HelloIoT
 ----------------------------
 
-To run HelloIoT just download and install the appropiate release file:
+To run HelloIoT just download and uncompress the appropiate release file. The executable is located in image/bin/HelloIoT.
 
-* [helloiot-1.0.32.zip](https://github.com/adrianromero/helloiot/releases/download/1.0.32/helloiot-1.0.32.zip) Windows / MacOS / Linux
+* [helloiot-1.1.020-win.zip](https://github.com/adrianromero/helloiot/releases/download/1.1.020/helloiot-1.1.020-win.zip) Windows
+* [helloiot-1.1.020-mac.zip](https://github.com/adrianromero/helloiot/releases/download/1.1.020/helloiot-1.1.020-mac.zip) MacOS
+* [helloiot-1.1.020-linux.zip](https://github.com/adrianromero/helloiot/releases/download/1.1.020/helloiot-1.1.020-linux.zip) Linux
+
+The Android runtime package for the latest version is on his way. In the mean time you can use the old version
+
 * [helloiot-1.0.32.apk](https://github.com/adrianromero/helloiot/releases/download/1.0.32/helloiot-1.0.32.apk) Android
 
 [![Installing HelloIoT](https://img.youtube.com/vi/RuxUUHpTbR0/0.jpg)](https://www.youtube.com/watch?v=RuxUUHpTbR0)
@@ -30,24 +35,10 @@ with other MQTT Brokers like [HiveMQ](http://www.hivemq.com/), [EMQTT](http://em
 [Moquette](https://github.com/andsel/moquette)...
 There is a list of MQTT brokers in the [MQTT Community Wiki](https://github.com/mqtt/mqtt.github.io/wiki/servers), you can choose the broker that better fits your needs.
 
-Install Java
-------------
-
-You need to install the [Java SE 8 JDK](http://www.oracle.com/technetwork/es/java/javase/downloads/index.html) or later version, not the JRE, 
-or the [OpenJDK 8](http://openjdk.java.net/install/) or later.
-
 Execute HelloIoT from sources
 -----------------------------
 
-Download the latests binaries from [Releases](https://github.com/adrianromero/helloiot/releases), uncompress to a folder and execute. By default HelloIoT is configured to be connected to a MQTT broker installed locally, listening on port 1883, with no security configured. 
-The standard installation of the Mosquitto broker will work. In the 'bin' folder there is 'helloiot' script for MacOS and Linux and a 'helloiot.bat' script for Windows.
-
-```
-cd bin
-./helloiot
-```
-
-If you prefer to run HelloIoT from sources clone the repository, build and execute.
+If you prefer to run HelloIoT from sources clone the repository, build and execute. You will need Java 11 installed first.
  
 ```
 git clone https://github.com/adrianromero/helloiot
@@ -75,7 +66,6 @@ Acknowledgments
 * Google Guice library. https://github.com/google/guice (Apache License Version 2.0)
 * JideSoft Common library. https://github.com/jidesoft/jidefx-oss  (GPL version 2 with classpath exception)
 * Apache Commons IO. https://commons.apache.org/proper/commons-io/ (Apache License Version 2.0)
-* MapDB Database engine. http://www.mapdb.org/ (Apache License Version 2.0)
 * MQTT Bridge for IKEA Tradfri Light Gateway by Ben Hardill https://github.com/hardillb/TRADFRI2MQTT (Apache License Version 2.0)
 
 License
