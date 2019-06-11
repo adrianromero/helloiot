@@ -187,46 +187,37 @@
 
 /* Chart styles */
 
-.chart {
-    -fx-padding: 0;
+.unitchartlegend {
+    -fx-padding: 10 10 10 10;
+    -fx-spacing: 10;
 }
 
-.chart-plot-background {
-    -fx-background-color: transparent;
-}
-
-.chart-content {
-    -fx-background-color: transparent;
-    -fx-padding: 0;
-}
-
-.axis {
-    -fx-border-color: transparent;
-}
-
-.default-color0.chart-series-area-line {
+.unitchartserie-line {
     -fx-stroke: #497ccb;
+    -fx-stroke-width: 3;    
 }
 
-.default-color0.chart-series-area-fill { 
-    -fx-fill: #ecf1f9;
+.unitchartserie-fill { 
+    -fx-fill: #497ccb1b; /* #ecf1f9 */
 }
 
-/*.default-color1.chart-series-area-line {
+.unitchartserie2-line {
     -fx-stroke: #ca2024;
+    -fx-stroke-width: 3;    
 }
 
-.default-color1.chart-series-area-fill { 
-    -fx-fill: #fceceb;
+.unitchartserie2-fill { 
+    -fx-fill: #ca20241b; /* #fceceb */
 }
 
-.default-color2.chart-series-area-line {
+.unitchartserie3-line {
     -fx-stroke: #62bb2a;
+    -fx-stroke-width: 3;    
 }
 
-.default-color2.chart-series-area-fill { 
-    -fx-fill: #eff8ea;
-}*/
+.unitchartserie3-fill { 
+    -fx-fill: #62bb2a1b; /* #eff8ea */
+}
 
 /* Loading bar style */
 .loading-dialog > .dialog-body {

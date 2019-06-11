@@ -26,15 +26,9 @@ import com.adr.helloiot.device.DeviceNumber;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.geometry.Side;
 import javafx.scene.Node;
-import javafx.scene.chart.AreaChart;
-import javafx.scene.chart.NumberAxis;
-import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
@@ -52,9 +46,9 @@ public class ViewNumberChart extends Tile {
     private HBox boxview;
     private Label level;
     private Timeline timeline;
-    private ViewChartSerie serie;
-    private ObservableList<XYChart.Series<Number, Number>> areaChartData;
-    private NumberAxis yAxis;
+    
+    private ChartSerie serie;
+    private ChartNode areachart;
     
     private IconFontGlyph glyph = null;
     private StackPane glyphnode = null;    
@@ -79,29 +73,8 @@ public class ViewNumberChart extends Tile {
         
         boxview.getChildren().add(level);
         
-        // Get all data
-
-        areaChartData = FXCollections.observableArrayList();       
-        
-        AreaChart chart;
-        NumberAxis xAxis;
-    
-        xAxis = new NumberAxis(1.0, ViewChartSerie.SIZE, 0.0);
-        xAxis.setMinorTickVisible(false);
-        xAxis.setTickMarkVisible(false);     
-        xAxis.setTickLabelsVisible(false);
-        yAxis = new NumberAxis(0,0,0);
-        yAxis.setSide(Side.RIGHT);
-        yAxis.setMinorTickVisible(false);        
-        yAxis.setTickMarkVisible(false);
-        yAxis.setTickLabelsVisible(false);
-        
-        chart = new AreaChart<>(xAxis, yAxis, areaChartData);
-        chart.setLegendVisible(false);
-        chart.setAnimated(false);
-        chart.setCreateSymbols(false);
-        chart.setVerticalGridLinesVisible(false);
-        chart.setHorizontalGridLinesVisible(false);
+        areachart = new ChartNode();
+        StackPane chart = areachart.getNode();
         chart.setMinSize(40.0, 50.0);
         chart.setPrefSize(40.0, 50.0);
         chart.setPadding(Insets.EMPTY);
@@ -134,16 +107,13 @@ public class ViewNumberChart extends Tile {
         }        
         
         device.subscribeStatus(messageHandler);
-        
-        serie = new ViewChartSerie();
+
+        serie = new ChartSerie();
         serie.setDevice(device);
         serie.construct();
-        areaChartData.add(serie.createSerie());  
-        yAxis.setLowerBound(device.getLevelMin()- 5.0);
-        yAxis.setUpperBound(device.getLevelMax() + 5.0);
-        yAxis.setTickUnit((device.getLevelMax() - device.getLevelMin()) / 10.0);      
-        
-        timeline = new Timeline(new KeyFrame(duration.divide(ViewChartSerie.SIZE), ae -> {
+        areachart.addShapeChart(new ShapeChartArea(serie));
+               
+        timeline = new Timeline(new KeyFrame(duration.divide(ChartSerie.SIZE), ae -> {
             serie.tick();
         }));  
         timeline.setCycleCount(Animation.INDEFINITE);        
@@ -162,9 +132,11 @@ public class ViewNumberChart extends Tile {
         
         timeline.stop();
         timeline = null;
+        
+        areachart.removeAllShapeChart();
+        serie.setListener(null);
         serie.destroy();  
         serie = null;
-        areaChartData.clear();
         
         device.unsubscribeStatus(messageHandler);
     }

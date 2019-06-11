@@ -732,3 +732,11 @@ foco 508cfb */
 .badge {
     -fx-font-family: 'Source Sans Pro Regular';    
 }
+
+/* Charts */
+
+.unitchartlegend {
+    -fx-font-family: 'Source Code Pro Regular';
+    -fx-font-size: 14px;   
+    -fx-text-fill: -fx-level-fill;  
+}
