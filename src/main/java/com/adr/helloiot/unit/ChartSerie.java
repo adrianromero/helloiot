@@ -28,7 +28,7 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public class ChartSerie {
 
-    public final static int SIZE = 30;
+    public final static int SIZE = 60;
     
     private String label = null;
     private String styleClass = "unitchartserie";
@@ -79,6 +79,14 @@ public class ChartSerie {
         return Collections.unmodifiableList(data);
     }
     
+    public double getMaxValue() {
+        return device.getLevelMax();
+    }
+    
+    public double getMinValue() {
+        return device.getLevelMin();
+    }
+    
     public void construct() {
         data.clear();
         if (listener != null) {
@@ -125,14 +133,7 @@ public class ChartSerie {
     private double tickValue() {
         double d = currentcount == 0.0 ? last : current;
         currentcount = 0.0;
-        current = 0.0;    
-        
-        // Adjust Value
-        d = (d - device.getLevelMin()) / (device.getLevelMax() - device.getLevelMin());
-
-        // Clamp value between 0 and 1;
-        d = Math.max(Math.min(d, 1.0), 0.0);
-        
+        current = 0.0;        
         return d;
     }
     

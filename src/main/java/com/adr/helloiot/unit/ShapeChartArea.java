@@ -55,9 +55,22 @@ public class ShapeChartArea implements ChartSerieListener {
         return pLine;
     }
     
+    private double transform(double value, double min, double max) {
+        // Adjust Value between 0 and 1
+        double d = (value - min) / (max - min);
+
+        // Clamp value between 0 and 1;
+        return Math.max(Math.min(d, 1.0), 0.0);        
+    }
+       
     private void render() {
         
         List<Double> data = serie.getData();
+        double maxvalue = serie.getMaxValue();
+        double minvalue = serie.getMinValue();
+
+        pFill.getElements().clear();
+        pLine.getElements().clear();
         
         if (data != null && data.size() > 0) {
         
@@ -65,7 +78,7 @@ public class ShapeChartArea implements ChartSerieListener {
             PathElement[] elementsLine = new PathElement[data.size()];
 
             if (data.size() == 1) {
-                double y = 0.1 * height + 0.8 * height * (1.0 - data.get(0));
+                double y = 0.1 * height + 0.8 * height * (1.0 - transform(data.get(0), minvalue, maxvalue));
                 elements = new PathElement[2];
                 elements[0] = new LineTo(0.0, y);
                 elements[1] = new LineTo(width, y);
@@ -77,19 +90,17 @@ public class ShapeChartArea implements ChartSerieListener {
                 int i = 0;
                 for (double d : data) {
                     double x = i * width / (elements.length - 1);
-                    double y = 0.1 * height + 0.8 * height * (1.0 - data.get(i));
+                    double y = 0.1 * height + 0.8 * height * (1.0 - transform(d, minvalue, maxvalue));
                     elements[i] = new LineTo(x, y);
                     elementsLine[i] = i == 0 ? new MoveTo(x, y) : new LineTo(x, y);
                     i++;                   
                 }
             }
 
-            pFill.getElements().clear();
             pFill.getElements().add(new MoveTo(0, height));
             pFill.getElements().addAll(elements);
             pFill.getElements().add(new LineTo(width, height));
             
-            pLine.getElements().clear();
             pLine.getElements().addAll(elementsLine);
         }
     }
