@@ -300,11 +300,14 @@ public class PublicationsPage extends VBox implements Unit {
             MessageUtils.showException(MessageUtils.getRoot(this), resources.getString("label.sendmessage"), resources.getString("message.messageerror"), ex);
         }
         
-        if (!topic.getItems().contains(topic.getEditor().getText())) {
+        if (topic.getItems().contains(topic.getEditor().getText())) {
+            topic.getSelectionModel().select(topic.getEditor().getText());
+        } else {
            topic.getItems().add(0, topic.getEditor().getText());
            if (topic.getItems().size() > 20) {
                topic.getItems().remove(topic.getItems().size() - 1);
            }
+           topic.getSelectionModel().select(0);
         }  
     }
 }
