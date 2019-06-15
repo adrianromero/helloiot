@@ -809,10 +809,6 @@ public class ClientLoginNode {
         return b;
     }
     
-    private void addToolbarButton(Button b) {
-        unitstoolbar.getItems().add(b);
-    }
-    
     public void addCodeUnit(String name, String code) {
         TopicInfo t = topicinfobuilder.create("Code");
         BaseSubProperties props = new BaseSubProperties();
