@@ -20,11 +20,19 @@ package com.adr.helloiot;
 
 import com.adr.fonticon.IconBuilder;
 import com.adr.fonticon.IconFontGlyph;
+import com.adr.hellocommon.dialog.DialogView;
 import com.adr.hellocommon.dialog.MessageUtils;
+import com.adr.helloiot.util.CompletableAsync;
+import com.adr.helloiot.util.Dialogs;
 import com.google.common.io.Resources;
+import com.google.common.util.concurrent.ListenableFuture;
+import com.google.gson.Gson;
 import java.io.IOException;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.ResourceBundle;
+import java.util.Scanner;
 import javafx.beans.Observable;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -59,6 +67,9 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
+import javafx.scene.text.TextFlow;
 import javafx.util.StringConverter;
 
 /**
@@ -168,6 +179,12 @@ public class ClientLoginNode {
         adddeviceunit.getStyleClass().add("unitbutton");
         adddeviceunit.setOnAction(this::onAddDeviceUnit);
         
+        Button templatesbutton = createTemplatesButton();
+        // TODO: Implement Tradfri Button
+        // Button tradfributton = createTradfriButton();
+                
+        Separator sep = new Separator(Orientation.VERTICAL);
+                       
         removedeviceunit = new Button();
         removedeviceunit.setFocusTraversable(false);
         removedeviceunit.setMnemonicParsing(false);
@@ -184,11 +201,9 @@ public class ClientLoginNode {
         downdeviceunit.setFocusTraversable(false);
         downdeviceunit.setMnemonicParsing(false);
         downdeviceunit.getStyleClass().add("unitbutton");
-        downdeviceunit.setOnAction(this::onDownDeviceUnit);
-        
-        Separator sep = new Separator(Orientation.VERTICAL);
-               
-        unitstoolbar.getItems().addAll(adddeviceunit, removedeviceunit, updeviceunit, downdeviceunit, sep);
+        downdeviceunit.setOnAction(this::onDownDeviceUnit);      
+
+        unitstoolbar.getItems().addAll(adddeviceunit, templatesbutton, sep, removedeviceunit, updeviceunit, downdeviceunit);
         
         borderpanetab1.setTop(unitstoolbar);
         
@@ -373,6 +388,12 @@ public class ClientLoginNode {
         adddeviceunit.getStyleClass().add("unitbutton");
         adddeviceunit.setOnAction(this::onAddDeviceUnit);
         
+        Button templatesbutton = createTemplatesButton();
+        // TODO: Implement Tradfri Button
+        // Button tradfributton = createTradfriButton();
+                
+        Separator sep = new Separator(Orientation.VERTICAL);
+        
         removedeviceunit = new Button();
         removedeviceunit.setFocusTraversable(false);
         removedeviceunit.setMnemonicParsing(false);
@@ -391,9 +412,7 @@ public class ClientLoginNode {
         downdeviceunit.getStyleClass().add("unitbutton");
         downdeviceunit.setOnAction(this::onDownDeviceUnit);
         
-        Separator sep = new Separator(Orientation.VERTICAL);
-        
-        unitstoolbar.getItems().addAll(adddeviceunit, removedeviceunit, updeviceunit, downdeviceunit, sep);
+        unitstoolbar.getItems().addAll(adddeviceunit, templatesbutton, sep, removedeviceunit, updeviceunit, downdeviceunit);
         
         borderpanetab1.setTop(unitstoolbar); 
                 
@@ -566,8 +585,10 @@ public class ClientLoginNode {
 
         nextbutton.setGraphic(IconBuilder.create(IconFontGlyph.FA_SOLID_PLAY, 18.0).styleClass("icon-fill").build());
 
-        adddeviceunit.setGraphic(IconBuilder.create(IconFontGlyph.FA_SOLID_PLUS, 18.0).styleClass("icon-fill").build());
-        removedeviceunit.setGraphic(IconBuilder.create(IconFontGlyph.FA_SOLID_MINUS, 18.0).styleClass("icon-fill").build());
+        adddeviceunit.setGraphic(IconBuilder.create(IconFontGlyph.FA_SOLID_FILE_ALT, 18.0).styleClass("icon-fill").build());
+        adddeviceunit.setText(resources.getString("button.new"));
+        
+        removedeviceunit.setGraphic(IconBuilder.create(IconFontGlyph.FA_SOLID_TRASH_ALT, 18.0).styleClass("icon-fill").build());
         updeviceunit.setGraphic(IconBuilder.create(IconFontGlyph.FA_SOLID_CHEVRON_UP, 18.0).styleClass("icon-fill").build());
         downdeviceunit.setGraphic(IconBuilder.create(IconFontGlyph.FA_SOLID_CHEVRON_DOWN, 18.0).styleClass("icon-fill").build());
 
@@ -788,7 +809,7 @@ public class ClientLoginNode {
         return b;
     }
     
-    public void addToolbarButton(Button b) {
+    private void addToolbarButton(Button b) {
         unitstoolbar.getItems().add(b);
     }
     
@@ -802,4 +823,159 @@ public class ClientLoginNode {
         devicesunitsitems.add(t);
         devicesunitsselection.select(t);        
     }
+    
+    // Templates
+    
+    private Button createTemplatesButton() {
+        Button b = new Button(resources.getString("title.templates"), IconBuilder.create(IconFontGlyph.FA_SOLID_FILE_DOWNLOAD, 18.0).styleClass("icon-fill").build());
+        b.setFocusTraversable(false);
+        b.setMnemonicParsing(false);
+        b.getStyleClass().add("unitbutton");
+        b.setOnAction(evAction -> {
+            
+            DialogView dialog = new DialogView();
+            ListView<TemplateInfo>list = new ListView<>();
+            
+            list.getStyleClass().add("unitlistview");
+            list.setCellFactory(l -> new TemplatesListCell());
+            list.setOnMouseClicked(e -> {
+                if (e.getClickCount() == 2) {
+                    addTemplateToUnits(list.getSelectionModel().getSelectedItem());
+                    dialog.dispose();
+                }
+            });
+
+            dialog.setTitle(resources.getString("title.templates"));
+            dialog.setContent(list);
+            dialog.addButtons(dialog.createCancelButton(), dialog.createOKButton());
+            dialog.show(MessageUtils.getRoot(rootpane));              
+            dialog.setActionOK(evOK -> {
+                addTemplateToUnits(list.getSelectionModel().getSelectedItem());        
+            });
+                 
+            // Load list of templates
+            DialogView loading2 = Dialogs.createLoading();
+            loading2.show(MessageUtils.getRoot(rootpane));             
+            CompletableAsync.handle(
+                loadTemplatesList(),
+                templateslist -> {
+                    loading2.dispose();
+                    list.setItems(FXCollections.observableList(Arrays.asList(templateslist)));
+                    list.getSelectionModel().selectFirst();
+                },
+                ex -> {
+                    loading2.dispose();
+                    MessageUtils.showException(MessageUtils.getRoot(rootpane), resources.getString("title.templates"),  resources.getString("exception.cannotloadtemplateslist"), ex);             
+                });
+        });
+        return b;
+    }    
+    
+    private void addTemplateToUnits(TemplateInfo template) {
+        String fxml = "https://raw.githubusercontent.com/adrianromero/helloiot-units/master/" +
+                template.file +
+                (HelloPlatform.getInstance().isPhone() ? "_mobile.fxml" : ".fxml");
+
+        // Load template code
+        DialogView loading3 = Dialogs.createLoading();
+        loading3.show(MessageUtils.getRoot(rootpane));             
+        CompletableAsync.handle(
+                loadTemplate(fxml),
+                result -> {
+                    loading3.dispose();
+                    addCodeUnit(template.name, result);
+                }, 
+                ex -> {
+                    loading3.dispose();
+                    MessageUtils.showException(MessageUtils.getRoot(rootpane), resources.getString("title.templates"),  resources.getString("exception.cannotloadtemplatecode"), ex);
+                });         
+    }
+    
+    private ListenableFuture<String> loadTemplate(String url) {
+         return CompletableAsync.supplyAsync(() -> {
+            try {
+                return Resources.toString(new URL(url), StandardCharsets.UTF_8);
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        });       
+    }
+    
+    private ListenableFuture<TemplateInfo[]> loadTemplatesList() {   
+        return CompletableAsync.supplyAsync(() -> {
+            try {
+                String out = new Scanner(new URL("https://raw.githubusercontent.com/adrianromero/helloiot-units/master/units.json").openStream(), "UTF-8").useDelimiter("\\A").next();
+                Gson gson = new Gson();
+                return gson.fromJson(out, TemplateInfo[].class);
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
+    }
+    
+    private class TemplatesListCell extends ListCell<TemplateInfo> {
+        @Override
+        public void updateItem(TemplateInfo item, boolean empty) {
+            super.updateItem(item, empty);
+            if (item == null) {
+                setGraphic(null);
+                setText(null);
+            } else {               
+                Text t = IconBuilder.create(IconFontGlyph.valueOf(item.icon), 18.0).styleClass("icon-fill").build();
+                TextFlow tf = new TextFlow(t);
+                tf.setTextAlignment(TextAlignment.CENTER);
+                tf.setPadding(new Insets(2, 5, 2, 5));
+                tf.setPrefWidth(36.0);           
+                setGraphic(tf);
+                setText(item.name);
+            }
+        }        
+    }   
+    
+    private static class TemplateInfo {
+        public final String name;
+        public final String icon;
+        public final String file;
+        public TemplateInfo(String name, String icon, String file) {
+            this.name = name;
+            this.icon = icon;
+            this.file = file;
+        }
+    }   
+    
+//    private Button createTradfriButton() {
+//
+//        Button b = new Button(resources.getString("button.tradfri"), IconBuilder.create(IconFontGlyph.FA_SOLID_SEARCH, 18.0).styleClass("icon-fill").build());       
+//        b.setFocusTraversable(false);
+//        b.setMnemonicParsing(false);
+//        b.getStyleClass().add("unitbutton");       
+//        b.setOnAction(e -> {
+//            ConfigProperties tempconfig = new ConfigProperties();
+//            clienttradfri.saveConfig(new ConfigSubProperties(tempconfig, "tradfri."));
+//            
+//            if (HTTPUtils.getAddress(tempconfig.getProperty("tradfri.host", "")) == null) {
+//                MessageUtils.showWarning(MessageUtils.getRoot(root), resources.getString("title.tradfridiscovery"), resources.getString("message.notradfriconnection"));                
+//                return;
+//            }
+//
+//            DialogView loading2 = Dialogs.createLoading();
+//            loading2.show(MessageUtils.getRoot(root));    
+//
+//            CompletableAsync.handle(clienttradfri.requestSample(
+//                    tempconfig.getProperty("tradfri.host"), 
+//                    tempconfig.getProperty("tradfri.identity"), 
+//                    tempconfig.getProperty("tradfri.psk")), 
+//                units -> {
+//                    loading2.dispose();
+//                    for(Map.Entry<String, String> entry: units.entrySet()) {
+//                        clientlogin.addCodeUnit(entry.getKey(), entry.getValue());
+//                    }
+//                },
+//                ex -> {                             
+//                    loading2.dispose();
+//                    MessageUtils.showException(MessageUtils.getRoot(root), resources.getString("title.tradfridiscovery"), ex.getLocalizedMessage(), ex);
+//                });  
+//        });
+//        return b;
+//    }     
 }
