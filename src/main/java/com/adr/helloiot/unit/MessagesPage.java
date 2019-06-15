@@ -104,17 +104,6 @@ public class MessagesPage extends BorderPane implements Unit {
         titlesep.setOrientation(Orientation.VERTICAL);
         titlesep.setFocusTraversable(false);
 
-        deletemessages = new Button();
-        deletemessages.setMnemonicParsing(false);
-        deletemessages.setFocusTraversable(false);
-        deletemessages.getStyleClass().add("unitbutton");
-        deletemessages.setGraphic(IconBuilder.create(IconFontGlyph.FA_SOLID_TRASH_ALT, 18.0).styleClass("icon-fill").build());
-        deletemessages.setOnAction(this::actionDelete);
-        
-        Separator trashsep = new Separator();
-        trashsep.setOrientation(Orientation.VERTICAL);
-        trashsep.setFocusTraversable(false);        
-        
         playpause = new ToggleButton();
         playpause.setMnemonicParsing(false);
         playpause.setFocusTraversable(false);
@@ -179,11 +168,21 @@ public class MessagesPage extends BorderPane implements Unit {
         formatbase64.setUserData(StringFormatBase64.INSTANCE);        
         formatbase64.setDisable(true);
         
+        Separator trashsep = new Separator();
+        trashsep.setOrientation(Orientation.VERTICAL);
+        trashsep.setFocusTraversable(false);   
+
+        deletemessages = new Button();
+        deletemessages.setMnemonicParsing(false);
+        deletemessages.setFocusTraversable(false);
+        deletemessages.getStyleClass().add("unitbutton");
+        deletemessages.setGraphic(IconBuilder.create(IconFontGlyph.FA_SOLID_TRASH_ALT, 18.0).styleClass("icon-fill").build());
+        deletemessages.setOnAction(this::actionDelete);
 
         toolbar = new ToolBar();
         BorderPane.setAlignment(toolbar, Pos.CENTER);
         toolbar.getStyleClass().add("messagestoolbar");
-        toolbar.getItems().addAll(deletemessages, trashsep, playpause, showdetails, formatsep, formatplain, formatjson, formathex, formatbase64);
+        toolbar.getItems().addAll(playpause, showdetails, formatsep, formatplain, formatjson, formathex, formatbase64, trashsep, deletemessages);
         setTop(toolbar);
 
         eventmessageslist = new ListView<>();
