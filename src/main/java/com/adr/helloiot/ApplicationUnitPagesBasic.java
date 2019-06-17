@@ -66,8 +66,6 @@ public class ApplicationUnitPagesBasic implements ApplicationUnitPages {
 
         return Arrays.asList(
                 notfound, start,
-                security, securityarming, securitylocked, emergency,
-                new UnitPage("config", IconBuilder.create(IconFontGlyph.FA_SOLID_SLIDERS_H, 24.0).styleClass("icon-fill").build(), resources.getString("page.config")),
-                new UnitPage("Lights", IconBuilder.create(IconFontGlyph.FA_SOLID_LIGHTBULB, 24.0).styleClass("icon-fill").build(), resources.getString("page.lights")));
+                security, securityarming, securitylocked, emergency);
     }
 }

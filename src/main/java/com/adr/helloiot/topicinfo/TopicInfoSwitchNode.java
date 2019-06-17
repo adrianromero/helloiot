@@ -65,7 +65,6 @@ public class TopicInfoSwitchNode implements TopicInfoNode {
             updateCurrent();
         });    
         
-        editpage.getItems().addAll("Lights", "Numbers"); // TODO:  add more
         editpage.getEditor().textProperty().addListener((ObservableValue<? extends String> ov, String old_val, String new_val) -> {
             updateCurrent();
         });    
