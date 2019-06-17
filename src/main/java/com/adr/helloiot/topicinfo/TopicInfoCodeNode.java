@@ -1,5 +1,5 @@
 //    HelloIoT is a dashboard creator for MQTT
-//    Copyright (C) 2018 Adrián Romero Corchado.
+//    Copyright (C) 2017-2018 Adrián Romero Corchado.
 //
 //    This file is part of HelloIot.
 //
@@ -16,12 +16,13 @@
 //    You should have received a copy of the GNU General Public License
 //    along with HelloIot.  If not, see <http://www.gnu.org/licenses/>.
 //
-package com.adr.helloiot;
+package com.adr.helloiot.topicinfo;
 
 import com.adr.helloiot.util.FXMLNames;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 
@@ -29,25 +30,30 @@ import javafx.scene.layout.GridPane;
  *
  * @author adrian
  */
-public class TopicInfoMessagesPublishNode implements TopicInfoNode {   
+public class TopicInfoCodeNode implements TopicInfoNode {
     
-    private Runnable updatecurrent = null;
+    Runnable updatecurrent = null;
     
     @FXML
     private GridPane container;
     @FXML
-    public TextField topic;   
+    public TextField name;
+    @FXML
+    public TextArea code;
     
-    public TopicInfoMessagesPublishNode() {
-        FXMLNames.load(this, "com/adr/helloiot/fxml/topicinfomessagespublishnode");  
+    public TopicInfoCodeNode() {
+        FXMLNames.load(this, "com/adr/helloiot/fxml/topicinfocodenode");  
     }
     
     @FXML
     public void initialize() {    
-        topic.textProperty().addListener((ObservableValue<? extends String> ov, String old_val, String new_val) -> {
+        name.textProperty().addListener((ObservableValue<? extends String> ov, String old_val, String new_val) -> {
             updateCurrent();
-        });     
-    }   
+        });        
+        code.textProperty().addListener((ObservableValue<? extends String> ov, String old_val, String new_val) -> {
+            updateCurrent();
+        });        
+    }
     
     @Override
     public void useUpdateCurrent(Runnable updatecurrent) {

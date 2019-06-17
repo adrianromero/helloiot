@@ -16,7 +16,7 @@
 //    You should have received a copy of the GNU General Public License
 //    along with HelloIot.  If not, see <http://www.gnu.org/licenses/>.
 //
-package com.adr.helloiot;
+package com.adr.helloiot.topicinfo;
 
 import com.adr.fonticon.IconBuilder;
 import com.adr.fonticon.IconFontGlyph;
@@ -34,10 +34,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 
-/**
- *
- * @author adrian
- */
 public class TopicInfoSwitchNode implements TopicInfoNode {
     
     Runnable updatecurrent = null;

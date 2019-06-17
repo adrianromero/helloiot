@@ -16,7 +16,7 @@
 //    You should have received a copy of the GNU General Public License
 //    along with HelloIot.  If not, see <http://www.gnu.org/licenses/>.
 //
-package com.adr.helloiot;
+package com.adr.helloiot.topicinfo;
 
 import com.adr.helloiot.util.FXMLNames;
 import javafx.beans.value.ObservableValue;
@@ -25,10 +25,6 @@ import javafx.scene.Node;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 
-/**
- *
- * @author adrian
- */
 public class TopicInfoMessagesSubscribeNode implements TopicInfoNode {
     
     private Runnable updatecurrent = null;

@@ -16,99 +16,53 @@
 //    You should have received a copy of the GNU General Public License
 //    along with HelloIot.  If not, see <http://www.gnu.org/licenses/>.
 //
-package com.adr.helloiot;
+package com.adr.helloiot.topicinfo;
 
-import com.adr.fonticon.IconBuilder;
 import com.adr.fonticon.IconFontGlyph;
-import com.adr.helloiot.device.DeviceStatus;
-import com.adr.helloiot.device.DeviceSimple;
-import com.adr.helloiot.device.TransmitterSimple;
-import com.adr.helloiot.mqtt.MQTTProperty;
+import com.adr.helloiot.SubProperties;
 import com.adr.helloiotlib.format.StringFormat;
 import com.adr.helloiotlib.format.StringFormatBase64;
 import com.adr.helloiotlib.format.StringFormatDecimal;
 import com.adr.helloiotlib.format.StringFormatHex;
 import com.adr.helloiotlib.format.StringFormatIdentity;
-import com.adr.helloiot.unit.EditAreaEvent;
-import com.adr.helloiot.unit.EditAreaStatus;
-import com.adr.helloiot.unit.EditAreaView;
-import com.adr.helloiot.unit.EditEvent;
-import com.adr.helloiot.unit.EditStatus;
-import com.adr.helloiot.unit.EditView;
 import com.adr.helloiotlib.unit.Unit;
-import com.adr.helloiot.unit.UnitPage;
-import java.util.Arrays;
-import java.util.ResourceBundle;
 import javafx.beans.property.ReadOnlyProperty;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.geometry.Insets;
-import javafx.scene.Node;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
-import javafx.scene.text.TextFlow;
 
-/**
- *
- * @author adrian
- */
-public class TopicInfoEdit implements TopicInfo {
+public abstract class TopicInfoPublicationSubscription implements TopicInfo {
 
     private final static String STYLEQOS = "{} {-fx-background-color: darkblue; -fx-background-radius: 10px; -fx-fill:white; -fx-padding: 0 5 0 5; -fx-pref-width: 30px; -fx-text-alignment: center;}";
     private final static String STYLEQOSSPACE = "{} {-fx-padding: 0 5 0 5; -fx-pref-width: 30px;}";
 
-    private final String type;  
+    private final TopicInfoFactory factory;
     private final TopicInfoEditNode editnode;
 
-    private String page = null;
-    private String topic = null;
+    protected String page = null;
+    protected String topic = null;
     private final SimpleStringProperty name = new SimpleStringProperty();
-    private String topicpub = null;
-    private String format = "STRING";
-    private String jsonpath = null;
-    private boolean multiline = false;
-    private Color color = null;
-    private Color background = null;
-    private int qos = 0;
-    private boolean retained = false;
+    protected String topicpub = null;
+    protected String format = "STRING";
+    protected String jsonpath = null;
+    protected boolean multiline = false;
+    protected Color color = null;
+    protected Color background = null;
+    protected int qos = 0;
+    protected boolean retained = false;
 
-    public TopicInfoEdit(String type, TopicInfoEditNode editnode) {
-        this.type = type;
+    public TopicInfoPublicationSubscription(TopicInfoFactory factory, TopicInfoEditNode editnode) {
+        this.factory = factory;
         this.editnode = editnode;
     }
     
     @Override
-    public String getType() {
-        return type;
-    }
-
-    @Override
-    public ReadOnlyProperty<String> getLabel() {
-        return name;
+    public TopicInfoFactory getFactory() {
+        return factory;
     }
     
     @Override
-    public Node getGraphic() {
-        
-        Text t;
-        String s;
-        if ("Subscription".equals(getType())) {
-            t = IconBuilder.create(IconFontGlyph.FA_SOLID_COMMENT, 18.0).build();
-            s = "-fx-background-color: #d44548; -fx-background-radius: 5px;";
-        } else if ("Publication".equals(getType())) {
-            t = IconBuilder.create(IconFontGlyph.FA_SOLID_PAPER_PLANE, 18.0).build();
-            s = "-fx-background-color: #d445d2; -fx-background-radius: 5px;";
-        } else { // "PublicationSubscription"
-            t = IconBuilder.create(IconFontGlyph.FA_SOLID_PENCIL_ALT, 18.0).build();
-            s = "-fx-background-color: #9245d4; -fx-background-radius: 5px;";
-        }        
-        t.setFill(Color.WHITE);
-        TextFlow tf = new TextFlow(t);
-        tf.setTextAlignment(TextAlignment.CENTER);
-        tf.setPadding(new Insets(5, 5, 5, 5));
-        tf.setStyle(s);
-        tf.setPrefWidth(30.0);
-        return tf;         
+    public ReadOnlyProperty<String> getLabel() {
+        return name;
     }
     
     @Override
@@ -130,8 +84,6 @@ public class TopicInfoEdit implements TopicInfo {
     
     @Override
     public void store(SubProperties properties) {
-        properties.setProperty(".type", getType());
-
         properties.setProperty(".name", name.getValue());
         properties.setProperty(".page", page);
         properties.setProperty(".topic", topic);
@@ -143,23 +95,6 @@ public class TopicInfoEdit implements TopicInfo {
         properties.setProperty(".background", background == null ? null : background.toString());
         properties.setProperty(".qos", Integer.toString(qos));
         properties.setProperty(".retained", Boolean.toString(retained));        
-    }
-    
-    @Override
-    public DevicesUnits getDevicesUnits() throws HelloIoTException {
-        
-        if (topic == null || topic.isEmpty()) {
-            ResourceBundle resources = ResourceBundle.getBundle("com/adr/helloiot/fxml/main");
-            throw new HelloIoTException(resources.getString("exception.topicinfoedit"));
-        }
-        
-        if ("Subscription".equals(getType())) {
-            return buildTopicSubscription();
-        } else if ("Publication".equals(getType())) {
-            return buildTopicPublish();
-        } else { // "PublicationSubscription"
-            return buildTopicPublishSubscription();
-        }
     }
 
     @Override
@@ -173,7 +108,6 @@ public class TopicInfoEdit implements TopicInfo {
         editnode.editpage.setValue(page);
         editnode.edittopic.setText(topic);
         editnode.edittopicpub.setText(topicpub);
-        editnode.edittopicpub.setDisable("Subscription".equals(getType()));
         editnode.editformat.getSelectionModel().select(format);
         editnode.editjsonpath.setText(jsonpath);
         editnode.editjsonpath.setDisable("BASE64".equals(format) || "HEX".equals(format) || "SWITCH".equals(format));
@@ -188,13 +122,7 @@ public class TopicInfoEdit implements TopicInfo {
     public void readFromEditNode() {
         name.setValue(editnode.editname.getText());
         topic = editnode.edittopic.getText();
-        if ("Subscription".equals(type)) {
-            topicpub = null;
-            editnode.edittopicpub.setDisable(true);
-        } else {
-            editnode.edittopicpub.setDisable(false);
-            topicpub = editnode.edittopicpub.getText() == null || editnode.edittopicpub.getText().isEmpty() ? null : editnode.edittopicpub.getText();
-        }
+        topicpub = editnode.edittopicpub.getText() == null || editnode.edittopicpub.getText().isEmpty() ? null : editnode.edittopicpub.getText();
         format = editnode.editformat.getValue();
         if ("BASE64".equals(format) || "HEX".equals(format) || "SWITCH".equals(format)) {
             jsonpath = null;
@@ -210,69 +138,7 @@ public class TopicInfoEdit implements TopicInfo {
         retained = editnode.editretained.getValue();  
     }  
     
-    private DevicesUnits buildTopicPublish() {
-
-        TransmitterSimple d = new TransmitterSimple();
-        d.setTopic(topic);
-        d.setTopicPublish(topicpub);
-        MQTTProperty.setQos(d, qos);
-        MQTTProperty.setRetained(d, retained);
-        d.setFormat(createFormat());
-
-        EditEvent u = multiline ? new EditAreaEvent() : new EditEvent();
-        u.setPrefWidth(320.0);
-        u.setLabel(getLabel().getValue());
-        u.setFooter(topic + getQOSBadge(qos));
-        setStyle(u);
-        u.setDevice(d);
-        UnitPage.setPage(u, page);
-
-        return new DevicesUnits(Arrays.asList(d), Arrays.asList(u));
-    }
-
-    private DevicesUnits buildTopicPublishSubscription() {
-
-        DeviceSimple d = new DeviceSimple();
-        d.setTopic(topic);
-        d.setTopicPublish(topicpub);
-        MQTTProperty.setQos(d, qos);
-        MQTTProperty.setRetained(d, retained);
-        d.setFormat(createFormat());
-
-        EditStatus u = multiline ? new EditAreaStatus() : new EditStatus();
-        u.setPrefWidth(320.0);
-        u.setLabel(getLabel().getValue());
-        u.setFooter(topic + getQOSBadge(qos));
-        u.setGlyph(createGlyph());
-        setStyle(u);
-        u.setDevice(d);
-        UnitPage.setPage(u, page);
-        
-        return new DevicesUnits(Arrays.asList(d), Arrays.asList(u));
-    }
-
-    private DevicesUnits buildTopicSubscription() {
-
-        DeviceStatus d = new DeviceStatus();
-        d.setTopic(topic);
-        d.setTopicPublish(topicpub);
-        MQTTProperty.setQos(d, qos);
-        MQTTProperty.setRetained(d, retained);
-        d.setFormat(createFormat());
-
-        EditView u = multiline ? new EditAreaView() : new EditView();
-        u.setPrefWidth(320.0);
-        u.setLabel(getLabel().getValue());
-        u.setFooter(topic + getQOSBadge(qos));
-        u.setGlyph(createGlyph());
-        setStyle(u);
-        u.setDevice(d);
-        UnitPage.setPage(u, page);
-
-        return new DevicesUnits(Arrays.asList(d), Arrays.asList(u));
-    }
-    
-    private void setStyle(Unit u) {
+    protected void setStyle(Unit u) {
         StringBuilder style = new StringBuilder();
         if (color != null) {
             style.append("-fx-level-fill: ").append(webColor(color)).append(";");
@@ -283,7 +149,7 @@ public class TopicInfoEdit implements TopicInfo {
         u.getNode().setStyle(style.toString());        
     }
 
-    private String getQOSBadge(int i) {
+    protected String getQOSBadge(int i) {
         if (i == 0) {
             return STYLEQOSSPACE;
         } else {
@@ -291,7 +157,7 @@ public class TopicInfoEdit implements TopicInfo {
         }
     }
 
-    private StringFormat createFormat() {
+    protected StringFormat createFormat() {
         if ("STRING".equals(format)) {
             return new StringFormatIdentity(jsonpath == null || jsonpath.isEmpty() ? null : jsonpath);
         } else if ("INT".equals(format)) {
@@ -311,7 +177,7 @@ public class TopicInfoEdit implements TopicInfo {
         }
     }    
 
-    private IconFontGlyph createGlyph() {
+    protected IconFontGlyph createGlyph() {
         if ("STRING".equals(format)) {
             return null;
         } else if ("INT".equals(format)) {
@@ -331,7 +197,7 @@ public class TopicInfoEdit implements TopicInfo {
         }
     }    
     
-    private String webColor(Color color) {
+    protected String webColor(Color color) {
         return String.format("#%02X%02X%02X%02X",
                 (int) (color.getRed() * 255),
                 (int) (color.getGreen() * 255),

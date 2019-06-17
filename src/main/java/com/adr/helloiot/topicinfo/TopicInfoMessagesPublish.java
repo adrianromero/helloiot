@@ -16,10 +16,11 @@
 //    You should have received a copy of the GNU General Public License
 //    along with HelloIot.  If not, see <http://www.gnu.org/licenses/>.
 //
-package com.adr.helloiot;
+package com.adr.helloiot.topicinfo;
 
-import com.adr.fonticon.IconBuilder;
-import com.adr.fonticon.IconFontGlyph;
+import com.adr.helloiot.DevicesUnits;
+import com.adr.helloiot.HelloIoTException;
+import com.adr.helloiot.SubProperties;
 import com.adr.helloiot.device.TreePublish;
 import com.adr.helloiot.unit.PublicationsPage;
 import com.adr.helloiot.unit.UnitPage;
@@ -30,52 +31,31 @@ import java.util.List;
 import java.util.ResourceBundle;
 import javafx.beans.property.ReadOnlyProperty;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.geometry.Insets;
-import javafx.scene.Node;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
-import javafx.scene.text.TextFlow;
 
-/**
- *
- * @author adrian
- */
 public class TopicInfoMessagesPublish implements TopicInfo {
 
     private final SimpleStringProperty topic = new SimpleStringProperty();
     private final SimpleStringProperty label = new SimpleStringProperty();
     
+    private final TopicInfoFactory factory;
     private final TopicInfoMessagesPublishNode node;
     private final ResourceBundle resources;
 
-    public TopicInfoMessagesPublish(TopicInfoMessagesPublishNode node) {
+    public TopicInfoMessagesPublish(TopicInfoFactory factory, TopicInfoMessagesPublishNode node) {
+        this.factory = factory;
         this.node = node;
         resources = ResourceBundle.getBundle("com/adr/helloiot/fxml/topicinfomessagespublishnode"); 
         label.setValue(resources.getString("label.sendmessages"));
     }
 
     @Override
-    public String getType() {
-        return "MessagesPublish";
+    public TopicInfoFactory getFactory() {
+        return factory;
     }
 
     @Override
     public ReadOnlyProperty<String> getLabel() {
         return label;
-    }
-
-    @Override
-    public Node getGraphic() {
-
-        Text t = IconBuilder.create(IconFontGlyph.FA_SOLID_PAPER_PLANE, 18.0).build();
-        t.setFill(Color.WHITE);
-        TextFlow tf = new TextFlow(t);
-        tf.setTextAlignment(TextAlignment.CENTER);
-        tf.setPadding(new Insets(5, 5, 5, 5));
-        tf.setStyle("-fx-background-color: #505050; -fx-background-radius: 5px;");
-        tf.setPrefWidth(30.0);        
-        return tf; 
     }
 
     @Override
@@ -103,7 +83,7 @@ public class TopicInfoMessagesPublish implements TopicInfo {
         PublicationsPage publicationspage = new PublicationsPage();
         publicationspage.setDevice(messagespublish);
         publicationspage.setLabel(null);
-        UnitPage.setPage(publicationspage, "FA_SOLID_PAPER_PLANE//" + label.getValue());
+        UnitPage.setPage(publicationspage, "FA_SOLID_ENVELOPE//" + label.getValue());
         UnitPage.setLayout(publicationspage, "StartFull");
         units.add(publicationspage);
         

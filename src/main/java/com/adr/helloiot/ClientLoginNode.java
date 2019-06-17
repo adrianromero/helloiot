@@ -18,10 +18,13 @@
 //
 package com.adr.helloiot;
 
+import com.adr.helloiot.topicinfo.TopicInfoNode;
+import com.adr.helloiot.topicinfo.TopicInfo;
 import com.adr.fonticon.IconBuilder;
 import com.adr.fonticon.IconFontGlyph;
 import com.adr.hellocommon.dialog.DialogView;
 import com.adr.hellocommon.dialog.MessageUtils;
+import com.adr.helloiot.topicinfo.TopicInfoFactory;
 import com.adr.helloiot.util.CompletableAsync;
 import com.adr.helloiot.util.Dialogs;
 import com.google.common.io.Resources;
@@ -67,15 +70,11 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.scene.text.TextFlow;
-import javafx.util.StringConverter;
 
-/**
- *
- * @author adrian
- */
 public class ClientLoginNode {
 
     private final ResourceBundle resources;
@@ -96,8 +95,8 @@ public class ClientLoginNode {
     private ObservableList<TopicInfo> devicesunitsitems;
     
     private ScrollPane deviceunitform;
+    private Label propslabel;
     
-    private ChoiceBox<String> edittype;
     private StackPane topicinfocontainer;
     private ToolBar unitstoolbar;
     
@@ -241,35 +240,16 @@ public class ClientLoginNode {
                new ColumnConstraints(150.0, 150.0, Region.USE_COMPUTED_SIZE),
                constr);
         griddeviceunit.getRowConstraints().addAll(
-                new RowConstraints(),
-                new RowConstraints(10.0, 30.0, Region.USE_COMPUTED_SIZE),
                 new RowConstraints());
         griddeviceunit.setPadding(new Insets(10.0, 10.0, 0.0, 10.0));
         
-        Label section = new Label(resources.getString("label.unit"));
-        section.getStyleClass().add("unitsection");
-        section.setMaxWidth(Double.MAX_VALUE);
-        GridPane.setColumnSpan(section, Integer.MAX_VALUE);
+        propslabel = new Label(resources.getString("label.properties"));
+        propslabel.getStyleClass().add("unitsection");
+        propslabel.setMaxWidth(Double.MAX_VALUE);
+        GridPane.setColumnSpan(propslabel, Integer.MAX_VALUE);
+        GridPane.setRowIndex(propslabel, 0);
         
-        Label ltype = new Label(resources.getString("label.type"));
-        ltype.getStyleClass().add("unitlabel");
-        GridPane.setRowIndex(ltype, 1);
-        
-        edittype = new ChoiceBox<>();
-        edittype.setPrefWidth(280.0);
-        edittype.setMaxWidth(Double.MAX_VALUE);
-        edittype.getStyleClass().add("unitinput");
-        GridPane.setRowIndex(edittype, 1);
-        GridPane.setColumnIndex(edittype, 1);
-        GridPane.setColumnSpan(edittype, 2);
-        
-        Label lprops = new Label(resources.getString("label.properties"));
-        lprops.getStyleClass().add("unitsection");
-        lprops.setMaxWidth(Double.MAX_VALUE);
-        GridPane.setColumnSpan(lprops, Integer.MAX_VALUE);
-        GridPane.setRowIndex(lprops, 2);
-        
-        griddeviceunit.getChildren().addAll(section, ltype, edittype, lprops);
+        griddeviceunit.getChildren().addAll(propslabel);
         
         topicinfocontainer = new StackPane();
         
@@ -467,34 +447,16 @@ public class ClientLoginNode {
         griddeviceunit.getColumnConstraints().add(
                constr);
         griddeviceunit.getRowConstraints().addAll(
-                new RowConstraints(),
-                new RowConstraints(),
-                new RowConstraints(10.0, 30.0, Region.USE_COMPUTED_SIZE),
                 new RowConstraints());
         griddeviceunit.setPadding(new Insets(10.0, 10.0, 0.0, 10.0));
+
+        propslabel = new Label(resources.getString("label.properties"));
+        propslabel.getStyleClass().add("unitsection");
+        propslabel.setMaxWidth(Double.MAX_VALUE);
+        GridPane.setColumnSpan(propslabel, Integer.MAX_VALUE);
+        GridPane.setRowIndex(propslabel, 0);
         
-        Label section = new Label(resources.getString("label.unit"));
-        section.getStyleClass().add("unitsection");
-        section.setMaxWidth(Double.MAX_VALUE);
-        GridPane.setColumnSpan(section, Integer.MAX_VALUE);
-        
-        Label ltype = new Label(resources.getString("label.type"));
-        ltype.getStyleClass().add("unitlabel");
-        GridPane.setRowIndex(ltype, 1);
-        
-        edittype = new ChoiceBox<>();
-        edittype.setPrefWidth(280.0);
-        edittype.setMaxWidth(Double.MAX_VALUE);
-        edittype.getStyleClass().add("unitinput");
-        GridPane.setRowIndex(edittype, 2);
-        
-        Label lprops = new Label(resources.getString("label.properties"));
-        lprops.getStyleClass().add("unitsection");
-        lprops.setMaxWidth(Double.MAX_VALUE);
-        GridPane.setColumnSpan(lprops, Integer.MAX_VALUE);
-        GridPane.setRowIndex(lprops, 3);
-        
-        griddeviceunit.getChildren().addAll(section, ltype, edittype, lprops);
+        griddeviceunit.getChildren().addAll(propslabel);
         
         topicinfocontainer = new StackPane();
         
@@ -570,9 +532,9 @@ public class ClientLoginNode {
                 setGraphic(null);
                 setText(null);
             } else {
-                setGraphic(item.getGraphic());
+                setGraphic(item.getFactory().getGraphic());
                 String label = item.getLabel().getValue();
-                setText((label == null || label.isEmpty()) ? resources.getString("label.empty") : label);
+                setText(item.getFactory().getTypeName() + ((label == null || label.isEmpty()) ? "" : " : " + label));
             }
         }        
     }
@@ -586,25 +548,11 @@ public class ClientLoginNode {
         nextbutton.setGraphic(IconBuilder.create(IconFontGlyph.FA_SOLID_PLAY, 18.0).styleClass("icon-fill").build());
 
         adddeviceunit.setGraphic(IconBuilder.create(IconFontGlyph.FA_SOLID_FILE_ALT, 18.0).styleClass("icon-fill").build());
-        adddeviceunit.setText(resources.getString("button.new"));
+        adddeviceunit.setText(resources.getString("title.new"));
         
         removedeviceunit.setGraphic(IconBuilder.create(IconFontGlyph.FA_SOLID_TRASH_ALT, 18.0).styleClass("icon-fill").build());
         updeviceunit.setGraphic(IconBuilder.create(IconFontGlyph.FA_SOLID_CHEVRON_UP, 18.0).styleClass("icon-fill").build());
         downdeviceunit.setGraphic(IconBuilder.create(IconFontGlyph.FA_SOLID_CHEVRON_DOWN, 18.0).styleClass("icon-fill").build());
-
-        edittype.setItems(FXCollections.observableArrayList("PublicationSubscription", "Subscription", "Publication", "Switch", "Code", "MessagesPublish", "MessagesSubscribe"));
-        edittype.setConverter(new StringConverter<String>() {
-            @Override public String toString(String object) {
-                return resources.getString("label.topicinfo." + object);
-            }
-            @Override public String fromString(String string) {
-                throw new UnsupportedOperationException("Not supported yet."); // Not needed for non editable selector lists
-            }
-        });
-        edittype.getSelectionModel().clearSelection();
-        edittype.valueProperty().addListener((ObservableValue<? extends String> ov, String old_val, String new_val) -> {
-            updateCurrentTopic();
-        });
 
         devicesunitsselection.selectedItemProperty().addListener((ObservableValue<? extends TopicInfo> ov, TopicInfo old_val, TopicInfo new_val) -> {
             updateDevicesUnitsList();
@@ -626,38 +574,9 @@ public class ClientLoginNode {
     }
 
     private void updateCurrentTopic() {
-        if (!updating) {
-            int index = devicesunitsselection.getSelectedIndex();        
+        if (!updating) {     
             TopicInfo topic = devicesunitsselection.getSelectedItem();
-            String type = edittype.getValue();
-            if (!topic.getType().equals(type)) {
-                // This is just an optimization. Most of the times we can reuse current TopicInfo
-                // Create a new TopicInfo, we cannot reuse current one
-                topic = topicinfobuilder.create(type);
-                
-                updating = true;
-                                
-                TopicInfoNode node = topic.getEditNode();
-                if (editnode != null && node != editnode) {
-                    editnode.useUpdateCurrent(null);
-                    topicinfocontainer.getChildren().remove(editnode.getNode());
-                    editnode = null;
-                }
-                if (editnode == null) {
-                    editnode = node;
-                    editnode.useUpdateCurrent(this::updateCurrentTopic);
-                    topicinfocontainer.getChildren().add(editnode.getNode());                
-                }           
-                // TopicInfo -> TopicInfoNode
-                topic.writeToEditNode(); 
-                updating = false;
-                
-                devicesunitsitems.set(index, topic);
-                devicesunitsselection.select(topic);
-            } else {      
-                // TopicInfoNode -> TopicInfo
-                topic.readFromEditNode();
-            }
+            topic.readFromEditNode();
         }
     }
 
@@ -669,24 +588,21 @@ public class ClientLoginNode {
             deviceunitform.setDisable(true);
             updeviceunit.setDisable(true);
             downdeviceunit.setDisable(true);
-
-            updating = true;    
-            edittype.getSelectionModel().clearSelection();
+            propslabel.setText(resources.getString("label.properties"));
+            
             if (editnode != null) {
                 editnode.useUpdateCurrent(null);
                 topicinfocontainer.getChildren().remove(editnode.getNode());
                 editnode = null;
             }            
-            updating = false;
         } else {
             removedeviceunit.setDisable(false);
             deviceunitform.setDisable(false);
             updeviceunit.setDisable(index <= 0);
             downdeviceunit.setDisable(index >= devicesunitsitems.size() - 1);
-
-            updating = true;
-            edittype.getSelectionModel().select(topic.getType());
+            propslabel.setText(resources.getString("label.properties") + " : " + topic.getFactory().getTypeName());
             
+            updating = true;
             TopicInfoNode node = topic.getEditNode();
             if (editnode != null && node != editnode) {
                 editnode.useUpdateCurrent(null);
@@ -698,16 +614,39 @@ public class ClientLoginNode {
                 editnode.useUpdateCurrent(this::updateCurrentTopic);
                 topicinfocontainer.getChildren().add(editnode.getNode());                
             }          
-            // TopicInfo -> TopicInfoNode
             topic.writeToEditNode(); 
             updating = false;
         }
     }
 
     void onAddDeviceUnit(ActionEvent event) {
-        TopicInfo t = topicinfobuilder.create();
-        devicesunitsitems.add(t);
-        devicesunitsselection.select(t);
+
+        DialogView dialog = new DialogView();
+          
+        ListView<TopicInfoFactory>list = new ListView<>();
+        list.getStyleClass().add("unitlistview");
+        list.setItems(FXCollections.observableArrayList(topicinfobuilder.getTopicInfoFactories()));       
+        list.setCellFactory(l -> new TopicInfoListCell());
+        list.setOnMouseClicked(e -> {
+            if (e.getClickCount() == 2) {
+                TopicInfo t = list.getSelectionModel().getSelectedItem().create();
+                devicesunitsitems.add(t);
+                devicesunitsselection.select(   t);  
+                dialog.dispose();
+            }
+        });    
+        
+        dialog.setTitle(resources.getString("title.new"));
+        dialog.setContent(list);
+        dialog.addButtons(dialog.createCancelButton(), dialog.createOKButton());
+        dialog.show(MessageUtils.getRoot(rootpane));              
+        dialog.setActionOK(evOK -> {
+            TopicInfo t = list.getSelectionModel().getSelectedItem().create();
+            devicesunitsitems.add(t);
+            devicesunitsselection.select(t);  
+        });      
+        
+        list.getSelectionModel().selectFirst();
     }
 
     void onRemoveDeviceUnit(ActionEvent event) {
@@ -820,6 +759,20 @@ public class ClientLoginNode {
         devicesunitsselection.select(t);        
     }
     
+    private class TopicInfoListCell extends ListCell<TopicInfoFactory> {
+        @Override
+        public void updateItem(TopicInfoFactory item, boolean empty) {
+            super.updateItem(item, empty);
+            if (item == null) {
+                setGraphic(null);
+                setText(null);
+            } else {                 
+                setGraphic(item.getGraphic());
+                setText(item.getTypeName());
+            }
+        }        
+    }  
+    
     // Templates
     
     private Button createTemplatesButton() {
@@ -917,11 +870,14 @@ public class ClientLoginNode {
                 setGraphic(null);
                 setText(null);
             } else {               
-                Text t = IconBuilder.create(IconFontGlyph.valueOf(item.icon), 18.0).styleClass("icon-fill").build();
+                Text t = IconBuilder.create(IconFontGlyph.valueOf(item.icon), 18.0).build();
+                t.setFill(Color.WHITE);
                 TextFlow tf = new TextFlow(t);
                 tf.setTextAlignment(TextAlignment.CENTER);
-                tf.setPadding(new Insets(2, 5, 2, 5));
-                tf.setPrefWidth(36.0);           
+                tf.setPadding(new Insets(5, 5, 5, 5));
+                tf.setStyle("-fx-background-color: #505050; -fx-background-radius: 5px;");
+                tf.setPrefWidth(30.0);      
+                
                 setGraphic(tf);
                 setText(item.name);
             }

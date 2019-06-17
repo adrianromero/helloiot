@@ -18,6 +18,7 @@
 //
 package com.adr.helloiot;
 
+import com.adr.helloiot.topicinfo.TopicInfo;
 import com.adr.fonticon.IconBuilder;
 import com.adr.fonticon.IconFontGlyph;
 import com.adr.hellocommon.dialog.MessageUtils;
@@ -147,7 +148,7 @@ public class MainManagerClient implements MainManager {
             int i = 0;
             for (TopicInfo topicinfo : topicinfolist) {       
                 SubProperties subproperties = new ConfigSubProperties(configprops, "topicinfo" + Integer.toString(++i));
-                subproperties.setProperty(".type", topicinfo.getType());
+                subproperties.setProperty(".type", topicinfo.getFactory().getType());
                 topicinfo.store(subproperties);
             }
 
