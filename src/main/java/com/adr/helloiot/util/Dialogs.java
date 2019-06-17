@@ -36,14 +36,14 @@ public class Dialogs {
 
     public static DialogView createLoading() {
         DialogView dialog = new DialogView();
-        dialog.setCSS("/com/adr/helloiot/styles/loading.css");
+        dialog.setCSS("/com/adr/helloiot/styles/loadingdialog.css");
         dialog.setMaster(true);
         dialog.setAnimate(false);
         dialog.setContent(createLoadingNode ());
         return dialog;      
     }
     
-    private static Node createLoadingNode () {
+    public static Node createLoadingNode () {
         
         Circle c0 = new Circle(65);
         c0.setFill(Color.TRANSPARENT);
@@ -75,7 +75,10 @@ public class Dialogs {
         c3.setStrokeLineCap(StrokeLineCap.BUTT);        
         c3.getStyleClass().add("loading-circle");
 
-        return new Group(c0, c1, c2, c3);
+        Group g = new Group(c0, c1, c2, c3);
+        g.getStylesheets().add(Dialogs.class.getResource("/com/adr/helloiot/styles/loading.css").toExternalForm());
+        
+        return g;
     }
     
     private static void setRotate(Shape s, boolean reverse, double angle, int duration) {

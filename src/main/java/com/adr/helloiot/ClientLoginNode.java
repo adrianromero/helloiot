@@ -782,9 +782,10 @@ public class ClientLoginNode {
         b.getStyleClass().add("unitbutton");
         b.setOnAction(evAction -> {
             
-            DialogView dialog = new DialogView();
-            ListView<TemplateInfo>list = new ListView<>();
+            DialogView dialog = new DialogView();     
             
+            ListView<TemplateInfo>list = new ListView<>();
+            list.setDisable(true);
             list.getStyleClass().add("unitlistview");
             list.setCellFactory(l -> new TemplatesListCell());
             list.setOnMouseClicked(e -> {
@@ -793,27 +794,33 @@ public class ClientLoginNode {
                     dialog.dispose();
                 }
             });
+            Node loading = Dialogs.createLoadingNode();          
+            StackPane container = new StackPane(list, loading);
 
+            Button ok = dialog.createOKButton();
+            ok.setDisable(true);
             dialog.setTitle(resources.getString("title.templates"));
-            dialog.setContent(list);
-            dialog.addButtons(dialog.createCancelButton(), dialog.createOKButton());
+            dialog.setContent(container);
+            dialog.addButtons(dialog.createCancelButton(), ok);
             dialog.show(MessageUtils.getRoot(rootpane));              
             dialog.setActionOK(evOK -> {
-                addTemplateToUnits(list.getSelectionModel().getSelectedItem());        
+                addTemplateToUnits(list.getSelectionModel().getSelectedItem());
             });
                  
-            // Load list of templates
-            DialogView loading2 = Dialogs.createLoading();
-            loading2.show(MessageUtils.getRoot(rootpane));             
+            // Load list of templates         
             CompletableAsync.handle(
                 loadTemplatesList(),
                 templateslist -> {
-                    loading2.dispose();
+                    container.getChildren().remove(loading);                
+                    list.setDisable(false);
                     list.setItems(FXCollections.observableList(Arrays.asList(templateslist)));
                     list.getSelectionModel().selectFirst();
+                    ok.setDisable(false);
+                    ok.requestFocus();
                 },
                 ex -> {
-                    loading2.dispose();
+                    container.getChildren().remove(loading);
+                    dialog.dispose();
                     MessageUtils.showException(MessageUtils.getRoot(rootpane), resources.getString("title.templates"),  resources.getString("exception.cannotloadtemplateslist"), ex);             
                 });
         });
