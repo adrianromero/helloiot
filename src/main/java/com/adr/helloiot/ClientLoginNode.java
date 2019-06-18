@@ -218,6 +218,7 @@ public class ClientLoginNode {
 
         deviceunitform = new ScrollPane();
         deviceunitform.setFitToWidth(true);
+        deviceunitform.setFitToHeight(true);
         deviceunitform.getStyleClass().add("unitscroll");
         HBox.setMargin(deviceunitform, new Insets(5.0));
         HBox.setHgrow(deviceunitform, Priority.ALWAYS);
@@ -246,6 +247,7 @@ public class ClientLoginNode {
         griddeviceunit.getChildren().addAll(propslabel);
         
         topicinfocontainer = new StackPane();
+        VBox.setVgrow(topicinfocontainer, Priority.SOMETIMES);
         
         vbox2.getChildren().addAll(griddeviceunit, topicinfocontainer);
         
@@ -428,6 +430,7 @@ public class ClientLoginNode {
         
         deviceunitform = new ScrollPane();
         deviceunitform.setFitToWidth(true);
+        deviceunitform.setFitToHeight(true);
         deviceunitform.getStyleClass().add("unitscroll");
         VBox.setVgrow(deviceunitform, Priority.ALWAYS);
         
@@ -452,6 +455,7 @@ public class ClientLoginNode {
         griddeviceunit.getChildren().addAll(propslabel);
         
         topicinfocontainer = new StackPane();
+        VBox.setVgrow(topicinfocontainer, Priority.SOMETIMES);
         
         vbox2.getChildren().addAll(griddeviceunit, topicinfocontainer);
 
