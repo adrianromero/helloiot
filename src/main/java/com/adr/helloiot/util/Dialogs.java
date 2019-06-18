@@ -81,6 +81,34 @@ public class Dialogs {
         return g;
     }
     
+    public static Node createSmallLoadingNode () {
+        
+        Circle c0 = new Circle(45);
+        c0.setFill(Color.TRANSPARENT);
+        c0.setStrokeWidth(0.0);
+
+        Circle c2 = new Circle(40);
+        c2.setFill(Color.TRANSPARENT);
+        c2.setStrokeType(StrokeType.INSIDE);
+        c2.setStrokeLineCap(StrokeLineCap.BUTT);
+        c2.getStrokeDashArray().addAll(41.89); // 40 * 2 * 3.1416 / 6
+        c2.setCache(true);
+        c2.setCacheHint(CacheHint.ROTATE);    
+        c2.getStyleClass().add("loading-circle");
+        setRotate(c2, true, 360.0, 14);
+
+        Circle c3 = new Circle(30);
+        c3.setFill(Color.TRANSPARENT);
+        c3.setStrokeType(StrokeType.INSIDE);
+        c3.setStrokeLineCap(StrokeLineCap.BUTT);        
+        c3.getStyleClass().add("loading-circle");
+
+        Group g = new Group(c0, c2, c3);
+        g.getStylesheets().add(Dialogs.class.getResource("/com/adr/helloiot/styles/loading.css").toExternalForm());
+        
+        return g;
+    }
+    
     private static void setRotate(Shape s, boolean reverse, double angle, int duration) {
         RotateTransition r = new RotateTransition(Duration.seconds(duration), s);
         r.setAutoReverse(reverse);

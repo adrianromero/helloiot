@@ -35,7 +35,9 @@ public class TopicInfoBuilder {
 
     private Map<String, TopicInfoFactory> factories = new LinkedHashMap<>();
     
-    public TopicInfoBuilder() { 
+    public static final TopicInfoBuilder INSTANCE = new TopicInfoBuilder();
+    
+    private TopicInfoBuilder() { 
         put(new TopicInfoFactoryView());
         put(new TopicInfoFactoryEdit());
         put(new TopicInfoFactorySend());

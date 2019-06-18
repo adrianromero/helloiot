@@ -100,12 +100,12 @@ public class MainManagerClient implements MainManager {
         // Now the units
         int i = 0;
         List<TopicInfo> topicinfolist = new ArrayList<>();
-        TopicInfoBuilder topicinfobuilder = new TopicInfoBuilder();
+        TopicInfoBuilder topicinfobuilder = TopicInfoBuilder.INSTANCE;
         int topicinfosize = Integer.parseInt(configprops.getProperty("topicinfo.size", "0"));
         while (i++ < topicinfosize) {
             topicinfolist.add(topicinfobuilder.fromProperties(new ConfigSubProperties(configprops, "topicinfo" + Integer.toString(i))));
         }
-        clientlogin.setTopicInfoList(topicinfobuilder, FXCollections.observableList(topicinfolist));
+        clientlogin.setTopicInfoList(FXCollections.observableList(topicinfolist));
 
         clientlogin.setOnNextAction(e -> {    
             hideLogin();
@@ -192,7 +192,7 @@ public class MainManagerClient implements MainManager {
         helloiotapp = new HelloIoTApp(bridgeconfigs, config);
         try {         
 
-            TopicInfoBuilder topicinfobuilder = new TopicInfoBuilder();
+            TopicInfoBuilder topicinfobuilder = TopicInfoBuilder.INSTANCE;
             int topicinfosize = Integer.parseInt(configprops.getProperty("topicinfo.size", "0"));
             int i = 0;
             while (i++ < topicinfosize) {

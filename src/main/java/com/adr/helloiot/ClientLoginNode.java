@@ -24,18 +24,15 @@ import com.adr.fonticon.IconBuilder;
 import com.adr.fonticon.IconFontGlyph;
 import com.adr.hellocommon.dialog.DialogView;
 import com.adr.hellocommon.dialog.MessageUtils;
-import com.adr.helloiot.topicinfo.TopicInfoFactory;
 import com.adr.helloiot.util.CompletableAsync;
 import com.adr.helloiot.util.Dialogs;
 import com.google.common.io.Resources;
-import com.google.common.util.concurrent.ListenableFuture;
-import com.google.gson.Gson;
 import java.io.IOException;
-import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
-import java.util.Scanner;
+import java.util.function.Consumer;
 import javafx.beans.Observable;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -104,8 +101,6 @@ public class ClientLoginNode {
     private CheckBox clock;
         
     private TopicInfoNode editnode = null;
- 
-    private TopicInfoBuilder topicinfobuilder;
     
     private String topicapp;
     private String topicsys;
@@ -178,7 +173,6 @@ public class ClientLoginNode {
         adddeviceunit.getStyleClass().add("unitbutton");
         adddeviceunit.setOnAction(this::onAddDeviceUnit);
         
-        Button templatesbutton = createTemplatesButton();
         // TODO: Implement Tradfri Button
         // Button tradfributton = createTradfriButton();
                 
@@ -202,7 +196,7 @@ public class ClientLoginNode {
         downdeviceunit.getStyleClass().add("unitbutton");
         downdeviceunit.setOnAction(this::onDownDeviceUnit);      
 
-        unitstoolbar.getItems().addAll(adddeviceunit, templatesbutton, sep, removedeviceunit, updeviceunit, downdeviceunit);
+        unitstoolbar.getItems().addAll(adddeviceunit, sep, removedeviceunit, updeviceunit, downdeviceunit);
         
         borderpanetab1.setTop(unitstoolbar);
         
@@ -368,7 +362,6 @@ public class ClientLoginNode {
         adddeviceunit.getStyleClass().add("unitbutton");
         adddeviceunit.setOnAction(this::onAddDeviceUnit);
         
-        Button templatesbutton = createTemplatesButton();
         // TODO: Implement Tradfri Button
         // Button tradfributton = createTradfriButton();
                 
@@ -392,7 +385,7 @@ public class ClientLoginNode {
         downdeviceunit.getStyleClass().add("unitbutton");
         downdeviceunit.setOnAction(this::onDownDeviceUnit);
         
-        unitstoolbar.getItems().addAll(adddeviceunit, templatesbutton, sep, removedeviceunit, updeviceunit, downdeviceunit);
+        unitstoolbar.getItems().addAll(adddeviceunit, sep, removedeviceunit, updeviceunit, downdeviceunit);
         
         borderpanetab1.setTop(unitstoolbar); 
                 
@@ -532,7 +525,15 @@ public class ClientLoginNode {
                 setGraphic(null);
                 setText(null);
             } else {
-                setGraphic(item.getFactory().getGraphic());
+                Text t = IconBuilder.create(item.getFactory().getGlyph(), 18.0).build();
+                t.setFill(Color.WHITE);
+                TextFlow tf = new TextFlow(t);
+                tf.setTextAlignment(TextAlignment.CENTER);
+                tf.setPadding(new Insets(5, 5, 5, 5));
+                tf.setStyle("-fx-background-color: #505050; -fx-background-radius: 5px;");
+                tf.setPrefWidth(30.0);              
+                setGraphic(tf);
+                
                 String label = item.getLabel().getValue();
                 setText(item.getFactory().getTypeName() + ((label == null || label.isEmpty()) ? "" : " : " + label));
             }
@@ -622,31 +623,57 @@ public class ClientLoginNode {
     void onAddDeviceUnit(ActionEvent event) {
 
         DialogView dialog = new DialogView();
-          
-        ListView<TopicInfoFactory>list = new ListView<>();
-        list.getStyleClass().add("unitlistview");
-        list.setItems(FXCollections.observableArrayList(topicinfobuilder.getTopicInfoFactories()));       
-        list.setCellFactory(l -> new TopicInfoListCell());
-        list.setOnMouseClicked(e -> {
-            if (e.getClickCount() == 2) {
-                TopicInfo t = list.getSelectionModel().getSelectedItem().create();
-                devicesunitsitems.add(t);
-                devicesunitsselection.select(   t);  
-                dialog.dispose();
-            }
-        });    
+        List<TopicsTab> topicstabadd = new ArrayList<>();
         
+        TabPane tabadd = new TabPane();        
+        tabadd.getStyleClass().add("unittabpane");
+        tabadd.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);        
+        
+        Consumer<ActionEvent> actionok = evOK -> {
+            TopicsTab tt = topicstabadd.get(tabadd.getSelectionModel().getSelectedIndex());
+            
+            DialogView loading3 = Dialogs.createLoading();
+            loading3.show(MessageUtils.getRoot(rootpane));             
+            CompletableAsync.handle(
+                tt.createSelected(),
+                result -> {
+                    loading3.dispose();
+                    devicesunitsitems.add(result);
+                    devicesunitsselection.select(result);  
+                }, 
+                ex -> {
+                    loading3.dispose();
+                    MessageUtils.showException(MessageUtils.getRoot(rootpane), resources.getString("title.new"),  resources.getString("exception.cannotloadunit"), ex);
+                });             
+        };
+        
+        
+        // Create Tab
+        TopicsTab topicstab0 = new TopicsGallery();
+        topicstab0.setActionOK(actionok.andThen(e -> dialog.dispose()));
+        // ADD Tab
+        topicstabadd.add(topicstab0);
+        Tab tab0 = new Tab(topicstab0.getText(), topicstab0.getNode());
+        tab0.setClosable(false);
+        
+        // Create Tab
+        TopicsTab topicstab1 = new TopicsTemplate();
+        topicstab1.setActionOK(actionok.andThen(e -> dialog.dispose()));
+        // Add Tab
+        topicstabadd.add(topicstab1);
+        Tab tab1 = new Tab(topicstab1.getText(), topicstab1.getNode());
+        tab1.setClosable(false);
+        
+        
+        tabadd.getTabs().addAll(tab0, tab1);
+             
+        dialog.setCSS("/com/adr/helloiot/styles/topicinfodialog.css");
         dialog.setTitle(resources.getString("title.new"));
-        dialog.setContent(list);
+        dialog.setContent(tabadd);
         dialog.addButtons(dialog.createCancelButton(), dialog.createOKButton());
         dialog.show(MessageUtils.getRoot(rootpane));              
-        dialog.setActionOK(evOK -> {
-            TopicInfo t = list.getSelectionModel().getSelectedItem().create();
-            devicesunitsitems.add(t);
-            devicesunitsselection.select(t);  
-        });      
-        
-        list.getSelectionModel().selectFirst();
+        dialog.setActionOK(actionok);      
+
     }
 
     void onRemoveDeviceUnit(ActionEvent event) {
@@ -716,8 +743,7 @@ public class ClientLoginNode {
         return devicesunitsitems;
     }
 
-    public void setTopicInfoList(TopicInfoBuilder topicinfobuilder, ObservableList<TopicInfo> list) {
-        this.topicinfobuilder = topicinfobuilder;
+    public void setTopicInfoList(ObservableList<TopicInfo> list) {
         devicesunitsitems.clear();
         devicesunitsitems.addAll(list);
         if (list.size() > 0) {
@@ -749,7 +775,7 @@ public class ClientLoginNode {
     }
     
     public void addCodeUnit(String name, String code) {
-        TopicInfo t = topicinfobuilder.create("Code");
+        TopicInfo t = TopicInfoBuilder.INSTANCE.create("Code");
         BaseSubProperties props = new BaseSubProperties();
         props.setProperty(".name", name);
         props.setProperty(".code", code);
@@ -758,150 +784,7 @@ public class ClientLoginNode {
         devicesunitsitems.add(t);
         devicesunitsselection.select(t);        
     }
-    
-    private class TopicInfoListCell extends ListCell<TopicInfoFactory> {
-        @Override
-        public void updateItem(TopicInfoFactory item, boolean empty) {
-            super.updateItem(item, empty);
-            if (item == null) {
-                setGraphic(null);
-                setText(null);
-            } else {                 
-                setGraphic(item.getGraphic());
-                setText(item.getTypeName());
-            }
-        }        
-    }  
-    
-    // Templates
-    
-    private Button createTemplatesButton() {
-        Button b = new Button(resources.getString("title.templates"), IconBuilder.create(IconFontGlyph.FA_SOLID_FILE_DOWNLOAD, 18.0).styleClass("icon-fill").build());
-        b.setFocusTraversable(false);
-        b.setMnemonicParsing(false);
-        b.getStyleClass().add("unitbutton");
-        b.setOnAction(evAction -> {
-            
-            DialogView dialog = new DialogView();     
-            
-            ListView<TemplateInfo>list = new ListView<>();
-            list.setDisable(true);
-            list.getStyleClass().add("unitlistview");
-            list.setCellFactory(l -> new TemplatesListCell());
-            list.setOnMouseClicked(e -> {
-                if (e.getClickCount() == 2) {
-                    addTemplateToUnits(list.getSelectionModel().getSelectedItem());
-                    dialog.dispose();
-                }
-            });
-            Node loading = Dialogs.createLoadingNode();          
-            StackPane container = new StackPane(list, loading);
-
-            Button ok = dialog.createOKButton();
-            ok.setDisable(true);
-            dialog.setTitle(resources.getString("title.templates"));
-            dialog.setContent(container);
-            dialog.addButtons(dialog.createCancelButton(), ok);
-            dialog.show(MessageUtils.getRoot(rootpane));              
-            dialog.setActionOK(evOK -> {
-                addTemplateToUnits(list.getSelectionModel().getSelectedItem());
-            });
-                 
-            // Load list of templates         
-            CompletableAsync.handle(
-                loadTemplatesList(),
-                templateslist -> {
-                    container.getChildren().remove(loading);                
-                    list.setDisable(false);
-                    list.setItems(FXCollections.observableList(Arrays.asList(templateslist)));
-                    list.getSelectionModel().selectFirst();
-                    ok.setDisable(false);
-                    ok.requestFocus();
-                },
-                ex -> {
-                    container.getChildren().remove(loading);
-                    dialog.dispose();
-                    MessageUtils.showException(MessageUtils.getRoot(rootpane), resources.getString("title.templates"),  resources.getString("exception.cannotloadtemplateslist"), ex);             
-                });
-        });
-        return b;
-    }    
-    
-    private void addTemplateToUnits(TemplateInfo template) {
-        String fxml = "https://raw.githubusercontent.com/adrianromero/helloiot-units/master/" +
-                template.file +
-                (HelloPlatform.getInstance().isPhone() ? "_mobile.fxml" : ".fxml");
-
-        // Load template code
-        DialogView loading3 = Dialogs.createLoading();
-        loading3.show(MessageUtils.getRoot(rootpane));             
-        CompletableAsync.handle(
-                loadTemplate(fxml),
-                result -> {
-                    loading3.dispose();
-                    addCodeUnit(template.name, result);
-                }, 
-                ex -> {
-                    loading3.dispose();
-                    MessageUtils.showException(MessageUtils.getRoot(rootpane), resources.getString("title.templates"),  resources.getString("exception.cannotloadtemplatecode"), ex);
-                });         
-    }
-    
-    private ListenableFuture<String> loadTemplate(String url) {
-         return CompletableAsync.supplyAsync(() -> {
-            try {
-                return Resources.toString(new URL(url), StandardCharsets.UTF_8);
-            } catch (IOException ex) {
-                throw new RuntimeException(ex);
-            }
-        });       
-    }
-    
-    private ListenableFuture<TemplateInfo[]> loadTemplatesList() {   
-        return CompletableAsync.supplyAsync(() -> {
-            try {
-                String out = new Scanner(new URL("https://raw.githubusercontent.com/adrianromero/helloiot-units/master/units.json").openStream(), "UTF-8").useDelimiter("\\A").next();
-                Gson gson = new Gson();
-                return gson.fromJson(out, TemplateInfo[].class);
-            } catch (IOException ex) {
-                throw new RuntimeException(ex);
-            }
-        });
-    }
-    
-    private class TemplatesListCell extends ListCell<TemplateInfo> {
-        @Override
-        public void updateItem(TemplateInfo item, boolean empty) {
-            super.updateItem(item, empty);
-            if (item == null) {
-                setGraphic(null);
-                setText(null);
-            } else {               
-                Text t = IconBuilder.create(IconFontGlyph.valueOf(item.icon), 18.0).build();
-                t.setFill(Color.WHITE);
-                TextFlow tf = new TextFlow(t);
-                tf.setTextAlignment(TextAlignment.CENTER);
-                tf.setPadding(new Insets(5, 5, 5, 5));
-                tf.setStyle("-fx-background-color: #505050; -fx-background-radius: 5px;");
-                tf.setPrefWidth(30.0);      
-                
-                setGraphic(tf);
-                setText(item.name);
-            }
-        }        
-    }   
-    
-    private static class TemplateInfo {
-        public final String name;
-        public final String icon;
-        public final String file;
-        public TemplateInfo(String name, String icon, String file) {
-            this.name = name;
-            this.icon = icon;
-            this.file = file;
-        }
-    }   
-    
+     
 //    private Button createTradfriButton() {
 //
 //        Button b = new Button(resources.getString("button.tradfri"), IconBuilder.create(IconFontGlyph.FA_SOLID_SEARCH, 18.0).styleClass("icon-fill").build());       

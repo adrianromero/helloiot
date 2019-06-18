@@ -18,15 +18,8 @@
 //
 package com.adr.helloiot.topicinfo;
 
-import com.adr.fonticon.IconBuilder;
 import com.adr.fonticon.IconFontGlyph;
 import java.util.ResourceBundle;
-import javafx.geometry.Insets;
-import javafx.scene.Node;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
-import javafx.scene.text.TextFlow;
 
 public class TopicInfoFactoryView implements TopicInfoFactory {
     
@@ -63,14 +56,7 @@ public class TopicInfoFactoryView implements TopicInfoFactory {
     }
 
     @Override
-    public Node getGraphic() {
-        Text t = IconBuilder.create(IconFontGlyph.FA_SOLID_COMMENT, 18.0).build();   
-        t.setFill(Color.WHITE);
-        TextFlow tf = new TextFlow(t);
-        tf.setTextAlignment(TextAlignment.CENTER);
-        tf.setPadding(new Insets(5, 5, 5, 5));
-        tf.setStyle("-fx-background-color: #d44548; -fx-background-radius: 5px;");
-        tf.setPrefWidth(30.0);
-        return tf;  
+    public IconFontGlyph getGlyph() {
+        return IconFontGlyph.FA_SOLID_COMMENT;  
     }
 }

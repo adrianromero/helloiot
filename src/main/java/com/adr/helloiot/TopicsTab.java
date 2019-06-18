@@ -16,16 +16,17 @@
 //    You should have received a copy of the GNU General Public License
 //    along with HelloIot.  If not, see <http://www.gnu.org/licenses/>.
 //
-package com.adr.helloiot.topicinfo;
+package com.adr.helloiot;
 
-import com.adr.fonticon.IconFontGlyph;
+import com.adr.helloiot.topicinfo.TopicInfo;
+import com.google.common.util.concurrent.ListenableFuture;
+import java.util.function.Consumer;
+import javafx.event.ActionEvent;
+import javafx.scene.Node;
 
-public interface TopicInfoFactory {   
-    
-    public String getType();
-    public String getTypeName();
-    public IconFontGlyph getGlyph();
-    public TopicInfoNode getTopicInfoNode();
-    
-    public TopicInfo create();  
+public interface TopicsTab {
+    public String getText();
+    public Node getNode();
+    public void setActionOK(Consumer<ActionEvent> actionok);
+    public ListenableFuture<TopicInfo> createSelected();
 }
