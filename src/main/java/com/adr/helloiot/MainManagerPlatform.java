@@ -19,6 +19,7 @@
 package com.adr.helloiot;
 
 import com.adr.helloiot.local.BridgeLocal;
+import com.adr.helloiot.weather.BridgeTime;
 import com.adr.helloiot.mqtt.BridgeMQTT;
 import com.adr.helloiot.properties.VarProperties;
 import com.adr.helloiotlib.format.MiniVarBoolean;
@@ -30,10 +31,6 @@ import java.util.logging.Logger;
 import javafx.application.Application.Parameters;
 import javafx.scene.layout.StackPane;
 
-/**
- *
- * @author adrian
- */
 public class MainManagerPlatform implements MainManager {
 
     private HelloIoTApp helloiotapp = null;
@@ -44,6 +41,7 @@ public class MainManagerPlatform implements MainManager {
         BridgeConfig[] bridgeconfigs = new BridgeConfig[] {
                 // new BridgeConfig(new BridgeTradfri(), "TRÅDFRI/", "tradfri."),
                 new BridgeConfig(new BridgeLocal(), "_LOCAL_/mainapp/", "local."),
+                new BridgeConfig(new BridgeTime(), "SYSTEM/time/", "time."),
                 new BridgeConfig(new BridgeMQTT(), "", "mqtt.")};      
 
         ConfigProperties configprops = new ConfigProperties();

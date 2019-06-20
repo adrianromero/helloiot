@@ -23,6 +23,7 @@ import com.adr.fonticon.IconBuilder;
 import com.adr.fonticon.IconFontGlyph;
 import com.adr.hellocommon.dialog.MessageUtils;
 import com.adr.helloiot.local.BridgeLocal;
+import com.adr.helloiot.weather.BridgeTime;
 import com.adr.helloiot.mqtt.BridgeMQTT;
 import com.adr.helloiot.properties.VarProperties;
 import com.adr.helloiotlib.format.MiniVarBoolean;
@@ -42,10 +43,6 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.layout.StackPane;
 
-/**
- *
- * @author adrian
- */
 public class MainManagerClient implements MainManager {
 
     private static final Logger LOGGER = Logger.getLogger(MainManagerClient.class.getName());
@@ -66,6 +63,7 @@ public class MainManagerClient implements MainManager {
         bridgeconfigs = new BridgeConfig[] {
                 // new BridgeConfig(new BridgeTradfri(), "TRÅDFRI/", "tradfri."),
                 new BridgeConfig(new BridgeLocal(), "_LOCAL_/mainapp/", "local."),
+                new BridgeConfig(new BridgeTime(), "SYSTEM/time/", "time."),
                 new BridgeConfig(new BridgeMQTT(), "", "mqtt.")}; 
     }
 
