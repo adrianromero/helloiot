@@ -48,9 +48,9 @@ public class ManagerComposed implements ManagerProtocol {
     }
 
     @Override
-    public void registerTopicsManager(GroupManagers group, Consumer<Throwable> lost) {
+    public void registerTopicsManager(Consumer<EventMessage> consumer, Consumer<Throwable> lost) {
         for (Pair<String, ManagerProtocol> managerpair : managers) {
-            managerpair.getValue().registerTopicsManager(new SubGroupManagers(group, managerpair.getKey()), lost);
+            managerpair.getValue().registerTopicsManager(new SubConsumerEventMessage(consumer, managerpair.getKey()), lost);
         }
     }
 
@@ -90,16 +90,16 @@ public class ManagerComposed implements ManagerProtocol {
         LOGGER.warning(String.format("Message not published. It does not exist any topic manager for topic \"%s\"", message.getTopic()));
     }
     
-    private static class SubGroupManagers implements GroupManagers {
-        private final GroupManagers group;
+    private static class SubConsumerEventMessage implements Consumer<EventMessage> {
+        private final Consumer<EventMessage> consumer;
         private final String key;
-        public SubGroupManagers(GroupManagers group, String key) {
-            this.group = group;
+        public SubConsumerEventMessage(Consumer<EventMessage> group, String key) {
+            this.consumer = group;
             this.key = key;
         }
         @Override
-        public void distributeMessage(EventMessage message) {
-            group.distributeMessage(message.clone(key + message.getTopic()));
+        public void accept(EventMessage message) {
+            consumer.accept(message.clone(key + message.getTopic()));
         }
     }
 }

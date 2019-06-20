@@ -22,7 +22,6 @@ import com.adr.hellocommon.dialog.DialogView;
 import com.adr.hellocommon.dialog.MessageUtils;
 import com.adr.helloiot.ConnectUI;
 import com.adr.helloiotlib.app.EventMessage;
-import com.adr.helloiot.GroupManagers;
 import com.adr.helloiot.SubProperties;
 import com.adr.helloiot.util.CompletableAsync;
 import com.adr.helloiot.util.Dialogs;
@@ -40,6 +39,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.UUID;
+import java.util.function.Consumer;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -191,9 +191,9 @@ public class ConnectTradfri implements ConnectUI {
         return CompletableAsync.supplyAsync(() -> {
             try {
                 JsonParser gsonparser = new JsonParser();
-                TradfriRegistryGroup myregistry = new TradfriRegistryGroup();
+                RegistryConsumerEventMessage registryconsumer = new RegistryConsumerEventMessage();
                 ManagerTradfri tradfri = new ManagerTradfri(server, identity, sharedkey);
-                tradfri.registerTopicsManager(myregistry, null);
+                tradfri.registerTopicsManager(registryconsumer, null);
                 tradfri.connectBridge();    
                 
                 String response = tradfri.requestGetCOAP(TradfriConstants.DEVICES);
@@ -206,18 +206,18 @@ public class ConnectTradfri implements ConnectUI {
                 
                 tradfri.disconnectBridge();
                 
-                return myregistry.getUnitsMap();
+                return registryconsumer.getUnitsMap();
             } catch (TradfriException ex) {
                 throw new RuntimeException(ex);
             }
         });          
     }   
     
-    private static class TradfriRegistryGroup implements GroupManagers {
+    private static class RegistryConsumerEventMessage implements Consumer<EventMessage> {
         
         private Map<String, String> units = new HashMap<>();
         
-        public TradfriRegistryGroup() {
+        public RegistryConsumerEventMessage() {
             try {   
                 units.put("Switch off", Resources.toString(getClass().getResource("/com/adr/helloiot/samples/bulball.unit"), StandardCharsets.UTF_8));
             } catch (IOException ex) {
@@ -226,7 +226,7 @@ public class ConnectTradfri implements ConnectUI {
         }
 
         @Override
-        public void distributeMessage(EventMessage message) {
+        public void accept(EventMessage message) {
             if ("TRÅDFRI/registry".equals(message.getTopic())) {
                 JsonParser gsonparser = new JsonParser();
                 JsonObject device = gsonparser.parse(new String(message.getMessage(), StandardCharsets.UTF_8)).getAsJsonObject();

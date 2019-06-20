@@ -18,7 +18,6 @@
 //
 package com.adr.helloiot.local;
 
-import com.adr.helloiot.GroupManagers;
 import com.adr.helloiot.HelloPlatform;
 import com.adr.helloiot.ManagerProtocol;
 import com.adr.helloiotlib.app.EventMessage;
@@ -50,7 +49,7 @@ public class ManagerLocal implements ManagerProtocol {
     
     private final String fileid;
     
-    private GroupManagers group;    
+    private Consumer<EventMessage> consumer;    
     private ConcurrentMap<String, byte[]> mapClient;
 
     public ManagerLocal(String fileid) {
@@ -59,8 +58,8 @@ public class ManagerLocal implements ManagerProtocol {
     }
 
     @Override
-    public void registerTopicsManager(GroupManagers group, Consumer<Throwable> lost) {
-        this.group = group;
+    public void registerTopicsManager(Consumer<EventMessage> consumer, Consumer<Throwable> lost) {
+        this.consumer = consumer;
     }
     
     @Override
@@ -77,7 +76,7 @@ public class ManagerLocal implements ManagerProtocol {
                 Map<String, MiniVar> props = new HashMap<>();
                 props.put("mqtt.retained", MiniVarBoolean.TRUE);
                 EventMessage messagelocal = new EventMessage(entry.getKey(), entry.getValue(), props);
-                group.distributeMessage(messagelocal);
+                consumer.accept(messagelocal);
                 logger.log(Level.INFO, "Init status: {0}", messagelocal.getTopic());
             } catch (Exception ex) {
                 logger.log(Level.SEVERE, "Cannot publish locally.", ex);
@@ -113,7 +112,7 @@ public class ManagerLocal implements ManagerProtocol {
                 if (message.getProperty("mqtt.retained").asBoolean()) {
                     mapClient.put(message.getTopic(), message.getMessage());
                 }
-                group.distributeMessage(message);
+                consumer.accept(message);
             } catch (Exception ex) {
                 logger.log(Level.SEVERE, "Cannot publish message to local. " + message.getTopic(), ex);
             }
@@ -139,7 +138,7 @@ public class ManagerLocal implements ManagerProtocol {
             EventMessage messagefirst = new EventMessage("unitpage", payloadfirst, props);
             
             mapClient.put(messagefirst.getTopic(), messagefirst.getMessage());
-            group.distributeMessage(messagefirst);
+            consumer.accept(messagefirst);
         }
     }
     

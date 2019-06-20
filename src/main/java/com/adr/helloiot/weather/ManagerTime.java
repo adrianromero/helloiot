@@ -18,7 +18,6 @@
 //
 package com.adr.helloiot.weather;
 
-import com.adr.helloiot.GroupManagers;
 import com.adr.helloiot.ManagerProtocol;
 import com.adr.helloiot.properties.VarProperties;
 import com.adr.helloiotlib.app.EventMessage;
@@ -38,15 +37,15 @@ public class ManagerTime implements ManagerProtocol {
 
     private final static Logger logger = Logger.getLogger(ManagerTime.class.getName());
     
-    private GroupManagers group;    
+    private Consumer<EventMessage> consumer;    
     private final Timer timer = new Timer();
 
     public ManagerTime(VarProperties properties) {
     }
 
     @Override
-    public void registerTopicsManager(GroupManagers group, Consumer<Throwable> lost) {
-        this.group = group;
+    public void registerTopicsManager(Consumer<EventMessage> consumer, Consumer<Throwable> lost) {
+        this.consumer = consumer;
     }
     
     @Override
@@ -64,7 +63,7 @@ public class ManagerTime implements ManagerProtocol {
                 while (millis - last > 1000L) {
                     last += 1000L;
                     byte[] payload = Long.toString(last).getBytes(StandardCharsets.UTF_8);
-                    group.distributeMessage(new EventMessage("current", payload));
+                    consumer.accept(new EventMessage("current", payload));
                 }
             }
         }, 0L, 100L);
