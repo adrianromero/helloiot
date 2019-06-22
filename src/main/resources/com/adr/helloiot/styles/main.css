@@ -677,6 +677,22 @@ foco 508cfb */
     -fx-font-size: 20px;    
 }
 
+.dialog-body .text-area {
+    -fx-font-family: 'Source Sans Pro Regular';
+    -fx-font-size: 16px;    
+    -fx-text-fill: -fx-level-fill;
+    -fx-accent: -fx-primary-fill ;
+    -fx-background-radius: 2, 1;
+    -fx-background-color:  -fx-inputborder-fill, -fx-inputback-fill;  
+    -fx-background-insets: 0, 1;    
+}
+
+.dialog-body .text-area:focused {
+    -fx-background-radius: 4, 2, 1;
+    -fx-background-color:  -fx-inputfocusext-fill, -fx-inputfocus-fill, -fx-inputback-fill;  
+    -fx-background-insets: -2, 0, 1;    
+}
+
 /* Slider styles */
 .slider .thumb {
     -fx-background-color: -fx-button-fill, -fx-button-fill;
