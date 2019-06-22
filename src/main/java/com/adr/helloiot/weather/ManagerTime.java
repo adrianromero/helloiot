@@ -1,5 +1,5 @@
 //    HelloIoT is a dashboard creator for MQTT
-//    Copyright (C) 2018-2019 Adrián Romero Corchado.
+//    Copyright (C) 2019 Adrián Romero Corchado.
 //
 //    This file is part of HelloIot.
 //
@@ -27,15 +27,8 @@ import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.function.Consumer;
-import java.util.logging.Logger;
 
-/**
- *
- * @author adrian
- */
 public class ManagerTime implements ManagerProtocol {
-
-    private final static Logger logger = Logger.getLogger(ManagerTime.class.getName());
     
     private Consumer<EventMessage> consumer;    
     private Timer timer;
