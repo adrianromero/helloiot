@@ -38,7 +38,7 @@ public class ManagerTime implements ManagerProtocol {
     private final static Logger logger = Logger.getLogger(ManagerTime.class.getName());
     
     private Consumer<EventMessage> consumer;    
-    private final Timer timer = new Timer();
+    private Timer timer;
 
     public ManagerTime(VarProperties properties) {
     }
@@ -55,6 +55,10 @@ public class ManagerTime implements ManagerProtocol {
     
     @Override
     public void connect() {
+        
+        disconnect();
+        
+        timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
             private long last = (System.currentTimeMillis() / 1000L) * 1000L;
             @Override
@@ -72,7 +76,10 @@ public class ManagerTime implements ManagerProtocol {
     
     @Override
     public void disconnect() {       
-        timer.cancel();
+        if (timer != null) {
+            timer.cancel();
+            timer = null;
+        }
     }
     
     @Override
