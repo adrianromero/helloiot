@@ -23,6 +23,7 @@ import com.adr.helloiot.properties.VarProperties;
 import com.adr.helloiotlib.app.EventMessage;
 import com.adr.helloiotlib.format.MiniVar;
 import java.nio.charset.StandardCharsets;
+import java.time.Clock;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -32,8 +33,11 @@ public class ManagerTime implements ManagerProtocol {
     
     private Consumer<EventMessage> consumer;    
     private Timer timer;
+    private final Clock clock;
 
     public ManagerTime(VarProperties properties) {
+        
+        clock = Clock.systemDefaultZone();
     }
 
     @Override
@@ -53,12 +57,12 @@ public class ManagerTime implements ManagerProtocol {
         
         timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
-            private long last = (System.currentTimeMillis() / 1000L) * 1000L;
+            private long last = clock.millis() / 1000L;
             @Override
             public void run() {
-                long millis = System.currentTimeMillis();
-                while (millis - last > 1000L) {
-                    last += 1000L;
+                long millis = clock.millis() / 1000L;
+                while (millis - last > 0L) {
+                    last += 1L;
                     byte[] payload = Long.toString(last).getBytes(StandardCharsets.UTF_8);
                     consumer.accept(new EventMessage("current", payload));
                 }
