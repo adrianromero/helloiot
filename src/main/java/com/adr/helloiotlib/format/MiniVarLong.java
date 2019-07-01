@@ -1,5 +1,5 @@
 //    HelloIoT is a dashboard creator for MQTT
-//    Copyright (C) 2017-2019 Adrián Romero Corchado.
+//    Copyright (C) 2019 Adrián Romero Corchado.
 //
 //    This file is part of HelloIot.
 //
@@ -22,39 +22,39 @@ package com.adr.helloiotlib.format;
  *
  * @author adrian
  */
-public class MiniVarString implements MiniVar {
+public class MiniVarLong implements MiniVar {
 
-    public final static MiniVar NULL = new MiniVarString(null);
+    public final static MiniVar NULL = new MiniVarLong(null);
     
-    public final String value;
+    public final Long value;
     
-    public MiniVarString(String value) {
+    public MiniVarLong(Long value) {
         this.value = value;
     }
 
     @Override
     public String asString() {
-        return value == null ? "" : value;
+        return value == null ? "" : value.toString();
     }
 
     @Override
     public double asDouble() {
-        return value == null ? 0.0 : Double.parseDouble(value);
+        return value == null ? 0.0 : value.doubleValue();
     }
     
     @Override
     public int asInt() {
-        return value == null ? 0 : Integer.parseInt(value);
-    }     
+        return value == null ? 0 : value.intValue();
+    }    
     
     @Override
     public long asLong() {
-         return value == null ? 0L : Long.parseLong(value);
+         return value == null ? 0L : value;
     }
 
     @Override
     public boolean asBoolean() {
-        return value == null ? false : Boolean.parseBoolean(value);
+        return value == null ? false : value != 0L;
     }
 
     @Override
@@ -64,6 +64,6 @@ public class MiniVarString implements MiniVar {
     
     @Override
     public boolean isEmpty() {
-        return value == null || value.isEmpty();
+        return value == null;
     }        
 }
