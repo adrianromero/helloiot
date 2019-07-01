@@ -1,5 +1,5 @@
 //    HelloIoT is a dashboard creator for MQTT
-//    Copyright (C) 2017-2018 Adrián Romero Corchado.
+//    Copyright (C) 2017-2019 Adrián Romero Corchado.
 //
 //    This file is part of HelloIot.
 //
@@ -21,13 +21,8 @@ package com.adr.helloiotlib.app;
 import com.adr.helloiotlib.device.Device;
 import com.adr.helloiotlib.device.ListDevice;
 
-/**
- *
- * @author adrian
- */
 public interface IoTApp {
     public final static String SYS_VALUE_ID = "SYSVALUESID";
-    public final static String SYS_EVENT_ID = "SYSEVENTSID";
     public final static String SYS_UNITPAGE_ID = "SYSUNITPAGEID";
     public final static String SYS_BEEPER_ID = "SYSBEEPERID";
     public final static String SYS_BUZZER_ID = "SYSBUZZERID";

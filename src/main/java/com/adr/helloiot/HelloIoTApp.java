@@ -31,7 +31,6 @@ import com.adr.helloiotlib.device.Device;
 import com.adr.helloiot.device.DeviceSimple;
 import com.adr.helloiot.device.DeviceSwitch;
 import com.adr.helloiotlib.device.ListDevice;
-import com.adr.helloiot.device.TreePublish;
 import com.adr.helloiot.device.TreePublishSubscribe;
 import com.adr.helloiot.media.SilentClipFactory;
 import com.adr.helloiot.media.StandardClipFactory;
@@ -153,6 +152,8 @@ public class HelloIoTApp implements IoTApp {
 
     private void addAppDevicesUnits(String topicapp) {
 
+        // topicapp: Root topic for application instance events. Default _LOCAL_/mainapp/
+
         DeviceSimple unitpage = new DeviceSimple();
         unitpage.setTopic(topicapp + "unitpage");
         unitpage.setId(SYS_UNITPAGE_ID);
@@ -170,15 +171,14 @@ public class HelloIoTApp implements IoTApp {
     }
 
     private void addSystemDevicesUnits(String topicsys) {
-        TreePublish sysevents = new TreePublish();
-        sysevents.setTopic(topicsys + "events");
-        sysevents.setId(SYS_EVENT_ID);
+
+        // topicsys: System topic. Shared events like time events, weather events. Default system/
 
         TreePublishSubscribe sysstatus = new TreePublishSubscribe();
         sysstatus.setTopic(topicsys + "status");
         sysstatus.setId(SYS_VALUE_ID);
 
-        addDevicesUnits(Arrays.asList(sysevents, sysstatus), Collections.emptyList());
+        addDevicesUnits(Arrays.asList(sysstatus), Collections.emptyList());
     }
 
     public void addFXMLFileDevicesUnits(String filedescriptor) throws HelloIoTException {
