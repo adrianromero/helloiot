@@ -35,9 +35,8 @@ public class ManagerTime implements ManagerProtocol {
     private Timer timer;
     private final Clock clock;
 
-    public ManagerTime(VarProperties properties) {
-        
-        clock = Clock.systemDefaultZone();
+    public ManagerTime(VarProperties properties) {       
+        clock = Clock.systemUTC();
     }
 
     @Override
@@ -57,13 +56,13 @@ public class ManagerTime implements ManagerProtocol {
         
         timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
-            private long last = clock.millis() / 1000L;
+            private long lastepochsecond = clock.instant().getEpochSecond();
             @Override
             public void run() {
-                long millis = clock.millis() / 1000L;
-                while (millis - last > 0L) {
-                    last += 1L;
-                    byte[] payload = Long.toString(last).getBytes(StandardCharsets.UTF_8);
+                long epochsecond = clock.instant().getEpochSecond();
+                while (epochsecond - lastepochsecond > 0L) {
+                    lastepochsecond += 1L;
+                    byte[] payload = Long.toString(lastepochsecond).getBytes(StandardCharsets.UTF_8);
                     consumer.accept(new EventMessage("current", payload));
                 }
             }
