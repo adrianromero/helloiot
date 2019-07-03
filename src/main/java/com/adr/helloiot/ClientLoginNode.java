@@ -98,7 +98,6 @@ public class ClientLoginNode {
     private ToolBar unitstoolbar;
     
     private ChoiceBox<Style> skins;
-    private CheckBox clock;
         
     private TopicInfoNode editnode = null;
     
@@ -291,13 +290,7 @@ public class ClientLoginNode {
         skins.getStyleClass().add("unitinput");
         GridPane.setColumnIndex(skins, 1);
         
-        clock = new CheckBox(resources.getString("label.clock"));
-        clock.getStyleClass().add("unitcheckbox");
-        clock.setMnemonicParsing(false);
-        GridPane.setColumnIndex(clock, 1);
-        GridPane.setRowIndex(clock, 1);
-        
-        grid2.getChildren().addAll(labelstyle, skins, clock);
+        grid2.getChildren().addAll(labelstyle, skins);
         
         scrolltab2.setContent(grid2);
         
@@ -498,13 +491,8 @@ public class ClientLoginNode {
         skins.setMaxWidth(Double.MAX_VALUE);
         skins.getStyleClass().add("unitinput");
         GridPane.setRowIndex(skins, 1);
-        
-        clock = new CheckBox(resources.getString("label.clock"));
-        clock.getStyleClass().add("unitcheckbox");
-        clock.setMnemonicParsing(false);
-        GridPane.setRowIndex(clock, 2);
-        
-        grid2.getChildren().addAll(labelstyle, skins, clock);
+
+        grid2.getChildren().addAll(labelstyle, skins);
         
         scrolltab2.setContent(grid2);
         
@@ -548,7 +536,7 @@ public class ClientLoginNode {
         connections.getChildren().add(n);
     }
 
-    public void initialize() {
+    private void initialize() {
 
         nextbutton.setGraphic(IconBuilder.create(IconFontGlyph.FA_SOLID_PLAY, 18.0).styleClass("icon-fill").build());
 
@@ -733,14 +721,6 @@ public class ClientLoginNode {
     
     public Style getStyle() {
         return skins.getSelectionModel().getSelectedItem();
-    }
-    
-    public void setClock(boolean value) {
-        clock.setSelected(value);
-    }
-    
-    public boolean isClock() {
-        return clock.isSelected();
     }
 
     public ObservableList<TopicInfo> getTopicInfoList() {

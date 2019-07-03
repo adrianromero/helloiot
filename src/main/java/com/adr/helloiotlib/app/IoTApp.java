@@ -23,6 +23,8 @@ import com.adr.helloiotlib.device.ListDevice;
 
 public interface IoTApp {
     public final static String SYS_VALUE_ID = "SYSVALUESID";
+    public final static String SYS_TIME_ID = "SYSTIMEID";
+    
     public final static String SYS_UNITPAGE_ID = "SYSUNITPAGEID";
     public final static String SYS_BEEPER_ID = "SYSBEEPERID";
     public final static String SYS_BUZZER_ID = "SYSBUZZERID";

@@ -66,10 +66,6 @@ import javafx.scene.control.ButtonBar;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
 
-/**
- *
- * @author adrian
- */
 public class HelloIoTApp implements IoTApp {
 
     private final static Logger LOGGER = Logger.getLogger(HelloIoTApp.class.getName());
@@ -115,7 +111,6 @@ public class HelloIoTApp implements IoTApp {
         mainnode = new MainNode(
                 this,
                 Platform.isSupported(ConditionalFeature.MEDIA) ? new StandardClipFactory() : new SilentClipFactory(),
-                config.get("app.clock").asBoolean(),
                 config.get("app.exitbutton").asBoolean());
 
         topicsmanager = new ApplicationTopicsManager(manager);
@@ -177,8 +172,13 @@ public class HelloIoTApp implements IoTApp {
         TreePublishSubscribe sysstatus = new TreePublishSubscribe();
         sysstatus.setTopic(topicsys + "status");
         sysstatus.setId(SYS_VALUE_ID);
-
-        addDevicesUnits(Arrays.asList(sysstatus), Collections.emptyList());
+        
+        DeviceSimple systime = new DeviceSimple();
+        MQTTProperty.setRetained(systime, false);
+        systime.setTopic(topicsys + "epochsecond"); // "SYSTEM/time/current"
+        systime.setId(SYS_TIME_ID);
+        
+        addDevicesUnits(Arrays.asList(sysstatus, systime), Collections.emptyList());
     }
 
     public void addFXMLFileDevicesUnits(String filedescriptor) throws HelloIoTException {
@@ -195,16 +195,14 @@ public class HelloIoTApp implements IoTApp {
                 // Is a file       
                 fxmlurl = new File(filedescriptor + versionfxml).toURI().toURL();
                 File file = new File(filedescriptor);
-                URL[] urls = {file.getAbsoluteFile().getParentFile().toURI().toURL()};
+                URL[] urls = {file.getParentFile().toURI().toURL()};
                 ClassLoader loader = new URLClassLoader(urls);
                 fxmlresources = ResourceBundle.getBundle(file.getName(), Locale.getDefault(), loader);
             }
 
             FXMLLoader fxmlloader;
             fxmlloader = new FXMLLoader(fxmlurl);
-            if (fxmlresources != null) {
-                fxmlloader.setResources(fxmlresources);
-            }
+            fxmlloader.setResources(fxmlresources);
             DevicesUnits du = fxmlloader.load();
             addDevicesUnits(du.getDevices(), du.getUnits());
         } catch (IOException | MissingResourceException ex) {

@@ -83,13 +83,13 @@ public final class MainNode {
     private Button menubutton;
     private Button exitbutton;
     private Label headertitle;
-    private Label currenttime;
+    private HBox indicators;
     private VBox alert;
     private Animation alertanimation;
     
     private DialogView connectingdialog = null;
     
-    private Clock clock = null;
+    private TimeIndicator timeindicator = null;
     private Transition listpagestransition;
     
     private String firstmenupage;
@@ -99,29 +99,28 @@ public final class MainNode {
     private final Beeper beeper;
     private final Buzzer buzzer;
     private final HelloIoTApp app;
-    private final boolean appclock;
     private final boolean appexitbutton;
     private Button backbutton;
 
     private final DeviceSimple appunitpage;
     private final DeviceSwitch appbeeper;
     private final DeviceSimple appbuzzer;    
+    private final DeviceSimple systime;    
     
     private String currentpage = null;
     
     public MainNode(
             HelloIoTApp app,
             ClipFactory factory,
-            boolean appclock,
             boolean appexitbutton) {
         
         this.app = app;
-        this.appclock = appclock;
         this.appexitbutton = appexitbutton;
         
         appunitpage = ((DeviceSimple) app.getDevice(IoTApp.SYS_UNITPAGE_ID));
         appbeeper = ((DeviceSwitch) app.getDevice(IoTApp.SYS_BEEPER_ID));
         appbuzzer = ((DeviceSimple) app.getDevice(IoTApp.SYS_BUZZER_ID));
+        systime = ((DeviceSimple) app.getDevice(IoTApp.SYS_TIME_ID));
         
         resources = ResourceBundle.getBundle("com/adr/helloiot/fxml/main"); 
         load();
@@ -162,10 +161,8 @@ public final class MainNode {
         headertitle.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
         headertitle.getStyleClass().add("headertitle");
         HBox.setHgrow(headertitle, Priority.SOMETIMES);
-        
-        currenttime = new Label();
-        currenttime.setMaxHeight(Double.MAX_VALUE);
-        currenttime.getStyleClass().add("currenttime");
+                
+        indicators = new HBox();
         
         exitbutton = new Button();
         exitbutton.setId("exitbutton");
@@ -174,7 +171,7 @@ public final class MainNode {
         exitbutton.getStyleClass().add("headerbutton");    
         exitbutton.setVisible(false);
         
-        headerbox.getChildren().addAll(menubutton, headertitle, currenttime, exitbutton);
+        headerbox.getChildren().addAll(menubutton, headertitle, indicators, exitbutton);
         
         appcontainer.setTop(headerbox);
         
@@ -251,6 +248,7 @@ public final class MainNode {
         appunitpage.subscribeStatus(messagePageHandler);
         appbeeper.subscribeStatus(beeper.getMessageHandler());
         appbuzzer.subscribeStatus(buzzer.getMessageHandler());
+        systime.subscribeStatus(timeindicator.getMessageHandler());
 
         // Add configured unitpages.
         for (UnitPage up : appunitpages) {
@@ -305,21 +303,13 @@ public final class MainNode {
 
         // Remove menubutton if 0 or 1 visible page.
         menubutton.setVisible(!menupages.getChildren().isEmpty());
-
-        // Remove headerbox if empty
-        if ((headertitle.getText() == null || headertitle.getText().equals(""))
-                && clock == null
-                && menubutton == null
-                && exitbutton == null) {
-            // There is nothing visible in the headerbox
-            appcontainer.getChildren().remove(headerbox);
-        }
     }
     
     public void destroy() {
         appunitpage.unsubscribeStatus(messagePageHandler);
         appbeeper.unsubscribeStatus(beeper.getMessageHandler());
         appbuzzer.unsubscribeStatus(buzzer.getMessageHandler());
+        systime.unsubscribeStatus(timeindicator.getMessageHandler());
         unitpages.clear();
     }
 
@@ -365,10 +355,8 @@ public final class MainNode {
         menubutton.setGraphic(IconBuilder.create(IconFontGlyph.FA_SOLID_BARS, 18.0).styleClass("icon-fill").build());
         menubutton.setDisable(true);
         
-        if (appclock) {
-            clock = new Clock(currenttime, resources.getString("clock.pattern"));
-            clock.play();
-        }
+        timeindicator = new TimeIndicator(resources.getString("clock.pattern"));
+        indicators.getChildren().add(timeindicator.getNode());
         
         listpagesgray.setBackground(new Background(new BackgroundFill(Color.gray(0.5, 0.75), CornerRadii.EMPTY, Insets.EMPTY)));
         FadeTransition ft = new FadeTransition(Duration.millis(300), scrollpages);

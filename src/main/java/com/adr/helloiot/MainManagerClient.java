@@ -23,7 +23,6 @@ import com.adr.fonticon.IconBuilder;
 import com.adr.fonticon.IconFontGlyph;
 import com.adr.hellocommon.dialog.MessageUtils;
 import com.adr.helloiot.local.BridgeLocal;
-import com.adr.helloiot.weather.BridgeTime;
 import com.adr.helloiot.mqtt.BridgeMQTT;
 import com.adr.helloiot.properties.VarProperties;
 import com.adr.helloiotlib.format.MiniVarBoolean;
@@ -46,7 +45,8 @@ import javafx.scene.layout.StackPane;
 public class MainManagerClient implements MainManager {
 
     private static final Logger LOGGER = Logger.getLogger(MainManagerClient.class.getName());
-    private static final String CONFIG_PROPERTIES = ".helloiot-config.properties";
+    private static final String CONFIG_PROPERTIES = "config.properties";
+    private static final String CONFIG_DEVICESUNITS = "system-devicesunits";
     
     private final ResourceBundle resources;
     private final BridgeConfig[] bridgeconfigs;
@@ -61,10 +61,10 @@ public class MainManagerClient implements MainManager {
     public MainManagerClient() {
         resources = ResourceBundle.getBundle("com/adr/helloiot/fxml/main");
         bridgeconfigs = new BridgeConfig[] {
-                // new BridgeConfig(new BridgeTradfri(), "TRÅDFRI/", "tradfri."),
-                new BridgeConfig(new BridgeLocal(), "_LOCAL_/mainapp/", "local."),
-                new BridgeConfig(new BridgeTime(), "SYSTEM/time/", "time."),
-                new BridgeConfig(new BridgeMQTT(), "", "mqtt.")}; 
+            // new BridgeConfig(new BridgeTradfri(), "TRÅDFRI/", "tradfri."),
+            // new BridgeConfig(new BridgeTime(), "SYSTEM/time/", "time."),
+            new BridgeConfig(new BridgeLocal(), "_LOCAL_/mainapp/", "local."),               
+            new BridgeConfig(new BridgeMQTT(), "", "mqtt.")}; 
     }
 
     private void showLogin() {
@@ -89,7 +89,6 @@ public class MainManagerClient implements MainManager {
         
         clientlogin.setTopicSys(configprops.getProperty("app.topicsys", "system/"));      
         clientlogin.setTopicApp(configprops.getProperty("app.topicapp", "_LOCAL_/mainapp/"));      
-        clientlogin.setClock(Boolean.parseBoolean(configprops.getProperty("app.clock", "false")));
         // "app.exitbutton"
         // "app.retryconnection"
         clientlogin.setStyle(Style.valueOf(configprops.getProperty("app.style", Style.PRETTY.name()))); 
@@ -135,7 +134,6 @@ public class MainManagerClient implements MainManager {
             
             configprops.setProperty("app.topicsys", clientlogin.getTopicSys());    
             configprops.setProperty("app.topicapp", clientlogin.getTopicApp());
-            configprops.setProperty("app.clock", Boolean.toString(clientlogin.isClock())); 
             // "app.exitbutton"
             // "app.retryconnection"
             configprops.setProperty("app.style", clientlogin.getStyle().name());
@@ -182,7 +180,6 @@ public class MainManagerClient implements MainManager {
         
         config.put("app.topicsys", new MiniVarString(configprops.getProperty("app.topicsys", "system/")));
         config.put("app.topicapp", new MiniVarString(configprops.getProperty("app.topicapp", "_LOCAL_/mainapp/")));
-        config.put("app.clock", new MiniVarBoolean(Boolean.parseBoolean(configprops.getProperty("app.clock", "false"))));
         config.put("app.exitbutton", MiniVarBoolean.FALSE);
         config.put("app.retryconnection", MiniVarBoolean.FALSE);
         Style.changeStyle(root, Style.valueOf(configprops.getProperty("app.style", Style.PRETTY.name())));  
@@ -205,6 +202,13 @@ public class MainManagerClient implements MainManager {
 
             // Add all devices and units
             helloiotapp.addServiceDevicesUnits();
+            
+            File devicesunits = HelloPlatform.getInstance().getFile(CONFIG_DEVICESUNITS);
+            try {        
+                helloiotapp.addFXMLFileDevicesUnits(devicesunits.getPath());
+            } catch (HelloIoTException ex) {
+                LOGGER.log(Level.INFO, "Cannot load Devices Units file {0}", devicesunits.getPath());
+            }            
         
             EventHandler<ActionEvent> showloginevent = (event -> {
                 hideApplication();
@@ -239,17 +243,8 @@ public class MainManagerClient implements MainManager {
     @Override
     public void construct(StackPane root, Parameters params) {
         this.root = root;
-        List<String> unnamed = params.getUnnamed();
-        if (unnamed.isEmpty()) {
-            configfile = HelloPlatform.getInstance().getFile(CONFIG_PROPERTIES);
-        } else {
-            String param = unnamed.get(0);
-            if (param == null || param.isEmpty()) {
-                configfile = HelloPlatform.getInstance().getFile(CONFIG_PROPERTIES);
-            } else {
-                configfile = new File(param);
-            }
-        }       
+
+        configfile = HelloPlatform.getInstance().getFile(CONFIG_PROPERTIES);      
         
         boolean status = Boolean.parseBoolean(HelloPlatform.getInstance().getProperty("window.status", "false"));
         if (status) {

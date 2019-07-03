@@ -122,7 +122,7 @@ public class ManagerLocal implements ManagerProtocol {
     @SuppressWarnings("unchecked")
     private void readMapClient() {
         mapClient = null;
-        File dbfile = HelloPlatform.getInstance().getFile(".helloiot-localmsg-" + fileid + ".map"); 
+        File dbfile = HelloPlatform.getInstance().getFile("localmsg-" + fileid + ".map"); 
         try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(dbfile))) {  
             mapClient = (ConcurrentMap<String, byte[]>) in.readObject();
         } catch (IOException | ClassNotFoundException ex) {
@@ -143,7 +143,7 @@ public class ManagerLocal implements ManagerProtocol {
     }
     
     private void writeMapClient() throws IOException {
-        File dbfile = HelloPlatform.getInstance().getFile(".helloiot-localmsg-" + fileid + ".map"); 
+        File dbfile = HelloPlatform.getInstance().getFile("localmsg-" + fileid + ".map"); 
         try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(dbfile))) {
             out.writeObject(mapClient); 
         }      
