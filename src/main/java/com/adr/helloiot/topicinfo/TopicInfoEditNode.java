@@ -116,7 +116,7 @@ public class TopicInfoEditNode implements TopicInfoNode {
         
         editformat.setItems(FXCollections.observableArrayList(
                 "STRING",
-                "INT",
+                "LONG",
                 "DOUBLE",
                 "DECIMAL",
                 "DEGREES",

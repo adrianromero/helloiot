@@ -25,6 +25,7 @@ import com.adr.helloiotlib.format.StringFormatBase64;
 import com.adr.helloiotlib.format.StringFormatDecimal;
 import com.adr.helloiotlib.format.StringFormatHex;
 import com.adr.helloiotlib.format.StringFormatIdentity;
+import com.adr.helloiotlib.format.StringFormatLong;
 import com.adr.helloiotlib.unit.Unit;
 import javafx.beans.property.ReadOnlyProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -160,8 +161,8 @@ public abstract class TopicInfoPublicationSubscription implements TopicInfo {
     protected StringFormat createFormat() {
         if ("STRING".equals(format)) {
             return new StringFormatIdentity(jsonpath == null || jsonpath.isEmpty() ? null : jsonpath);
-        } else if ("INT".equals(format)) {
-            return new StringFormatDecimal(jsonpath == null || jsonpath.isEmpty() ? null : jsonpath, "0");
+        } else if ("LONG".equals(format)) {
+            return new StringFormatLong(jsonpath == null || jsonpath.isEmpty() ? null : jsonpath);
         } else if ("BASE64".equals(format)) {
             return new StringFormatBase64();
         } else if ("HEX".equals(format)) {
@@ -180,7 +181,7 @@ public abstract class TopicInfoPublicationSubscription implements TopicInfo {
     protected IconFontGlyph createGlyph() {
         if ("STRING".equals(format)) {
             return null;
-        } else if ("INT".equals(format)) {
+        } else if ("LONG".equals(format)) {
             return IconFontGlyph.FA_SOLID_HASHTAG;
         } else if ("BASE64".equals(format)) {
             return IconFontGlyph.FA_SOLID_CODE;
