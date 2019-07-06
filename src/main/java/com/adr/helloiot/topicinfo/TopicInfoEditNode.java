@@ -116,6 +116,16 @@ public class TopicInfoEditNode implements TopicInfoNode {
         
         editformat.setItems(FXCollections.observableArrayList(EditNodeFormat.values()));
         editformat.getSelectionModel().clearSelection();
+        editformat.setConverter(new StringConverter<EditNodeFormat>() {
+            @Override
+            public String toString(EditNodeFormat editnodeformat) {
+                return resources.getString("format." + editnodeformat.name());
+            }
+            @Override
+            public EditNodeFormat fromString(String value) {
+                return null;
+            }
+        });
         editformat.valueProperty().addListener((ObservableValue<? extends EditNodeFormat> ov, EditNodeFormat old_val, EditNodeFormat new_val) -> {
             updateCurrentTopic();
         });
