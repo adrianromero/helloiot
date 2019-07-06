@@ -34,8 +34,14 @@ public enum EditNodeFormat {
     TEMPERATUREC(IconFontGlyph.FA_SOLID_THERMOMETER_QUARTER, jsonpath -> new StringFormatDecimal(jsonpath, "0.0°C")),
     TEMPERATUREF(IconFontGlyph.FA_SOLID_THERMOMETER_QUARTER, jsonpath -> new StringFormatDecimal(jsonpath, "0.0°F")),
     HUMIDITY(IconFontGlyph.FA_SOLID_TINT, jsonpath -> new StringFormatDecimal(jsonpath, "0'%'")),
+    PRESSURE(IconFontGlyph.FA_SOLID_TACHOMETER_ALT, jsonpath -> new StringFormatDecimal(jsonpath, "0.00' hPa'")),
+    CO2(IconFontGlyph.FA_SOLID_CLOUD, jsonpath -> new StringFormatDecimal(jsonpath, "0' ppm'")),
     WINDKMH(IconFontGlyph.FA_SOLID_WIND, jsonpath -> new StringFormatDecimal(jsonpath, "0' Km/h'")),
     WINDMPH(IconFontGlyph.FA_SOLID_WIND, jsonpath -> new StringFormatDecimal(jsonpath, "0' mph'")),
+    CURRENT(IconFontGlyph.FA_SOLID_TACHOMETER_ALT, jsonpath -> new StringFormatDecimal(jsonpath, "0.00' A'")),
+    VOLTAGE(IconFontGlyph.FA_SOLID_PLUG, jsonpath -> new StringFormatDecimal(jsonpath, "0' V'")),
+    POWER(IconFontGlyph.FA_SOLID_BOLT, jsonpath -> new StringFormatDecimal(jsonpath, "0' W'")),
+    LUX(IconFontGlyph.FA_SOLID_LIGHTBULB, jsonpath -> new StringFormatDecimal(jsonpath, "0' lx'")),
     BASE64(IconFontGlyph.FA_SOLID_CODE, jsonpath -> new StringFormatBase64()),
     HEX(IconFontGlyph.FA_SOLID_MICROCHIP, jsonpath -> new StringFormatHex());
     
