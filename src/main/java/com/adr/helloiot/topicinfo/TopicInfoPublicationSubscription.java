@@ -18,14 +18,8 @@
 //
 package com.adr.helloiot.topicinfo;
 
-import com.adr.fonticon.IconFontGlyph;
 import com.adr.helloiot.SubProperties;
 import com.adr.helloiotlib.format.StringFormat;
-import com.adr.helloiotlib.format.StringFormatBase64;
-import com.adr.helloiotlib.format.StringFormatDecimal;
-import com.adr.helloiotlib.format.StringFormatHex;
-import com.adr.helloiotlib.format.StringFormatIdentity;
-import com.adr.helloiotlib.format.StringFormatLong;
 import com.adr.helloiotlib.unit.Unit;
 import javafx.beans.property.ReadOnlyProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -43,7 +37,7 @@ public abstract class TopicInfoPublicationSubscription implements TopicInfo {
     protected String topic = null;
     private final SimpleStringProperty name = new SimpleStringProperty();
     protected String topicpub = null;
-    protected String format = "STRING";
+    protected EditNodeFormat format = EditNodeFormat.STRING;
     protected String jsonpath = null;
     protected boolean multiline = false;
     protected Color color = null;
@@ -72,7 +66,7 @@ public abstract class TopicInfoPublicationSubscription implements TopicInfo {
         page = properties.getProperty(".page", null);
         topic = properties.getProperty(".topic", null);
         topicpub = properties.getProperty(".topicpub", null);
-        format = properties.getProperty(".format", "STRING");
+        format = EditNodeFormat.valueOf(properties.getProperty(".format", EditNodeFormat.STRING.name()));
         jsonpath = properties.getProperty(".jsonpath", null);
         multiline = Boolean.parseBoolean(properties.getProperty(".multiline", "false"));
         String c = properties.getProperty(".color", null);
@@ -89,7 +83,7 @@ public abstract class TopicInfoPublicationSubscription implements TopicInfo {
         properties.setProperty(".page", page);
         properties.setProperty(".topic", topic);
         properties.setProperty(".topicpub", topicpub);
-        properties.setProperty(".format", format);
+        properties.setProperty(".format", format.name());
         properties.setProperty(".jsonpath", jsonpath);
         properties.setProperty(".multiline", Boolean.toString(multiline));
         properties.setProperty(".color", color == null ? null : color.toString());
@@ -125,7 +119,7 @@ public abstract class TopicInfoPublicationSubscription implements TopicInfo {
         topic = editnode.edittopic.getText();
         topicpub = editnode.edittopicpub.getText() == null || editnode.edittopicpub.getText().isEmpty() ? null : editnode.edittopicpub.getText();
         format = editnode.editformat.getValue();
-        if ("BASE64".equals(format) || "HEX".equals(format) || "SWITCH".equals(format)) {
+        if (EditNodeFormat.BASE64 == format || EditNodeFormat.HEX ==format) {
             jsonpath = null;
             editnode.editjsonpath.setDisable(true);
         } else {
@@ -159,43 +153,7 @@ public abstract class TopicInfoPublicationSubscription implements TopicInfo {
     }
 
     protected StringFormat createFormat() {
-        if ("STRING".equals(format)) {
-            return new StringFormatIdentity(jsonpath == null || jsonpath.isEmpty() ? null : jsonpath);
-        } else if ("LONG".equals(format)) {
-            return new StringFormatLong(jsonpath == null || jsonpath.isEmpty() ? null : jsonpath);
-        } else if ("BASE64".equals(format)) {
-            return new StringFormatBase64();
-        } else if ("HEX".equals(format)) {
-            return new StringFormatHex();
-        } else if ("DOUBLE".equals(format)) {
-            return new StringFormatDecimal(jsonpath == null || jsonpath.isEmpty() ? null : jsonpath, "0.00");
-        } else if ("DECIMAL".equals(format)) {
-            return new StringFormatDecimal(jsonpath == null || jsonpath.isEmpty() ? null : jsonpath, "0.000");
-        } else if ("DEGREES".equals(format)) {
-            return new StringFormatDecimal(jsonpath == null || jsonpath.isEmpty() ? null : jsonpath, "0.0°");
-        } else {
-            return StringFormatIdentity.INSTANCE;
-        }
-    }    
-
-    protected IconFontGlyph createGlyph() {
-        if ("STRING".equals(format)) {
-            return null;
-        } else if ("LONG".equals(format)) {
-            return IconFontGlyph.FA_SOLID_HASHTAG;
-        } else if ("BASE64".equals(format)) {
-            return IconFontGlyph.FA_SOLID_CODE;
-        } else if ("HEX".equals(format)) {
-            return IconFontGlyph.FA_SOLID_MICROCHIP;
-        } else if ("DOUBLE".equals(format)) {
-            return IconFontGlyph.FA_SOLID_SLIDERS_H;
-        } else if ("DECIMAL".equals(format)) {
-            return IconFontGlyph.FA_SOLID_RULER;
-        } else if ("DEGREES".equals(format)) {
-            return IconFontGlyph.FA_SOLID_THERMOMETER_QUARTER;
-        } else {
-            return null;
-        }
+        return format.createFormat(jsonpath == null || jsonpath.isEmpty() ? null : jsonpath);
     }    
     
     protected String webColor(Color color) {

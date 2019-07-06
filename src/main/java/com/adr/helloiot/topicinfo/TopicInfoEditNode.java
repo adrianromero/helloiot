@@ -58,7 +58,7 @@ public class TopicInfoEditNode implements TopicInfoNode {
     @FXML
     public TextField edittopicpub;
     @FXML
-    public ChoiceBox<String> editformat;
+    public ChoiceBox<EditNodeFormat> editformat;
     @FXML
     public ColorPicker editcolor;
     @FXML
@@ -114,16 +114,9 @@ public class TopicInfoEditNode implements TopicInfoNode {
             updateCurrentTopic();
         });
         
-        editformat.setItems(FXCollections.observableArrayList(
-                "STRING",
-                "LONG",
-                "DOUBLE",
-                "DECIMAL",
-                "DEGREES",
-                "BASE64",
-                "HEX"));
+        editformat.setItems(FXCollections.observableArrayList(EditNodeFormat.values()));
         editformat.getSelectionModel().clearSelection();
-        editformat.valueProperty().addListener((ObservableValue<? extends String> ov, String old_val, String new_val) -> {
+        editformat.valueProperty().addListener((ObservableValue<? extends EditNodeFormat> ov, EditNodeFormat old_val, EditNodeFormat new_val) -> {
             updateCurrentTopic();
         });
 

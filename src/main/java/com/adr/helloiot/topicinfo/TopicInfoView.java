@@ -53,7 +53,7 @@ public class TopicInfoView extends TopicInfoPublicationSubscription {
         u.setPrefWidth(320.0);
         u.setLabel(getLabel().getValue());
         u.setFooter(topic + getQOSBadge(qos));
-        u.setGlyph(createGlyph());
+        u.setGlyph(format.createGlyph());
         setStyle(u);
         u.setDevice(d);
         UnitPage.setPage(u, page);
