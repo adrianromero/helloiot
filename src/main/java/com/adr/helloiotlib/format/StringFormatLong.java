@@ -74,8 +74,8 @@ public class StringFormatLong extends StringFormatPath {
             try {
                 l = Long.parseLong(formattedvalue);
             } catch (NumberFormatException ex) {
-                    logger.log(Level.WARNING, null, ex);
-                    throw new IllegalArgumentException(ex);
+                logger.log(Level.WARNING, null, ex);
+                throw new IllegalArgumentException(ex);
             }
             return new MiniVarLong(l);
         }
