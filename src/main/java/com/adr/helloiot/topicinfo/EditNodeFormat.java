@@ -31,7 +31,11 @@ public enum EditNodeFormat {
     LONG(IconFontGlyph.FA_SOLID_HASHTAG, jsonpath -> new StringFormatLong(jsonpath)),
     DOUBLE(IconFontGlyph.FA_SOLID_SLIDERS_H, jsonpath -> new StringFormatDecimal(jsonpath, "0.00")),
     DECIMAL(IconFontGlyph.FA_SOLID_RULER, jsonpath -> new StringFormatDecimal(jsonpath, "0.000")),
-    DEGREES(IconFontGlyph.FA_SOLID_THERMOMETER_QUARTER, jsonpath -> new StringFormatDecimal(jsonpath, "0.0°")),
+    TEMPERATUREC(IconFontGlyph.FA_SOLID_THERMOMETER_QUARTER, jsonpath -> new StringFormatDecimal(jsonpath, "0.0°C")),
+    TEMPERATUREF(IconFontGlyph.FA_SOLID_THERMOMETER_QUARTER, jsonpath -> new StringFormatDecimal(jsonpath, "0.0°F")),
+    HUMIDITY(IconFontGlyph.FA_SOLID_TINT, jsonpath -> new StringFormatDecimal(jsonpath, "0'%'")),
+    WINDKMH(IconFontGlyph.FA_SOLID_WIND, jsonpath -> new StringFormatDecimal(jsonpath, "0' Km/h'")),
+    WINDMPH(IconFontGlyph.FA_SOLID_WIND, jsonpath -> new StringFormatDecimal(jsonpath, "0' mph'")),
     BASE64(IconFontGlyph.FA_SOLID_CODE, jsonpath -> new StringFormatBase64()),
     HEX(IconFontGlyph.FA_SOLID_MICROCHIP, jsonpath -> new StringFormatHex());
     
