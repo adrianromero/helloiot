@@ -148,7 +148,6 @@ public class ViewGauge extends Tile {
         gauge.valueColorProperty().bind(valueColor);
         gauge.unitColorProperty().bind(valueColor);
         gauge.tickLabelColorProperty().bind(valueColor);
-        gauge.setUnit(device.getUnit());
         gauge.setFocusTraversable(false);
         gaugecontainer.getChildren().add(gauge);
         

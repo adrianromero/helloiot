@@ -40,10 +40,6 @@ public class DeviceNumber extends DeviceSimple {
     public String getDeviceName() {
         return resources.getString("devicename.devicenumber");
     }
-    
-    public String getUnit() {
-        return "";
-    }
 
     public final void setIncrement(double increment) {
         this.increment = increment;
