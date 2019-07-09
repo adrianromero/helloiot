@@ -142,18 +142,19 @@ public class ViewGauge extends Tile {
         }
 
         gauge = type.build(device.getLevelMin(), device.getLevelMax(), barColor);
-        gauge.setMinValue(device.getLevelMin());
-        gauge.setMaxValue(device.getLevelMax());
         gauge.titleColorProperty().bind(valueColor);
         gauge.valueColorProperty().bind(valueColor);
         gauge.unitColorProperty().bind(valueColor);
         gauge.tickLabelColorProperty().bind(valueColor);
         gauge.setFocusTraversable(false);
-        gaugecontainer.getChildren().add(gauge);
         
+        gauge.setDecimals(2);
 //        gauge.setTitle("TITLE");
 //        gauge.setSubTitle("SUBTITLE");
-//        gauge.setUnit("UNIT");
+//        gauge.setUnit("UNIT");        
+        
+        gaugecontainer.getChildren().add(gauge);
+
 
         if (getLabel() == null) {
             setLabel(device.getProperties().getProperty("label"));

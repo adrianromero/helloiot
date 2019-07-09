@@ -1,5 +1,5 @@
 //    HelloIoT is a dashboard creator for MQTT
-//    Copyright (C) 2017 Adrián Romero Corchado.
+//    Copyright (C) 2017-2019 Adrián Romero Corchado.
 //
 //    This file is part of HelloIot.
 //
@@ -27,10 +27,6 @@ import javafx.geometry.Orientation;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Stop;
 
-/**
- *
- * @author adrian
- */
 public enum GaugeType {
     BASIC((min, max, barColor) -> {
         double fith = (max - min) / 5.0;
@@ -44,27 +40,26 @@ public enum GaugeType {
                 .majorTickSpace(1.0)
                 .majorTickMarkType(TickMarkType.BOX)
                 .gradientBarEnabled(true)
-                .sections(new Section(min, min + fith, barColor.deriveColor(1.0, 1.0, 0.8, 1.0)),
-                        new Section(min + fith, min + fith * 2, barColor.deriveColor(1.0, 1.0, 0.85, 1.0)),
-                        new Section(min + fith * 2, min + fith * 3, barColor.deriveColor(1.0, 1.0, 0.9, 1.0)),
-                        new Section(min + fith * 3, min + fith * 4, barColor.deriveColor(1.0, 1.0, 0.95, 1.0)),
-                        new Section(min + fith * 4, max, barColor))
+                .sections(new Section(min, min + fith, barColor.deriveColor(20.0, 1.0, 1.0, 1.0)),
+                        new Section(min + fith, min + fith * 2, barColor.deriveColor(10.0, 1.0, 1.0, 1.0)),
+                        new Section(min + fith * 2, min + fith * 3, barColor.deriveColor(0.0, 1.0, 1.0, 1.0)),
+                        new Section(min + fith * 3, min + fith * 4, barColor.deriveColor(-10.0, 1.0, 1.0, 1.0)),
+                        new Section(min + fith * 4, max, barColor.deriveColor(-20.0, 1.0, 1.0, 1.0)))
                 .sectionsVisible(true)
-                .decimals(1)
                 .build();
     }),
     SPACEX((min, max, barColor) -> {
         return GaugeBuilder.create()
+                .minValue(min)
+                .maxValue(max)                
                 .skinType(Gauge.SkinType.SPACE_X)
-                .backgroundPaint(Color.TRANSPARENT)              
+                .backgroundPaint(Color.TRANSPARENT)
                 .valueColor(Color.BLACK)
                 .titleColor(Color.BLACK)
-                .minValue(min)
-                .maxValue(max)
+                .threshold(max)
                 .prefSize(150.0, 150.0)                
                 .autoScale(false)
                 .barColor(barColor)
-                .decimals(1)
                 .build();
     }),
     FLAT((min, max, barColor) -> {
@@ -75,7 +70,6 @@ public enum GaugeType {
                 .prefSize(150.0, 150.0)
                 .autoScale(false)
                 .barColor(barColor)
-                .decimals(1)
                 .build();
     }),
     DASHBOARD((min, max, barColor) -> {
@@ -85,7 +79,6 @@ public enum GaugeType {
                 .maxValue(max)
                 .prefSize(150.0, 150.0)                
                 .autoScale(false)
-                .decimals(1)
                 .barColor(Color.CRIMSON)
                 .valueColor(Color.BLACK)
                 .titleColor(Color.BLACK)
@@ -108,13 +101,11 @@ public enum GaugeType {
                 .prefSize(150.0, 150.0)               
                 .autoScale(false)
                 .scaleDirection(ScaleDirection.CLOCKWISE)
-                .sections(new Section(min, min + fith, barColor.deriveColor(1.0, 1.0, 0.8, 1.0)),
-                        new Section(min + fith, min + fith * 2, barColor.deriveColor(1.0, 1.0, 0.85, 1.0)),
-                        new Section(min + fith * 2, min + fith * 3, barColor.deriveColor(1.0, 1.0, 0.9, 1.0)),
-                        new Section(min + fith * 3, min + fith * 4, barColor.deriveColor(1.0, 1.0, 0.95, 1.0)),
-                        new Section(min + fith * 4, max, barColor))
-                .decimals(1)
-
+                .sections(new Section(min, min + fith, barColor.deriveColor(20.0, 1.0, 1.0, 1.0)),
+                        new Section(min + fith, min + fith * 2, barColor.deriveColor(10.0, 1.0, 1.0, 1.0)),
+                        new Section(min + fith * 2, min + fith * 3, barColor.deriveColor(0.0, 1.0, 1.0, 1.0)),
+                        new Section(min + fith * 3, min + fith * 4, barColor.deriveColor(-10.0, 1.0, 1.0, 1.0)),
+                        new Section(min + fith * 4, max, barColor.deriveColor(-20.0, 1.0, 1.0, 1.0)))
                 .borderPaint(Color.DARKGRAY)
                 .needleColor(Color.WHITE)
                 .needleBorderColor(Color.valueOf("#474747"))
@@ -129,7 +120,6 @@ public enum GaugeType {
                 .autoScale(false)
                 .orientation(Orientation.HORIZONTAL)
                 .barColor(barColor)
-                .decimals(1)
                 .build();
     }),
     BAR((min, max, barColor) -> {
@@ -140,7 +130,6 @@ public enum GaugeType {
                 .prefSize(100.0, 100.0)
                 .autoScale(false)
                 .barColor(barColor)
-                .decimals(1)
                 .animated(false)               
                 .build();
     }),
@@ -152,7 +141,6 @@ public enum GaugeType {
                 .prefSize(150.0, 150.0)
                 .autoScale(false)
                 .barColor(barColor)
-                .decimals(1)
                 .animated(false)
                 .build();
     }),
@@ -164,7 +152,6 @@ public enum GaugeType {
                 .prefSize(150.0, 150.0)
                 .autoScale(false)
                 .barColor(barColor)
-                .decimals(1)
                 .animated(false)
                 .build();
     }),
@@ -176,7 +163,6 @@ public enum GaugeType {
                 .prefSize(150.0, 150.0)
                 .autoScale(false)
                 .barColor(barColor)
-                .decimals(1)
                 .animated(false)
                 .build();
     }),
@@ -189,12 +175,11 @@ public enum GaugeType {
                 .prefSize(150.0, 150.0)
                 .autoScale(false)
                 .barColor(barColor)
-                .sections(new Section(min, min + fith, barColor.deriveColor(1.0, 1.0, 0.8, 1.0)),
-                        new Section(min + fith, min + fith * 2, barColor.deriveColor(1.0, 1.0, 0.85, 1.0)),
-                        new Section(min + fith * 2, min + fith * 3, barColor.deriveColor(1.0, 1.0, 0.9, 1.0)),
-                        new Section(min + fith * 3, min + fith * 4, barColor.deriveColor(1.0, 1.0, 0.95, 1.0)),
-                        new Section(min + fith * 4, max, barColor))                
-                .decimals(1)
+                .sections(new Section(min, min + fith, barColor.deriveColor(20.0, 1.0, 1.0, 1.0)),
+                        new Section(min + fith, min + fith * 2, barColor.deriveColor(10.0, 1.0, 1.0, 1.0)),
+                        new Section(min + fith * 2, min + fith * 3, barColor.deriveColor(0.0, 1.0, 1.0, 1.0)),
+                        new Section(min + fith * 3, min + fith * 4, barColor.deriveColor(-10.0, 1.0, 1.0, 1.0)),
+                        new Section(min + fith * 4, max, barColor.deriveColor(-20.0, 1.0, 1.0, 1.0)))                
                 .animated(false)               
                 .build();
     }),
@@ -206,7 +191,6 @@ public enum GaugeType {
                 .prefSize(150.0, 150.0)
                 .autoScale(false)
                 .barColor(barColor)
-                .decimals(1)
                 .animated(false)               
                 .build();        
     }),
@@ -218,7 +202,6 @@ public enum GaugeType {
                 .prefSize(150.0, 150.0)
                 .autoScale(false)
                 .barColor(barColor)
-                .decimals(1)
                 .animated(false)               
                 .build();        
     }),
@@ -230,7 +213,6 @@ public enum GaugeType {
                 .prefSize(150.0, 150.0)
                 .autoScale(false)
                 .barColor(barColor)
-                .decimals(1)
                 .animated(false)               
                 .build();        
     }),
@@ -242,7 +224,6 @@ public enum GaugeType {
                 .prefSize(150.0, 150.0)
                 .autoScale(false)
                 .barColor(barColor)
-                .decimals(1)
                 .animated(false)               
                 .build();        
     }),
@@ -254,7 +235,6 @@ public enum GaugeType {
                 .prefSize(150.0, 150.0)
                 .autoScale(false)
                 .barColor(barColor)
-                .decimals(1)
                 .animated(false)               
                 .build();        
     }),
@@ -266,20 +246,17 @@ public enum GaugeType {
                 .prefSize(150.0, 150.0)
                 .autoScale(false)
                 .barColor(barColor)
-                .decimals(1)
                 .animated(false)               
                 .build();        
     }),
-    QUARTER((min, max, barColor) -> {
-        double fith = (max - min) / 5.0;        
+    QUARTER((min, max, barColor) -> {     
         return GaugeBuilder.create()
                 .skinType(Gauge.SkinType.QUARTER)
+                .minValue(min)
+                .maxValue(max)                 
                 .prefSize(150.0, 150.0)
                 .autoScale(false)   
-                .decimals(1)
-                .animated(false)
-                .minValue(min)
-                .maxValue(max)                
+                .animated(false)               
                 .build();        
     }),
     LCD((min, max, barColor) -> {
@@ -290,7 +267,6 @@ public enum GaugeType {
                 .prefSize(150.0, 150.0)
                 .autoScale(false)
                 .barColor(barColor)
-                .decimals(1)
                 .animated(false)               
                 .build();        
     }),
@@ -302,7 +278,6 @@ public enum GaugeType {
                 .prefSize(150.0, 150.0)
                 .autoScale(false)
                 .barColor(barColor)
-                .decimals(1)
                 .animated(false)               
                 .build();        
     }),
@@ -314,7 +289,6 @@ public enum GaugeType {
                 .prefSize(150.0, 150.0)
                 .autoScale(false)
                 .barColor(barColor)
-                .decimals(1)
                 .animated(false)               
                 .build();            
     });
