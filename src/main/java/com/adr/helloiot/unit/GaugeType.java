@@ -130,7 +130,7 @@ public enum GaugeType {
                 .prefSize(100.0, 100.0)
                 .autoScale(false)
                 .barColor(barColor)
-                .animated(false)               
+                .animated(false)       
                 .build();
     }),
     WHITE((min, max, barColor) -> {
@@ -141,6 +141,7 @@ public enum GaugeType {
                 .prefSize(150.0, 150.0)
                 .autoScale(false)
                 .barColor(barColor)
+                .backgroundPaint(Color.DARKGRAY)
                 .animated(false)
                 .build();
     }),
@@ -179,7 +180,7 @@ public enum GaugeType {
                         new Section(min + fith, min + fith * 2, barColor.deriveColor(10.0, 1.0, 1.0, 1.0)),
                         new Section(min + fith * 2, min + fith * 3, barColor.deriveColor(0.0, 1.0, 1.0, 1.0)),
                         new Section(min + fith * 3, min + fith * 4, barColor.deriveColor(-10.0, 1.0, 1.0, 1.0)),
-                        new Section(min + fith * 4, max, barColor.deriveColor(-20.0, 1.0, 1.0, 1.0)))                
+                        new Section(min + fith * 4, max, barColor.deriveColor(-20.0, 1.0, 1.0, 1.0)))                              
                 .animated(false)               
                 .build();
     }),
@@ -232,6 +233,7 @@ public enum GaugeType {
                 .skinType(Gauge.SkinType.KPI)
                 .minValue(min)
                 .maxValue(max)
+                .threshold(max)
                 .prefSize(150.0, 150.0)
                 .autoScale(false)
                 .barColor(barColor)
@@ -275,6 +277,7 @@ public enum GaugeType {
                 .skinType(Gauge.SkinType.SECTION)
                 .minValue(min)
                 .maxValue(max)
+                .threshold(max)
                 .prefSize(150.0, 150.0)
                 .autoScale(false)
                 .barColor(barColor)
