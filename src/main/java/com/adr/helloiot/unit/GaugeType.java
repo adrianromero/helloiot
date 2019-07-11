@@ -153,6 +153,7 @@ public enum GaugeType {
                 .prefSize(150.0, 150.0)
                 .autoScale(false)
                 .barColor(barColor)
+                // .needleColor(Color.RED)
                 .animated(false)
                 .build();
     }),
@@ -225,6 +226,7 @@ public enum GaugeType {
                 .prefSize(150.0, 150.0)
                 .autoScale(false)
                 .barColor(barColor)
+                .ledVisible(false)
                 .animated(false)               
                 .build();        
     }),
@@ -233,10 +235,11 @@ public enum GaugeType {
                 .skinType(Gauge.SkinType.KPI)
                 .minValue(min)
                 .maxValue(max)
-                .threshold(max)
+                .threshold(max)               
                 .prefSize(150.0, 150.0)
                 .autoScale(false)
                 .barColor(barColor)
+                // .needleColor(Color.RED)
                 .animated(false)               
                 .build();        
     }),
@@ -273,15 +276,21 @@ public enum GaugeType {
                 .build();        
     }),
     SECTION((min, max, barColor) -> {
-         return GaugeBuilder.create()
+        double fith = (max - min) / 5.0;
+        return GaugeBuilder.create()
                 .skinType(Gauge.SkinType.SECTION)
                 .minValue(min)
                 .maxValue(max)
                 .threshold(max)
                 .prefSize(150.0, 150.0)
-                .autoScale(false)
+                .autoScale(false)                 
                 .barColor(barColor)
-                .animated(false)               
+                .animated(false)     
+                .sections(new Section(min, min + fith, barColor.deriveColor(20.0, 1.0, 1.0, 1.0)),
+                        new Section(min + fith, min + fith * 2, barColor.deriveColor(10.0, 1.0, 1.0, 1.0)),
+                        new Section(min + fith * 2, min + fith * 3, barColor.deriveColor(0.0, 1.0, 1.0, 1.0)),
+                        new Section(min + fith * 3, min + fith * 4, barColor.deriveColor(-10.0, 1.0, 1.0, 1.0)),
+                        new Section(min + fith * 4, max, barColor.deriveColor(-20.0, 1.0, 1.0, 1.0)))    
                 .build();        
     }),
     SIMPLE_SECTION((min, max, barColor) -> {
