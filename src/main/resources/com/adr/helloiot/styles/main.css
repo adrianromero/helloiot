@@ -751,8 +751,8 @@ foco 508cfb */
 
 /* Charts */
 
-.unitchartlegend {
-    -fx-font-family: 'Source Code Pro Regular';
+.chartlegend {
+    -fx-font-family: 'Source Sans Pro Regular';
     -fx-font-size: 14px;   
     -fx-text-fill: -fx-level-fill;  
 }

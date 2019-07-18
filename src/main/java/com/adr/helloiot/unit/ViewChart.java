@@ -73,7 +73,7 @@ public class ViewChart extends Tile {
             
             Label legend = new Label(serie.getLabel());
             legend.getStyleClass().addAll("chartlegend", serie.getStyleClass() + "-legend");
-            legend.setGraphic(IconBuilder.create(IconFontGlyph.FA_SOLID_CIRCLE, 14.0)
+            legend.setGraphic(IconBuilder.create(IconFontGlyph.FA_SOLID_CIRCLE, 10.0)
                     .styleClass(serie.getStyleClass() + "-line")
                     .styleClass(serie.getStyleClass() + "-fill")
                     .build());

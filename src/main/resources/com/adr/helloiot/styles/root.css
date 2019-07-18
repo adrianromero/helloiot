@@ -189,7 +189,7 @@
 
 .unitchartlegend {
     -fx-padding: 10 10 10 10;
-    -fx-spacing: 10;
+    -fx-spacing: 2;
 }
 
 .unitchartserie-line {
