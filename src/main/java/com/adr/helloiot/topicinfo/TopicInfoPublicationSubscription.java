@@ -105,7 +105,6 @@ public abstract class TopicInfoPublicationSubscription implements TopicInfo {
         editnode.edittopicpub.setText(topicpub);
         editnode.editformat.getSelectionModel().select(format);
         editnode.editjsonpath.setText(jsonpath);
-        editnode.editjsonpath.setDisable("BASE64".equals(format) || "HEX".equals(format) || "SWITCH".equals(format));
         editnode.editmultiline.setSelected(multiline);
         editnode.editcolor.setValue(color);
         editnode.editbackground.setValue(background);
@@ -121,10 +120,8 @@ public abstract class TopicInfoPublicationSubscription implements TopicInfo {
         format = editnode.editformat.getValue();
         if (EditNodeFormat.BASE64 == format || EditNodeFormat.HEX ==format) {
             jsonpath = null;
-            editnode.editjsonpath.setDisable(true);
         } else {
             jsonpath = editnode.editjsonpath.getText();
-            editnode.editjsonpath.setDisable(false);
         }
         multiline = editnode.editmultiline.isSelected();
         color = editnode.editcolor.getValue();

@@ -77,6 +77,8 @@ public class TopicInfoEditNode implements TopicInfoNode {
     @FXML
     public ChoiceBox<Boolean> editretained;
     @FXML
+    public Label labeljsonpath;
+    @FXML
     public TextField editjsonpath;
     @FXML
     public CheckBox editmultiline; 
@@ -133,6 +135,8 @@ public class TopicInfoEditNode implements TopicInfoNode {
         });
         editformat.valueProperty().addListener((ObservableValue<? extends EditNodeFormat> ov, EditNodeFormat old_val, EditNodeFormat new_val) -> {
             updateCurrentTopic();
+            labeljsonpath.setDisable(EditNodeFormat.BASE64.equals(new_val) || EditNodeFormat.HEX.equals(new_val));
+            editjsonpath.setDisable(EditNodeFormat.BASE64.equals(new_val) || EditNodeFormat.HEX.equals(new_val));
         });
 
         editjsonpath.textProperty().addListener((ObservableValue<? extends String> ov, String old_val, String new_val) -> {
