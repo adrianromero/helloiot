@@ -37,13 +37,12 @@ public class TopicInfoSend extends TopicInfoPublicationSubscription {
     @Override
     public DevicesUnits getDevicesUnits() throws HelloIoTException {
         
-        if (topic == null || topic.isEmpty()) {
+        if (topicpub == null || topicpub.isEmpty()) {
             ResourceBundle resources = ResourceBundle.getBundle("com/adr/helloiot/fxml/main");
             throw new HelloIoTException(resources.getString("exception.topicinfoedit"));
         }
         
         TransmitterSimple d = new TransmitterSimple();
-        d.setTopic(topic);
         d.setTopicPublish(topicpub);
         MQTTProperty.setQos(d, qos);
         MQTTProperty.setRetained(d, retained);

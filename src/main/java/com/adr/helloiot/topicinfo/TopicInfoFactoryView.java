@@ -50,6 +50,7 @@ public class TopicInfoFactoryView implements TopicInfoFactory {
     public TopicInfo create() {
         if (editnode == null) {
             editnode = new TopicInfoEditNode();
+            editnode.labeltopicpub.setDisable(true);
             editnode.edittopicpub.setDisable(true);
         }
         return new TopicInfoView(this, editnode);

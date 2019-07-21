@@ -44,7 +44,6 @@ public class TopicInfoView extends TopicInfoPublicationSubscription {
         
         DeviceStatus d = new DeviceStatus();
         d.setTopic(topic);
-        d.setTopicPublish(topicpub);
         MQTTProperty.setQos(d, qos);
         MQTTProperty.setRetained(d, retained);
         d.setFormat(createFormat());

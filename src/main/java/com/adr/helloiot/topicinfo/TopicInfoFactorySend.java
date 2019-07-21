@@ -50,6 +50,8 @@ public class TopicInfoFactorySend implements TopicInfoFactory {
     public TopicInfo create() {
         if (editnode == null) {
             editnode = new TopicInfoEditNode();
+            editnode.labeltopic.setDisable(true);
+            editnode.edittopic.setDisable(true);            
         }
         return new TopicInfoSend(this, editnode);
     }

@@ -32,6 +32,7 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
@@ -52,9 +53,13 @@ public class TopicInfoEditNode implements TopicInfoNode {
     @FXML
     public TextField editname;    
     @FXML
-    public ComboBox<String> editpage;    
+    public ComboBox<String> editpage;   
+    @FXML
+    public Label labeltopic;    
     @FXML
     public TextField edittopic;
+    @FXML
+    public Label labeltopicpub;
     @FXML
     public TextField edittopicpub;
     @FXML
