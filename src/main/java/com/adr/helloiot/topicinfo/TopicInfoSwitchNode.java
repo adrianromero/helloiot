@@ -21,6 +21,7 @@ package com.adr.helloiot.topicinfo;
 import com.adr.fonticon.IconBuilder;
 import com.adr.fonticon.IconFontGlyph;
 import com.adr.helloiot.util.FXMLNames;
+import java.util.ResourceBundle;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -33,11 +34,14 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
+import javafx.util.StringConverter;
 
 public class TopicInfoSwitchNode implements TopicInfoNode {
     
     Runnable updatecurrent = null;
     
+    @FXML
+    private ResourceBundle resources;      
     @FXML
     private GridPane container;
     @FXML
@@ -54,6 +58,10 @@ public class TopicInfoSwitchNode implements TopicInfoNode {
     public TextField edittopic;
     @FXML
     public TextField edittopicpub;
+    @FXML
+    public ChoiceBox<Integer> editqos;
+    @FXML
+    public ChoiceBox<Boolean> editretained;    
     
     public TopicInfoSwitchNode() {
         FXMLNames.load(this, "com/adr/helloiot/fxml/topicinfoswitchnode");  
@@ -93,6 +101,40 @@ public class TopicInfoSwitchNode implements TopicInfoNode {
         editcolor.valueProperty().addListener((ObservableValue<? extends Color> observable, Color oldValue, Color newValue) -> {
             updateCurrent();
         });
+        
+        editqos.setConverter(new StringConverter<Integer>() {
+            @Override
+            public String toString(Integer object) {
+                return object.toString();
+            }
+
+            @Override
+            public Integer fromString(String string) {
+                return Integer.parseInt(string);
+            }
+        });
+        editqos.setItems(FXCollections.observableArrayList(0, 1, 2));
+        editqos.getSelectionModel().clearSelection();
+        editqos.valueProperty().addListener((ObservableValue<? extends Integer> ov, Integer old_val, Integer new_val) -> {
+            updateCurrent();
+        });
+
+        editretained.setConverter(new StringConverter<Boolean>() {
+            @Override
+            public String toString(Boolean object) {
+                return resources.getString(object ? "label.yes" : "label.no");
+            }
+
+            @Override
+            public Boolean fromString(String value) {
+                return Boolean.parseBoolean(value);
+            }
+        });
+        editretained.setItems(FXCollections.observableArrayList(false, true));
+        editretained.getSelectionModel().clearSelection();
+        editretained.valueProperty().addListener((ObservableValue<? extends Boolean> ov, Boolean old_val, Boolean new_val) -> {
+            updateCurrent();
+        });        
     }
     
     @Override

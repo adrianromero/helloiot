@@ -42,6 +42,8 @@ public class TopicInfoSwitch implements TopicInfo {
     private String topicpub = null;
     private String icon = "TOGGLE";
     private Color color;
+    protected int qos = 0;
+    protected boolean retained = true;    
 
     public TopicInfoSwitch(TopicInfoFactory factory, TopicInfoSwitchNode editnode) {
         this.factory = factory;
@@ -67,6 +69,8 @@ public class TopicInfoSwitch implements TopicInfo {
         icon = properties.getProperty(".icon", "TOGGLE");
         String c = properties.getProperty(".color", null);
         color = c == null ? null : Color.valueOf(c);
+        qos = Integer.parseInt(properties.getProperty(".qos", "0"));
+        retained = Boolean.parseBoolean(properties.getProperty(".retained", "true"));        
     }
         
     @Override
@@ -77,6 +81,8 @@ public class TopicInfoSwitch implements TopicInfo {
         properties.setProperty(".topicpub", topicpub);
         properties.setProperty(".icon", icon);
         properties.setProperty(".color", color == null ? null : color.toString());
+        properties.setProperty(".qos", Integer.toString(qos));
+        properties.setProperty(".retained", Boolean.toString(retained));              
     }
     
     @Override
@@ -84,8 +90,8 @@ public class TopicInfoSwitch implements TopicInfo {
         DeviceSwitch l = new DeviceSwitch();
         l.setTopic(topic);
         l.setTopicPublish(topicpub);
-        MQTTProperty.setQos(l, 0);
-        MQTTProperty.setRetained(l, false);
+        MQTTProperty.setQos(l, qos);
+        MQTTProperty.setRetained(l, retained);
 
         ButtonSimple s = new ButtonSimple();
         s.setText(getLabel().getValue());
@@ -114,6 +120,8 @@ public class TopicInfoSwitch implements TopicInfo {
         editnode.edittopicpub.setText(topicpub);
         editnode.editicon.setValue(icon);
         editnode.editcolor.setValue(color);
+        editnode.editqos.setValue(qos);
+        editnode.editretained.setValue(retained);          
     }
 
     @Override
@@ -124,6 +132,8 @@ public class TopicInfoSwitch implements TopicInfo {
         topicpub = editnode.edittopicpub.getText() == null || editnode.edittopicpub.getText().isEmpty() ? null : editnode.edittopicpub.getText();
         icon = editnode.editicon.getValue();
         color = editnode.editcolor.getValue();
+        qos = editnode.editqos.getValue();
+        retained = editnode.editretained.getValue();          
     }  
     
     private String webColor(Color color) {
