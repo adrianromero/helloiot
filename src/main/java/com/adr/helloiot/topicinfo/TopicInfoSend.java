@@ -51,7 +51,7 @@ public class TopicInfoSend extends TopicInfoPublicationSubscription {
         EditEvent u = multiline ? new EditAreaEvent() : new EditEvent();
         u.setPrefWidth(320.0);
         u.setLabel(getLabel().getValue());
-        u.setFooter(topic + getQOSBadge(qos));
+        u.setFooter(topicpub + getQOSBadge(qos));
         setStyle(u);
         u.setDevice(d);
         UnitPage.setPage(u, page);

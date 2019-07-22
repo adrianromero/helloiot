@@ -73,7 +73,7 @@ public abstract class TopicInfoPublicationSubscription implements TopicInfo {
         color = c == null ? null : Color.valueOf(c);
         c = properties.getProperty(".background", null);
         background = c == null ? null : Color.valueOf(c);    
-        qos = Integer.parseInt(properties.getProperty(".qos", ""));
+        qos = Integer.parseInt(properties.getProperty(".qos", "0"));
         retained = Boolean.parseBoolean(properties.getProperty(".retained", "false"));
    }
     

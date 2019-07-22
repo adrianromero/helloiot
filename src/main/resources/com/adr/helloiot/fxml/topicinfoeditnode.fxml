@@ -42,10 +42,10 @@
       <TextField fx:id="edittopic" styleClass="unitinput" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="2" />
       <Label fx:id="labeltopicpub" styleClass="unitlabel" text="%label.topicpub" GridPane.rowIndex="3" />
       <TextField fx:id="edittopicpub" styleClass="unitinput" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="3" />
-      <Label fx:id="labeljsonpath" styleClass="unitlabel" text="%label.jsonpath" GridPane.rowIndex="4" />
-      <TextField fx:id="editjsonpath" styleClass="unitinput" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-      <Label styleClass="unitlabel" text="%label.format" GridPane.rowIndex="5" />
-      <ChoiceBox fx:id="editformat" maxWidth="1.7976931348623157E308" styleClass="unitinput" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+      <Label styleClass="unitlabel" text="%label.format" GridPane.rowIndex="4" />
+      <ChoiceBox fx:id="editformat" maxWidth="1.7976931348623157E308" styleClass="unitinput" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+      <Label fx:id="labeljsonpath" styleClass="unitlabel" text="%label.jsonpath" GridPane.rowIndex="5" />
+      <TextField fx:id="editjsonpath" styleClass="unitinput" GridPane.columnIndex="1" GridPane.rowIndex="5" />
       <Label styleClass="unitlabel" text="%label.color" GridPane.rowIndex="6" />
       <ColorPicker fx:id="editcolor" maxWidth="1.7976931348623157E308" styleClass="unitinput" GridPane.columnIndex="1" GridPane.rowIndex="6" />
       <Button fx:id="clearcolor" mnemonicParsing="false" onAction="#onClearColor" styleClass="unitbutton" GridPane.columnIndex="2" GridPane.rowIndex="6" />

@@ -162,11 +162,7 @@ public class TopicInfoEditNode implements TopicInfoNode {
         editqos.setConverter(new StringConverter<Integer>() {
             @Override
             public String toString(Integer object) {
-                if (object < 0) {
-                    return resources.getString("label.default");
-                } else {
-                    return object.toString();
-                }
+                return object.toString();
             }
 
             @Override

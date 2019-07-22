@@ -46,14 +46,14 @@
       <TextField fx:id="editname" styleClass="unitinput" GridPane.rowIndex="1" />       
       <Label styleClass="unitlabel" text="%label.page" GridPane.rowIndex="2" />
       <ComboBox fx:id="editpage" editable="true" maxWidth="1.7976931348623157E308" styleClass="unitcombobox" GridPane.rowIndex="3" />
-      <Label styleClass="unitlabel" text="%label.topic" GridPane.rowIndex="4" />
+      <Label fx:id="labeltopic" styleClass="unitlabel" text="%label.topic" GridPane.rowIndex="4" />
       <TextField fx:id="edittopic" styleClass="unitinput" GridPane.rowIndex="5" />
-      <Label styleClass="unitlabel" text="%label.topicpub" GridPane.rowIndex="6" />
+      <Label fx:id="labeltopicpub" styleClass="unitlabel" text="%label.topicpub" GridPane.rowIndex="6" />
       <TextField fx:id="edittopicpub" styleClass="unitinput" GridPane.rowIndex="7" />
-      <Label styleClass="unitlabel" text="%label.jsonpath" GridPane.rowIndex="8" />
-      <TextField fx:id="editjsonpath" styleClass="unitinput" GridPane.rowIndex="9" />
-      <Label styleClass="unitlabel" text="%label.format" GridPane.rowIndex="10" />
-      <ChoiceBox fx:id="editformat" maxWidth="1.7976931348623157E308" styleClass="unitinput" GridPane.rowIndex="11" />
+      <Label styleClass="unitlabel" text="%label.format" GridPane.rowIndex="8" />
+      <ChoiceBox fx:id="editformat" maxWidth="1.7976931348623157E308" styleClass="unitinput" GridPane.rowIndex="9" />
+      <Label styleClass="unitlabel" text="%label.jsonpath" GridPane.rowIndex="10" />
+      <TextField fx:id="editjsonpath" styleClass="unitinput" GridPane.rowIndex="11" />
       <Label styleClass="unitlabel" text="%label.color" GridPane.rowIndex="12" />
       <HBox alignment="CENTER_LEFT" spacing="10.0" GridPane.rowIndex="13">
          <children>
