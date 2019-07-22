@@ -45,7 +45,7 @@ public class ViewGauge extends Tile {
     private Gauge gauge = null;
     private GaugeType type = GaugeType.DASHBOARD;
     
-    private final StyleableObjectProperty<Color> valueColor = new SimpleStyleableObjectProperty<>(VALUECOLOR, this, "value-color");
+    private final StyleableObjectProperty<Color> valueColor = new SimpleStyleableObjectProperty<>(VALUECOLOR, this, "-fx-value-color");
     private Color barColor = Color.web("#29b1ff"); // blue cyan
     private int decimals = 2;
     private String title = "";
@@ -133,17 +133,17 @@ public class ViewGauge extends Tile {
     @Override
     public void construct(IoTApp app) {
         super.construct(app);
-        
         gauge = type.build(device.getLevelMin(), device.getLevelMax(), barColor);
+        
         gauge.titleColorProperty().bind(valueColor);
         gauge.subTitleColorProperty().bind(valueColor);
         gauge.unitColorProperty().bind(valueColor);
         gauge.valueColorProperty().bind(valueColor);
-        gauge.tickLabelColorProperty().bind(valueColor);
-        
+        gauge.setTickLabelColor(Color.DARKGRAY);
+         
         gauge.setFocusTraversable(false);
         
-        gauge.setDecimals(2);
+        gauge.setDecimals(decimals);
         gauge.setTitle(title);
         gauge.setSubTitle(subtitle);
         gauge.setUnit(unit);        
