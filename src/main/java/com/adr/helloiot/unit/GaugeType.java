@@ -28,6 +28,27 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.Stop;
 
 public enum GaugeType {
+    SIMPLE_SECTION((min, max, barColor) -> {
+        return GaugeBuilder.create()
+                .skinType(Gauge.SkinType.SIMPLE_SECTION)
+                .minValue(min)
+                .maxValue(max)
+                .prefSize(150.0, 150.0)
+                .autoScale(false)
+                .sections(new Section(min, max, barColor))    
+                .animated(false)               
+                .build();            
+    }),    
+    FLAT((min, max, barColor) -> {
+        return GaugeBuilder.create()
+                .skinType(Gauge.SkinType.FLAT)
+                .minValue(min)
+                .maxValue(max)
+                .prefSize(150.0, 150.0)
+                .autoScale(false)
+                .barColor(barColor)
+                .build();
+    }),    
     BASIC((min, max, barColor) -> {
         double fith = (max - min) / 5.0;
         return GaugeBuilder.create()
@@ -58,16 +79,6 @@ public enum GaugeType {
                 .titleColor(Color.BLACK)
                 .threshold(max)
                 .prefSize(150.0, 150.0)                
-                .autoScale(false)
-                .barColor(barColor)
-                .build();
-    }),
-    FLAT((min, max, barColor) -> {
-        return GaugeBuilder.create()
-                .skinType(Gauge.SkinType.FLAT)
-                .minValue(min)
-                .maxValue(max)
-                .prefSize(150.0, 150.0)
                 .autoScale(false)
                 .barColor(barColor)
                 .build();
@@ -122,17 +133,17 @@ public enum GaugeType {
                 .barColor(barColor)
                 .build();
     }),
-    BAR((min, max, barColor) -> {
-        return GaugeBuilder.create()
-                .skinType(Gauge.SkinType.BAR)     
-                .minValue(min)
-                .maxValue(max)                 
-                .prefSize(100.0, 100.0)
-                .autoScale(false)
-                .barColor(barColor)
-                .animated(false)       
-                .build();
-    }),
+//    BAR((min, max, barColor) -> {
+//        return GaugeBuilder.create()
+//                .skinType(Gauge.SkinType.BAR)     
+//                .minValue(min)
+//                .maxValue(max)                 
+//                .prefSize(100.0, 100.0)
+//                .autoScale(false)
+//                .barColor(barColor)
+//                .animated(false)       
+//                .build();
+//    }),
     WHITE((min, max, barColor) -> {
         return GaugeBuilder.create()
                 .skinType(Gauge.SkinType.WHITE)
@@ -157,17 +168,17 @@ public enum GaugeType {
                 .animated(false)
                 .build();
     }),
-    LEVEL((min, max, barColor) -> {
-        return GaugeBuilder.create()
-                .skinType(Gauge.SkinType.LEVEL)
-                .minValue(min)
-                .maxValue(max)
-                .prefSize(150.0, 150.0)
-                .autoScale(false)
-                .barColor(barColor)
-                .animated(false)
-                .build();
-    }),
+//    LEVEL((min, max, barColor) -> {
+//        return GaugeBuilder.create()
+//                .skinType(Gauge.SkinType.LEVEL)
+//                .minValue(min)
+//                .maxValue(max)
+//                .prefSize(150.0, 150.0)
+//                .autoScale(false)
+//                .barColor(barColor)
+//                .animated(false)
+//                .build();
+//    }),
     TINY((min, max, barColor) -> {
         double fith = (max - min) / 5.0;
         return GaugeBuilder.create()
@@ -185,28 +196,28 @@ public enum GaugeType {
                 .animated(false)               
                 .build();
     }),
-    BULLET((min, max, barColor) -> {
-        return GaugeBuilder.create()
-                .skinType(Gauge.SkinType.BULLET_CHART)
-                .minValue(min)
-                .maxValue(max)
-                .prefSize(150.0, 150.0)
-                .autoScale(false)
-                .barColor(barColor)
-                .animated(false)               
-                .build();        
-    }),
-    DIGITAL((min, max, barColor) -> {
-        return GaugeBuilder.create()
-                .skinType(Gauge.SkinType.DIGITAL)
-                .minValue(min)
-                .maxValue(max)
-                .prefSize(150.0, 150.0)
-                .autoScale(false)
-                .barColor(barColor)
-                .animated(false)               
-                .build();        
-    }),
+//    BULLET((min, max, barColor) -> {
+//        return GaugeBuilder.create()
+//                .skinType(Gauge.SkinType.BULLET_CHART)
+//                .minValue(min)
+//                .maxValue(max)
+//                .prefSize(150.0, 150.0)
+//                .autoScale(false)
+//                .barColor(barColor)
+//                .animated(false)               
+//                .build();        
+//    }),
+//    DIGITAL((min, max, barColor) -> {
+//        return GaugeBuilder.create()
+//                .skinType(Gauge.SkinType.DIGITAL)
+//                .minValue(min)
+//                .maxValue(max)
+//                .prefSize(150.0, 150.0)
+//                .autoScale(false)
+//                .barColor(barColor)
+//                .animated(false)               
+//                .build();        
+//    }),
     SLIM((min, max, barColor) -> {
         return GaugeBuilder.create()
                 .skinType(Gauge.SkinType.SLIM)
@@ -264,17 +275,17 @@ public enum GaugeType {
                 .animated(false)               
                 .build();        
     }),
-    LCD((min, max, barColor) -> {
-        return GaugeBuilder.create()
-                .skinType(Gauge.SkinType.LCD)
-                .minValue(min)
-                .maxValue(max)
-                .prefSize(150.0, 150.0)
-                .autoScale(false)
-                .barColor(barColor)
-                .animated(false)               
-                .build();        
-    }),
+//    LCD((min, max, barColor) -> {
+//        return GaugeBuilder.create()
+//                .skinType(Gauge.SkinType.LCD)
+//                .minValue(min)
+//                .maxValue(max)
+//                .prefSize(150.0, 150.0)
+//                .autoScale(false)
+//                .barColor(barColor)
+//                .animated(false)               
+//                .build();        
+//    }),
     SECTION((min, max, barColor) -> {
         double fith = (max - min) / 5.0;
         return GaugeBuilder.create()
@@ -292,17 +303,6 @@ public enum GaugeType {
                         new Section(min + fith * 3, min + fith * 4, barColor.deriveColor(-10.0, 1.0, 1.0, 1.0)),
                         new Section(min + fith * 4, max, barColor.deriveColor(-20.0, 1.0, 1.0, 1.0)))    
                 .build();        
-    }),
-    SIMPLE_SECTION((min, max, barColor) -> {
-        return GaugeBuilder.create()
-                .skinType(Gauge.SkinType.SIMPLE_SECTION)
-                .minValue(min)
-                .maxValue(max)
-                .prefSize(150.0, 150.0)
-                .autoScale(false)
-                .barColor(barColor)
-                .animated(false)               
-                .build();            
     });
 
     private final GaugeSupplier builder;
