@@ -91,7 +91,11 @@
 
 .unitinputview {
     -fx-font-family: 'Source Sans Pro Bold';
-    -fx-font-size: 14px;    
+    -fx-font-size: 36px;    
+}
+
+.editviewsmall .unitinputview {
+    -fx-font-size: 24px;
 }
 
 .comboinput {
