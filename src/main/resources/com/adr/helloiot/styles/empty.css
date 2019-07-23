@@ -30,6 +30,7 @@
     
     
     -fx-info-fill: -fx-text-base-color;
+    -fx-level-fill: -fx-text-base-color;       
 }
 
 .unitmaintext, .unitinputview {

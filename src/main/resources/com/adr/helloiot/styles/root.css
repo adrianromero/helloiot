@@ -114,6 +114,10 @@
     -fx-background-color: transparent;
 }
 
+.unitinputicon {
+    -fx-fill: -fx-level-fill;
+}
+
 .unitfooter {
     -fx-padding: 4px 0px 0px 0px;
     -fx-alignment: top-right;
