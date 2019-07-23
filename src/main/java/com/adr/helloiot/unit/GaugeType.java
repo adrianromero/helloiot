@@ -90,17 +90,12 @@ public enum GaugeType {
                 .maxValue(max)
                 .prefSize(150.0, 150.0)                
                 .autoScale(false)
-                .barColor(Color.CRIMSON)
-                .valueColor(Color.BLACK)
-                .titleColor(Color.BLACK)
-                .unitColor(Color.BLACK)
-                .shadowsEnabled(true)
                 .gradientBarEnabled(true)
-                .gradientBarStops(new Stop(0.00, Color.BLUE),
-                        new Stop(0.25, Color.CYAN),
-                        new Stop(0.50, Color.LIME),
-                        new Stop(0.75, Color.YELLOW),
-                        new Stop(1.00, Color.RED))
+                .gradientBarStops(new Stop(0.00, barColor.deriveColor(20.0, 1.0, 1.0, 1.0)),
+                        new Stop(0.25, barColor.deriveColor(10.0, 1.0, 1.0, 1.0)),
+                        new Stop(0.50, barColor.deriveColor(0.0, 1.0, 1.0, 1.0)),
+                        new Stop(0.75, barColor.deriveColor(-10.0, 1.0, 1.0, 1.0)),
+                        new Stop(1.00, barColor.deriveColor(-20.0, 1.0, 1.0, 1.0)))
                 .build();
     }),
     SIMPLE((min, max, barColor) -> {
