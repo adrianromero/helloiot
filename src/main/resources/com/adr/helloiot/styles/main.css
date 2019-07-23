@@ -187,6 +187,10 @@ foco 508cfb */
     -fx-background-color: #497ccb, -fx-background-unit;
 }
 
+.unittabpane:focused > .tab-header-area > .headers-region > .tab:selected {
+    -fx-background-insets: 0 0 0 0, 0 0 1 0, 0 0 7 0, 1 1 8 1;
+    -fx-background-color: #497ccb, -fx-background-unit, -fx-buttonarmed-fill, -fx-background-unit;
+}
 
 .unittabpane > .tab-header-area > .headers-region > .tab  > focus-indicator {
     -fx-border-width: 0;
