@@ -22,6 +22,7 @@ import com.adr.helloiot.topicinfo.TopicInfo;
 import com.adr.helloiot.topicinfo.TopicInfoFactory;
 import com.adr.helloiot.topicinfo.TopicInfoFactoryCode;
 import com.adr.helloiot.topicinfo.TopicInfoFactoryEdit;
+import com.adr.helloiot.topicinfo.TopicInfoFactoryGauge;
 import com.adr.helloiot.topicinfo.TopicInfoFactoryMessagesPublish;
 import com.adr.helloiot.topicinfo.TopicInfoFactoryMessagesSubscribe;
 import com.adr.helloiot.topicinfo.TopicInfoFactorySend;
@@ -45,6 +46,7 @@ public class TopicInfoBuilder {
         put(new TopicInfoFactoryMessagesPublish());
         put(new TopicInfoFactoryMessagesSubscribe());
         put(new TopicInfoFactoryCode());
+        put(new TopicInfoFactoryGauge());
     }
     
     private void put(TopicInfoFactory factory) {
