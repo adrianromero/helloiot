@@ -52,7 +52,11 @@ public class StringFormatLong extends StringFormatPath {
         if (value == null || value.isEmpty()) {
             return MiniVarLong.NULL;
         } else {
-            return new MiniVarLong(Long.parseLong(value));
+            try {
+                return new MiniVarLong(Long.parseLong(value));
+            } catch (NumberFormatException ex) {
+                return MiniVarLong.NULL;
+            }
         }
     }
 

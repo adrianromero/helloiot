@@ -94,7 +94,11 @@ public class StringFormatDecimal extends StringFormatPath {
         if (value == null || value.isEmpty()) {
             return MiniVarDouble.NULL;
         } else {
-            return new MiniVarDouble(Double.parseDouble(value));
+            try {
+                return new MiniVarDouble(Double.parseDouble(value));
+            } catch (NumberFormatException ex) {
+                return MiniVarDouble.NULL;
+            }
         }
     }
 

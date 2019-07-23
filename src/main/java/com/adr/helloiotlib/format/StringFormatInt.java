@@ -52,7 +52,11 @@ public class StringFormatInt extends StringFormatPath {
         if (value == null || value.isEmpty()) {
             return MiniVarInt.NULL;
         } else {
-            return new MiniVarInt(Integer.parseInt(value));
+            try {
+                return new MiniVarInt(Integer.parseInt(value));
+            } catch(NumberFormatException ex) {
+                return MiniVarInt.NULL;
+            }
         }
     }
 
