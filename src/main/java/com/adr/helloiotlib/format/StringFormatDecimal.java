@@ -97,6 +97,7 @@ public class StringFormatDecimal extends StringFormatPath {
             try {
                 return new MiniVarDouble(Double.parseDouble(value));
             } catch (NumberFormatException ex) {
+                logger.warning(() -> "Cannot parse Double: " + value);
                 return MiniVarDouble.NULL;
             }
         }

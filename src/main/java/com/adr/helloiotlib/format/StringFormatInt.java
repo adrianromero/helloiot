@@ -55,6 +55,7 @@ public class StringFormatInt extends StringFormatPath {
             try {
                 return new MiniVarInt(Integer.parseInt(value));
             } catch(NumberFormatException ex) {
+                logger.warning(() -> "Cannot parse Int: " + value);
                 return MiniVarInt.NULL;
             }
         }

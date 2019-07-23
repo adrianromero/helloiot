@@ -55,6 +55,7 @@ public class StringFormatLong extends StringFormatPath {
             try {
                 return new MiniVarLong(Long.parseLong(value));
             } catch (NumberFormatException ex) {
+                logger.warning(() -> "Cannot parse Long: " + value);
                 return MiniVarLong.NULL;
             }
         }
