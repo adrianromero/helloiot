@@ -43,7 +43,6 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
-import javafx.scene.control.RadioButton;
 import javafx.scene.control.Separator;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.Toggle;
@@ -75,13 +74,13 @@ public class MessagesPage extends BorderPane implements Unit {
     private Label title;
     private Separator titlesep;
     private Button deletemessages;
-    private ToggleButton playpause;
-    private ToggleButton showdetails;
+    private Button playpause;
+    private boolean isplay;
     private ToggleGroup formatsgroup;
-    private RadioButton formatplain;
-    private RadioButton formatjson;
-    private RadioButton formathex;
-    private RadioButton formatbase64;
+    private ToggleButton formatplain;
+    private ToggleButton formatjson;
+    private ToggleButton formathex;
+    private ToggleButton formatbase64;
     
     private DeviceSubscribe device = null;
     private final Object messageHandler = Units.messageHandler(this::updateStatus);
@@ -89,8 +88,6 @@ public class MessagesPage extends BorderPane implements Unit {
     public MessagesPage() {
         resources = ResourceBundle.getBundle("com/adr/helloiot/fxml/messages");
         load();
-        
-        formatplain.setSelected(true);
     }
 
     private void load() {
@@ -104,24 +101,20 @@ public class MessagesPage extends BorderPane implements Unit {
         titlesep.setOrientation(Orientation.VERTICAL);
         titlesep.setFocusTraversable(false);
 
-        playpause = new ToggleButton();
+        isplay = true;
+        playpause = new Button();
         playpause.setMnemonicParsing(false);
         playpause.setFocusTraversable(false);
-        playpause.getStyleClass().add("unittogglebutton");
-        playpause.setGraphic(IconBuilder.create(IconFontGlyph.FA_SOLID_PLAY, 18.0).styleClass("icon-fill").build());
-        playpause.setSelected(true);
-        playpause.selectedProperty().addListener((ObservableValue<? extends Boolean> ov, Boolean old_val, Boolean new_val) -> {
-            playpause.setGraphic(IconBuilder.create(new_val ? IconFontGlyph.FA_SOLID_PLAY : IconFontGlyph.FA_SOLID_PAUSE, 18.0).styleClass("icon-fill").build());
-        });        
+        playpause.getStyleClass().add("unitbutton");
+        playpause.setGraphic(IconBuilder.create(IconFontGlyph.FA_SOLID_PAUSE, 18.0).styleClass("icon-fill").build());
+        playpause.setOnAction(this::actionPlayPause);      
         
-        showdetails = new ToggleButton(resources.getString("label.details"));
-        showdetails.setMnemonicParsing(false);
-        showdetails.setFocusTraversable(false);
-        showdetails.getStyleClass().add("unittogglebutton");
-        showdetails.setGraphic(IconBuilder.create(IconFontGlyph.FA_SOLID_PLUS, 18.0).styleClass("icon-fill").build());
-        showdetails.selectedProperty().addListener((ObservableValue<? extends Boolean> ov, Boolean old_val, Boolean new_val) -> {
-            displayPayload(new_val);
-        });
+        deletemessages = new Button();
+        deletemessages.setMnemonicParsing(false);
+        deletemessages.setFocusTraversable(false);
+        deletemessages.getStyleClass().add("unitbutton");
+        deletemessages.setGraphic(IconBuilder.create(IconFontGlyph.FA_SOLID_TRASH_ALT, 18.0).styleClass("icon-fill").build());
+        deletemessages.setOnAction(this::actionDelete);
         
         Separator formatsep = new Separator();
         formatsep.setOrientation(Orientation.VERTICAL);
@@ -129,65 +122,45 @@ public class MessagesPage extends BorderPane implements Unit {
                 
         formatsgroup = new ToggleGroup();
         formatsgroup.selectedToggleProperty().addListener((ObservableValue<? extends Toggle> ov, Toggle old_val, Toggle new_val) -> {
-            printPayload();
+            printPayload(new_val);
         });
         
-        formatplain = new RadioButton(resources.getString("label.plain"));
+        formatplain = new ToggleButton(resources.getString("label.plain"));
         formatplain.setMnemonicParsing(false);
         formatplain.setFocusTraversable(false);
         formatplain.setToggleGroup(formatsgroup);
-        formatplain.getStyleClass().remove("radio-button");
-        formatplain.getStyleClass().addAll("toggle-button", "unittogglebutton");        
+        formatplain.getStyleClass().addAll("unittogglebutton");        
         formatplain.setUserData(StringFormatIdentity.INSTANCE);
-        formatplain.setDisable(true);
         
-        formatjson = new RadioButton(resources.getString("label.json"));
+        formatjson = new ToggleButton(resources.getString("label.json"));
         formatjson.setMnemonicParsing(false);
         formatjson.setFocusTraversable(false);
         formatjson.setToggleGroup(formatsgroup);
-        formatjson.getStyleClass().remove("radio-button");
-        formatjson.getStyleClass().addAll("toggle-button", "unittogglebutton");           
+        formatjson.getStyleClass().addAll("unittogglebutton");           
         formatjson.setUserData(StringFormatJSONPretty.INSTANCE);
-        formatjson.setDisable(true);
         
-        formathex = new RadioButton(resources.getString("label.hex"));
+        formathex = new ToggleButton(resources.getString("label.hex"));
         formathex.setMnemonicParsing(false);
         formathex.setFocusTraversable(false);
         formathex.setToggleGroup(formatsgroup);
-        formathex.getStyleClass().remove("radio-button");
-        formathex.getStyleClass().addAll("toggle-button", "unittogglebutton");        
+        formathex.getStyleClass().addAll("unittogglebutton");        
         formathex.setUserData(StringFormatHex.INSTANCE);        
-        formathex.setDisable(true);
         
-        formatbase64 = new RadioButton(resources.getString("label.base64"));
+        formatbase64 = new ToggleButton(resources.getString("label.base64"));
         formatbase64.setMnemonicParsing(false);
         formatbase64.setFocusTraversable(false);
         formatbase64.setToggleGroup(formatsgroup);
-        formatbase64.getStyleClass().remove("radio-button");
-        formatbase64.getStyleClass().addAll("toggle-button", "unittogglebutton");        
+        formatbase64.getStyleClass().addAll("unittogglebutton");        
         formatbase64.setUserData(StringFormatBase64.INSTANCE);        
-        formatbase64.setDisable(true);
-        
-        Separator trashsep = new Separator();
-        trashsep.setOrientation(Orientation.VERTICAL);
-        trashsep.setFocusTraversable(false);   
-
-        deletemessages = new Button();
-        deletemessages.setMnemonicParsing(false);
-        deletemessages.setFocusTraversable(false);
-        deletemessages.getStyleClass().add("unitbutton");
-        deletemessages.setGraphic(IconBuilder.create(IconFontGlyph.FA_SOLID_TRASH_ALT, 18.0).styleClass("icon-fill").build());
-        deletemessages.setOnAction(this::actionDelete);
 
         toolbar = new ToolBar();
         BorderPane.setAlignment(toolbar, Pos.CENTER);
-        toolbar.getStyleClass().add("messagestoolbar");
-        toolbar.getItems().addAll(playpause, showdetails, formatsep, formatplain, formatjson, formathex, formatbase64, trashsep, deletemessages);
+        toolbar.getStyleClass().add("unittoolbar");
+        toolbar.getItems().addAll(playpause, deletemessages, formatsep, formatplain, formatjson, formathex, formatbase64);
         setTop(toolbar);
 
         eventmessageslist = new ListView<>();
 
-        eventmessageslist.setFocusTraversable(false);
         eventmessageslist.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
         eventmessageslist.setCellFactory((ListView<EventMessage> list) -> new MessageCell());
         eventmessageslist.getSelectionModel().selectedItemProperty().addListener((ObservableValue<? extends EventMessage> ov, EventMessage old_val, EventMessage new_val) -> {
@@ -221,7 +194,7 @@ public class MessagesPage extends BorderPane implements Unit {
 
     private void updateStatus(EventMessage message) {
         
-        if (!playpause.isSelected()) {
+        if (!isplay) {
             return; // subscription paused
         }
 
@@ -277,15 +250,28 @@ public class MessagesPage extends BorderPane implements Unit {
             eventmessagesitems.clear();
         });     
     }
+    
+    private void actionPlayPause(ActionEvent ev) {
+        isplay = !isplay;
+        playpause.setGraphic(IconBuilder.create(isplay ? IconFontGlyph.FA_SOLID_PAUSE : IconFontGlyph.FA_SOLID_PLAY, 18.0).styleClass("icon-fill").build());
+    }
 
     private void selectPayload(EventMessage message) {
         currentmessage = message;
-        printPayload();      
+        printPayload(formatsgroup.getSelectedToggle());      
     }
     
-    private void printPayload() {
+    private void printPayload(Toggle t) {
         
-        if (currentmessage == null) {
+        Node n = getBottom();
+        if (n == null && t != null) {
+            setBottom(payloadcontainer);
+        } else if (n!= null && t == null) {
+            setBottom(null);
+        }
+        
+        
+        if (currentmessage == null || t == null) {
             topic.setText(null);
             topic.setVisible(false);
             payload.setText(null);
@@ -293,19 +279,10 @@ public class MessagesPage extends BorderPane implements Unit {
         } else {
             topic.setText(currentmessage.getTopic());
             topic.setVisible(true);
-
-            StringFormat format = (StringFormat) formatsgroup.getSelectedToggle().getUserData();
+            StringFormat format = (StringFormat) t.getUserData();
             String txt = format.format(format.value(currentmessage.getMessage()));
             payload.setText(txt); 
             payload.setVisible(true);
         }
-    }
-    
-    private void displayPayload(Boolean b) {
-        setBottom(b ? payloadcontainer : null); 
-        formatplain.setDisable(!b);
-        formatjson.setDisable(!b);
-        formathex.setDisable(!b);
-        formatbase64.setDisable(!b);      
     }
 }

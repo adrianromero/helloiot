@@ -735,10 +735,6 @@ foco 508cfb */
     -fx-font-family: 'Source Sans Pro Regular';   
 }
 
-.messagestoolbar {
-    -fx-background-color: -fx-background-container;
-}
-
 .messageview {
     -fx-font-family: 'Source Code Pro Regular';
     -fx-font-size: 14px;   
