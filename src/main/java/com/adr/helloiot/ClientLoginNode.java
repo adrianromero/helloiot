@@ -558,8 +558,6 @@ public class ClientLoginNode {
                 Style.changeStyle(MessageUtils.getRoot(rootpane), new_val);
             }
         });
-
-//      (host::requestFocus);
     }
 
     public Node getNode() {

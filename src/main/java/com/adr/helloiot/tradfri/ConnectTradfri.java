@@ -81,7 +81,12 @@ public class ConnectTradfri implements ConnectUI {
     public Node getNode() {
         return root;
     }   
-
+    
+    @Override
+    public void requestFocus() {
+        tradfrihost.requestFocus();
+    }
+    
     @Override
     public void loadConfig(SubProperties configprops) {
         tradfrihost.setText(configprops.getProperty("host", ""));

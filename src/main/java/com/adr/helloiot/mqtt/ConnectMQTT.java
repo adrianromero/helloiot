@@ -214,4 +214,9 @@ public class ConnectMQTT implements ConnectUI {
     public Node getNode() {
         return root;
     }
+    
+    @Override
+    public void requestFocus() {
+        host.requestFocus();
+    }
 }

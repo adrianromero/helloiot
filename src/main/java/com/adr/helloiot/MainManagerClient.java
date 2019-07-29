@@ -36,11 +36,14 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Application.Parameters;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.layout.StackPane;
+import javafx.util.Duration;
 
 public class MainManagerClient implements MainManager {
 
@@ -119,6 +122,17 @@ public class MainManagerClient implements MainManager {
                      
         HelloPlatform.getInstance().setProperty("window.status", Boolean.toString(false));
         HelloPlatform.getInstance().saveAppProperties();
+        
+        // Request Focus
+        for (int j = 0; j < bridgeconfigs.length; j++) {
+            if (connectuis[j] != null) {
+                int c = j;
+                new Timeline(new KeyFrame(Duration.millis(250.0), (ActionEvent event) -> {            
+                    connectuis[c].requestFocus();
+                })).play();
+                break;
+            }
+        }                     
     }
 
     private void hideLogin() {

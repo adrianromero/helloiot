@@ -24,4 +24,5 @@ public interface ConnectUI {
     public void loadConfig(SubProperties configprops);
     public void saveConfig(SubProperties configprops);
     public Node getNode();
+    public void requestFocus();
 }
