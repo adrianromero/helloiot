@@ -18,10 +18,7 @@ To run HelloIoT just download and uncompress the appropiate release file. The ex
 * [helloiot-1.1.020-win.zip](https://github.com/adrianromero/helloiot/releases/download/1.1.020/helloiot-1.1.020-win.zip) Windows
 * [helloiot-1.1.020-mac.zip](https://github.com/adrianromero/helloiot/releases/download/1.1.020/helloiot-1.1.020-mac.zip) MacOS
 * [helloiot-1.1.020-linux.zip](https://github.com/adrianromero/helloiot/releases/download/1.1.020/helloiot-1.1.020-linux.zip) Linux
-
-The Android runtime package for the latest version is on his way. In the mean time you can use the old version
-
-* [helloiot-1.0.32.apk](https://github.com/adrianromero/helloiot/releases/download/1.0.32/helloiot-1.0.32.apk) Android
+* [helloiot-1.1.020.apk](https://github.com/adrianromero/helloiot/releases/download/1.1.020/helloiot-1.1.020.apk) Android
 
 [![Installing HelloIoT](https://img.youtube.com/vi/RuxUUHpTbR0/0.jpg)](https://www.youtube.com/watch?v=RuxUUHpTbR0)
 

@@ -12,52 +12,52 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<GridPane fx:id="container" styleClass="unitform" hgap="10.0" vgap="10.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<GridPane fx:id="container" hgap="10.0" styleClass="unitform" vgap="10.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <columnConstraints>
       <ColumnConstraints minWidth="150.0" prefWidth="150.0" />
       <ColumnConstraints minWidth="10.0" prefWidth="200.0" />
       <ColumnConstraints minWidth="10.0" prefWidth="150.0" />
-      <ColumnConstraints hgrow="SOMETIMES"/>
+      <ColumnConstraints hgrow="SOMETIMES" />
    </columnConstraints>
    <rowConstraints>
-      <RowConstraints minHeight="10.0" prefHeight="30.0" />
-      <RowConstraints minHeight="10.0" prefHeight="30.0" />
-      <RowConstraints minHeight="10.0" prefHeight="30.0" />
-      <RowConstraints minHeight="10.0" prefHeight="30.0" />
-      <RowConstraints minHeight="10.0" prefHeight="30.0" />
-      <RowConstraints minHeight="10.0" prefHeight="30.0" />
-      <RowConstraints minHeight="10.0" prefHeight="30.0" />
-      <RowConstraints minHeight="10.0" prefHeight="30.0" />
-      <RowConstraints minHeight="10.0" prefHeight="30.0" />
+      <RowConstraints minHeight="30.0" prefHeight="30.0" />
+      <RowConstraints minHeight="30.0" prefHeight="30.0" />
+      <RowConstraints minHeight="30.0" prefHeight="30.0" />
+      <RowConstraints minHeight="30.0" prefHeight="30.0" />
+      <RowConstraints minHeight="30.0" prefHeight="30.0" />
+      <RowConstraints minHeight="30.0" prefHeight="30.0" />
+      <RowConstraints minHeight="30.0" prefHeight="30.0" />
+      <RowConstraints minHeight="30.0" prefHeight="30.0" />
+      <RowConstraints minHeight="30.0" prefHeight="30.0" />
       <RowConstraints />
-      <RowConstraints minHeight="10.0" prefHeight="30.0" />
-      <RowConstraints minHeight="10.0" prefHeight="30.0" />
+      <RowConstraints minHeight="30.0" prefHeight="30.0" />
+      <RowConstraints minHeight="30.0" prefHeight="30.0" />
    </rowConstraints>
    <children>
-      <Label text="%label.name" styleClass="unitlabel"/>
+      <Label styleClass="unitlabel" text="%label.name" />
       <TextField fx:id="editname" styleClass="unitinput" GridPane.columnIndex="1" GridPane.columnSpan="2" />
-      <Label text="%label.page" styleClass="unitlabel" GridPane.rowIndex="1" />
-      <ComboBox fx:id="editpage" styleClass="unitcombobox" editable="true" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="1" GridPane.columnSpan="2" />
-      <Label text="%label.topic" styleClass="unitlabel" GridPane.rowIndex="2" />
+      <Label styleClass="unitlabel" text="%label.page" GridPane.rowIndex="1" />
+      <ComboBox fx:id="editpage" editable="true" maxWidth="1.7976931348623157E308" styleClass="unitcombobox" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="1" />
+      <Label fx:id="labeltopic" styleClass="unitlabel" text="%label.topic" GridPane.rowIndex="2" />
       <TextField fx:id="edittopic" styleClass="unitinput" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="2" />
-      <Label text="%label.topicpub" styleClass="unitlabel" GridPane.rowIndex="3" />
+      <Label fx:id="labeltopicpub" styleClass="unitlabel" text="%label.topicpub" GridPane.rowIndex="3" />
       <TextField fx:id="edittopicpub" styleClass="unitinput" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="3" />
-      <Label text="%label.format" styleClass="unitlabel" GridPane.rowIndex="4" />
-      <ChoiceBox fx:id="editformat" styleClass="unitinput" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-      <Label text="%label.jsonpath" styleClass="unitlabel" GridPane.rowIndex="5" />
+      <Label styleClass="unitlabel" text="%label.format" GridPane.rowIndex="4" />
+      <ChoiceBox fx:id="editformat" maxWidth="1.7976931348623157E308" styleClass="unitinput" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+      <Label fx:id="labeljsonpath" styleClass="unitlabel" text="%label.jsonpath" GridPane.rowIndex="5" />
       <TextField fx:id="editjsonpath" styleClass="unitinput" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-      <Label text="%label.color" styleClass="unitlabel" GridPane.rowIndex="6" />
-      <ColorPicker fx:id="editcolor" styleClass="unitinput" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-      <Button fx:id="clearcolor" styleClass="unitbutton" mnemonicParsing="false" onAction="#onClearColor" GridPane.columnIndex="2" GridPane.rowIndex="6" />
-      <Label text="%label.background" styleClass="unitlabel" GridPane.rowIndex="7" />
-      <ColorPicker fx:id="editbackground" styleClass="unitinput" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="7" />
-      <Button fx:id="clearbackground" styleClass="unitbutton" mnemonicParsing="false" onAction="#onClearBackground" GridPane.columnIndex="2" GridPane.rowIndex="7" />
-      <CheckBox fx:id="editmultiline" styleClass="unitcheckbox" mnemonicParsing="false" text="%label.multiline" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+      <Label styleClass="unitlabel" text="%label.color" GridPane.rowIndex="6" />
+      <ColorPicker fx:id="editcolor" maxWidth="1.7976931348623157E308" styleClass="unitinput" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+      <Button fx:id="clearcolor" mnemonicParsing="false" onAction="#onClearColor" styleClass="unitbutton" GridPane.columnIndex="2" GridPane.rowIndex="6" />
+      <Label styleClass="unitlabel" text="%label.background" GridPane.rowIndex="7" />
+      <ColorPicker fx:id="editbackground" maxWidth="1.7976931348623157E308" styleClass="unitinput" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+      <Button fx:id="clearbackground" mnemonicParsing="false" onAction="#onClearBackground" styleClass="unitbutton" GridPane.columnIndex="2" GridPane.rowIndex="7" />
+      <CheckBox fx:id="editmultiline" mnemonicParsing="false" styleClass="unitcheckbox" text="%label.multiline" GridPane.columnIndex="1" GridPane.rowIndex="8" />
       <Label maxWidth="1.7976931348623157E308" styleClass="unitsection" text="%label.extendedproperties" GridPane.columnSpan="2147483647" GridPane.rowIndex="9" />
-      <Label text="%label.qos" styleClass="unitlabel" GridPane.rowIndex="10" />
-      <ChoiceBox fx:id="editqos" styleClass="unitinput" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="10" />
-      <Label text="%label.retained" styleClass="unitlabel" GridPane.rowIndex="11" />
-      <ChoiceBox fx:id="editretained" styleClass="unitinput" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="11" />
+      <Label styleClass="unitlabel" text="%label.qos" GridPane.rowIndex="10" />
+      <ChoiceBox fx:id="editqos" maxWidth="1.7976931348623157E308" styleClass="unitinput" GridPane.columnIndex="1" GridPane.rowIndex="10" />
+      <Label styleClass="unitlabel" text="%label.retained" GridPane.rowIndex="11" />
+      <ChoiceBox fx:id="editretained" maxWidth="1.7976931348623157E308" styleClass="unitinput" GridPane.columnIndex="1" GridPane.rowIndex="11" />
    </children>
    <padding>
       <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />

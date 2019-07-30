@@ -1,5 +1,5 @@
 //    HelloIoT is a dashboard creator for MQTT
-//    Copyright (C) 2017-2018 Adrián Romero Corchado.
+//    Copyright (C) 2019 Adrián Romero Corchado.
 //
 //    This file is part of HelloIot.
 //
@@ -16,33 +16,29 @@
 //    You should have received a copy of the GNU General Public License
 //    along with HelloIot.  If not, see <http://www.gnu.org/licenses/>.
 //
-
 package com.adr.helloiot.unit;
 
 import com.adr.helloiotlib.unit.Units;
 import com.adr.helloiot.device.DeviceNumber;
-import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.scene.chart.AreaChart;
 
+public class ChartSerie {
 
-/**
- *
- * @author adrian
- */
-public class ViewChartSerie {
+    public final static int SIZE = 60;
     
-    public final static int SIZE = 30;
-
     private String label = null;
+    private String styleClass = "unitchartserie";
     private DeviceNumber device = null;
     private final Object messageHandler = Units.messageHandler(this::updateStatus);      
-    private final ObservableList<AreaChart.Data<Number, Number>> data = FXCollections.observableArrayList();
+    private final List<Double> data = new LinkedList<>();
     
+    private ChartSerieListener listener = null;
+    
+    private boolean hasValues = false;
     private double current = 0.0;
     private double last = 0.0;
     private double currentcount = 0.0;
@@ -58,6 +54,10 @@ public class ViewChartSerie {
             setLabel(device.getProperties().getProperty("label"));
         }        
     }
+    
+    public void setListener(ChartSerieListener listener) {
+        this.listener = listener;
+    }
 
     public String getLabel() {
         return label;
@@ -66,18 +66,43 @@ public class ViewChartSerie {
     public void setLabel(String label) {
         this.label = label;
     }
+
+    public String getStyleClass() {
+        return styleClass;
+    }
+
+    public void setStyleClass(String styleClass) {
+        this.styleClass = styleClass;
+    }
+    
+    public List<Double> getData() {
+        return Collections.unmodifiableList(data);
+    }
+    
+    public double getMaxValue() {
+        return device.getLevelMax();
+    }
+    
+    public double getMinValue() {
+        return device.getLevelMin();
+    }
     
     public void construct() {
+        data.clear();
+        if (listener != null) {
+            listener.handleData();
+        }
+        
         device.subscribeStatus(messageHandler);
         // Do not update status all values come from messages
     }
 
     public void destroy() {
         device.unsubscribeStatus(messageHandler);
-    }
-    
-    public AreaChart.Series<Number, Number> createSerie() {
-        return new AreaChart.Series<>(label, data);
+        data.clear();
+        if (listener != null) {
+            listener.handleData();
+        }
     }
 
     private void updateStatus(byte[] status) {
@@ -99,34 +124,43 @@ public class ViewChartSerie {
                 currentcount += 1.0;
                 current = current * ((currentcount - 1.0) / currentcount) + last / currentcount;
             }
+            hasValues = true;
         } finally {
             currentlock.unlock();
         }
     }   
     
+    private double tickValue() {
+        double d = currentcount == 0.0 ? last : current;
+        currentcount = 0.0;
+        current = 0.0;        
+        return d;
+    }
+    
     public void tick() {
         
         currentlock.lock();
         try {
-            Number d = currentcount == 0.0 ? last : current;
-            currentcount = 0.0;
-            current = 0.0;
+            if (!hasValues) {
+                return;
+            }
             
-            // Prepare the array Construct a new 
+            double d = tickValue();
+
             if (data.isEmpty()) {
-                List<AreaChart.Data<Number, Number>> initial = new ArrayList<>();
-                for (int i = 0; i < SIZE + 1; i++) {
-                    initial.add(new AreaChart.Data<>(i, d));
-                }
-                data.addAll(initial);
-            } else {
                 for (int i = 0; i < SIZE; i++) {
-                    data.get(i).setYValue(data.get(i + 1).getYValue());
+                    data.add(d);
                 }
-                data.get(SIZE).setYValue(d);
+            } else {
+                data.add(d);
+                data.remove(0);
             }
         } finally {
             currentlock.unlock();
         }
+
+        if (listener != null) {
+            listener.handleData();
+        }      
     }
 }

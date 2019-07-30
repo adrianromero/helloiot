@@ -1,5 +1,5 @@
 //    HelloIoT is a dashboard creator for MQTT
-//    Copyright (C) 2018 Adrián Romero Corchado.
+//    Copyright (C) 2019 Adrián Romero Corchado.
 //
 //    This file is part of HelloIot.
 //
@@ -16,16 +16,32 @@
 //    You should have received a copy of the GNU General Public License
 //    along with HelloIot.  If not, see <http://www.gnu.org/licenses/>.
 //
-package com.adr.helloiot;
+package com.adr.helloiot.weather;
 
-import com.adr.helloiotlib.app.EventMessage;
+import com.adr.helloiot.Bridge;
+import com.adr.helloiot.ConnectUI;
+import com.adr.helloiot.ManagerProtocol;
+import com.adr.helloiot.SubProperties;
+import com.adr.helloiot.properties.VarProperties;
 
-/**
- *
- * @author adrian
- */
-@FunctionalInterface
-public interface GroupManagers {
-    
-    void distributeMessage(EventMessage message);
+public class BridgeTime implements Bridge  {
+
+    @Override
+    public ConnectUI createConnectUI() {
+        return null;
+    }
+
+    @Override
+    public boolean hasManager(VarProperties properties) {
+        return true;
+    }
+
+    @Override
+    public ManagerProtocol createManager(VarProperties properties) {
+        return new ManagerTime(properties);
+    }
+
+    @Override
+    public void readConfiguration(VarProperties config, SubProperties configprops) {
+    } 
 }

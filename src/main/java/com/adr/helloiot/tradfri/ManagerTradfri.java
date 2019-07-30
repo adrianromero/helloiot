@@ -23,7 +23,6 @@
 package com.adr.helloiot.tradfri;
 
 import com.adr.helloiotlib.app.EventMessage;
-import com.adr.helloiot.GroupManagers;
 import com.adr.helloiot.ManagerProtocol;
 import com.adr.helloiot.properties.VarProperties;
 import com.adr.helloiot.util.CompletableAsync;
@@ -74,8 +73,7 @@ public class ManagerTradfri implements ManagerProtocol {
 //    }
     
     // Manager
-    private GroupManagers group;
-    private Consumer<Throwable> lost;
+    private Consumer<EventMessage> consumer;
     // COAP
     private final String host;
     private final String coapIP;
@@ -102,9 +100,8 @@ public class ManagerTradfri implements ManagerProtocol {
     }
     
     @Override
-    public void registerTopicsManager(GroupManagers group, Consumer<Throwable> lost) {
-        this.group = group;
-        this.lost = lost;
+    public void registerTopicsManager(Consumer<EventMessage> consumer, Consumer<Throwable> lost) {
+        this.consumer = consumer;
     }
 
     @Override
@@ -334,21 +331,21 @@ public class ManagerTradfri implements ManagerProtocol {
                 return; // skip this lamp for now
             }
 
-            group.distributeMessage(new EventMessage("bulb/" + name + "/on", Integer.toString(light.get(TradfriConstants.ONOFF).getAsInt()).getBytes(StandardCharsets.UTF_8)));
+            consumer.accept(new EventMessage("bulb/" + name + "/on", Integer.toString(light.get(TradfriConstants.ONOFF).getAsInt()).getBytes(StandardCharsets.UTF_8)));
             jsonregistry.addProperty("type", "bulb");
             if (light.has(TradfriConstants.DIMMER)) {
-                group.distributeMessage(new EventMessage("bulb/" + name + "/dim", Integer.toString(light.get(TradfriConstants.DIMMER).getAsInt()).getBytes(StandardCharsets.UTF_8)));
+                consumer.accept(new EventMessage("bulb/" + name + "/dim", Integer.toString(light.get(TradfriConstants.DIMMER).getAsInt()).getBytes(StandardCharsets.UTF_8)));
             }
             jsonregistry.addProperty("dim", light.has(TradfriConstants.DIMMER));
             if (light.has(TradfriConstants.COLOR)) {
-                group.distributeMessage(new EventMessage("bulb/" + name + "/temperature", valueOfTemperature(light.get(TradfriConstants.COLOR).getAsString()).getBytes(StandardCharsets.UTF_8)));
+                consumer.accept(new EventMessage("bulb/" + name + "/temperature", valueOfTemperature(light.get(TradfriConstants.COLOR).getAsString()).getBytes(StandardCharsets.UTF_8)));
             }
             jsonregistry.addProperty("temperature", light.has(TradfriConstants.COLOR));
         } else if (json.has(TradfriConstants.HS_ACCESSORY_LINK)) { // groups have this entry
-            group.distributeMessage(new EventMessage("group/" + name + "/on", Integer.toString(json.get(TradfriConstants.ONOFF).getAsInt()).getBytes(StandardCharsets.UTF_8)));
+            consumer.accept(new EventMessage("group/" + name + "/on", Integer.toString(json.get(TradfriConstants.ONOFF).getAsInt()).getBytes(StandardCharsets.UTF_8)));
             jsonregistry.addProperty("type", "group");
             if (json.has(TradfriConstants.DIMMER)) {
-                group.distributeMessage(new EventMessage("group/" + name + "/dim", Integer.toString(json.get(TradfriConstants.DIMMER).getAsInt()).getBytes(StandardCharsets.UTF_8)));
+                consumer.accept(new EventMessage("group/" + name + "/dim", Integer.toString(json.get(TradfriConstants.DIMMER).getAsInt()).getBytes(StandardCharsets.UTF_8)));
             }
             jsonregistry.addProperty("dim", json.has(TradfriConstants.DIMMER));
         } else {
@@ -357,7 +354,7 @@ public class ManagerTradfri implements ManagerProtocol {
         }
 
         if (register) {
-            group.distributeMessage(new EventMessage("registry", jsonregistry.toString().getBytes(StandardCharsets.UTF_8)));
+            consumer.accept(new EventMessage("registry", jsonregistry.toString().getBytes(StandardCharsets.UTF_8)));
         }
     }
 

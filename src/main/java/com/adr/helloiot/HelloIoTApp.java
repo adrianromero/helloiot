@@ -31,7 +31,6 @@ import com.adr.helloiotlib.device.Device;
 import com.adr.helloiot.device.DeviceSimple;
 import com.adr.helloiot.device.DeviceSwitch;
 import com.adr.helloiotlib.device.ListDevice;
-import com.adr.helloiot.device.TreePublish;
 import com.adr.helloiot.device.TreePublishSubscribe;
 import com.adr.helloiot.media.SilentClipFactory;
 import com.adr.helloiot.media.StandardClipFactory;
@@ -67,10 +66,6 @@ import javafx.scene.control.ButtonBar;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
 
-/**
- *
- * @author adrian
- */
 public class HelloIoTApp implements IoTApp {
 
     private final static Logger LOGGER = Logger.getLogger(HelloIoTApp.class.getName());
@@ -116,7 +111,6 @@ public class HelloIoTApp implements IoTApp {
         mainnode = new MainNode(
                 this,
                 Platform.isSupported(ConditionalFeature.MEDIA) ? new StandardClipFactory() : new SilentClipFactory(),
-                config.get("app.clock").asBoolean(),
                 config.get("app.exitbutton").asBoolean());
 
         topicsmanager = new ApplicationTopicsManager(manager);
@@ -153,6 +147,8 @@ public class HelloIoTApp implements IoTApp {
 
     private void addAppDevicesUnits(String topicapp) {
 
+        // topicapp: Root topic for application instance events. Default _LOCAL_/mainapp/
+
         DeviceSimple unitpage = new DeviceSimple();
         unitpage.setTopic(topicapp + "unitpage");
         unitpage.setId(SYS_UNITPAGE_ID);
@@ -170,15 +166,19 @@ public class HelloIoTApp implements IoTApp {
     }
 
     private void addSystemDevicesUnits(String topicsys) {
-        TreePublish sysevents = new TreePublish();
-        sysevents.setTopic(topicsys + "events");
-        sysevents.setId(SYS_EVENT_ID);
+
+        // topicsys: System topic. Shared events like time events, weather events. Default system/
 
         TreePublishSubscribe sysstatus = new TreePublishSubscribe();
         sysstatus.setTopic(topicsys + "status");
         sysstatus.setId(SYS_VALUE_ID);
-
-        addDevicesUnits(Arrays.asList(sysevents, sysstatus), Collections.emptyList());
+        
+        DeviceSimple systime = new DeviceSimple();
+        MQTTProperty.setRetained(systime, false);
+        systime.setTopic(topicsys + "epochsecond"); // "SYSTEM/time/current"
+        systime.setId(SYS_TIME_ID);
+        
+        addDevicesUnits(Arrays.asList(sysstatus, systime), Collections.emptyList());
     }
 
     public void addFXMLFileDevicesUnits(String filedescriptor) throws HelloIoTException {
@@ -195,16 +195,14 @@ public class HelloIoTApp implements IoTApp {
                 // Is a file       
                 fxmlurl = new File(filedescriptor + versionfxml).toURI().toURL();
                 File file = new File(filedescriptor);
-                URL[] urls = {file.getAbsoluteFile().getParentFile().toURI().toURL()};
+                URL[] urls = {file.getParentFile().toURI().toURL()};
                 ClassLoader loader = new URLClassLoader(urls);
                 fxmlresources = ResourceBundle.getBundle(file.getName(), Locale.getDefault(), loader);
             }
 
             FXMLLoader fxmlloader;
             fxmlloader = new FXMLLoader(fxmlurl);
-            if (fxmlresources != null) {
-                fxmlloader.setResources(fxmlresources);
-            }
+            fxmlloader.setResources(fxmlresources);
             DevicesUnits du = fxmlloader.load();
             addDevicesUnits(du.getDevices(), du.getUnits());
         } catch (IOException | MissingResourceException ex) {

@@ -33,23 +33,19 @@ import com.adr.helloiotlib.format.StringFormatHex;
 import com.adr.helloiotlib.format.StringFormatIdentity;
 import com.adr.helloiotlib.format.StringFormatJSONPretty;
 import com.adr.helloiotlib.unit.Unit;
-import java.util.Arrays;
 import java.util.ResourceBundle;
-import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
-import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.Separator;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.control.Toggle;
-import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.ToolBar;
 import javafx.scene.layout.BorderPane;
@@ -69,16 +65,15 @@ public class PublicationsPage extends VBox implements Unit {
     private TreePublish device = null;
     
     private ToolBar toolbar;
-    private HBox topiccontainer;
+    private ToolBar topiccontainer;
     private Label title;
     private String label = null;
-    private Separator titlesep;    
     private ComboBox<String> topic;
     private TextField delay;
     private Button sendmessage;
     private TextArea payload;
     
-    private ToggleButton retained;
+    private CheckBox retained;
 
     private ToggleGroup qosgroup;
     private RadioButton qos0;
@@ -104,10 +99,6 @@ public class PublicationsPage extends VBox implements Unit {
         title = new Label();
         title.getStyleClass().add("messagestitle");
         
-        titlesep = new Separator();
-        titlesep.setOrientation(Orientation.VERTICAL);
-        titlesep.setFocusTraversable(false);        
-        
         topic = new ComboBox<String>();
         topic.setPromptText(resources.getString("input.topic"));
         topic.setEditable(true);
@@ -128,15 +119,12 @@ public class PublicationsPage extends VBox implements Unit {
         sendmessage.setGraphic(IconBuilder.create(IconFontGlyph.FA_SOLID_PAPER_PLANE, 18.0).styleClass("icon-fill").build());
         sendmessage.setOnAction(this::actionSendMessage);
         
-        topiccontainer = new HBox(topic, delay, sendmessage);    
-        topiccontainer.setPadding(new Insets(5.0));
-        topiccontainer.setSpacing(5.0);
-        topiccontainer.setAlignment(Pos.TOP_LEFT);
+        topiccontainer = new ToolBar(topic, delay, sendmessage);    
+        topiccontainer.getStyleClass().add("unittoolbar");
 
-        retained = new ToggleButton(resources.getString("label.retained"));
+        retained = new CheckBox(resources.getString("label.retained"));
         retained.setMnemonicParsing(false);
-        retained.setFocusTraversable(false);
-        retained.getStyleClass().add("unittogglebutton");  
+        retained.getStyleClass().add("unitcheckbox");  
         
         Separator formatsep0 = new Separator();
         formatsep0.setOrientation(Orientation.VERTICAL);
@@ -147,85 +135,65 @@ public class PublicationsPage extends VBox implements Unit {
         qos0 = new RadioButton(resources.getString("label.qos0"));
         qos0.setUserData(0);
         qos0.setMnemonicParsing(false);
-        qos0.setFocusTraversable(false);
         qos0.setToggleGroup(qosgroup);
-        qos0.getStyleClass().remove("radio-button");
-        qos0.getStyleClass().addAll("toggle-button", "unittogglebutton");  
+        qos0.getStyleClass().add("unitradiobutton");
         qos0.setSelected(true);
         
         qos1 = new RadioButton(resources.getString("label.qos1"));
         qos1.setUserData(1);
         qos1.setMnemonicParsing(false);
-        qos1.setFocusTraversable(false);
         qos1.setToggleGroup(qosgroup);
-        qos1.getStyleClass().remove("radio-button");
-        qos1.getStyleClass().addAll("toggle-button", "unittogglebutton");  
+        qos1.getStyleClass().add("unitradiobutton");
         
         qos2 = new RadioButton(resources.getString("label.qos2"));
         qos2.setUserData(2);
         qos2.setMnemonicParsing(false);
-        qos2.setFocusTraversable(false);
         qos2.setToggleGroup(qosgroup);
-        qos2.getStyleClass().remove("radio-button");
-        qos2.getStyleClass().addAll("toggle-button", "unittogglebutton");      
+        qos2.getStyleClass().add("unitradiobutton");  
         
         Separator formatsep = new Separator();
         formatsep.setOrientation(Orientation.VERTICAL);
         formatsep.setFocusTraversable(false);        
         
         formatsgroup = new ToggleGroup();
-        formatsgroup.selectedToggleProperty().addListener((ObservableValue<? extends Toggle> ov, Toggle old_val, Toggle new_val) -> {
-            // printPayload();
-        });
         
         formatplain = new RadioButton(resources.getString("label.plain"));
         formatplain.setMnemonicParsing(false);
-        formatplain.setFocusTraversable(false);
         formatplain.setToggleGroup(formatsgroup);
-        formatplain.getStyleClass().remove("radio-button");
-        formatplain.getStyleClass().addAll("toggle-button", "unittogglebutton");  
+        formatplain.getStyleClass().add("unitradiobutton");
         formatplain.setUserData(StringFormatIdentity.INSTANCE);
         formatplain.setSelected(true);
         
         formatjson = new RadioButton(resources.getString("label.json"));
         formatjson.setMnemonicParsing(false);
-        formatjson.setFocusTraversable(false);
         formatjson.setToggleGroup(formatsgroup);
-        formatjson.getStyleClass().remove("radio-button");
-        formatjson.getStyleClass().addAll("toggle-button", "unittogglebutton");  
+        formatjson.getStyleClass().add("unitradiobutton");
         formatjson.setUserData(StringFormatJSONPretty.INSTANCE);
         
         formathex = new RadioButton(resources.getString("label.hex"));
         formathex.setMnemonicParsing(false);
-        formathex.setFocusTraversable(false);
         formathex.setToggleGroup(formatsgroup);
-        formathex.getStyleClass().remove("radio-button");
-        formathex.getStyleClass().addAll("toggle-button", "unittogglebutton");  
+        formathex.getStyleClass().add("unitradiobutton");
         formathex.setUserData(StringFormatHex.INSTANCE);        
      
         
         formatbase64 = new RadioButton(resources.getString("label.base64"));
         formatbase64.setMnemonicParsing(false);
-        formatbase64.setFocusTraversable(false);
         formatbase64.setToggleGroup(formatsgroup);
-        formatbase64.getStyleClass().remove("radio-button");
-        formatbase64.getStyleClass().addAll("toggle-button", "unittogglebutton");  
+        formatbase64.getStyleClass().add("unitradiobutton");
         formatbase64.setUserData(StringFormatBase64.INSTANCE);        
         
-        toolbar = new ToolBar();
-        BorderPane.setAlignment(toolbar, Pos.CENTER);
-        toolbar.getStyleClass().add("messagestoolbar");
-        toolbar.getItems().addAll(retained, formatsep0, qos0, qos1, qos2, formatsep, formatplain, formatjson, formathex, formatbase64);
+        toolbar = new ToolBar(retained, formatsep0, qos0, qos1, qos2, formatsep, formatplain, formatjson, formathex, formatbase64);
+        toolbar.getStyleClass().add("unittoolbar");
         
         payload = new TextArea();
         payload.setPromptText(resources.getString("input.message"));
         payload.setEditable(true);
-        payload.setFocusTraversable(false);
         payload.getStyleClass().addAll("unitinputarea", "unitinputcode");
         VBox.setVgrow(payload, Priority.ALWAYS);
         BorderPane.setAlignment(payload, Pos.CENTER);   
         
-        getChildren().addAll(toolbar, topiccontainer, payload);
+        getChildren().addAll(topiccontainer, toolbar, payload);
     }
     
     @Override
@@ -243,14 +211,14 @@ public class PublicationsPage extends VBox implements Unit {
     
     public void setLabel(String label) {
         if (getLabel() != null && !getLabel().isEmpty()) {
-            toolbar.getItems().removeAll(title, titlesep);
+            topiccontainer.getItems().remove(title);
         }
         
         this.label = label;
         title.setText(label + "/");
         
         if (label != null && !label.isEmpty()) {
-            toolbar.getItems().addAll(0, Arrays.asList(title, titlesep));
+            topiccontainer.getItems().add(0, title);
         }
     }
 
@@ -300,11 +268,14 @@ public class PublicationsPage extends VBox implements Unit {
             MessageUtils.showException(MessageUtils.getRoot(this), resources.getString("label.sendmessage"), resources.getString("message.messageerror"), ex);
         }
         
-        if (!topic.getItems().contains(topic.getEditor().getText())) {
+        if (topic.getItems().contains(topic.getEditor().getText())) {
+            topic.getSelectionModel().select(topic.getEditor().getText());
+        } else {
            topic.getItems().add(0, topic.getEditor().getText());
            if (topic.getItems().size() > 20) {
                topic.getItems().remove(topic.getItems().size() - 1);
            }
+           topic.getSelectionModel().select(0);
         }  
     }
 }

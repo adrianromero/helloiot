@@ -10,19 +10,19 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<GridPane fx:id="container" styleClass="unitform" hgap="10.0" vgap="10.0" xmlns="http://javafx.com/javafx/8.0.161" xmlns:fx="http://javafx.com/fxml/1">
+<GridPane fx:id="container" hgap="10.0" styleClass="unitform" vgap="10.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <columnConstraints>
       <ColumnConstraints hgrow="SOMETIMES" />
    </columnConstraints>
    <rowConstraints>
       <RowConstraints />
-      <RowConstraints minHeight="10.0" prefHeight="30.0" />
-      <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" />
+      <RowConstraints minHeight="30.0" prefHeight="30.0" />
+      <RowConstraints maxHeight="1.7976931348623157E308" vgrow="SOMETIMES" />
    </rowConstraints>
    <children>
-      <Label text="%label.name" styleClass="unitlabel" />
+      <Label styleClass="unitlabel" text="%label.name" />
       <TextField fx:id="name" styleClass="unitinput" GridPane.rowIndex="1" />
-      <TextArea fx:id="code" maxHeight="1.7976931348623157E308" prefHeight="400.0" GridPane.rowIndex="2">
+      <TextArea fx:id="code" maxHeight="1.7976931348623157E308" GridPane.rowIndex="2">
         <styleClass>
            <String fx:value="unitinputarea" />
            <String fx:value="unitinputcode" />

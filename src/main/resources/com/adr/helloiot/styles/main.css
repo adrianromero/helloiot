@@ -187,6 +187,10 @@ foco 508cfb */
     -fx-background-color: #497ccb, -fx-background-unit;
 }
 
+.unittabpane:focused > .tab-header-area > .headers-region > .tab:selected {
+    -fx-background-insets: 0 0 0 0, 0 0 1 0, 0 0 7 0, 1 1 8 1;
+    -fx-background-color: #497ccb, -fx-background-unit, -fx-buttonarmed-fill, -fx-background-unit;
+}
 
 .unittabpane > .tab-header-area > .headers-region > .tab  > focus-indicator {
     -fx-border-width: 0;
@@ -677,6 +681,22 @@ foco 508cfb */
     -fx-font-size: 20px;    
 }
 
+.dialog-body .text-area {
+    -fx-font-family: 'Source Sans Pro Regular';
+    -fx-font-size: 16px;    
+    -fx-text-fill: -fx-level-fill;
+    -fx-accent: -fx-primary-fill ;
+    -fx-background-radius: 2, 1;
+    -fx-background-color:  -fx-inputborder-fill, -fx-inputback-fill;  
+    -fx-background-insets: 0, 1;    
+}
+
+.dialog-body .text-area:focused {
+    -fx-background-radius: 4, 2, 1;
+    -fx-background-color:  -fx-inputfocusext-fill, -fx-inputfocus-fill, -fx-inputback-fill;  
+    -fx-background-insets: -2, 0, 1;    
+}
+
 /* Slider styles */
 .slider .thumb {
     -fx-background-color: -fx-button-fill, -fx-button-fill;
@@ -715,10 +735,6 @@ foco 508cfb */
     -fx-font-family: 'Source Sans Pro Regular';   
 }
 
-.messagestoolbar {
-    -fx-background-color: -fx-background-container;
-}
-
 .messageview {
     -fx-font-family: 'Source Code Pro Regular';
     -fx-font-size: 14px;   
@@ -731,4 +747,12 @@ foco 508cfb */
 
 .badge {
     -fx-font-family: 'Source Sans Pro Regular';    
+}
+
+/* Charts */
+
+.chartlegend {
+    -fx-font-family: 'Source Sans Pro Regular';
+    -fx-font-size: 14px;   
+    -fx-text-fill: -fx-level-fill;  
 }

@@ -1,5 +1,5 @@
 //    HelloIoT is a dashboard creator for MQTT
-//    Copyright (C) 2018 Adrián Romero Corchado.
+//    Copyright (C) 2018-2019 Adrián Romero Corchado.
 //
 //    This file is part of HelloIot.
 //
@@ -46,6 +46,11 @@ public class MiniVarBytes implements MiniVar {
     
     @Override
     public int asInt() {
+        throw new UnsupportedOperationException("Not supported.");
+    }
+    
+    @Override
+    public long asLong() {
         throw new UnsupportedOperationException("Not supported.");
     }
 

@@ -1,5 +1,5 @@
 //    HelloIoT is a dashboard creator for MQTT
-//    Copyright (C) 2017-2018 Adrián Romero Corchado.
+//    Copyright (C) 2017-2019 Adrián Romero Corchado.
 //
 //    This file is part of HelloIot.
 //
@@ -18,44 +18,54 @@
 //
 package com.adr.helloiot;
 
-/**
- *
- * @author adrian
- */
+import com.adr.helloiot.topicinfo.TopicInfo;
+import com.adr.helloiot.topicinfo.TopicInfoFactory;
+import com.adr.helloiot.topicinfo.TopicInfoFactoryCode;
+import com.adr.helloiot.topicinfo.TopicInfoFactoryEdit;
+import com.adr.helloiot.topicinfo.TopicInfoFactoryGauge;
+import com.adr.helloiot.topicinfo.TopicInfoFactoryMessagesPublish;
+import com.adr.helloiot.topicinfo.TopicInfoFactoryMessagesSubscribe;
+import com.adr.helloiot.topicinfo.TopicInfoFactorySend;
+import com.adr.helloiot.topicinfo.TopicInfoFactorySwitch;
+import com.adr.helloiot.topicinfo.TopicInfoFactoryView;
+import java.util.Collection;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 public class TopicInfoBuilder {
+
+    private Map<String, TopicInfoFactory> factories = new LinkedHashMap<>();
     
-    private TopicInfoEditNode editnode = null;
-    private TopicInfoCodeNode codenode = null;
-    private TopicInfoSwitchNode switchnode = null;
-    private TopicInfoMessagesPublishNode messagespublishnode = null;
-    private TopicInfoMessagesSubscribeNode messagessubscribenode = null;
+    public static final TopicInfoBuilder INSTANCE = new TopicInfoBuilder();
     
-    public TopicInfo fromProperties(SubProperties subproperties) {
-        
-        TopicInfo topicinfo = create(subproperties.getProperty(".type", "PublicationSubscription"));
-        // load subproperties
-        topicinfo.load(subproperties);
-        return topicinfo; 
+    private TopicInfoBuilder() { 
+        put(new TopicInfoFactoryView());
+        put(new TopicInfoFactoryEdit());
+        put(new TopicInfoFactorySend());
+        put(new TopicInfoFactorySwitch());
+        put(new TopicInfoFactoryMessagesPublish());
+        put(new TopicInfoFactoryMessagesSubscribe());
+        put(new TopicInfoFactoryCode());
+        put(new TopicInfoFactoryGauge());
     }
     
-    public TopicInfo create() {
-        // Default new 
-        return create("PublicationSubscription");
+    private void put(TopicInfoFactory factory) {
+        factories.put(factory.getType(), factory);
+    }
+    
+    public Collection<TopicInfoFactory> getTopicInfoFactories() {
+        return factories.values();
     }
     
     public TopicInfo create(String type) {
-        TopicInfo topicinfo;
-        if ("Code".equals(type)) {
-            topicinfo = new TopicInfoCode(codenode == null ? (codenode = new TopicInfoCodeNode()) : codenode);
-        } else if ("Switch".equals(type)) {
-            topicinfo = new TopicInfoSwitch(switchnode == null ? (switchnode = new TopicInfoSwitchNode()) : switchnode);
-        } else if ("MessagesPublish".equals(type)) {
-            topicinfo = new TopicInfoMessagesPublish(messagespublishnode == null ? (messagespublishnode = new TopicInfoMessagesPublishNode()) : messagespublishnode);
-        } else if ("MessagesSubscribe".equals(type)) {
-            topicinfo = new TopicInfoMessagesSubscribe(messagessubscribenode == null ? (messagessubscribenode = new TopicInfoMessagesSubscribeNode()) : messagessubscribenode);
-        } else {
-            topicinfo = new TopicInfoEdit(type, editnode == null ? (editnode = new TopicInfoEditNode()) : editnode);
-        }
-        return topicinfo;
+        return factories.get(type).create();
+    }
+    
+    public TopicInfo fromProperties(SubProperties subproperties) {
+        
+        TopicInfo topicinfo = factories.get(subproperties.getProperty(".type", "Edit")).create();
+        // load subproperties
+        topicinfo.load(subproperties);
+        return topicinfo; 
     }
 }

@@ -1,5 +1,5 @@
 //    HelloIoT is a dashboard creator for MQTT
-//    Copyright (C) 2017-2018 Adrián Romero Corchado.
+//    Copyright (C) 2017-2019 Adrián Romero Corchado.
 //
 //    This file is part of HelloIot.
 //
@@ -38,7 +38,7 @@ import javafx.stage.Screen;
  */
 public abstract class HelloPlatform {
 
-    private final static String APP_PROPERTIES = ".helloiot-app.properties";    
+    private final static String APP_PROPERTIES = "app.properties";    
     private final static double MAX_PHONE_DIAGONAL = 7.6;
     
     private static HelloPlatform instance = null;

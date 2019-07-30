@@ -33,15 +33,11 @@ import javafx.scene.Node;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 
-/**
- *
- * @author adrian
- */
 public class ViewGauge extends Tile {
 
     private static final StyleablePropertyFactory<ViewGauge> FACTORY = new StyleablePropertyFactory<>(Tile.getClassCssMetaData());
     private static final CssMetaData<ViewGauge, Color> VALUECOLOR = FACTORY.createColorCssMetaData("-fx-value-color", s -> s.valueColor, Color.BLACK, false);
-
+    
     private DeviceNumber device = null;
     private final Object messageHandler = Units.messageHandler(this::updateStatus);
 
@@ -49,8 +45,12 @@ public class ViewGauge extends Tile {
     private Gauge gauge = null;
     private GaugeType type = GaugeType.DASHBOARD;
     
-    private final StyleableObjectProperty<Color> valueColor = new SimpleStyleableObjectProperty<>(VALUECOLOR, this, "value-color");
+    private final StyleableObjectProperty<Color> valueColor = new SimpleStyleableObjectProperty<>(VALUECOLOR, this, "-fx-value-color");
     private Color barColor = Color.web("#29b1ff"); // blue cyan
+    private int decimals = 2;
+    private String title = "";
+    private String subtitle = "";
+    private String unit = "";
 
     public ViewGauge() {
          getStyleClass().add("unitgauge");
@@ -74,6 +74,38 @@ public class ViewGauge extends Tile {
 
     public final void setBarColor(Color color) {
         barColor = color;
+    }
+
+    public int getDecimals() {
+        return decimals;
+    }
+
+    public void setDecimals(int decimals) {
+        this.decimals = decimals;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getSubtitle() {
+        return subtitle;
+    }
+
+    public void setSubtitle(String subtitle) {
+        this.subtitle = subtitle;
+    }
+
+    public String getUnit() {
+        return unit;
+    }
+
+    public void setUnit(String unit) {
+        this.unit = unit;
     }
 
     @Override
@@ -101,6 +133,23 @@ public class ViewGauge extends Tile {
     @Override
     public void construct(IoTApp app) {
         super.construct(app);
+        gauge = type.build(device.getLevelMin(), device.getLevelMax(), barColor);
+        
+        gauge.titleColorProperty().bind(valueColor);
+        gauge.subTitleColorProperty().bind(valueColor);
+        gauge.unitColorProperty().bind(valueColor);
+        gauge.valueColorProperty().bind(valueColor);
+        gauge.setTickLabelColor(Color.DARKGRAY);
+         
+        gauge.setFocusTraversable(false);
+        
+        gauge.setDecimals(decimals);
+        gauge.setTitle(title);
+        gauge.setSubTitle(subtitle);
+        gauge.setUnit(unit);        
+        
+        gaugecontainer.getChildren().add(gauge);
+
         device.subscribeStatus(messageHandler);
         updateStatus(null);
     }
@@ -108,12 +157,15 @@ public class ViewGauge extends Tile {
     @Override
     public void destroy() {
         super.destroy();
+        
         device.unsubscribeStatus(messageHandler);
+                
+        gaugecontainer.getChildren().remove(gauge);
+        gauge = null;
     }
 
     public void setDevice(DeviceNumber device) {
         this.device = device;
-        rebuildGauge();
     }
 
     public DeviceNumber getDevice() {
@@ -122,43 +174,10 @@ public class ViewGauge extends Tile {
 
     public void setType(GaugeType type) {
         this.type = type == null ? GaugeType.DASHBOARD : type;
-        rebuildGauge();
     }
 
     public GaugeType getType() {
         return type;
-    }
-
-    private void rebuildGauge() {
-
-        // Device not null
-        if (gauge != null) {
-            gaugecontainer.getChildren().remove(gauge);
-            gauge = null;
-        }
-
-        if (device == null) {
-            return;
-        }
-
-        gauge = type.build(device.getLevelMin(), device.getLevelMax(), barColor);
-        gauge.setMinValue(device.getLevelMin());
-        gauge.setMaxValue(device.getLevelMax());
-        gauge.titleColorProperty().bind(valueColor);
-        gauge.valueColorProperty().bind(valueColor);
-        gauge.unitColorProperty().bind(valueColor);
-        gauge.tickLabelColorProperty().bind(valueColor);
-        gauge.setUnit(device.getUnit());
-        gauge.setFocusTraversable(false);
-        gaugecontainer.getChildren().add(gauge);
-        
-//        gauge.setTitle("TITLE");
-//        gauge.setSubTitle("SUBTITLE");
-//        gauge.setUnit("UNIT");
-
-        if (getLabel() == null) {
-            setLabel(device.getProperties().getProperty("label"));
-        }
     }
 
     public static List<CssMetaData<? extends Styleable, ?>> getClassCssMetaData() {

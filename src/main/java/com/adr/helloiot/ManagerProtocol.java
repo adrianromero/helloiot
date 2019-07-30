@@ -29,7 +29,7 @@ import java.util.function.Consumer;
  */
 public interface ManagerProtocol {
     
-    void registerTopicsManager(GroupManagers group, Consumer<Throwable> lost);
+    void registerTopicsManager(Consumer<EventMessage> consumer, Consumer<Throwable> lost);
     void registerSubscription(String topic, Map<String, MiniVar> messageProperties);
     void connect();
     void disconnect();

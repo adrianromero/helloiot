@@ -1,5 +1,5 @@
 //    HelloIoT is a dashboard creator for MQTT
-//    Copyright (C) 2017-2018 Adrián Romero Corchado.
+//    Copyright (C) 2017-2019 Adrián Romero Corchado.
 //
 //    This file is part of HelloIot.
 //
@@ -26,14 +26,10 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import com.adr.helloiotlib.app.TopicManager;
 
-/**
- *
- * @author adrian
- */
 public class TreePublishSubscribe extends TreePublish {
 
     private TopicSubscription status = null;
-    private final Map<String, MiniVar> statusmap = new ConcurrentHashMap<>();
+    private final Map<String, byte[]> statusmap = new ConcurrentHashMap<>();
 
     public TreePublishSubscribe() {
         super();
@@ -46,7 +42,7 @@ public class TreePublishSubscribe extends TreePublish {
     }
 
     protected void consumeMessage(EventMessage message) {
-        statusmap.put(message.getTopic(), getFormat().value(message.getMessage()));
+        statusmap.put(message.getTopic(), message.getMessage());
     }
 
     @Override
@@ -68,8 +64,7 @@ public class TreePublishSubscribe extends TreePublish {
     }
 
     public MiniVar readMessage(String branch) {
-        MiniVar value;
-        return ((value = statusmap.get(getTopic() + "/" + branch)) != null) ? value : getFormat().value(null);
+        return getFormat().value(statusmap.get(getTopic() + "/" + branch));
     }
 
     public String loadMessage(String branch) {

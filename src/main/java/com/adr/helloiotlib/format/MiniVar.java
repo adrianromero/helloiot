@@ -1,5 +1,5 @@
 //    HelloIoT is a dashboard creator for MQTT
-//    Copyright (C) 2017-2018 Adrián Romero Corchado.
+//    Copyright (C) 2017-2019 Adrián Romero Corchado.
 //
 //    This file is part of HelloIot.
 //
@@ -26,6 +26,7 @@ public interface MiniVar {
     public boolean isEmpty();
     public String asString();
     public int asInt();
+    public long asLong();
     public double asDouble();
     public boolean asBoolean();
     public byte[] asBytes();

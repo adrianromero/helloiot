@@ -16,10 +16,11 @@
 //    You should have received a copy of the GNU General Public License
 //    along with HelloIot.  If not, see <http://www.gnu.org/licenses/>.
 //
-package com.adr.helloiot;
+package com.adr.helloiot.topicinfo;
 
-import com.adr.fonticon.IconBuilder;
-import com.adr.fonticon.IconFontGlyph;
+import com.adr.helloiot.DevicesUnits;
+import com.adr.helloiot.HelloIoTException;
+import com.adr.helloiot.SubProperties;
 import com.adr.helloiot.device.MessageStatus;
 import com.adr.helloiot.mqtt.MQTTProperty;
 import com.adr.helloiot.unit.MessagesPage;
@@ -30,48 +31,27 @@ import java.util.ArrayList;
 import java.util.List;
 import javafx.beans.property.ReadOnlyProperty;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.geometry.Insets;
-import javafx.scene.Node;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
-import javafx.scene.text.TextFlow;
 
-/**
- *
- * @author adrian
- */
 public class TopicInfoMessagesSubscribe implements TopicInfo {
 
     private final SimpleStringProperty topic = new SimpleStringProperty();
 
+    private final TopicInfoFactory factory;
     private final TopicInfoMessagesSubscribeNode node;
 
-    public TopicInfoMessagesSubscribe(TopicInfoMessagesSubscribeNode node) {
+    public TopicInfoMessagesSubscribe(TopicInfoFactory factory, TopicInfoMessagesSubscribeNode node) {
+        this.factory = factory;
         this.node = node;
     }
 
     @Override
-    public String getType() {
-        return "MessagesSubscribe";
+    public TopicInfoFactory getFactory() {
+        return factory;
     }
 
     @Override
     public ReadOnlyProperty<String> getLabel() {
         return topic;
-    }
-
-    @Override
-    public Node getGraphic() {
-
-        Text t = IconBuilder.create(IconFontGlyph.FA_SOLID_ENVELOPE_OPEN, 18.0).build();
-        t.setFill(Color.WHITE);
-        TextFlow tf = new TextFlow(t);
-        tf.setTextAlignment(TextAlignment.CENTER);
-        tf.setPadding(new Insets(5, 5, 5, 5));
-        tf.setStyle("-fx-background-color: #505050; -fx-background-radius: 5px;");
-        tf.setPrefWidth(30.0);        
-        return tf; 
     }
 
     @Override
@@ -98,7 +78,7 @@ public class TopicInfoMessagesSubscribe implements TopicInfo {
         MessagesPage messagespage = new MessagesPage();
         messagespage.setDevice(messagestatus);
         messagespage.setLabel(null);
-        UnitPage.setPage(messagespage, "FA_SOLID_ENVELOPE_OPEN//" + getTopic());
+        UnitPage.setPage(messagespage, "FA_SOLID_INBOX//" + getTopic());
         UnitPage.setLayout(messagespage, "StartFull");
         units.add(messagespage);
         

@@ -1,5 +1,5 @@
 //    HelloIoT is a dashboard creator for MQTT
-//    Copyright (C) 2017 Adrián Romero Corchado.
+//    Copyright (C) 2017-2019 Adrián Romero Corchado.
 //
 //    This file is part of HelloIot.
 //
@@ -20,10 +20,6 @@ package com.adr.helloiot.device;
 
 import com.adr.helloiotlib.format.StringFormatDecimal;
 
-/**
- *
- * @author adrian
- */
 public class Thermostat extends DeviceNumber {
 
     public Thermostat() {
@@ -36,10 +32,5 @@ public class Thermostat extends DeviceNumber {
     @Override
     public String getDeviceName() {
         return resources.getString("devicename.thermostat");
-    }
-
-    @Override
-    public String getUnit() {
-        return "°C";
     }
 }

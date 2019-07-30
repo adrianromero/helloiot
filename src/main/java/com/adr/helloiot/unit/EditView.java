@@ -32,7 +32,6 @@ import javafx.scene.control.TextInputControl;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
 
 /**
  *
@@ -79,7 +78,7 @@ public class EditView extends Tile {
     public void construct(IoTApp app) {
         super.construct(app);
         if (glyph != null) {
-            glyphnode = new StackPane(IconBuilder.create(glyph, 36.0).color(Color.web("#565656")).build());
+            glyphnode = new StackPane(IconBuilder.create(glyph, 36.0).styleClass("unitinputicon").build());
             glyphnode.setPadding(new Insets(0, 0, 0, 6));
             boxview.getChildren().add(0, glyphnode);
         }

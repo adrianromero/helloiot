@@ -19,7 +19,6 @@
 package com.adr.helloiot.mqtt;
 
 import com.adr.helloiotlib.app.EventMessage;
-import com.adr.helloiot.GroupManagers;
 import com.adr.helloiot.ManagerProtocol;
 import com.adr.helloiot.properties.VarProperties;
 import com.adr.helloiotlib.format.MiniVar;
@@ -66,7 +65,7 @@ public class ManagerMQTT implements MqttCallback, ManagerProtocol {
     private final Properties sslproperties;
 
     // Manager
-    private GroupManagers group;
+    private Consumer<EventMessage> consumer;
     private Consumer<Throwable> lost;
     // MQTT
     private MqttAsyncClient mqttClient;
@@ -113,8 +112,8 @@ public class ManagerMQTT implements MqttCallback, ManagerProtocol {
     }
 
     @Override
-    public void registerTopicsManager(GroupManagers group, Consumer<Throwable> lost) {
-        this.group = group;
+    public void registerTopicsManager(Consumer<EventMessage> consumer, Consumer<Throwable> lost) {
+        this.consumer = consumer;
         this.lost = lost;
     }
 
@@ -220,7 +219,7 @@ public class ManagerMQTT implements MqttCallback, ManagerProtocol {
         Map<String, MiniVar> properties = new HashMap<>();
         properties.put("mqtt.retained", new MiniVarBoolean(mm.isRetained()));
         properties.put("mqtt.qos", new MiniVarInt(mm.getQos()));
-        group.distributeMessage(new EventMessage(topic, mm.getPayload(), properties));
+        consumer.accept(new EventMessage(topic, mm.getPayload(), properties));
     }
 
     @Override

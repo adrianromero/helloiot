@@ -1,5 +1,5 @@
 //    HelloIoT is a dashboard creator for MQTT
-//    Copyright (C) 2017-2018 Adrián Romero Corchado.
+//    Copyright (C) 2017-2019 Adrián Romero Corchado.
 //
 //    This file is part of HelloIot.
 //
@@ -37,7 +37,7 @@ public class HelloPlatformDesktop extends HelloPlatform {
     public File getFile(String file) {
         String home = getHome();
         if (home == null || home.isEmpty()) {
-            home = System.getProperty("user.home");
+            home = System.getProperty("user.home") + "/.helloiot";
         }
         return new File(home, file);
     }

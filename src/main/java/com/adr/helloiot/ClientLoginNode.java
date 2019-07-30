@@ -18,13 +18,21 @@
 //
 package com.adr.helloiot;
 
+import com.adr.helloiot.topicinfo.TopicInfoNode;
+import com.adr.helloiot.topicinfo.TopicInfo;
 import com.adr.fonticon.IconBuilder;
 import com.adr.fonticon.IconFontGlyph;
+import com.adr.hellocommon.dialog.DialogView;
 import com.adr.hellocommon.dialog.MessageUtils;
+import com.adr.helloiot.util.CompletableAsync;
+import com.adr.helloiot.util.Dialogs;
 import com.google.common.io.Resources;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
+import java.util.function.Consumer;
 import javafx.beans.Observable;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -59,12 +67,11 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.util.StringConverter;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
+import javafx.scene.text.TextFlow;
 
-/**
- *
- * @author adrian
- */
 public class ClientLoginNode {
 
     private final ResourceBundle resources;
@@ -85,17 +92,14 @@ public class ClientLoginNode {
     private ObservableList<TopicInfo> devicesunitsitems;
     
     private ScrollPane deviceunitform;
+    private Label propslabel;
     
-    private ChoiceBox<String> edittype;
     private StackPane topicinfocontainer;
     private ToolBar unitstoolbar;
     
     private ChoiceBox<Style> skins;
-    private CheckBox clock;
         
     private TopicInfoNode editnode = null;
- 
-    private TopicInfoBuilder topicinfobuilder;
     
     private String topicapp;
     private String topicsys;
@@ -168,6 +172,11 @@ public class ClientLoginNode {
         adddeviceunit.getStyleClass().add("unitbutton");
         adddeviceunit.setOnAction(this::onAddDeviceUnit);
         
+        // TODO: Implement Tradfri Button
+        // Button tradfributton = createTradfriButton();
+                
+        Separator sep = new Separator(Orientation.VERTICAL);
+                       
         removedeviceunit = new Button();
         removedeviceunit.setFocusTraversable(false);
         removedeviceunit.setMnemonicParsing(false);
@@ -184,11 +193,9 @@ public class ClientLoginNode {
         downdeviceunit.setFocusTraversable(false);
         downdeviceunit.setMnemonicParsing(false);
         downdeviceunit.getStyleClass().add("unitbutton");
-        downdeviceunit.setOnAction(this::onDownDeviceUnit);
-        
-        Separator sep = new Separator(Orientation.VERTICAL);
-               
-        unitstoolbar.getItems().addAll(adddeviceunit, removedeviceunit, updeviceunit, downdeviceunit, sep);
+        downdeviceunit.setOnAction(this::onDownDeviceUnit);      
+
+        unitstoolbar.getItems().addAll(adddeviceunit, sep, removedeviceunit, updeviceunit, downdeviceunit);
         
         borderpanetab1.setTop(unitstoolbar);
         
@@ -210,6 +217,7 @@ public class ClientLoginNode {
 
         deviceunitform = new ScrollPane();
         deviceunitform.setFitToWidth(true);
+        deviceunitform.setFitToHeight(true);
         deviceunitform.getStyleClass().add("unitscroll");
         HBox.setMargin(deviceunitform, new Insets(5.0));
         HBox.setHgrow(deviceunitform, Priority.ALWAYS);
@@ -226,37 +234,19 @@ public class ClientLoginNode {
                new ColumnConstraints(150.0, 150.0, Region.USE_COMPUTED_SIZE),
                constr);
         griddeviceunit.getRowConstraints().addAll(
-                new RowConstraints(),
-                new RowConstraints(10.0, 30.0, Region.USE_COMPUTED_SIZE),
                 new RowConstraints());
         griddeviceunit.setPadding(new Insets(10.0, 10.0, 0.0, 10.0));
         
-        Label section = new Label(resources.getString("label.unit"));
-        section.getStyleClass().add("unitsection");
-        section.setMaxWidth(Double.MAX_VALUE);
-        GridPane.setColumnSpan(section, Integer.MAX_VALUE);
+        propslabel = new Label(resources.getString("label.properties"));
+        propslabel.getStyleClass().add("unitsection");
+        propslabel.setMaxWidth(Double.MAX_VALUE);
+        GridPane.setColumnSpan(propslabel, Integer.MAX_VALUE);
+        GridPane.setRowIndex(propslabel, 0);
         
-        Label ltype = new Label(resources.getString("label.type"));
-        ltype.getStyleClass().add("unitlabel");
-        GridPane.setRowIndex(ltype, 1);
-        
-        edittype = new ChoiceBox<>();
-        edittype.setPrefWidth(280.0);
-        edittype.setMaxWidth(Double.MAX_VALUE);
-        edittype.getStyleClass().add("unitinput");
-        GridPane.setRowIndex(edittype, 1);
-        GridPane.setColumnIndex(edittype, 1);
-        GridPane.setColumnSpan(edittype, 2);
-        
-        Label lprops = new Label(resources.getString("label.properties"));
-        lprops.getStyleClass().add("unitsection");
-        lprops.setMaxWidth(Double.MAX_VALUE);
-        GridPane.setColumnSpan(lprops, Integer.MAX_VALUE);
-        GridPane.setRowIndex(lprops, 2);
-        
-        griddeviceunit.getChildren().addAll(section, ltype, edittype, lprops);
+        griddeviceunit.getChildren().addAll(propslabel);
         
         topicinfocontainer = new StackPane();
+        VBox.setVgrow(topicinfocontainer, Priority.SOMETIMES);
         
         vbox2.getChildren().addAll(griddeviceunit, topicinfocontainer);
         
@@ -300,13 +290,7 @@ public class ClientLoginNode {
         skins.getStyleClass().add("unitinput");
         GridPane.setColumnIndex(skins, 1);
         
-        clock = new CheckBox(resources.getString("label.clock"));
-        clock.getStyleClass().add("unitcheckbox");
-        clock.setMnemonicParsing(false);
-        GridPane.setColumnIndex(clock, 1);
-        GridPane.setRowIndex(clock, 1);
-        
-        grid2.getChildren().addAll(labelstyle, skins, clock);
+        grid2.getChildren().addAll(labelstyle, skins);
         
         scrolltab2.setContent(grid2);
         
@@ -373,6 +357,11 @@ public class ClientLoginNode {
         adddeviceunit.getStyleClass().add("unitbutton");
         adddeviceunit.setOnAction(this::onAddDeviceUnit);
         
+        // TODO: Implement Tradfri Button
+        // Button tradfributton = createTradfriButton();
+                
+        Separator sep = new Separator(Orientation.VERTICAL);
+        
         removedeviceunit = new Button();
         removedeviceunit.setFocusTraversable(false);
         removedeviceunit.setMnemonicParsing(false);
@@ -391,9 +380,7 @@ public class ClientLoginNode {
         downdeviceunit.getStyleClass().add("unitbutton");
         downdeviceunit.setOnAction(this::onDownDeviceUnit);
         
-        Separator sep = new Separator(Orientation.VERTICAL);
-        
-        unitstoolbar.getItems().addAll(adddeviceunit, removedeviceunit, updeviceunit, downdeviceunit, sep);
+        unitstoolbar.getItems().addAll(adddeviceunit, sep, removedeviceunit, updeviceunit, downdeviceunit);
         
         borderpanetab1.setTop(unitstoolbar); 
                 
@@ -436,6 +423,7 @@ public class ClientLoginNode {
         
         deviceunitform = new ScrollPane();
         deviceunitform.setFitToWidth(true);
+        deviceunitform.setFitToHeight(true);
         deviceunitform.getStyleClass().add("unitscroll");
         VBox.setVgrow(deviceunitform, Priority.ALWAYS);
         
@@ -448,36 +436,19 @@ public class ClientLoginNode {
         griddeviceunit.getColumnConstraints().add(
                constr);
         griddeviceunit.getRowConstraints().addAll(
-                new RowConstraints(),
-                new RowConstraints(),
-                new RowConstraints(10.0, 30.0, Region.USE_COMPUTED_SIZE),
                 new RowConstraints());
         griddeviceunit.setPadding(new Insets(10.0, 10.0, 0.0, 10.0));
+
+        propslabel = new Label(resources.getString("label.properties"));
+        propslabel.getStyleClass().add("unitsection");
+        propslabel.setMaxWidth(Double.MAX_VALUE);
+        GridPane.setColumnSpan(propslabel, Integer.MAX_VALUE);
+        GridPane.setRowIndex(propslabel, 0);
         
-        Label section = new Label(resources.getString("label.unit"));
-        section.getStyleClass().add("unitsection");
-        section.setMaxWidth(Double.MAX_VALUE);
-        GridPane.setColumnSpan(section, Integer.MAX_VALUE);
-        
-        Label ltype = new Label(resources.getString("label.type"));
-        ltype.getStyleClass().add("unitlabel");
-        GridPane.setRowIndex(ltype, 1);
-        
-        edittype = new ChoiceBox<>();
-        edittype.setPrefWidth(280.0);
-        edittype.setMaxWidth(Double.MAX_VALUE);
-        edittype.getStyleClass().add("unitinput");
-        GridPane.setRowIndex(edittype, 2);
-        
-        Label lprops = new Label(resources.getString("label.properties"));
-        lprops.getStyleClass().add("unitsection");
-        lprops.setMaxWidth(Double.MAX_VALUE);
-        GridPane.setColumnSpan(lprops, Integer.MAX_VALUE);
-        GridPane.setRowIndex(lprops, 3);
-        
-        griddeviceunit.getChildren().addAll(section, ltype, edittype, lprops);
+        griddeviceunit.getChildren().addAll(propslabel);
         
         topicinfocontainer = new StackPane();
+        VBox.setVgrow(topicinfocontainer, Priority.SOMETIMES);
         
         vbox2.getChildren().addAll(griddeviceunit, topicinfocontainer);
 
@@ -520,13 +491,8 @@ public class ClientLoginNode {
         skins.setMaxWidth(Double.MAX_VALUE);
         skins.getStyleClass().add("unitinput");
         GridPane.setRowIndex(skins, 1);
-        
-        clock = new CheckBox(resources.getString("label.clock"));
-        clock.getStyleClass().add("unitcheckbox");
-        clock.setMnemonicParsing(false);
-        GridPane.setRowIndex(clock, 2);
-        
-        grid2.getChildren().addAll(labelstyle, skins, clock);
+
+        grid2.getChildren().addAll(labelstyle, skins);
         
         scrolltab2.setContent(grid2);
         
@@ -551,9 +517,17 @@ public class ClientLoginNode {
                 setGraphic(null);
                 setText(null);
             } else {
-                setGraphic(item.getGraphic());
+                Text t = IconBuilder.create(item.getFactory().getGlyph(), 18.0).build();
+                t.setFill(Color.WHITE);
+                TextFlow tf = new TextFlow(t);
+                tf.setTextAlignment(TextAlignment.CENTER);
+                tf.setPadding(new Insets(5, 5, 5, 5));
+                tf.setStyle("-fx-background-color: #505050; -fx-background-radius: 5px;");
+                tf.setPrefWidth(30.0);              
+                setGraphic(tf);
+                
                 String label = item.getLabel().getValue();
-                setText((label == null || label.isEmpty()) ? resources.getString("label.empty") : label);
+                setText(item.getFactory().getTypeName() + ((label == null || label.isEmpty()) ? "" : " : " + label));
             }
         }        
     }
@@ -562,28 +536,16 @@ public class ClientLoginNode {
         connections.getChildren().add(n);
     }
 
-    public void initialize() {
+    private void initialize() {
 
         nextbutton.setGraphic(IconBuilder.create(IconFontGlyph.FA_SOLID_PLAY, 18.0).styleClass("icon-fill").build());
 
-        adddeviceunit.setGraphic(IconBuilder.create(IconFontGlyph.FA_SOLID_PLUS, 18.0).styleClass("icon-fill").build());
-        removedeviceunit.setGraphic(IconBuilder.create(IconFontGlyph.FA_SOLID_MINUS, 18.0).styleClass("icon-fill").build());
+        adddeviceunit.setGraphic(IconBuilder.create(IconFontGlyph.FA_SOLID_FILE_ALT, 18.0).styleClass("icon-fill").build());
+        adddeviceunit.setText(resources.getString("title.new"));
+        
+        removedeviceunit.setGraphic(IconBuilder.create(IconFontGlyph.FA_SOLID_TRASH_ALT, 18.0).styleClass("icon-fill").build());
         updeviceunit.setGraphic(IconBuilder.create(IconFontGlyph.FA_SOLID_CHEVRON_UP, 18.0).styleClass("icon-fill").build());
         downdeviceunit.setGraphic(IconBuilder.create(IconFontGlyph.FA_SOLID_CHEVRON_DOWN, 18.0).styleClass("icon-fill").build());
-
-        edittype.setItems(FXCollections.observableArrayList("PublicationSubscription", "Subscription", "Publication", "Switch", "Code", "MessagesPublish", "MessagesSubscribe"));
-        edittype.setConverter(new StringConverter<String>() {
-            @Override public String toString(String object) {
-                return resources.getString("label.topicinfo." + object);
-            }
-            @Override public String fromString(String string) {
-                throw new UnsupportedOperationException("Not supported yet."); // Not needed for non editable selector lists
-            }
-        });
-        edittype.getSelectionModel().clearSelection();
-        edittype.valueProperty().addListener((ObservableValue<? extends String> ov, String old_val, String new_val) -> {
-            updateCurrentTopic();
-        });
 
         devicesunitsselection.selectedItemProperty().addListener((ObservableValue<? extends TopicInfo> ov, TopicInfo old_val, TopicInfo new_val) -> {
             updateDevicesUnitsList();
@@ -596,8 +558,6 @@ public class ClientLoginNode {
                 Style.changeStyle(MessageUtils.getRoot(rootpane), new_val);
             }
         });
-
-//      (host::requestFocus);
     }
 
     public Node getNode() {
@@ -605,38 +565,9 @@ public class ClientLoginNode {
     }
 
     private void updateCurrentTopic() {
-        if (!updating) {
-            int index = devicesunitsselection.getSelectedIndex();        
+        if (!updating) {     
             TopicInfo topic = devicesunitsselection.getSelectedItem();
-            String type = edittype.getValue();
-            if (!topic.getType().equals(type)) {
-                // This is just an optimization. Most of the times we can reuse current TopicInfo
-                // Create a new TopicInfo, we cannot reuse current one
-                topic = topicinfobuilder.create(type);
-                
-                updating = true;
-                                
-                TopicInfoNode node = topic.getEditNode();
-                if (editnode != null && node != editnode) {
-                    editnode.useUpdateCurrent(null);
-                    topicinfocontainer.getChildren().remove(editnode.getNode());
-                    editnode = null;
-                }
-                if (editnode == null) {
-                    editnode = node;
-                    editnode.useUpdateCurrent(this::updateCurrentTopic);
-                    topicinfocontainer.getChildren().add(editnode.getNode());                
-                }           
-                // TopicInfo -> TopicInfoNode
-                topic.writeToEditNode(); 
-                updating = false;
-                
-                devicesunitsitems.set(index, topic);
-                devicesunitsselection.select(topic);
-            } else {      
-                // TopicInfoNode -> TopicInfo
-                topic.readFromEditNode();
-            }
+            topic.readFromEditNode();
         }
     }
 
@@ -648,24 +579,21 @@ public class ClientLoginNode {
             deviceunitform.setDisable(true);
             updeviceunit.setDisable(true);
             downdeviceunit.setDisable(true);
-
-            updating = true;    
-            edittype.getSelectionModel().clearSelection();
+            propslabel.setText(resources.getString("label.properties"));
+            
             if (editnode != null) {
                 editnode.useUpdateCurrent(null);
                 topicinfocontainer.getChildren().remove(editnode.getNode());
                 editnode = null;
             }            
-            updating = false;
         } else {
             removedeviceunit.setDisable(false);
             deviceunitform.setDisable(false);
             updeviceunit.setDisable(index <= 0);
             downdeviceunit.setDisable(index >= devicesunitsitems.size() - 1);
-
-            updating = true;
-            edittype.getSelectionModel().select(topic.getType());
+            propslabel.setText(resources.getString("label.properties") + " : " + topic.getFactory().getTypeName());
             
+            updating = true;
             TopicInfoNode node = topic.getEditNode();
             if (editnode != null && node != editnode) {
                 editnode.useUpdateCurrent(null);
@@ -677,16 +605,65 @@ public class ClientLoginNode {
                 editnode.useUpdateCurrent(this::updateCurrentTopic);
                 topicinfocontainer.getChildren().add(editnode.getNode());                
             }          
-            // TopicInfo -> TopicInfoNode
             topic.writeToEditNode(); 
             updating = false;
         }
     }
 
     void onAddDeviceUnit(ActionEvent event) {
-        TopicInfo t = topicinfobuilder.create();
-        devicesunitsitems.add(t);
-        devicesunitsselection.select(t);
+
+        DialogView dialog = new DialogView();
+        List<TopicsTab> topicstabadd = new ArrayList<>();
+        
+        TabPane tabadd = new TabPane();        
+        tabadd.getStyleClass().add("unittabpane");
+        tabadd.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);        
+        
+        Consumer<ActionEvent> actionok = evOK -> {
+            TopicsTab tt = topicstabadd.get(tabadd.getSelectionModel().getSelectedIndex());
+            
+            DialogView loading3 = Dialogs.createLoading();
+            loading3.show(MessageUtils.getRoot(rootpane));             
+            CompletableAsync.handle(
+                tt.createSelected(),
+                result -> {
+                    loading3.dispose();
+                    devicesunitsitems.add(result);
+                    devicesunitsselection.select(result);  
+                }, 
+                ex -> {
+                    loading3.dispose();
+                    MessageUtils.showException(MessageUtils.getRoot(rootpane), resources.getString("title.new"),  resources.getString("exception.cannotloadunit"), ex);
+                });             
+        };
+        
+        
+        // Create Tab
+        TopicsTab topicstab0 = new TopicsGallery();
+        topicstab0.setActionOK(actionok.andThen(e -> dialog.dispose()));
+        // ADD Tab
+        topicstabadd.add(topicstab0);
+        Tab tab0 = new Tab(topicstab0.getText(), topicstab0.getNode());
+        tab0.setClosable(false);
+        
+        // Create Tab
+        TopicsTab topicstab1 = new TopicsTemplate();
+        topicstab1.setActionOK(actionok.andThen(e -> dialog.dispose()));
+        // Add Tab
+        topicstabadd.add(topicstab1);
+        Tab tab1 = new Tab(topicstab1.getText(), topicstab1.getNode());
+        tab1.setClosable(false);
+        
+        
+        tabadd.getTabs().addAll(tab0, tab1);
+             
+        dialog.setCSS("/com/adr/helloiot/styles/topicinfodialog.css");
+        dialog.setTitle(resources.getString("title.new"));
+        dialog.setContent(tabadd);
+        dialog.addButtons(dialog.createCancelButton(), dialog.createOKButton());
+        dialog.show(MessageUtils.getRoot(rootpane));              
+        dialog.setActionOK(actionok);      
+
     }
 
     void onRemoveDeviceUnit(ActionEvent event) {
@@ -743,21 +720,12 @@ public class ClientLoginNode {
     public Style getStyle() {
         return skins.getSelectionModel().getSelectedItem();
     }
-    
-    public void setClock(boolean value) {
-        clock.setSelected(value);
-    }
-    
-    public boolean isClock() {
-        return clock.isSelected();
-    }
 
     public ObservableList<TopicInfo> getTopicInfoList() {
         return devicesunitsitems;
     }
 
-    public void setTopicInfoList(TopicInfoBuilder topicinfobuilder, ObservableList<TopicInfo> list) {
-        this.topicinfobuilder = topicinfobuilder;
+    public void setTopicInfoList(ObservableList<TopicInfo> list) {
         devicesunitsitems.clear();
         devicesunitsitems.addAll(list);
         if (list.size() > 0) {
@@ -788,12 +756,8 @@ public class ClientLoginNode {
         return b;
     }
     
-    public void addToolbarButton(Button b) {
-        unitstoolbar.getItems().add(b);
-    }
-    
     public void addCodeUnit(String name, String code) {
-        TopicInfo t = topicinfobuilder.create("Code");
+        TopicInfo t = TopicInfoBuilder.INSTANCE.create("Code");
         BaseSubProperties props = new BaseSubProperties();
         props.setProperty(".name", name);
         props.setProperty(".code", code);
@@ -802,4 +766,40 @@ public class ClientLoginNode {
         devicesunitsitems.add(t);
         devicesunitsselection.select(t);        
     }
+     
+//    private Button createTradfriButton() {
+//
+//        Button b = new Button(resources.getString("button.tradfri"), IconBuilder.create(IconFontGlyph.FA_SOLID_SEARCH, 18.0).styleClass("icon-fill").build());       
+//        b.setFocusTraversable(false);
+//        b.setMnemonicParsing(false);
+//        b.getStyleClass().add("unitbutton");       
+//        b.setOnAction(e -> {
+//            ConfigProperties tempconfig = new ConfigProperties();
+//            clienttradfri.saveConfig(new ConfigSubProperties(tempconfig, "tradfri."));
+//            
+//            if (HTTPUtils.getAddress(tempconfig.getProperty("tradfri.host", "")) == null) {
+//                MessageUtils.showWarning(MessageUtils.getRoot(root), resources.getString("title.tradfridiscovery"), resources.getString("message.notradfriconnection"));                
+//                return;
+//            }
+//
+//            DialogView loading2 = Dialogs.createLoading();
+//            loading2.show(MessageUtils.getRoot(root));    
+//
+//            CompletableAsync.handle(clienttradfri.requestSample(
+//                    tempconfig.getProperty("tradfri.host"), 
+//                    tempconfig.getProperty("tradfri.identity"), 
+//                    tempconfig.getProperty("tradfri.psk")), 
+//                units -> {
+//                    loading2.dispose();
+//                    for(Map.Entry<String, String> entry: units.entrySet()) {
+//                        clientlogin.addCodeUnit(entry.getKey(), entry.getValue());
+//                    }
+//                },
+//                ex -> {                             
+//                    loading2.dispose();
+//                    MessageUtils.showException(MessageUtils.getRoot(root), resources.getString("title.tradfridiscovery"), ex.getLocalizedMessage(), ex);
+//                });  
+//        });
+//        return b;
+//    }     
 }

@@ -25,15 +25,9 @@ import com.adr.helloiotlib.format.MiniVarBoolean;
 import com.adr.helloiotlib.format.MiniVarString;
 import java.io.IOException;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.application.Application.Parameters;
 import javafx.scene.layout.StackPane;
 
-/**
- *
- * @author adrian
- */
 public class MainManagerPlatform implements MainManager {
 
     private HelloIoTApp helloiotapp = null;
@@ -42,9 +36,10 @@ public class MainManagerPlatform implements MainManager {
     public void construct(StackPane root, Parameters params) {
         
         BridgeConfig[] bridgeconfigs = new BridgeConfig[] {
-                // new BridgeConfig(new BridgeTradfri(), "TRÅDFRI/", "tradfri."),
-                new BridgeConfig(new BridgeLocal(), "_LOCAL_/mainapp/", "local."),
-                new BridgeConfig(new BridgeMQTT(), "", "mqtt.")};      
+            // new BridgeConfig(new BridgeTradfri(), "TRÅDFRI/", "tradfri."),
+            // new BridgeConfig(new BridgeTime(), "SYSTEM/time/", "time."),
+            new BridgeConfig(new BridgeLocal(), "_LOCAL_/mainapp/", "local."),
+            new BridgeConfig(new BridgeMQTT(), "", "mqtt.")};      
 
         ConfigProperties configprops = new ConfigProperties();
         try {
@@ -67,7 +62,6 @@ public class MainManagerPlatform implements MainManager {
 
         config.put("app.topicsys", new MiniVarString(configprops.getProperty("app.topicsys", "system/")));
         config.put("app.topicapp", new MiniVarString(configprops.getProperty("app.topicapp", "_LOCAL_/mainapp/")));
-        config.put("app.clock", new MiniVarBoolean(Boolean.parseBoolean(configprops.getProperty("app.clock", "false"))));
         config.put("app.exitbutton", new MiniVarBoolean(Boolean.parseBoolean(configprops.getProperty("app.exitbutton", "true"))));
         config.put("app.retryconnection", MiniVarBoolean.TRUE);
         Style.changeStyle(root, Style.valueOf(configprops.getProperty("app.style", Style.PRETTY.name())));
@@ -80,23 +74,7 @@ public class MainManagerPlatform implements MainManager {
 
         // Add all devices and units
         helloiotapp.addServiceDevicesUnits();
-
-        try {
-            helloiotapp.addFXMLFileDevicesUnits(configprops.getProperty("devicesunits"));
-        } catch (HelloIoTException ex) {
-            Logger.getLogger(MainManagerPlatform.class.getName()).log(Level.SEVERE, null, ex);
-        }
         
-
-//        TopicInfoBuilder topicinfobuilder = new TopicInfoBuilder();
-//        int topicinfosize = Integer.parseInt(configprops.getProperty("topicinfo.size", "0"));
-//        int i = 0;
-//        while (i++ < topicinfosize) {
-//            TopicInfo topicinfo = topicinfobuilder.fromProperties(new ConfigSubProperties(configprops, "topicinfo" + Integer.toString(i)));
-//            TopicStatus ts = topicinfo.getTopicStatus();
-//            helloiotapp.addDevicesUnits(ts.getDevices(), ts.getUnits());
-//        }
-
         helloiotapp.setOnDisconnectAction(event -> {
             root.getScene().getWindow().hide();
         });
@@ -109,10 +87,5 @@ public class MainManagerPlatform implements MainManager {
     public void destroy() {
         helloiotapp.stopAndDestroy();
         helloiotapp = null;
-    }
-    
-    private final String getNamedParam(Map<String, String> namedparams, String key, String defaultValue) {
-        String value;
-        return ((value = namedparams.get(key)) != null) ? value : defaultValue;        
     }
 }

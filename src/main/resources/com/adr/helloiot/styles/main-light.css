@@ -1,6 +1,6 @@
 /*
     HelloIoT is a dashboard creator for MQTT
-    Copyright (C) 2017-2018 Adrián Romero Corchado.
+    Copyright (C) 2017-2019 Adrián Romero Corchado.
 
     This file is part of HelloIot.
 
@@ -38,6 +38,7 @@
     -fx-border-fill: #909090;
 
     -fx-info-fill: #707070;
+    -fx-level-fill: #353535;          
 }
 
 .header {
@@ -90,7 +91,11 @@
 
 .unitinputview {
     -fx-font-family: 'Source Sans Pro Bold';
-    -fx-font-size: 14px;    
+    -fx-font-size: 36px;    
+}
+
+.editviewsmall .unitinputview {
+    -fx-font-size: 24px;
 }
 
 .comboinput {
@@ -298,7 +303,7 @@
     -fx-font-family: 'Source Sans Pro Regular';   
 }
 
-.messagestoolbar {
+.unittoolbar {
     -fx-background-color: -fx-background-container;
 }
 

@@ -1,5 +1,5 @@
 //    HelloIoT is a dashboard creator for MQTT
-//    Copyright (C) 2017 Adrián Romero Corchado.
+//    Copyright (C) 2019 Adrián Romero Corchado.
 //
 //    This file is part of HelloIot.
 //
@@ -16,16 +16,8 @@
 //    You should have received a copy of the GNU General Public License
 //    along with HelloIot.  If not, see <http://www.gnu.org/licenses/>.
 //
-package com.adr.helloiot;
+package com.adr.helloiot.unit;
 
-import javafx.scene.Node;
-
-/**
- *
- * @author adrian
- */
-public interface TopicInfoNode {
-    
-    public void useUpdateCurrent(Runnable updatecurrent);
-    public Node getNode();  
+public interface ChartSerieListener {
+    public void handleData(); 
 }

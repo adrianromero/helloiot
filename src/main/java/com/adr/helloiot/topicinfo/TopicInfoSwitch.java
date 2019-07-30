@@ -16,10 +16,11 @@
 //    You should have received a copy of the GNU General Public License
 //    along with HelloIot.  If not, see <http://www.gnu.org/licenses/>.
 //
-package com.adr.helloiot;
+package com.adr.helloiot.topicinfo;
 
-import com.adr.fonticon.IconBuilder;
-import com.adr.fonticon.IconFontGlyph;
+import com.adr.helloiot.DevicesUnits;
+import com.adr.helloiot.HelloIoTException;
+import com.adr.helloiot.SubProperties;
 import com.adr.helloiot.device.DeviceSwitch;
 import com.adr.helloiot.graphic.IconStatus;
 import com.adr.helloiot.mqtt.MQTTProperty;
@@ -28,19 +29,11 @@ import com.adr.helloiot.unit.UnitPage;
 import java.util.Arrays;
 import javafx.beans.property.ReadOnlyProperty;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.geometry.Insets;
-import javafx.scene.Node;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
-import javafx.scene.text.TextFlow;
 
-/**
- *
- * @author adrian
- */
 public class TopicInfoSwitch implements TopicInfo {
 
+    private final TopicInfoFactory factory;
     private final TopicInfoSwitchNode editnode;
 
     private final SimpleStringProperty name = new SimpleStringProperty();
@@ -49,32 +42,22 @@ public class TopicInfoSwitch implements TopicInfo {
     private String topicpub = null;
     private String icon = "TOGGLE";
     private Color color;
+    protected int qos = 0;
+    protected boolean retained = true;    
 
-    public TopicInfoSwitch(TopicInfoSwitchNode editnode) {
+    public TopicInfoSwitch(TopicInfoFactory factory, TopicInfoSwitchNode editnode) {
+        this.factory = factory;
         this.editnode = editnode;
     }
     
     @Override
-    public String getType() {
-        return "Switch";
+    public TopicInfoFactory getFactory() {
+        return factory;
     }
 
     @Override
     public ReadOnlyProperty<String> getLabel() {
         return name;
-    }
-    
-    @Override
-    public Node getGraphic() {
-
-        Text t = IconBuilder.create(IconFontGlyph.FA_SOLID_TOGGLE_ON, 18.0).build();
-        t.setFill(Color.WHITE);
-        TextFlow tf = new TextFlow(t);
-        tf.setTextAlignment(TextAlignment.CENTER);
-        tf.setPadding(new Insets(5, 5, 5, 5));
-        tf.setStyle("-fx-background-color: #4559d4; -fx-background-radius: 5px;");
-        tf.setPrefWidth(30.0);
-        return tf;   
     }
     
     @Override
@@ -86,18 +69,20 @@ public class TopicInfoSwitch implements TopicInfo {
         icon = properties.getProperty(".icon", "TOGGLE");
         String c = properties.getProperty(".color", null);
         color = c == null ? null : Color.valueOf(c);
+        qos = Integer.parseInt(properties.getProperty(".qos", "0"));
+        retained = Boolean.parseBoolean(properties.getProperty(".retained", "true"));        
     }
         
     @Override
     public void store(SubProperties properties) {
-        properties.setProperty(".type", getType());
-
         properties.setProperty(".name", name.getValue());
         properties.setProperty(".page", page);
         properties.setProperty(".topic", topic);
         properties.setProperty(".topicpub", topicpub);
         properties.setProperty(".icon", icon);
         properties.setProperty(".color", color == null ? null : color.toString());
+        properties.setProperty(".qos", Integer.toString(qos));
+        properties.setProperty(".retained", Boolean.toString(retained));              
     }
     
     @Override
@@ -105,8 +90,8 @@ public class TopicInfoSwitch implements TopicInfo {
         DeviceSwitch l = new DeviceSwitch();
         l.setTopic(topic);
         l.setTopicPublish(topicpub);
-        MQTTProperty.setQos(l, 0);
-        MQTTProperty.setRetained(l, false);
+        MQTTProperty.setQos(l, qos);
+        MQTTProperty.setRetained(l, retained);
 
         ButtonSimple s = new ButtonSimple();
         s.setText(getLabel().getValue());
@@ -135,6 +120,8 @@ public class TopicInfoSwitch implements TopicInfo {
         editnode.edittopicpub.setText(topicpub);
         editnode.editicon.setValue(icon);
         editnode.editcolor.setValue(color);
+        editnode.editqos.setValue(qos);
+        editnode.editretained.setValue(retained);          
     }
 
     @Override
@@ -145,6 +132,8 @@ public class TopicInfoSwitch implements TopicInfo {
         topicpub = editnode.edittopicpub.getText() == null || editnode.edittopicpub.getText().isEmpty() ? null : editnode.edittopicpub.getText();
         icon = editnode.editicon.getValue();
         color = editnode.editcolor.getValue();
+        qos = editnode.editqos.getValue();
+        retained = editnode.editretained.getValue();          
     }  
     
     private String webColor(Color color) {

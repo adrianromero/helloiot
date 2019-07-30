@@ -30,8 +30,13 @@
     
     
     -fx-info-fill: -fx-text-base-color;
+    -fx-level-fill: -fx-text-base-color;       
 }
 
-.unitmaintext {
+.unitmaintext, .unitinputview {
     -fx-font-size: 24px;  
+}
+
+.editviewsmall .unitinputview {
+    -fx-font-size: 18px;
 }

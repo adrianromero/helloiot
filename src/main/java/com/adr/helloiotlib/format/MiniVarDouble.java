@@ -1,5 +1,5 @@
 //    HelloIoT is a dashboard creator for MQTT
-//    Copyright (C) 2017-2018 Adrián Romero Corchado.
+//    Copyright (C) 2017-2019 Adrián Romero Corchado.
 //
 //    This file is part of HelloIot.
 //
@@ -46,6 +46,11 @@ public class MiniVarDouble implements MiniVar {
     public int asInt() {
         return value == null ? 0 : value.intValue();
     }    
+    
+    @Override
+    public long asLong() {
+         return value == null ? 0L : value.longValue();
+    }
 
     @Override
     public boolean asBoolean() {

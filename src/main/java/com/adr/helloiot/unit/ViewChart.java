@@ -1,5 +1,5 @@
 //    HelloIoT is a dashboard creator for MQTT
-//    Copyright (C) 2017-2018 Adrián Romero Corchado.
+//    Copyright (C) 2017-2019 Adrián Romero Corchado.
 //
 //    This file is part of HelloIot.
 //
@@ -18,6 +18,8 @@
 //
 package com.adr.helloiot.unit;
 
+import com.adr.fonticon.IconBuilder;
+import com.adr.fonticon.IconFontGlyph;
 import com.adr.helloiotlib.app.IoTApp;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,89 +27,79 @@ import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.beans.DefaultProperty;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Side;
 import javafx.scene.Node;
-import javafx.scene.chart.AreaChart;
-import javafx.scene.chart.NumberAxis;
-import javafx.scene.chart.XYChart;
+import javafx.scene.control.Label;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 
-/**
- *
- * @author adrian
- */
 @DefaultProperty("series")
 public class ViewChart extends Tile {
 
-    private StackPane chartcontainer; 
+    private ChartNode areachart;
+    private BorderPane chartcontainer; 
+    private VBox legendcontainer;
     private boolean legendVisible = true;
     private Side legendSide  = Side.RIGHT;
     private Timeline timeline;
-    private final List<ViewChartSerie> series = new ArrayList<>();
+    private final List<ChartSerie> series = new ArrayList<>();
     private Duration duration = Duration.minutes(1.0);
 
     @Override
     protected Node constructContent() {
-        chartcontainer = new StackPane();
+        areachart = new ChartNode();
+        StackPane chart = areachart.getNode();
+        chart.setMinSize(40.0, 240.0);
+        chart.setPrefSize(40.0, 240.0);
+        chart.setPadding(Insets.EMPTY);
+        
+        legendcontainer = new VBox();
+        legendcontainer.getStyleClass().add("unitchartlegend");
+        
+        chartcontainer = new BorderPane(chart);
         return chartcontainer;
     }
 
     @Override
     public void construct(IoTApp app) {
         super.construct(app);
-        
-        // Get all data
-        double min = Double.MAX_VALUE;
-        double max = Double.MIN_VALUE;
-        double inc = 0.0;
-        List<XYChart.Series<Number, Number>> chartdata = new ArrayList<>();
-        for (ViewChartSerie serie: series) {
-            serie.construct();
-            min = Math.min(min, serie.getDevice().getLevelMin() - 5.0);
-            max = Math.max(max, serie.getDevice().getLevelMax() + 5.0);
-            inc = Math.max(inc, serie.getDevice().getIncrement());
-            chartdata.add(serie.createSerie());
-        }
-        ObservableList<XYChart.Series<Number, Number>> areaChartData = FXCollections.observableArrayList(chartdata);       
-        
-        AreaChart chart;
-        NumberAxis xAxis;
-        NumberAxis yAxis;
-    
-        xAxis = new NumberAxis(1.0, ViewChartSerie.SIZE, 0.0);
-        xAxis.setMinorTickVisible(false);
-        xAxis.setTickMarkVisible(false);     
-        xAxis.setTickLabelsVisible(false);
-        yAxis = new NumberAxis(min, max, inc * 10.0);
-        yAxis.setSide(Side.RIGHT);
-        yAxis.setMinorTickVisible(false);        
-        yAxis.setTickMarkVisible(false);
-        yAxis.setTickLabelsVisible(false);
-        
-        chart = new AreaChart<>(xAxis, yAxis, areaChartData);
-        chart.setLegendVisible(legendVisible);
-        chart.setLegendSide(legendSide);
-        chart.setAnimated(false);
-        chart.setCreateSymbols(false);
-        chart.setVerticalGridLinesVisible(false);
-        chart.setHorizontalGridLinesVisible(false);
-        chart.setMinSize(40.0, 240.0);
-        chart.setPrefSize(40.0, 240.0);
-        chart.setPadding(Insets.EMPTY);
 
-        StackPane stack = new StackPane(chart);
-        stack.setPadding(new Insets(0.0, 0.0, 0.0, 3.0));
-        chartcontainer.getChildren().add(stack); 
+        for (ChartSerie serie: series) {
+            serie.construct();
+            areachart.addShapeChart(new ShapeChartArea(serie));
+            
+            Label legend = new Label(serie.getLabel());
+            legend.getStyleClass().addAll("chartlegend", serie.getStyleClass() + "-legend");
+            legend.setGraphic(IconBuilder.create(IconFontGlyph.FA_SOLID_CIRCLE, 10.0)
+                    .styleClass(serie.getStyleClass() + "-line")
+                    .styleClass(serie.getStyleClass() + "-fill")
+                    .build());
+            legendcontainer.getChildren().add(legend);
+        }
         
-        timeline = new Timeline(new KeyFrame(duration.divide(ViewChartSerie.SIZE), ae -> {
-            for (ViewChartSerie serie: series) {
+        if (legendVisible) {
+            if (legendSide == Side.RIGHT) {
+                chartcontainer.setRight(legendcontainer);
+            } else if (legendSide == Side.BOTTOM) {
+                chartcontainer.setBottom(legendcontainer);
+            } else if (legendSide == Side.LEFT) {
+                chartcontainer.setLeft(legendcontainer);
+            } else if (legendSide == Side.TOP) {
+                chartcontainer.setTop(legendcontainer);
+            } else {
+                chartcontainer.setRight(legendcontainer);
+            }       
+        }
+
+        timeline = new Timeline(new KeyFrame(duration.divide(ChartSerie.SIZE), ae -> {
+            for (ChartSerie serie: series) {
                 serie.tick();
             }    
         }));  
+        
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
         // Do not update status all values come from messages
@@ -119,13 +111,17 @@ public class ViewChart extends Tile {
         
         timeline.stop();
         timeline = null;
-        for (ViewChartSerie serie: series) {
-            serie.destroy();
+        
+        for (ChartSerie serie: series) {
+            serie.setListener(null);
+            serie.destroy();   
         }       
-        chartcontainer.getChildren().clear();
+        legendcontainer.getChildren().clear();
+        chartcontainer.getChildren().remove(legendcontainer); 
+        areachart.removeAllShapeChart();
     }
 
-    public List<ViewChartSerie> getSeries() {
+    public List<ChartSerie> getSeries() {
         return series;
     }
 
