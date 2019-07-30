@@ -25,10 +25,9 @@
       <RowConstraints minHeight="30.0" prefHeight="30.0" />
       <RowConstraints />
       <RowConstraints minHeight="30.0" prefHeight="30.0" />
-      <RowConstraints minHeight="30.0" prefHeight="30.0" />
-      <RowConstraints minHeight="30.0" prefHeight="30.0" />
       <RowConstraints />
       <RowConstraints minHeight="30.0" prefHeight="30.0" />
+      <RowConstraints />
       <RowConstraints minHeight="30.0" prefHeight="30.0" />
       <RowConstraints />
       <RowConstraints minHeight="30.0" prefHeight="30.0" />
@@ -57,19 +56,32 @@
       <TextField fx:id="edittopic" styleClass="unitinput" GridPane.rowIndex="5" />
       <Label fx:id="labeltopicpub" disable="true" styleClass="unitlabel" text="%label.topicpub" GridPane.rowIndex="6" />
       <TextField fx:id="edittopicpub" disable="true" styleClass="unitinput" GridPane.rowIndex="7" />
+      <Label styleClass="unitlabel" text="%label.gaugetype" GridPane.rowIndex="8" />
+      <ChoiceBox fx:id="editgaugetype" maxWidth="1.7976931348623157E308" styleClass="unitinput" GridPane.rowIndex="9" />
       <Label styleClass="unitlabel" text="%label.format" GridPane.rowIndex="10" />
-      <ChoiceBox fx:id="editformat" maxWidth="1.7976931348623157E308" styleClass="unitinput" GridPane.rowIndex="12" />
-      <Label styleClass="unitlabel" text="%label.jsonpath" GridPane.rowIndex="13" />
-      <TextField fx:id="editjsonpath" styleClass="unitinput" GridPane.rowIndex="14" />
-      <Label styleClass="unitlabel" text="%label.color" GridPane.rowIndex="21" />
-      <HBox alignment="CENTER_LEFT" spacing="10.0" GridPane.rowIndex="22">
+      <ChoiceBox fx:id="editformat" maxWidth="1.7976931348623157E308" styleClass="unitinput" GridPane.rowIndex="11" />
+      <Label styleClass="unitlabel" text="%label.jsonpath" GridPane.rowIndex="12" />
+      <TextField fx:id="editjsonpath" styleClass="unitinput" GridPane.rowIndex="13" />
+      <Label styleClass="unitlabel" text="%label.min" GridPane.rowIndex="14" />
+      <TextField fx:id="editmin" alignment="CENTER_RIGHT" maxWidth="-Infinity" prefWidth="100.0" styleClass="unitinput" GridPane.rowIndex="15" />
+      <Label styleClass="unitlabel" text="%label.max" GridPane.rowIndex="16" />
+      <TextField fx:id="editmax" alignment="CENTER_RIGHT" maxWidth="-Infinity" prefWidth="100.0" styleClass="unitinput" GridPane.rowIndex="17" />
+      <Label styleClass="unitlabel" text="%label.barcolor" GridPane.rowIndex="18" />
+      <HBox alignment="CENTER_LEFT" spacing="10.0" GridPane.rowIndex="19">
+         <children>
+            <ColorPicker fx:id="editbarcolor" maxWidth="1.7976931348623157E308" styleClass="unitinput" HBox.hgrow="SOMETIMES" />
+            <Button fx:id="clearbarcolor" mnemonicParsing="false" onAction="#onClearBarColor" styleClass="unitbutton" />
+         </children>
+      </HBox>
+      <Label styleClass="unitlabel" text="%label.color" GridPane.rowIndex="20" />
+      <HBox alignment="CENTER_LEFT" spacing="10.0" GridPane.rowIndex="21">
          <children>
             <ColorPicker fx:id="editcolor" maxWidth="1.7976931348623157E308" styleClass="unitinput" HBox.hgrow="SOMETIMES" />
             <Button fx:id="clearcolor" mnemonicParsing="false" onAction="#onClearColor" styleClass="unitbutton" />
          </children>
       </HBox>
-      <Label styleClass="unitlabel" text="%label.background" GridPane.rowIndex="23" />
-      <HBox alignment="CENTER_LEFT" spacing="10.0" GridPane.rowIndex="24">
+      <Label styleClass="unitlabel" text="%label.background" GridPane.rowIndex="22" />
+      <HBox alignment="CENTER_LEFT" spacing="10.0" GridPane.rowIndex="23">
          <children>
             <ColorPicker fx:id="editbackground" maxWidth="1.7976931348623157E308" styleClass="unitinput" HBox.hgrow="SOMETIMES" />
             <Button fx:id="clearbackground" mnemonicParsing="false" onAction="#onClearBackground" styleClass="unitbutton" />
@@ -78,24 +90,11 @@
             <Insets />
          </GridPane.margin>
       </HBox>
-      <Label maxWidth="1.7976931348623157E308" styleClass="unitsection" text="%label.extendedproperties" GridPane.columnSpan="2147483647" GridPane.rowIndex="25" />
-      <Label styleClass="unitlabel" text="%label.qos" GridPane.rowIndex="26" />
-      <ChoiceBox fx:id="editqos" maxWidth="1.7976931348623157E308" styleClass="unitinput" GridPane.rowIndex="27" />
-      <Label styleClass="unitlabel" text="%label.retained" GridPane.rowIndex="28" />
-      <ChoiceBox fx:id="editretained" maxWidth="1.7976931348623157E308" styleClass="unitinput" GridPane.rowIndex="29" />
-      <Label styleClass="unitlabel" text="%label.min" GridPane.rowIndex="15" />
-      <TextField fx:id="editmin" alignment="CENTER_RIGHT" maxWidth="-Infinity" prefWidth="100.0" styleClass="unitinput" GridPane.rowIndex="16" />
-      <Label styleClass="unitlabel" text="%label.max" GridPane.rowIndex="17" />
-      <TextField fx:id="editmax" alignment="CENTER_RIGHT" maxWidth="-Infinity" prefWidth="100.0" styleClass="unitinput" GridPane.rowIndex="18" />
-      <Label styleClass="unitlabel" text="%label.barcolor" GridPane.rowIndex="19" />
-      <HBox alignment="CENTER_LEFT" spacing="10.0" GridPane.rowIndex="20">
-         <children>
-            <ColorPicker fx:id="editbarcolor" maxWidth="1.7976931348623157E308" styleClass="unitinput" HBox.hgrow="SOMETIMES" />
-            <Button fx:id="clearbarcolor" mnemonicParsing="false" onAction="#onClearBackColor" styleClass="unitbutton" />
-         </children>
-      </HBox>
-      <Label styleClass="unitlabel" text="%label.gaugetype" GridPane.rowIndex="8" />
-      <ChoiceBox fx:id="editgaugetype" maxWidth="1.7976931348623157E308" styleClass="unitinput" GridPane.rowIndex="9" />
+      <Label maxWidth="1.7976931348623157E308" styleClass="unitsection" text="%label.extendedproperties" GridPane.columnSpan="2147483647" GridPane.rowIndex="24" />
+      <Label styleClass="unitlabel" text="%label.qos" GridPane.rowIndex="25" />
+      <ChoiceBox fx:id="editqos" maxWidth="1.7976931348623157E308" styleClass="unitinput" GridPane.rowIndex="26" />
+      <Label styleClass="unitlabel" text="%label.retained" GridPane.rowIndex="27" />
+      <ChoiceBox fx:id="editretained" maxWidth="1.7976931348623157E308" styleClass="unitinput" GridPane.rowIndex="28" />
    </children>
    <padding>
       <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
