@@ -52,7 +52,7 @@
       <TextField fx:id="edittopicpub" styleClass="unitinput" GridPane.rowIndex="7" />
       <Label styleClass="unitlabel" text="%label.format" GridPane.rowIndex="8" />
       <ChoiceBox fx:id="editformat" maxWidth="1.7976931348623157E308" styleClass="unitinput" GridPane.rowIndex="9" />
-      <Label styleClass="unitlabel" text="%label.jsonpath" GridPane.rowIndex="10" />
+      <Label fx:id="labeljsonpath" styleClass="unitlabel" text="%label.jsonpath" GridPane.rowIndex="10" />
       <TextField fx:id="editjsonpath" styleClass="unitinput" GridPane.rowIndex="11" />
       <Label styleClass="unitlabel" text="%label.color" GridPane.rowIndex="12" />
       <HBox alignment="CENTER_LEFT" spacing="10.0" GridPane.rowIndex="13">

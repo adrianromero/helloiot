@@ -1,5 +1,5 @@
 //    HelloIoT is a dashboard creator for MQTT
-//    Copyright (C) 2018 Adrián Romero Corchado.
+//    Copyright (C) 2018-2019 Adrián Romero Corchado.
 //
 //    This file is part of HelloIot.
 //
@@ -20,37 +20,22 @@ package com.adr.helloiot;
 
 import javafx.scene.layout.StackPane;
 
-/**
- *
- * @author adrian
- */
 public enum Style {
     
-    PRETTY("Pretty", "/com/adr/helloiot/styles/main"),
-    LIGHT("Light", "/com/adr/helloiot/styles/main-light"),
-    DARK("Dark", "/com/adr/helloiot/styles/main-dark"),
-    CLASSIC("Classic", "/com/adr/helloiot/styles/empty");
+    PRETTY("/com/adr/helloiot/styles/main"),
+    LIGHT("/com/adr/helloiot/styles/main-light"),
+    DARK("/com/adr/helloiot/styles/main-dark"),
+    CLASSIC("/com/adr/helloiot/styles/empty");
     
-    private final String displayname;
     private final String styleurl;
     
-    private Style(String displayname, String styleurl) {
-        this.displayname = displayname;
+    private Style(String styleurl) {
         this.styleurl = styleurl;
-    }
-    
-    public String geDisplayName() {
-        return displayname;
     }
     
     public String getStyleURL() {
         return styleurl;
     }
-    
-    @Override
-    public String toString() {
-        return displayname;
-    }  
     
     public static void changeStyle(StackPane root, Style style) {
         
