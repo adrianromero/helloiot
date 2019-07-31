@@ -72,6 +72,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.scene.text.TextFlow;
+import javafx.util.StringConverter;
 
 public class ClientLoginNode {
 
@@ -555,7 +556,17 @@ public class ClientLoginNode {
             updateDevicesUnitsList();
         });
         updateDevicesUnitsList();
-
+        
+        skins.setConverter(new StringConverter<Style>() {
+            @Override
+            public String toString(Style style) {
+                return resources.getString("style." + style.name());
+            }
+            @Override
+            public Style fromString(String value) {
+                return null;
+            }
+        });
         skins.getItems().addAll(Style.values());
         skins.getSelectionModel().selectedItemProperty().addListener((ov, old_val, new_val) -> {
             if (!updating) {
