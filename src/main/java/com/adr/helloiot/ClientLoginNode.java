@@ -62,6 +62,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.RowConstraints;
@@ -380,7 +381,15 @@ public class ClientLoginNode {
         downdeviceunit.getStyleClass().add("unitbutton");
         downdeviceunit.setOnAction(this::onDownDeviceUnit);
         
-        unitstoolbar.getItems().addAll(adddeviceunit, sep, removedeviceunit, updeviceunit, downdeviceunit);
+        Pane p = new Pane();
+        HBox.setHgrow(p, Priority.ALWAYS);
+        
+        devicesunitscounter_mobile = new Label();
+        devicesunitscounter_mobile.setMinWidth(50.0);
+        devicesunitscounter_mobile.setAlignment(Pos.CENTER);
+        devicesunitscounter_mobile.getStyleClass().add("unitlabel");
+        
+        unitstoolbar.getItems().addAll(adddeviceunit, sep, removedeviceunit, updeviceunit, downdeviceunit, p, devicesunitscounter_mobile);
         
         borderpanetab1.setTop(unitstoolbar); 
                 
@@ -394,13 +403,13 @@ public class ClientLoginNode {
         hboxdeviceunitscontainer.setAlignment(Pos.CENTER_LEFT);
         
         devicesunitslist_mobile = new ComboBox<>();
-        devicesunitslist_mobile.setMinSize(280.0, 40.0);
+        devicesunitslist_mobile.setMinSize(180.0, 40.0);
         devicesunitslist_mobile.setPrefSize(280.0, 40.0);
         devicesunitslist_mobile.setMaxSize(Double.MAX_VALUE, 40.0);
         devicesunitslist_mobile.getStyleClass().add("unitinput");
         devicesunitslist_mobile.setButtonCell(new DevicesUnitsListCell()); 
         devicesunitslist_mobile.setCellFactory((ListView<TopicInfo> list) -> new DevicesUnitsListCell());  
-        HBox.setHgrow(devicesunitslist_mobile, Priority.SOMETIMES);
+        HBox.setHgrow(devicesunitslist_mobile, Priority.ALWAYS);
         devicesunitsselection = devicesunitslist_mobile.getSelectionModel();
         devicesunitsitems = FXCollections.observableArrayList(t -> new Observable[]{
             t.getLabel()
@@ -413,12 +422,7 @@ public class ClientLoginNode {
             changeCounterLabel(devicesunitsselection.getSelectedIndex(), devicesunitsitems.size());
         });
         
-        devicesunitscounter_mobile = new Label();
-        devicesunitscounter_mobile.setMinWidth(80.0);
-        devicesunitscounter_mobile.setAlignment(Pos.CENTER);
-        devicesunitscounter_mobile.getStyleClass().add("unitlabel");
-        
-        hboxdeviceunitscontainer.getChildren().addAll(devicesunitslist_mobile, devicesunitscounter_mobile);
+        hboxdeviceunitscontainer.getChildren().addAll(devicesunitslist_mobile);
         ////
         
         deviceunitform = new ScrollPane();
@@ -551,7 +555,7 @@ public class ClientLoginNode {
             updateDevicesUnitsList();
         });
         updateDevicesUnitsList();
-        
+
         skins.getItems().addAll(Style.values());
         skins.getSelectionModel().selectedItemProperty().addListener((ov, old_val, new_val) -> {
             if (!updating) {
