@@ -21,6 +21,7 @@ package com.adr.helloiot.unit;
 import com.adr.fonticon.IconFontGlyph;
 import com.adr.fonticon.IconBuilder;
 import com.adr.hellocommon.dialog.MessageUtils;
+import com.adr.helloiot.HelloPlatform;
 import com.adr.helloiot.device.TreePublish;
 import com.adr.helloiot.mqtt.MQTTProperty;
 import com.adr.helloiotlib.app.IoTApp;
@@ -34,6 +35,9 @@ import com.adr.helloiotlib.format.StringFormatIdentity;
 import com.adr.helloiotlib.format.StringFormatJSONPretty;
 import com.adr.helloiotlib.unit.Unit;
 import java.util.ResourceBundle;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
@@ -52,6 +56,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import javafx.util.Duration;
 
 /**
  *
@@ -92,7 +97,7 @@ public class PublicationsPage extends VBox implements Unit {
         load();
     }
 
-    public void load() {
+    private void load() {
         
         HBox.setHgrow(this, Priority.ALWAYS);
         
@@ -102,9 +107,20 @@ public class PublicationsPage extends VBox implements Unit {
         topic = new ComboBox<String>();
         topic.setPromptText(resources.getString("input.topic"));
         topic.setEditable(true);
-        topic.setPrefWidth(300.0);
+        topic.setPrefWidth(200.0);
+        topic.setMaxWidth(Double.MAX_VALUE);
         topic.getStyleClass().add("unitcombobox");
+        HBox.setHgrow(topic, Priority.ALWAYS);
         
+        sendmessage = new Button(resources.getString("button.send"));
+        sendmessage.setMnemonicParsing(false);
+        sendmessage.getStyleClass().add("unitbutton");
+        sendmessage.setGraphic(IconBuilder.create(IconFontGlyph.FA_SOLID_PAPER_PLANE, 18.0).styleClass("icon-fill").build());
+        sendmessage.setOnAction(this::actionSendMessage);
+        
+        topiccontainer = new ToolBar(topic, sendmessage);    
+        topiccontainer.getStyleClass().add("unittoolbar");
+
         delay = new TextField();
         delay.setPromptText(resources.getString("input.delay"));
         delay.setEditable(true);
@@ -112,16 +128,10 @@ public class PublicationsPage extends VBox implements Unit {
         delay.setMinWidth(50.0);
         delay.getStyleClass().add("unitinput");   
         
-        sendmessage = new Button();
-        sendmessage.setMnemonicParsing(false);
-        sendmessage.setFocusTraversable(false);
-        sendmessage.getStyleClass().add("unitbutton");
-        sendmessage.setGraphic(IconBuilder.create(IconFontGlyph.FA_SOLID_PAPER_PLANE, 18.0).styleClass("icon-fill").build());
-        sendmessage.setOnAction(this::actionSendMessage);
+        Separator formatsepa = new Separator();
+        formatsepa.setOrientation(Orientation.VERTICAL);
+        formatsepa.setFocusTraversable(false);          
         
-        topiccontainer = new ToolBar(topic, delay, sendmessage);    
-        topiccontainer.getStyleClass().add("unittoolbar");
-
         retained = new CheckBox(resources.getString("label.retained"));
         retained.setMnemonicParsing(false);
         retained.getStyleClass().add("unitcheckbox");  
@@ -175,7 +185,6 @@ public class PublicationsPage extends VBox implements Unit {
         formathex.setToggleGroup(formatsgroup);
         formathex.getStyleClass().add("unitradiobutton");
         formathex.setUserData(StringFormatHex.INSTANCE);        
-     
         
         formatbase64 = new RadioButton(resources.getString("label.base64"));
         formatbase64.setMnemonicParsing(false);
@@ -183,7 +192,7 @@ public class PublicationsPage extends VBox implements Unit {
         formatbase64.getStyleClass().add("unitradiobutton");
         formatbase64.setUserData(StringFormatBase64.INSTANCE);        
         
-        toolbar = new ToolBar(retained, formatsep0, qos0, qos1, qos2, formatsep, formatplain, formatjson, formathex, formatbase64);
+        toolbar = new ToolBar(delay, formatsepa, retained, formatsep0, qos0, qos1, qos2, formatsep, formatplain, formatjson, formathex, formatbase64);
         toolbar.getStyleClass().add("unittoolbar");
         
         payload = new TextArea();
