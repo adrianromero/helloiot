@@ -37,18 +37,18 @@ public class TopicInfoBuilder {
     private Map<String, TopicInfoFactory> factories = new LinkedHashMap<>();
     
     public static final TopicInfoBuilder INSTANCE = new TopicInfoBuilder();
-    
+
     private TopicInfoBuilder() { 
         put(new TopicInfoFactoryView());
         put(new TopicInfoFactoryEdit());
         put(new TopicInfoFactorySend());
+        put(new TopicInfoFactoryGauge());
         put(new TopicInfoFactorySwitch());
         put(new TopicInfoFactoryMessagesPublish());
         put(new TopicInfoFactoryMessagesSubscribe());
         put(new TopicInfoFactoryCode());
-        put(new TopicInfoFactoryGauge());
     }
-    
+
     private void put(TopicInfoFactory factory) {
         factories.put(factory.getType(), factory);
     }
