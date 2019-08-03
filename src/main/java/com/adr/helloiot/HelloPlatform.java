@@ -32,10 +32,6 @@ import java.util.logging.Logger;
 import javafx.geometry.Rectangle2D;
 import javafx.stage.Screen;
 
-/**
- *
- * @author adrian
- */
 public abstract class HelloPlatform {
 
     private final static String APP_PROPERTIES = "app.properties";    
@@ -120,7 +116,7 @@ public abstract class HelloPlatform {
 
     public abstract String getHome();
     
-    public abstract File getFile(String file);
+    public abstract File getFile(String file) throws IOException;
 
     public abstract boolean isFullScreen();
 

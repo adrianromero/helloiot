@@ -39,10 +39,6 @@ import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/**
- *
- * @author adrian
- */
 public class ManagerLocal implements ManagerProtocol {
 
     private final static Logger logger = Logger.getLogger(ManagerLocal.class.getName());
@@ -122,11 +118,10 @@ public class ManagerLocal implements ManagerProtocol {
     @SuppressWarnings("unchecked")
     private void readMapClient() {
         mapClient = null;
-        File dbfile = HelloPlatform.getInstance().getFile("localmsg-" + fileid + ".map"); 
-        try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(dbfile))) {  
+        try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(getDBFile()))) {  
             mapClient = (ConcurrentMap<String, byte[]>) in.readObject();
         } catch (IOException | ClassNotFoundException ex) {
-            logger.log(Level.WARNING, String.format("Creating map. Local map file not found: %s.", dbfile));
+            logger.log(Level.WARNING, String.format("Creating map. Local map file not found: %s.", getDBFileName()));
         }
         
         if (mapClient == null) {
@@ -143,9 +138,16 @@ public class ManagerLocal implements ManagerProtocol {
     }
     
     private void writeMapClient() throws IOException {
-        File dbfile = HelloPlatform.getInstance().getFile("localmsg-" + fileid + ".map"); 
-        try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(dbfile))) {
+        try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(getDBFile()))) {
             out.writeObject(mapClient); 
         }      
-    }    
+    }   
+    
+    private String getDBFileName() {
+        return "localmsg-" + fileid + ".map";
+    }
+    
+    private File getDBFile() throws IOException{
+        return HelloPlatform.getInstance().getFile(getDBFileName());
+    }
 }
