@@ -67,7 +67,7 @@ public abstract class MainApp extends Application {
             if (maximized) {
                 stage.setMaximized(true);
             } else {
-                stage.setWidth(Double.parseDouble(HelloPlatform.getInstance().getProperty("window.width", "800.0")));
+                stage.setWidth(Double.parseDouble(HelloPlatform.getInstance().getProperty("window.width", "850.0")));
                 stage.setHeight(Double.parseDouble(HelloPlatform.getInstance().getProperty("window.height", "600.0")));
             }
         }
