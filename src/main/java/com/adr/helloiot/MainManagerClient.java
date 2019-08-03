@@ -58,7 +58,6 @@ public class MainManagerClient implements MainManager {
     private ClientLoginNode clientlogin = null;
     private ConnectUI[] connectuis = null;
 
-    private File configfile;
     private StackPane root = null;
     
     public MainManagerClient() {
@@ -76,9 +75,9 @@ public class MainManagerClient implements MainManager {
         
         ConfigProperties configprops = new ConfigProperties();            
         try {
-            configprops.load(() -> new FileInputStream(configfile));
+            configprops.load(() -> new FileInputStream(getPropsFile()));
         } catch (IOException ex) {        
-            LOGGER.log(Level.WARNING, String.format("Using defaults. Properties file not found: %s.", configfile));            
+            LOGGER.log(Level.WARNING, String.format("Using defaults. Properties file not found: %s.", CONFIG_PROPERTIES));            
         }        
         
         connectuis = new ConnectUI[bridgeconfigs.length];
@@ -163,7 +162,7 @@ public class MainManagerClient implements MainManager {
             }
 
             try {
-                configprops.save(() -> new FileOutputStream(configfile));
+                configprops.save(() -> new FileOutputStream(getPropsFile()));
             } catch (IOException ex) {
                 LOGGER.log(Level.WARNING, "Cannot save configuration properties.", ex);
             }
@@ -180,10 +179,10 @@ public class MainManagerClient implements MainManager {
                
         ConfigProperties configprops = new ConfigProperties();           
         try {
-            configprops.load(() -> new FileInputStream(configfile));
+            configprops.load(() -> new FileInputStream(getPropsFile()));
         } catch (IOException ex) {
             // No properties file found, then use defaults and continue
-            LOGGER.log(Level.WARNING, () -> String.format("Using defaults. Properties file not found: %s.", configfile));
+            LOGGER.log(Level.WARNING, () -> String.format("Using defaults. Properties file not found: %s.", CONFIG_PROPERTIES));
         }            
 
         VarProperties config = new VarProperties();
@@ -257,8 +256,6 @@ public class MainManagerClient implements MainManager {
     @Override
     public void construct(StackPane root, Parameters params) {
         this.root = root;
-
-        configfile = HelloPlatform.getInstance().getFile(CONFIG_PROPERTIES);      
         
         boolean status = Boolean.parseBoolean(HelloPlatform.getInstance().getProperty("window.status", "false"));
         if (status) {
@@ -279,4 +276,8 @@ public class MainManagerClient implements MainManager {
         hideLogin();
         hideApplication();
     } 
+    
+    private File getPropsFile() throws IOException {
+        return HelloPlatform.getInstance().getFile(CONFIG_PROPERTIES);
+    }
 }

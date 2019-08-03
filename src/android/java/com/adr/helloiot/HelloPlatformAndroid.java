@@ -1,5 +1,5 @@
 //    HelloIoT is a dashboard creator for MQTT
-//    Copyright (C) 2017-2018 Adrián Romero Corchado.
+//    Copyright (C) 2017-2019 Adrián Romero Corchado.
 //
 //    This file is part of HelloIot.
 //
@@ -23,6 +23,7 @@ import android.view.WindowManager;
 import javafxports.android.FXActivity;
 import com.adr.helloiot.scripting.Rhino;
 import com.adr.helloiot.scripting.Script;
+import java.io.IOException;
 import java.io.File;
 /**
  *
@@ -32,7 +33,7 @@ public class HelloPlatformAndroid extends HelloPlatform {
     
     private final FXActivity context;
 
-    public HelloPlatformAndroid(){
+    public HelloPlatformAndroid() {
         context = FXActivity.getInstance();
     }
     
@@ -42,7 +43,7 @@ public class HelloPlatformAndroid extends HelloPlatform {
     }
          
     @Override
-    public File getFile(String fileName){
+    public File getFile(String fileName) throws IOException {
         return new File(context.getFilesDir(), fileName);
     }
     
@@ -62,5 +63,5 @@ public class HelloPlatformAndroid extends HelloPlatform {
             Window window = context.getWindow();
             window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         });
-    } 
+    }
 }

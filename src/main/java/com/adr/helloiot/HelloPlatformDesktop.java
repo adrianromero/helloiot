@@ -21,25 +21,29 @@ package com.adr.helloiot;
 import com.adr.helloiot.scripting.Nashorn;
 import com.adr.helloiot.scripting.Script;
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
-/**
- *
- * @author adrian
- */
 public class HelloPlatformDesktop extends HelloPlatform {
-
+    
     @Override
     public String getHome() {
        return System.getProperty("HELLOIOT_HOME"); 
     }
-    
+        
     @Override
-    public File getFile(String file) {
+    public File getFile(String file) throws IOException {
         String home = getHome();
-        if (home == null || home.isEmpty()) {
-            home = System.getProperty("user.home") + "/.helloiot";
-        }
-        return new File(home, file);
+        String homepath = (home == null || home.isEmpty()) 
+                ? System.getProperty("user.home")
+                : home;   
+        Path root = Paths.get(homepath, ".helloiot");
+        
+        Files.createDirectories(root);
+        
+        return root.resolve(file).toFile();
     }
 
     @Override
