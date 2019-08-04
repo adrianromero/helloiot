@@ -1,8 +1,8 @@
 HelloIoT [![Release](https://jitpack.io/v/adrianromero/helloiot.svg)](https://jitpack.io/#adrianromero/helloiot)
 ========
 
-HelloIoT is a [MQTT](https://en.wikipedia.org/wiki/MQTT) and [IKEA Tradfri](https://www.ikea.com/gb/en/products/lighting/smart-lighting/) dashboard application. 
-You can use HelloIoT as a MQTT and IKEA Tradfri client application to publish and subscribe to topics or you can use HelloIoT as a client platform to create your own dashboard. 
+HelloIoT is a [MQTT](https://en.wikipedia.org/wiki/MQTT) dashboard application. 
+You can use HelloIoT as a MQTT client application to publish and subscribe to topics or you can use HelloIoT as a client platform to create your own dashboard. 
 HelloIoT is a Java multiplatform application and it can run on Windows, MacOS, Linux or Android.
 
 ![Screenshot](https://i.imgur.com/qgvpxgy.png) 
@@ -13,24 +13,25 @@ Getting started
 Install and execute HelloIoT
 ----------------------------
 
-To run HelloIoT just download and uncompress the appropiate release file. The executable is located in image/bin/HelloIoT.
+To run HelloIoT for desktop systems, just download and uncompress the appropiate release file. The executable is located in image/bin/HelloIoT.
 
-* [helloiot-1.1.020-win.zip](https://github.com/adrianromero/helloiot/releases/download/1.1.020/helloiot-1.1.020-win.zip) Windows
-* [helloiot-1.1.020-mac.zip](https://github.com/adrianromero/helloiot/releases/download/1.1.020/helloiot-1.1.020-mac.zip) MacOS
-* [helloiot-1.1.020-linux.zip](https://github.com/adrianromero/helloiot/releases/download/1.1.020/helloiot-1.1.020-linux.zip) Linux
-* [helloiot-1.1.020.apk](https://github.com/adrianromero/helloiot/releases/download/1.1.020/helloiot-1.1.020.apk) Android
+* [helloiot-1.1.030-windows.zip](https://github.com/adrianromero/helloiot/releases/download/1.1.030/helloiot-1.1.030-windows.zip) Windows
+* [helloiot-1.1.030-macos.zip](https://github.com/adrianromero/helloiot/releases/download/1.1.030/helloiot-1.1.030-macos.zip) MacOS
+* [helloiot-1.1.030-linux.zip](https://github.com/adrianromero/helloiot/releases/download/1.1.030/helloiot-1.1.030-linux.zip) Linux
 
-[![Installing HelloIoT](https://img.youtube.com/vi/RuxUUHpTbR0/0.jpg)](https://www.youtube.com/watch?v=RuxUUHpTbR0)
+To run HelloIoT for Android you must allow your device to install unknown apps, download the following release file and install.
+
+* [helloiot-1.1.030.apk](https://github.com/adrianromero/helloiot/releases/download/1.1.030/helloiot-1.1.030.apk) Android
 
 Install a MQTT Broker
 ----------------------
 
-To run HelloIoT you need to install a MQTT broker or you can use a public MQTT broker. Public MQTT brokers can be good for testing or prototyping purposes.
+To run HelloIoT you need to install a MQTT broker or you can use a public MQTT broker. Public MQTT brokers can be good for testing or prototyping purposes. There is a list of MQTT brokers in the [MQTT Community Wiki](https://github.com/mqtt/mqtt.github.io/wiki/servers), you can choose the broker that better fits your needs.
 
 HelloIoT is developed and tested using [Mosquitto](http://mosquitto.org/) but it will also work 
 with other MQTT Brokers like [HiveMQ](http://www.hivemq.com/), [EMQTT](http://emqtt.io/), 
 [Moquette](https://github.com/andsel/moquette)...
-There is a list of MQTT brokers in the [MQTT Community Wiki](https://github.com/mqtt/mqtt.github.io/wiki/servers), you can choose the broker that better fits your needs.
+
 
 Execute HelloIoT from sources
 -----------------------------
