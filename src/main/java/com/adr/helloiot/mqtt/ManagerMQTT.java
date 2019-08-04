@@ -36,8 +36,8 @@ import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
-import org.eclipse.paho.client.mqttv3.MqttAsyncClient;
 import org.eclipse.paho.client.mqttv3.MqttCallback;
+import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
@@ -68,7 +68,7 @@ public class ManagerMQTT implements MqttCallback, ManagerProtocol {
     private Consumer<EventMessage> consumer;
     private Consumer<Throwable> lost;
     // MQTT
-    private MqttAsyncClient mqttClient;
+    private MqttClient mqttClient;
     private final List<String> worktopics = new ArrayList<>();
     private final List<Integer> workqos = new ArrayList<>();
     private final ResourceBundle resources;
@@ -135,7 +135,7 @@ public class ManagerMQTT implements MqttCallback, ManagerProtocol {
         }
 
         try {
-            mqttClient = new MqttAsyncClient(url, clientid, new MemoryPersistence());
+            mqttClient = new MqttClient(url, clientid, new MemoryPersistence());
             MqttConnectOptions options = new MqttConnectOptions();
             if (!Strings.isNullOrEmpty(username)) {
                 options.setUserName(username);
@@ -149,7 +149,7 @@ public class ManagerMQTT implements MqttCallback, ManagerProtocol {
             options.setMaxInflight(maxinflight);
             options.setSSLProperties(sslproperties);
             options.setWill(topicsys + "app/" + clientid, new StringFormatSwitch().devalue(MiniVarBoolean.FALSE), 0, true);
-            mqttClient.connect(options).waitForCompletion(1000);
+            mqttClient.connect(options);
             mqttClient.setCallback(this);
             if (listtopics.length > 0) {
                 mqttClient.subscribe(listtopics, listqos);
@@ -165,7 +165,7 @@ public class ManagerMQTT implements MqttCallback, ManagerProtocol {
         MqttMessage mm = new MqttMessage(new StringFormatSwitch().devalue(value));
         mm.setQos(0);
         mm.setRetained(true);
-        mqttClient.publish(topicsys + "app/" + clientid, mm).waitForCompletion();
+        mqttClient.publish(topicsys + "app/" + clientid, mm);
     }
 
     @Override
