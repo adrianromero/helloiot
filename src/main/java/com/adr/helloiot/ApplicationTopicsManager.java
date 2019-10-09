@@ -146,7 +146,7 @@ public final class ApplicationTopicsManager implements TopicManager {
     }
 
     private void distributeMessage(EventMessage message) {
-        for (var entry: subscriptions.entrySet()) {
+        for (Map.Entry<String, List<TopicSubscription>> entry: subscriptions.entrySet()) {
             if (MqttTopic.isMatched(entry.getKey(), message.getTopic())) {
                 List<TopicSubscription> subs = entry.getValue();
                 if (subs != null) {
