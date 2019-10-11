@@ -34,6 +34,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import com.adr.helloiotlib.app.TopicManager;
 import com.adr.helloiotlib.format.MiniVar;
+import org.eclipse.paho.client.mqttv3.MqttTopic;
 
 /**
  *
@@ -145,26 +146,14 @@ public final class ApplicationTopicsManager implements TopicManager {
     }
 
     private void distributeMessage(EventMessage message) {
-        distributeWilcardMessage(message.getTopic(), message);
-        distributeRecursiveMessage(message.getTopic().length() - 1, message);
-    }
-
-    private void distributeRecursiveMessage(int starting, EventMessage message) {
-        String topic = message.getTopic();
-        int i = topic.lastIndexOf('/', starting);
-        if (i < 0) {
-            distributeWilcardMessage("#", message);
-        } else {
-            distributeWilcardMessage(topic.substring(0, i) + "/#", message);
-            distributeRecursiveMessage(i - 1, message);
-        }
-    }
-
-    private void distributeWilcardMessage(String subscriptiontopic, EventMessage message) {
-        List<TopicSubscription> subs = subscriptions.get(subscriptiontopic);
-        if (subs != null) {
-            for (TopicSubscription s : subs) {
-                s.consume(message);
+        for (Map.Entry<String, List<TopicSubscription>> entry: subscriptions.entrySet()) {
+            if (MqttTopic.isMatched(entry.getKey(), message.getTopic())) {
+                List<TopicSubscription> subs = entry.getValue();
+                if (subs != null) {
+                    for (TopicSubscription s : subs) {
+                        s.consume(message);
+                    }
+                }
             }
         }
     }
