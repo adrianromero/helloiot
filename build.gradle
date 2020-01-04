@@ -18,9 +18,9 @@
 //
 
 plugins {
-  id 'application'
-  id 'org.openjfx.javafxplugin' version '0.0.8'
-  id 'org.beryx.runtime' version '1.8.0'
+    id 'application'
+    id 'org.openjfx.javafxplugin' version '0.0.8'
+    id 'org.beryx.runtime' version '1.8.0'
 }
 
 group = 'com.github.adrianromero'
@@ -50,8 +50,8 @@ javafx {
 }
 
 dependencies {
-    compile group: 'com.github.adrianromero', name: 'fonticon', version:'2.0.100'
-    compile group: 'com.github.adrianromero', name: 'hellocommon', version:'2.0.100'
+    compile group: 'com.github.adrianromero', name: 'fonticon', version:'2.0.210'
+    compile group: 'com.github.adrianromero', name: 'hellocommon', version:'2.0.120'
     compile group: 'com.github.adrianromero', name: 'textflowbuilder', version: '1.0.3'
     compile group: 'org.eclipse.paho', name: 'org.eclipse.paho.client.mqttv3', version:'1.2.0'
     compile group: 'com.jidesoft', name: 'jidefx-common', version:'0.9.1'
@@ -60,13 +60,13 @@ dependencies {
     compile group: 'com.google.guava', name: 'guava', version: '20.0'
     compile group: 'com.jayway.jsonpath', name: 'json-path', version: '2.2.0'
     compile group: 'javax.jmdns', name: 'jmdns', version: '3.2.2'
-    compile group: 'org.mozilla', name: 'rhino', version: '1.7.7.1'  
-    
+    compile group: 'org.mozilla', name: 'rhino', version: '1.7.7.1'
+
     // Tradfri - Coap
     compile group: 'org.eclipse.californium', name: 'californium-core', version: '2.0.0-M8'
     compile group: 'org.eclipse.californium', name: 'scandium', version: '2.0.0-M8'
     compile group: 'org.eclipse.californium', name: 'element-connector', version: '2.0.0-M8'
-    compile group: 'com.google.code.gson', name: 'gson', version: '2.6.2'      
+    compile group: 'com.google.code.gson', name: 'gson', version: '2.6.2'
 }
 
 application {
